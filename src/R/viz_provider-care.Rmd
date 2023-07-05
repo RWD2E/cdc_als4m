@@ -1,0 +1,104 @@
+---
+title: "outcome analysis - neurologist care"
+author: "Xing Song"
+date: '2022-12-10'
+output: html_document
+  keep_md:true
+---
+  
+```{r setup, include=FALSE}
+rm(list=ls())
+knitr::opts_chunk$set(echo = FALSE,
+                      message = FALSE,
+                      warning = FALSE,
+                      fig.height=6,
+                      dev = c("png","pdf"),
+                      dpi = 300,
+                      echo = FALSE,
+                      cache = TRUE,
+                      fig.path = 'fig/')
+
+pacman::p_load(tidyverse,
+               magrittr,
+               broom,
+               survival,
+               survminer,
+               kableExtra,
+               devtools
+              )
+```
+
+
+```{r, load_data}
+ptype<-"NEUROLOGY"
+# ptype<-"NEUROPSYCH"
+# ptype<-"PHYSICAL_REHAB"
+# ptype<-"GASTROENTEROLOGY"
+# ptype<-"CARDIOLOGY"
+# ptype<-"NUTRITION"
+
+perf<-readRDS(paste0("C:/repo/GPC-Analytics-ALS-Cohort/data/results/",ptype,"_coxph_mort_cv5.rds"))
+ps<-readRDS(paste0("C:/repo/GPC-Analytics-ALS-Cohort/data/results/",ptype,"_ipw_lasso_cv5.rds"))
+```
+
+
+```{r}
+
+```
+
+
+```{r}
+# 
+# colnames(nero_tx)<-c("varx","est","se","df","zval","pval","tx_comp")
+# nero_tx_sel<-nero_tx %>%
+#   filter(pval<=0.01) %>%
+#   mutate(or=exp(est),
+#          dir=est/abs(est),
+#          or_ub = exp(est+1.96*se),
+#          or_lb = exp(est-1.96*se)) %>%
+#   left_join(var_lbl_df,by="varx") %>%
+#   mutate(var_lbl=coalesce(var_lbl,varx)) %>%
+#   filter(!is.na(var_lbl)&
+#            !varx %in% c("xxCCSPX_71")) %>%
+#   mutate(var_lbl_short=substr(tolower(var_lbl),1,50))
+# 
+# ggplot(nero_tx_sel,aes(x=or,y=var_lbl_short,color=tx_comp))+
+#   geom_point()+geom_vline(xintercept=1,linetype=2) +
+#   geom_errorbarh(aes(xmin=or_lb,xmax=or_ub),size=1,alpha=0.8)+
+#   labs(x='Odds Ratio',y='Covariates',color='Intervention')+
+#   theme(text=element_text(face="bold",size=10))
+```
+
+
+```{r, fig.height=7}
+# final model
+fit_mort_cov<-coxph(formula(paste0("Surv(DEATH_time2, DEATH_status) ~ ",
+                                   paste(unique(c(var_sel,"neuro_aft_ind")),collapse = "+"))),
+                    data = aset, weights = 1/iptw$tw_comp_adj)
+fit_mort_summ<-summary(fit_mort_cov)$coefficients
+ggforest(fit_mort_cov,data = aset)
+```
+
+
+```{r,fig.width=12,fig.height=7}
+colnames(nero_tx)<-c("varx","est","se","df","zval","pval","tx_comp")
+nero_tx_sel<-nero_tx %>%
+  filter(pval<=0.01) %>%
+  mutate(or=exp(est),
+         dir=est/abs(est),
+         or_ub = exp(est+1.96*se),
+         or_lb = exp(est-1.96*se)) %>%
+  left_join(var_lbl_df,by="varx") %>%
+  mutate(var_lbl=coalesce(var_lbl,varx)) %>%
+  filter(!is.na(var_lbl)&
+           !varx %in% c("xxCCSPX_71")) %>%
+  mutate(var_lbl_short=substr(tolower(var_lbl),1,50))
+
+ggplot(nero_tx_sel,aes(x=or,y=var_lbl_short,color=tx_comp))+
+  geom_point()+geom_vline(xintercept=1,linetype=2) +
+  geom_errorbarh(aes(xmin=or_lb,xmax=or_ub),size=1,alpha=0.8)+
+  labs(x='Odds Ratio',y='Covariates',color='Intervention')+
+  theme(text=element_text(face="bold",size=10))
+```
+
+

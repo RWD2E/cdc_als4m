@@ -1,0 +1,273 @@
+---
+title: "exploratory analysis"
+author: "Xing Song"
+date: '2022-07-29'
+output: html_document
+---
+  
+```{r setup, include=FALSE}
+rm(list=ls()); gc()
+knitr::opts_chunk$set(echo = FALSE,
+                      message = FALSE,
+                      warning = FALSE,
+                      fig.height=6)
+
+pacman::p_load(tidyverse,
+               magrittr,
+               broom,
+               survival,
+               survminer,
+               kableExtra,
+               devtools,
+               cmprsk,
+               ggridges,
+               Matrix,
+               glmnet,
+               scales,
+               islasso,
+               caret,
+               rms,
+               gtsummary
+)
+
+# webshot::install_phantomjs() # needed for generating pdf doc
+source_url("https://raw.githubusercontent.com/sxinger/utils/master/analysis_util.R")
+```
+
+
+```{r}
+aset<-readRDS("C:/repo/GPC-Analytics-ALS-Cohort/data/als_aset_neurology_mort.rds")
+
+phecd_dd<-readRDS("C:/repo/GPC-Analytics-ALS-Cohort/data/phecode_dd.rds")
+
+acs_dd<-readRDS("C:/repo/GPC-Analytics-ALS-Cohort/data/acs_dd.rds")
+
+gnn_dd<-readRDS("C:/repo/GPC-Analytics-ALS-Cohort/data/gnn_dd.rds")
+
+ccspx_dd<-readRDS("C:/repo/GPC-Analytics-ALS-Cohort/data/ccspx_dd.rds")
+```
+
+
+```{r}
+var_lst<-colnames(aset)
+var_lst<-var_lst[!var_lst %in% c(
+  "PATID"
+  ,"DAYS_TO_TRACHEOSTOMY","Death_time_adj"
+  ,"DEATH_status","DEATH_time","DEATH_time2"
+  ,"neuro_aft_ind","neuro_bef_ind"
+)]
+facvar_lst<-var_lst[!var_lst %in% c("AGE_AT_ALS1DX")&!grepl("^(SDH)+",var_lst)]
+
+var_lbl_df<-data.frame(var=c(paste0('PHECD_',phecd_dd$phecode),
+                             paste0('SDH_',acs_dd$SNOMED),
+                             gnn_dd$GNN_CD,
+                             ccspx_dd$PX_GRPCD),
+                       var_lbl=c(phecd_dd$phecode_string,
+                                 acs_dd$DESCRIPTION,
+                                 gnn_dd$GNN,
+                                 ccspx_dd$PX_GRP)) %>%
+  filter(!grepl("\\.",var))
+```
+
+# Cohort Overview
+
+```{r}
+case_ctrl<-univar_analysis_mixed(df = aset,
+                                 id_col ="PATID",
+                                 var_lst = var_lst,
+                                 facvar_lst  = facvar_lst,
+                                 pretty = T,
+                                 var_lbl_df=var_lbl_df)
+case_ctrl
+```
+
+
+# Neurologist vs. Non-neurologist after first diagnosis observed
+
+```{r}
+case_ctrl<-univar_analysis_mixed(df = aset,
+                                 id_col ="PATID",
+                                 grp = aset$neuro_aft_ind,
+                                 var_lst = var_lst,
+                                 facvar_lst  = facvar_lst,
+                                 pretty = T,
+                                 var_lbl_df=var_lbl_df)
+
+case_ctrl
+```
+
+# Neurologist care on Survival
+
+```{r}
+ggsurvplot(
+  fit = survfit(Surv(DEATH_time2,DEATH_status) ~ neuro_aft_ind, data = aset),
+  pval = TRUE, conf.int = TRUE,risk.table = TRUE,
+  surv.median.line = "hv",linetype = "strata", 
+  xlab = "Days", break.x.by = 365,
+  ylab = "Mortality - Overall survival probability",
+  main = "neurology involvment after first observed diagnosis")
+```
+```{r}
+surv_mort<-survfit(Surv(DEATH_time2,DEATH_status) ~ 1, data = aset)
+
+surv_mort %>% 
+  tbl_survfit(
+    probs = 0.5,
+    label_header = "**Median survival (95% CI)**"
+  )
+
+surv_mort %>%
+  tbl_survfit(
+    times = 365*c(1:3),
+    label_header = "**{time} Days**"
+  )
+```
+
+
+
+```{r}
+surv_neuro<-survfit(Surv(DEATH_time2,DEATH_status) ~ neuro_aft_ind, data = aset)
+
+surv_neuro %>% 
+  tbl_survfit(
+    probs = 0.5,
+    label_header = "**Median survival (95% CI)**"
+  )
+
+surv_neuro %>%
+  tbl_survfit(
+    times = 365*c(1:3),
+    label_header = "**{time} Days**"
+  )
+```
+
+
+# Riluzole on Survival
+
+```{r}
+ggsurvplot(
+  fit = survfit(Surv(DEATH_time2,DEATH_status) ~ RILUZOLE_FLAG, data = aset),
+  pval = TRUE, conf.int = TRUE,risk.table = TRUE,
+  surv.median.line = "hv",linetype = "strata", 
+  xlab = "Days", break.x.by = 365,
+  ylab = "Mortality - Overall survival probability",
+  main = "Riluzole Use")
+```
+
+
+```{r}
+ggsurvplot(
+  fit = survfit(Surv(DEATH_time2,DEATH_status) ~ RILUZOLE_FLAG, 
+                data = aset %>% filter(PARTD_IND==1)),
+  pval = TRUE, conf.int = TRUE,risk.table = TRUE,
+  surv.median.line = "hv",linetype = "strata", 
+  xlab = "Days", break.x.by = 365,
+  ylab = "Mortality - Overall survival probability",
+  main = "Riluzole Use (restricted to partD eligible")
+```
+
+
+```{r,fig.height=10,fig.width=12}
+p<-list()
+i<-1
+for(type in unique(aset$neuro_aft_ind)){
+  p[[i]]<-ggsurvplot(
+    fit = survfit(Surv(DEATH_time2,DEATH_status) ~ RILUZOLE_FLAG, 
+                  data = aset %>% filter(neuro_aft_ind==type)),
+    pval = TRUE, conf.int = TRUE,risk.table = T,
+    surv.median.line = "hv",linetype = "strata", 
+    xlab = "Days", break.x.by = 365,
+    ylab = type)
+  i<-i+1
+}
+arrange_ggsurvplots(p,ncol=2,nrow=1)
+```
+
+# Power Wheelchair on Survival
+
+```{r}
+ggsurvplot(
+  fit = survfit(Surv(DEATH_time2,DEATH_status) ~ WHEELCHAIR_FLAG, data = aset),
+  pval = TRUE, conf.int = TRUE,risk.table = TRUE,
+  surv.median.line = "hv",linetype = "strata", 
+  xlab = "Days", break.x.by = 365,
+  ylab = "Mortality - Overall survival probability",
+  main = "power wheelchair use")
+```
+
+
+```{r,fig.height=10,fig.width=12}
+p<-list()
+i<-1
+for(type in unique(aset$neuro_aft_ind)){
+  p[[i]]<-ggsurvplot(
+    fit = survfit(Surv(DEATH_time2,DEATH_status) ~ WHEELCHAIR_FLAG, 
+                  data = aset %>% filter(neuro_aft_ind==type)),
+    pval = TRUE, conf.int = TRUE,risk.table = T,
+    surv.median.line = "hv",linetype = "strata", 
+    xlab = "Days", break.x.by = 365,
+    ylab = type)
+  i<-i+1
+}
+arrange_ggsurvplots(p,ncol=2,nrow=1)
+```
+
+
+# NIV on Survival
+
+```{r}
+ggsurvplot(
+  fit = survfit(Surv(DEATH_time2,DEATH_status) ~ NIV_FLAG, data = aset),
+  pval = TRUE, conf.int = TRUE,risk.table = TRUE,
+  surv.median.line = "hv",linetype = "strata", 
+  xlab = "Days", break.x.by = 365,
+  ylab = "Mortality - Overall survival probability",
+  main = "NIV Use")
+```
+
+
+```{r,fig.height=10,fig.width=12}
+p<-list()
+i<-1
+for(type in unique(aset$neuro_aft_ind)){
+  p[[i]]<-ggsurvplot(
+    fit = survfit(Surv(DEATH_time2,DEATH_status) ~ NIV_FLAG, 
+                  data = aset %>% filter(neuro_aft_ind==type)),
+    pval = TRUE, conf.int = TRUE,risk.table = T,
+    surv.median.line = "hv",linetype = "strata", 
+    xlab = "Days", break.x.by = 365,
+    ylab = type)
+  i<-i+1
+}
+arrange_ggsurvplots(p,ncol=2,nrow=1)
+```
+
+
+# PEG on Survival
+
+```{r}
+ggsurvplot(
+  fit = survfit(Surv(DEATH_time2,DEATH_status) ~ GASTROSTOMY_FLAG, data = aset),
+  pval = TRUE, conf.int = TRUE,risk.table = TRUE,
+  surv.median.line = "hv",linetype = "strata", 
+  xlab = "Days", break.x.by = 365,
+  ylab = "Mortality - Overall survival probability",
+  main = "PEG Use")
+```
+
+
+```{r,fig.height=10,fig.width=12}
+p<-list()
+i<-1
+for(type in unique(aset$neuro_aft_ind)){
+  p[[i]]<-ggsurvplot(
+    fit = survfit(Surv(DEATH_time2,DEATH_status) ~ GASTROSTOMY_FLAG, 
+                  data = aset %>% filter(neuro_aft_ind==type)),
+    pval = TRUE, conf.int = TRUE,risk.table = T,
+    surv.median.line = "hv",linetype = "strata", 
+    xlab = "Days", break.x.by = 365,
+    ylab = type)
+  i<-i+1
+}
+arrange_ggsurvplots(p,ncol=2,nrow=1)
+```
