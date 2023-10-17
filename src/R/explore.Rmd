@@ -36,15 +36,11 @@ source_url("https://raw.githubusercontent.com/sxinger/utils/master/analysis_util
 
 
 ```{r}
-aset<-readRDS("C:/repo/GPC-Analytics-ALS-Cohort/data/als_aset_neurology_mort.rds")
 
-phecd_dd<-readRDS("C:/repo/GPC-Analytics-ALS-Cohort/data/phecode_dd.rds")
+```
 
-acs_dd<-readRDS("C:/repo/GPC-Analytics-ALS-Cohort/data/acs_dd.rds")
-
-gnn_dd<-readRDS("C:/repo/GPC-Analytics-ALS-Cohort/data/gnn_dd.rds")
-
-ccspx_dd<-readRDS("C:/repo/GPC-Analytics-ALS-Cohort/data/ccspx_dd.rds")
+```{r}
+aset<-readRDS("C:/repo/cdc_als4m/data/als_tbl1.rds")
 ```
 
 
