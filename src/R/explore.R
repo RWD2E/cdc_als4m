@@ -13,7 +13,7 @@ pacman::p_load(
 source_url("https://raw.githubusercontent.com/sxinger/utils/master/analysis_util.R")
 
 # explore
-tbl1<-readRDS("C:/repo/cdc_als4m/data/tbl1_cov_endpt_pce.rds") %>%
+tbl1<-readRDS("C:/repo/cdc_als4m/data/tbl1_sdoh_endpt_pce_prvdr.rds") %>%
   mutate(
     surv_1yr = as.numeric((time_death_censor>=365)),
     surv_3yr = as.numeric((time_death_censor>=365*3)),
@@ -55,46 +55,41 @@ case_ctrl %>%
     paste0("./res/als_all.pdf")
   )
 
-case_ctrl<-univar_analysis_mixed(
-  df = tbl1 %>% 
-    filter(COMPLT_IND == 1 & CASE_ASSERT == 'confirmed'),
-  id_col ="PATID",
-  var_lst = var_lst,
-  facvar_lst  = facvar_lst,
-  pretty = T,
-  var_lbl_df=var_lbl_df
-)
-case_ctrl %>%
-  save_kable(
-    paste0("./res/als_xwalk.pdf")
-  )
-
-# crosswalk population & confirmed
-tbl2<-tbl1 %>% 
-  filter(
-    COMPLT_IND == 1 & 
-    CASE_ASSERT == 'confirmed' &
-    !INDEX_EVENT %in% c('PRX','DRX')
-  ) %>%
-  mutate(INDEX_EVENT = case_when(
-    INDEX_EVENT=="NEUROLOGIST" ~ 'DX', TRUE ~ INDEX_EVENT
-  ))
 var_lst2<-var_lst[!var_lst %in% c(
   "CASE_ASSERT",
-  "COMPLT_IND",
   "als1dx"
 )]
 facvar_lst2<-facvar_lst[!facvar_lst %in% c(
   "CASE_ASSERT",
-  "COMPLT_IND",
   "als1dx"
 )]
+case_ctrl<-univar_analysis_mixed(
+  df = tbl1,
+  id_col ="PATID",
+  var_lst = var_lst2,
+  facvar_lst  = facvar_lst2,
+  grp = tbl1$CASE_ASSERT,
+  pretty = T,
+  var_lbl_df=var_lbl_df
+)
+case_ctrl %>%
+  save_kable(
+    paste0("./res/als_all_by_assert.pdf")
+  )
 
-# by index event
+# confirmed
+tbl2<-tbl1 %>% 
+  filter(
+    CASE_ASSERT == "confirmed"
+  ) %>%
+  mutate(INDEX_EVENT = case_when(
+    INDEX_EVENT=="NEUROLOGIST" ~ 'DX', 
+    TRUE ~ INDEX_EVENT
+  ))
+
 case_ctrl<-univar_analysis_mixed(
   df = tbl2,
   id_col ="PATID",
-  grp = tbl2$SDH_PART_C,
   var_lst = var_lst2,
   facvar_lst  = facvar_lst2,
   pretty = T,
@@ -102,49 +97,84 @@ case_ctrl<-univar_analysis_mixed(
 )
 case_ctrl %>%
   save_kable(
-    paste0("./res/als_xwalk_by_partc.pdf")
+    paste0("./res/als_confirmed.pdf")
   )
 
 case_ctrl<-univar_analysis_mixed(
   df = tbl2,
   id_col ="PATID",
-  grp = tbl2$SDH_PART_D,
   var_lst = var_lst2,
   facvar_lst  = facvar_lst2,
+  grp = tbl2$COMPLT_FLAG,
   pretty = T,
   var_lbl_df=var_lbl_df
 )
 case_ctrl %>%
   save_kable(
-    paste0("./res/als_xwalk_by_partd.pdf")
+    paste0("./res/als_confirmed_by_xwalk.pdf")
   )
 
-# by fda-approved rx use
 case_ctrl<-univar_analysis_mixed(
   df = tbl2,
   id_col ="PATID",
-  grp = tbl2$fda,
   var_lst = var_lst2,
   facvar_lst  = facvar_lst2,
+  grp = tbl2$INDEX_EVENT,
   pretty = T,
   var_lbl_df=var_lbl_df
 )
 case_ctrl %>%
   save_kable(
-    paste0("./res/als_xwalk_by_fda.pdf")
+    paste0("./res/als_confirmed_by_index.pdf")
   )
 
-# by aot rx use
+# confirmed + crosswalk
+tbl3<-tbl2 %>%
+  filter(COMPLT_FLAG == 'complete')
+
+var_lst3<-var_lst2[!var_lst2 %in% c(
+  "COMPLT_FLAG"
+)]
+facvar_lst3<-facvar_lst2[!facvar_lst2 %in% c(
+  "COMPLT_FLAG"
+)]
 case_ctrl<-univar_analysis_mixed(
-  df = tbl2,
+  df = tbl3,
   id_col ="PATID",
-  grp = tbl2$aot,
-  var_lst = var_lst2,
-  facvar_lst  = facvar_lst2,
+  var_lst = var_lst3,
+  facvar_lst  = facvar_lst3,
   pretty = T,
   var_lbl_df=var_lbl_df
 )
 case_ctrl %>%
   save_kable(
-    paste0("./res/als_xwalk_by_aot.pdf")
+    paste0("./res/als_complete.pdf")
+  )
+
+case_ctrl<-univar_analysis_mixed(
+  df = tbl3,
+  id_col ="PATID",
+  var_lst = var_lst3,
+  facvar_lst  = facvar_lst3,
+  grp = tbl3$INDEX_EVENT,
+  pretty = T,
+  var_lbl_df=var_lbl_df
+)
+case_ctrl %>%
+  save_kable(
+    paste0("./res/als_complete_by_index.pdf")
+  )
+
+case_ctrl<-univar_analysis_mixed(
+  df = tbl3,
+  id_col ="PATID",
+  var_lst = var_lst3,
+  facvar_lst  = facvar_lst3,
+  grp = tbl3$fda,
+  pretty = T,
+  var_lbl_df=var_lbl_df
+)
+case_ctrl %>%
+  save_kable(
+    paste0("./res/als_complete_by_fda.pdf")
   )

@@ -12,9 +12,8 @@ tn<-length(t_seq)
 ##==== cohort selection ====
 tbl2<-readRDS("./data/tbl1_cov_endpt.rds") %>%
   filter(
-    COMPLT_IND == 1 & 
-    CASE_ASSERT == 'confirmed' &
-    !INDEX_EVENT %in% c('PRX','DRX')
+    COMPLT_FLAG == 'complete' & 
+    CASE_ASSERT == 'confirmed'
   ) 
 
 ##==== training-testing partition mapping ====
@@ -160,6 +159,30 @@ dt<-
       mutate(val = 1) %>%
       rename(var = INGREDIENT) %>%
       mutate(var = paste0("RX_",var)) %>%
+      select(PATID,var,val,T_DAYS) %>% unique
+  ) %>%
+  bind_rows(
+    readRDS("./data/als_all_px_ccs_ccs_pxgrpcd_60.rda") %>%
+      inner_join(
+        tbl2 %>% select(PATID,time_death_censor),
+        by="PATID"
+      ) %>%
+      filter(T_DAYS < time_death_censor) %>%
+      mutate(val = 1) %>%
+      rename(var = INGREDIENT) %>%
+      mutate(var = paste0("PXCCS_",var)) %>%
+      select(PATID,var,val,T_DAYS) %>% unique
+  ) %>%
+  bind_rows(
+    readRDS("./data/als_sel_sdoh_obscomm_code_60.rda") %>%
+      inner_join(
+        tbl2 %>% select(PATID,time_death_censor),
+        by="PATID"
+      ) %>%
+      filter(T_DAYS < time_death_censor) %>%
+      mutate(val = 1) %>%
+      rename(var = INGREDIENT) %>%
+      mutate(var = paste0("R_",var)) %>%
       select(PATID,var,val,T_DAYS) %>% unique
   ) %>%
   bind_rows(

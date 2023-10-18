@@ -25,7 +25,7 @@ dat<-tbl(sf_conn,in_schema("SX_ALS_GPC","ALS_TABLE1")) %>% collect()
 saveRDS(dat,file="./data/als_tbl1.rds")
 
 # collect SDOH
-dat<-tbl(sf_conn,in_schema("SX_ALS_GPC","ALS_SDOH")) %>% collect()
+dat<-tbl(sf_conn,in_schema("SX_ALS_GPC","ALS_ALL_SDOH")) %>% collect()
 saveRDS(dat,file="./data/als_sdoh.rds")
 
 # collect ALS staging file
@@ -58,17 +58,31 @@ dat<-tbl(sf_conn,
   mutate(aot = 1)
 saveRDS(dat,file="./data/als_aot_rx.rds")
 
+# collect provider specialty
+dat<-tbl(sf_conn,
+         sql("select distinct PATID, SPECIALTY_GROUP from SX_ALS_GPC.ALS_PX_PRVDR")) %>% 
+  collect() %>%
+  mutate(ind = 1) %>%
+  spread(SPECIALTY_GROUP, ind) %>%
+  replace(is.na(.), 0)
+saveRDS(dat,file="./data/als_mdc_prvdr.rds")
+
 #==== ALS time-varying dataset ====
 deltat<-60
 t_seq<-seq(0,5*365.25,by=deltat)
 drop_rt<-0.05
 
 #--- covariates
+val_str<-function(...){
+  dots<-list(...)
+  return(paste0(unlist(dots),collapse = ","))
+}
+
 cov_lst<-list()
 tbl_part_map<-tibble(
   tbl=as.character(),
   part_col=as.character(),
-  val_cols=list(),
+  val_cols=as.character(),
   cond = as.character()
   ) %>%
   add_row(tbl="ALS_ALL_PHECD",
@@ -82,24 +96,27 @@ tbl_part_map<-tibble(
           cond="") %>%
   add_row(tbl="ALS_SEL_SDOH",
           part_col="OBSCOMM_CODE",
-          val_cols=list("OBSCOMM_RESULT"),
+          val_cols=val_str("OBSCOMM_RESULT"),
           cond="") %>%
   add_row(tbl="ALS_ALL_RX_IN",
           part_col="FDA_AOT",
-          val_cols=list("INGREDIENT"),
+          val_cols=val_str("INGREDIENT"),
           cond=" and a.FDA_AOT <> 'ot'") %>%
-  add_row(tbl="ALS_OFFICE_PRVDR",
+  add_row(tbl="ALS_PX_PRVDR",
           part_col="SPECIALTY_GROUP",
           cond="") %>%
   add_row(tbl="ALS_ENDPTS",
           part_col="ENDPT_SUB",
-          cond=" and a.ENDPT_SUB in ('non-invasive-ventilator','gastrostomy','power-wheelchairs','death','censor')")
-  # add_row(tbl="ALS_ALL_OBS",part_col="OBS_CODE")
+          cond=" and a.ENDPT_SUB in ('non-invasive-ventilator','gastrostomy','power-wheelchairs','death','censor')") %>%
+  add_row(tbl="ALS_SEL_OBS",
+          part_col="OBS_NAME",
+          val_cols = val_str("OBS_QUAL","OBS_NUM","OBS_UNIT","OBS_SRC","OBS_REF_LOW","OBS_REF_HIGH"),
+          cond="")
 
 k<-nrow(tbl_part_map)
 for(i in 1:k){
   tbl_long<-c(); gc()
-  if(!is.null(tbl_part_map$val_cols[i][[1]])){
+  if(!is.na(tbl_part_map$val_cols[i][[1]])){
     val_cols_str<-paste0(",",paste0(tbl_part_map$val_cols[i],collapse = ","))
   }else{
     val_cols_str<-""
@@ -107,6 +124,7 @@ for(i in 1:k){
   for(t in t_seq){
     # extraction
     if(tbl_part_map$tbl[i]=="ALS_ENDPTS"){
+      # positive carry-over
       dat_t<-tbl(
         sf_conn,
         sql(paste0(
@@ -123,6 +141,7 @@ for(i in 1:k){
       ) %>% collect()
     
     }else if(tbl_part_map$part_col[i] %in% c("FDA_AOT","SPECIALTY_GROUP","OBSCOMM_CODE")){
+      # no carry-over
       dat_t<-tbl(
         sf_conn,
         sql(paste0(
@@ -141,6 +160,7 @@ for(i in 1:k){
 
     }else{
       # extraction
+      # carry-over
       dat_t<-tbl(
         sf_conn,
         sql(paste0(

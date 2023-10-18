@@ -21,11 +21,11 @@ source_url("https://raw.githubusercontent.com/sxinger/utils/master/extract_util.
 #==== time-invariant feature table =====
 tbl1<-readRDS("C:/repo/cdc_als4m/data/als_tbl1.rds")
 sdoh_ruca<-readRDS("./data/als_sdoh.rds") %>%
+  filter(grepl("(RUCA\\|PRIMARY)+",OBSCOMM_CODE)) %>%
   group_by(PATID,OBSCOMM_CODE) %>% 
-  arrange(abs(ADDRESS_PERIOD_START_INDEX)) %>% 
+  arrange(abs(DAYS_SINCE_INDEX)) %>% 
   slice(1:1) %>%  ungroup %>%
   filter(!is.na(OBSCOMM_RESULT_TEXT)) %>%
-  filter(grepl("(RUCA\\|PRIMARY)+",OBSCOMM_CODE)) %>%
   mutate(RUCA = OBSCOMM_RESULT_TEXT) %>%
   select(PATID,RUCA) %>%
   {. ->> sdoh_ruca_temp} %>% # save intermediate table which can be called later
@@ -45,28 +45,33 @@ sdoh_ruca<-readRDS("./data/als_sdoh.rds") %>%
 
 sdoh_cov<-readRDS("./data/als_sdoh.rds") %>%
   group_by(PATID,OBSCOMM_CODE) %>% 
-  arrange(abs(ADDRESS_PERIOD_START_INDEX)) %>% 
+  arrange(abs(DAYS_SINCE_INDEX)) %>% 
   slice(1:1) %>%  ungroup %>%
   filter(!is.na(OBSCOMM_RESULT_NUM)) %>%
   mutate(sdh_var=paste0("SDH_",OBSCOMM_CODE)) %>%
   select(PATID,sdh_var,OBSCOMM_RESULT_NUM) %>%
-  spread(sdh_var,OBSCOMM_RESULT_NUM)
+  spread(sdh_var,OBSCOMM_RESULT_NUM) %>%
+  replace_na(list(
+    SDH_LIS_DUAL = 0,
+    SDH_PART_C = 0,
+    SDH_PART_D = 0
+  ))
 # remove invariant metrics
 sdoh_nzv<- nearZeroVar(sdoh_cov, saveMetrics = TRUE)
 sdoh_cov<-sdoh_cov[,row.names(sdoh_nzv)[!sdoh_nzv$zeroVar]]
-# quick imputation
-sdoh_cov_ruca<-sdoh_ruca %>%
-  select(all_of(c("PATID",paste0("RUCA_",1:10)))) %>%
-  left_join(sdoh_cov,by="PATID")
-init<-mice(sdoh_cov_ruca, maxit=0) 
-predM<-init$predictorMatrix
-predM[,c("PATID")]=0
-sdoh_cov_imputed<-mice(sdoh_cov_ruca, m=1) # default: pmm
-sdoh_cov_imputed<-complete(sdoh_cov_imputed)
+# # quick imputation
+# sdoh_cov_ruca<-sdoh_ruca %>%
+#   select(all_of(c("PATID",paste0("RUCA_",1:10)))) %>%
+#   left_join(sdoh_cov,by="PATID")
+# init<-mice(sdoh_cov_ruca, maxit=0)
+# predM<-init$predictorMatrix
+# predM[,c("PATID")]=0
+# sdoh_cov_imputed<-mice(sdoh_cov_ruca, m=1) # default: pmm
+# sdoh_cov_imputed<-complete(sdoh_cov_imputed)
 
 tbl1_sdoh<-tbl1 %>%
-  inner_join(sdoh_ruca %>% select(PATID, RUCAregrp),by="PATID") %>%
-  inner_join(sdoh_cov_imputed,by="PATID")
+  left_join(sdoh_ruca,by="PATID") %>%
+  left_join(sdoh_cov,by="PATID")
 saveRDS(tbl1_sdoh,file="./data/tbl1_cov.rds")
 
 # attach endpoint to table 1
@@ -115,6 +120,15 @@ tbl1_sdoh_endpt_pce<-readRDS("./data/tbl1_cov_endpt.rds") %>%
   inner_join(fda,by="PATID") %>%
   inner_join(aot,by="PATID")
 saveRDS(tbl1_sdoh_endpt_pce,file="./data/tbl1_cov_endpt_pce.rds")
+
+# attach provider specialty indicator
+prvdr<-readRDS("./data/als_mdc_prvdr.rds") %>%
+  right_join(readRDS("./data/tbl1_cov_endpt.rds") %>% 
+               select(PATID),by="PATID") %>%
+  replace(is.na(.),0)
+tbl1_sdoh_endpt_pce_prvdr<-readRDS("./data/tbl1_cov_endpt_pce.rds") %>%
+  inner_join(prvdr,by="PATID")
+saveRDS(tbl1_sdoh_endpt_pce_prvdr,file="./data/tbl1_sdoh_endpt_pce_prvdr.rds")
 
 ##==== Data Dictionary =====
 phecd_dd<-readRDS("C:/repo/GPC-Analytics-ALS-Cohort/data/dd_phecode.rds")
