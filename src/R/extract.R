@@ -70,50 +70,66 @@ saveRDS(dat,file="./data/als_mdc_prvdr.rds")
 #==== ALS time-varying dataset ====
 deltat<-60
 t_seq<-seq(0,5*365.25,by=deltat)
-drop_rt<-0.05
+drop_rt<-0.01
 
 #--- covariates
 val_str<-function(...){
   dots<-list(...)
   return(paste0(unlist(dots),collapse = ","))
 }
-
-cov_lst<-list()
 tbl_part_map<-tibble(
   tbl=as.character(),
   part_col=as.character(),
   val_cols=as.character(),
   cond = as.character()
   ) %>%
-  add_row(tbl="ALS_ALL_PHECD",
-          part_col="PHECD_DXGRPCD",
-          cond=" and a.PHECD_DXGRPCD<>'00000'") %>%
-  add_row(tbl="ALS_ALL_PX_CCS",
-          part_col="CCS_PXGRPCD",
-          cond=" and a.CCS_PXGRPCD<>'00000'") %>%
-  add_row(tbl="ALS_ALL_RX_IN",
-          part_col="INGREDIENT",
-          cond="") %>%
-  add_row(tbl="ALS_SEL_SDOH",
-          part_col="OBSCOMM_CODE",
-          val_cols=val_str("OBSCOMM_RESULT"),
-          cond="") %>%
-  add_row(tbl="ALS_ALL_RX_IN",
-          part_col="FDA_AOT",
-          val_cols=val_str("INGREDIENT"),
-          cond=" and a.FDA_AOT <> 'ot'") %>%
-  add_row(tbl="ALS_PX_PRVDR",
-          part_col="SPECIALTY_GROUP",
-          cond="") %>%
-  add_row(tbl="ALS_ENDPTS",
-          part_col="ENDPT_SUB",
-          cond=" and a.ENDPT_SUB in ('non-invasive-ventilator','gastrostomy','power-wheelchairs','death','censor')") %>%
-  add_row(tbl="ALS_SEL_OBS",
-          part_col="OBS_NAME",
-          val_cols = val_str("OBS_QUAL","OBS_NUM","OBS_UNIT","OBS_SRC","OBS_REF_LOW","OBS_REF_HIGH"),
-          cond="")
+  add_row(
+    tbl="ALS_ALL_PHECD",
+    part_col="PHECD_DXGRPCD",
+    cond="a.PHECD_DXGRPCD<>'00000'"
+  ) %>%
+  add_row(
+    tbl="ALS_ALL_PX_CCS",
+    part_col="CCS_PXGRPCD",
+    cond="a.CCS_PXGRPCD<>'00000'"
+  ) %>%
+  add_row(
+    tbl="ALS_ALL_RX_IN",
+    part_col="INGREDIENT",
+    cond="a.INGREDIENT not in ('riluzole','edaravone')"
+  ) %>%
+  add_row(
+    tbl="ALS_SEL_SDOH",
+    part_col="OBSCOMM_CODE",
+    val_cols=val_str("OBSCOMM_RESULT")
+  ) %>%
+  add_row(
+    tbl="ALS_ALL_RX_IN",
+    part_col="FDA_AOT",
+    val_cols=val_str("INGREDIENT"),
+    cond="a.FDA_AOT <> 'ot'"
+  ) %>%
+  add_row(
+    tbl="ALS_SEL_DEVICE",
+    part_col="DEVICE"
+  ) %>%
+  add_row(
+    tbl="ALS_PX_PRVDR",
+    part_col="SPECIALTY_GROUP"
+  ) %>%
+  add_row(
+    tbl="ALS_ENDPTS",
+    part_col="ENDPT_SUB",
+    cond="a.ENDPT_SUB in ('death','censor')"
+  ) %>%
+  add_row(
+    tbl="ALS_SEL_OBS",
+    part_col="OBS_NAME",
+    val_cols = val_str("OBS_QUAL","OBS_NUM","OBS_UNIT","OBS_SRC","OBS_REF_LOW","OBS_REF_HIGH")
+  )
 
 k<-nrow(tbl_part_map)
+cov_lst<-list()
 for(i in 1:k){
   tbl_long<-c(); gc()
   if(!is.na(tbl_part_map$val_cols[i][[1]])){
@@ -121,6 +137,12 @@ for(i in 1:k){
   }else{
     val_cols_str<-""
   }
+  if(!is.na(tbl_part_map$cond[i][[1]])){
+    cond_str<-paste0(" and ",tbl_part_map$cond[i]," ")
+  }else{
+    cond_str<-""
+  }
+  
   for(t in t_seq){
     # extraction
     if(tbl_part_map$tbl[i]=="ALS_ENDPTS"){
@@ -134,7 +156,7 @@ for(i in 1:k){
                 partition by a.patid, a.",tbl_part_map$part_col[i],
                 " order by a.STAGE_SINCE_INDEX desc) as rn",
           " from SX_ALS_GPC.", tbl_part_map$tbl[i], " a",
-          " where a.STAGE_SINCE_INDEX < ", t, tbl_part_map$cond[i],")",
+          " where a.STAGE_SINCE_INDEX < ", t, cond_str,")",
           " select PATID, ",tbl_part_map$part_col[i],val_cols_str,",",t," as T_DAYS",
           " from cte_ord where rn = 1"
         ))
@@ -152,7 +174,7 @@ for(i in 1:k){
           " order by DAYS_SINCE_INDEX desc) as rn",
           " from SX_ALS_GPC.", tbl_part_map$tbl[i], " a",
           " where a.DAYS_SINCE_INDEX < ", t, 
-            " and a.DAYS_SINCE_INDEX >=", t-deltat, tbl_part_map$cond[i],")",
+            " and a.DAYS_SINCE_INDEX >=", t-deltat, cond_str,")",
           " select PATID, ",tbl_part_map$part_col[i],val_cols_str,",",t," as T_DAYS",
           " from cte_ord where rn = 1"
         ))
@@ -170,7 +192,7 @@ for(i in 1:k){
                 partition by a.patid, a.",tbl_part_map$part_col[i],
           " order by DAYS_SINCE_INDEX desc) as rn",
           " from SX_ALS_GPC.", tbl_part_map$tbl[i], " a",
-          " where DAYS_SINCE_INDEX < ", t, tbl_part_map$cond[i],")",
+          " where DAYS_SINCE_INDEX < ", t, cond_str,")",
           " select PATID, ",tbl_part_map$part_col[i],val_cols_str,",",t," as T_DAYS",
           " from cte_ord where rn = 1"
         ))
@@ -200,32 +222,6 @@ for(i in 1:k){
     tbl_part_map$tbl[i],":",tbl_part_map$part_col[i],
     "extracted."))
 }
-
-#==== data dictionary ====
-phecd_dd<-tbl(sf_conn,sql(
-  "select distinct DX, DX_TYPE, PHECD_DXGRPCD, PHECD_DXGRP 
-   from GROUSE_ANALYTICS_DB.SX_ALS_GPC.ALS_ALL_PHECD"
-)) %>% collect()
-saveRDS(phecd_dd,file="./data/dd_phecode.rds")
-
-px_ccs_dd<-tbl(sf_conn,sql(
-  "select distinct PX, PX_TYPE, PX_GRPCD, PX_GRP 
-   from GROUSE_ANALYTICS_DB.SX_ALS_GPC.ALS_ALL_PX_CCS"
-)) %>% collect()
-saveRDS(px_ccs_dd,file="./data/dd_ccspx.rds")
-
-obs_dd<-tbl(sf_conn,sql(
-  "select distinct OBS_CODE_TYPE, OBS_CODE, OBS_NAME, OBS_SRC
-   from GROUSE_ANALYTICS_DB.SX_ALS_GPC.ALS_ALL_OBS
-   where OBS_CODE is not null and trim(OBS_CODE) <> ''"
-)) %>% collect()
-saveRDS(obs_dd,file="./data/dd_obs.rds")
-
-acs_dd<-readRDS("./data/als_sdoh.rds") %>% 
-  select(OBSCOMM_CODE,RAW_OBSCOMM_NAME) %>% 
-  unique()
-saveRDS(acs_dd,file="./data/dd_ace.rds")
-
 
 #==================================================================================
 # disconnect

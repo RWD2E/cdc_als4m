@@ -27,21 +27,40 @@ tbl2<-readRDS("./data/tbl1_cov_endpt.rds") %>%
 
 ##==== prepare full analytic dataset =====
 # propensity and overall outcomes
-dt<- readRDS("./data/als_all_rx_in_fda_aot_60.rda") %>%
-  mutate(val = 1) %>%
-  rename(var = FDA_AOT) %>%
-  mutate(var = paste0("TX_",var)) %>%
-  select(PATID,var,val,T_DAYS) %>% unique %>%
+dt<-data.frame(
+  PATID = as.character(),
+  var = as.character(),
+  val = as.numeric(),
+  T_DAYS = as.numeric(),
+  stringsAsFactors = F
+) %>%
+  # death and censor
   bind_rows(
     readRDS("./data/als_endpts_endpt_sub_60.rda") %>%
-      filter(!ENDPT_SUB %in% c("death","censor")) %>%
       mutate(val = 1) %>%
       rename(var = ENDPT_SUB) %>%
       mutate(var = paste0("TX_",var)) %>%
       select(PATID,var,val,T_DAYS) %>% unique
   ) %>%
+  # any use of FDA-approved drug or AOT
   bind_rows(
-    readRDS("./data/als_office_prvdr_specialty_group_60.rda") %>%
+    readRDS("./data/als_all_rx_in_fda_aot_60.rda") %>%
+      mutate(val = 1) %>%
+      rename(var = FDA_AOT) %>%
+      mutate(var = paste0("TX_",var)) %>%
+      select(PATID,var,val,T_DAYS) %>% unique
+  ) %>%
+  # any use of PEG, NIV, and wheelchairs
+  bind_rows(
+    readRDS("./data/als_sel_device_device_60.rda") %>%
+      mutate(val = 1) %>%
+      rename(var = DEVICE) %>%
+      mutate(var = paste0("TX_",var)) %>%
+      select(PATID,var,val,T_DAYS) %>% unique
+  ) %>%
+  # providers
+  bind_rows(
+    readRDS("./data/als_px_prvdr_specialty_group_60.rda") %>%
       mutate(val = 1) %>%
       rename(var = SPECIALTY_GROUP) %>%
       mutate(var = paste0("PRVDR_",var)) %>%
@@ -62,14 +81,10 @@ dt<- readRDS("./data/als_all_rx_in_fda_aot_60.rda") %>%
     by="PATID"
   ) %>%
   filter(T_DAYS < time_death_censor+deltat) %>%
-  # align time index with covariates
-  mutate(T_DAYS = T_DAYS - deltat) %>%
-  filter(T_DAYS >= 0) %>%
   select(-time_death_censor)
 
 # exclude post-censor and post-death period
 excld<-readRDS("./data/als_endpts_endpt_sub_60.rda") %>%
-  filter(ENDPT_SUB %in% c("death","censor")) %>%
   semi_join(tbl2,by="PATID") %>%
   mutate(val = 1) %>%
   spread(ENDPT_SUB,val) %>%
@@ -98,7 +113,9 @@ dt2<-tbl2 %>% select(PATID) %>% unique %>%
     values_to = "val"
   ) %>%
   # attach cohort filter
-  anti_join(excld,by=c("PATID","T_DAYS"))
+  anti_join(excld,by=c("PATID","T_DAYS")) %>%
+  # filter out time-zero
+  filter(T_DAYS > 0)
 
 saveRDS(
   dt2 %>% semi_join(readRDS("./data/part_idx.rda") %>% filter(hdout82 == 0),by="PATID"),
@@ -137,20 +154,30 @@ select(PATID,SEX,RACE,HISPANIC) %>%
 N<-nrow(tbl2_demo_expand)
 
 #==== gather time-varying variables ====
-dt<-
+dt<-data.frame(
+  PATID = as.character(),
+  var = as.character(),
+  val = as.numeric(),
+  T_DAYS = as.numeric(),
+  stringsAsFactors = F
+) %>%
   # lagged features
-  readRDS("./data/als_all_phecd_60.rda") %>%
-    inner_join(
-      tbl2 %>% select(PATID,time_death_censor),
-      by="PATID"
-    ) %>%
-    filter(T_DAYS < time_death_censor) %>%
-    mutate(val = 1) %>%
-    rename(var = PHECD_DXGRPCD) %>%
-    mutate(var = paste0("PHECD_",var)) %>%
-    select(PATID,var,val,T_DAYS) %>% unique %>%
+  #-- phecodes
   bind_rows(
-    readRDS("./data/als_all_rx_in_60.rda") %>%
+    readRDS("./data/als_all_phecd_phecd_dxgrpcd_60.rda") %>%
+      inner_join(
+        tbl2 %>% select(PATID,time_death_censor),
+        by="PATID"
+      ) %>%
+      filter(T_DAYS < time_death_censor) %>%
+      mutate(val = 1) %>%
+      rename(var = PHECD_DXGRPCD) %>%
+      mutate(var = paste0("PHECD_",var)) %>%
+      select(PATID,var,val,T_DAYS) %>% unique
+  ) %>%
+  #-- meds
+  bind_rows(
+    readRDS("./data/als_all_rx_in_ingredient_60.rda") %>%
       inner_join(
         tbl2 %>% select(PATID,time_death_censor),
         by="PATID"
@@ -161,6 +188,7 @@ dt<-
       mutate(var = paste0("RX_",var)) %>%
       select(PATID,var,val,T_DAYS) %>% unique
   ) %>%
+  #-- procedures
   bind_rows(
     readRDS("./data/als_all_px_ccs_ccs_pxgrpcd_60.rda") %>%
       inner_join(
@@ -169,8 +197,22 @@ dt<-
       ) %>%
       filter(T_DAYS < time_death_censor) %>%
       mutate(val = 1) %>%
-      rename(var = INGREDIENT) %>%
+      rename(var = CCS_PXGRPCD) %>%
       mutate(var = paste0("PXCCS_",var)) %>%
+      select(PATID,var,val,T_DAYS) %>% unique
+  ) %>%
+  #-- sdoh
+  bind_rows(
+    readRDS("./data/als_sel_sdoh_obscomm_code_60.rda") %>%
+      inner_join(
+        tbl2 %>% select(PATID,time_death_censor),
+        by="PATID"
+      ) %>%
+      filter(T_DAYS < time_death_censor) %>%
+      filter(grepl("^(ADI)+",OBSCOMM_CODE)) %>%
+      mutate(val = as.numeric(OBSCOMM_RESULT)) %>%
+      rename(var = OBSCOMM_CODE) %>%
+      mutate(var = paste0("PAST_SDH_",var)) %>%
       select(PATID,var,val,T_DAYS) %>% unique
   ) %>%
   bind_rows(
@@ -180,11 +222,14 @@ dt<-
         by="PATID"
       ) %>%
       filter(T_DAYS < time_death_censor) %>%
+      filter(!grepl("^(ADI)+",OBSCOMM_CODE)) %>%
       mutate(val = 1) %>%
-      rename(var = INGREDIENT) %>%
-      mutate(var = paste0("R_",var)) %>%
+      mutate(var = paste0(OBSCOMM_CODE,":",OBSCOMM_RESULT)) %>%
+      select(-OBSCOMM_CODE,-OBSCOMM_RESULT) %>%
+      mutate(var = paste0("PAST_SDH_",var)) %>%
       select(PATID,var,val,T_DAYS) %>% unique
   ) %>%
+  #-- use of riluzole, endarovone, or AOT
   bind_rows(
     readRDS("./data/als_all_rx_in_fda_aot_60.rda") %>%
       inner_join(
@@ -197,21 +242,22 @@ dt<-
       mutate(var = paste0("TX_",var)) %>%
       select(PATID,var,val,T_DAYS) %>% unique
   ) %>%
+  #-- use of NIV, PEG, Wheelchair
   bind_rows(
-    readRDS("./data/als_endpts_endpt_sub_60.rda") %>%
+    readRDS("./data/als_sel_device_device_60.rda") %>%
       inner_join(
         tbl2 %>% select(PATID,time_death_censor),
         by="PATID"
       ) %>%
       filter(T_DAYS < time_death_censor) %>%
-      filter(!ENDPT_SUB %in% c("death","censor")) %>%
       mutate(val = 1) %>%
-      rename(var = ENDPT_SUB) %>%
+      rename(var = DEVICE) %>%
       mutate(var = paste0("TX_",var)) %>%
       select(PATID,var,val,T_DAYS) %>% unique
   ) %>%
+  #-- provider
   bind_rows(
-    readRDS("./data/als_office_prvdr_specialty_group_60.rda") %>%
+    readRDS("./data/als_px_prvdr_specialty_group_60.rda") %>%
       inner_join(
         tbl2 %>% select(PATID,time_death_censor),
         by="PATID"
@@ -219,40 +265,82 @@ dt<-
       filter(T_DAYS < time_death_censor) %>%
       mutate(val = 1) %>%
       rename(var = SPECIALTY_GROUP)  %>%
-      mutate(var = paste0("PRvDR_",var)) %>%
+      mutate(var = paste0("PRVDR_",var)) %>%
       select(PATID,var,val,T_DAYS) %>% unique
   ) %>%
+  #-- labs: indicator
+  bind_rows(
+    readRDS("./data/als_sel_obs_obs_name_60.rda") %>%
+      inner_join(
+        tbl2 %>% select(PATID,time_death_censor),
+        by="PATID"
+      ) %>%
+      filter(T_DAYS < time_death_censor) %>%
+      mutate(val = 1) %>%
+      rename(var = OBS_NAME)  %>%
+      mutate(var = paste0("LAB_",var,"_IND")) %>%
+      select(PATID,var,val,T_DAYS) %>% unique
+  ) %>%
+  #-- labs: numerical
+  bind_rows(
+    readRDS("./data/als_sel_obs_obs_name_60.rda") %>%
+      inner_join(
+        tbl2 %>% select(PATID,time_death_censor),
+        by="PATID"
+      ) %>%
+      filter(T_DAYS < time_death_censor & !is.na(OBS_NUM)) %>%
+      mutate(var = paste0("LAB_",OBS_NAME)) %>%
+      rename(val=OBS_NUM)  %>%
+      select(PATID,var,val,T_DAYS) %>% unique
+  ) %>%
+  #-- labs: categorical
+  bind_rows(
+    readRDS("./data/als_sel_obs_obs_name_60.rda") %>%
+      inner_join(
+        tbl2 %>% select(PATID,time_death_censor),
+        by="PATID"
+      ) %>%
+      filter(
+        T_DAYS < time_death_censor & 
+        !is.na(OBS_QUAL) & !OBS_QUAL %in% c('NI','UN','OT') &
+        OBS_QUAL %in% c("SMOKING","TOBACCO")
+      ) %>%
+      unite("var",c("OBS_NAME","OBS_QUAL"),sep="_") %>%
+      mutate(var=paste0("LAB_",var),val = 1) %>%
+      select(PATID,var,val,T_DAYS) %>% unique
+  ) %>%
+  # lagging by 1 delta t
+  mutate(T_DAYS = T_DAYS + deltat) %>%
   # attach concurrent features
   # - ADI, RUCA, LIS_DUAL, PART_C, PART_D
   bind_rows(
-    readRDS("./data/als_sel_sdoh_60.rda") %>%
+    readRDS("./data/als_sel_sdoh_obscomm_code_60.rda") %>%
       inner_join(
         tbl2 %>% select(PATID,time_death_censor),
         by="PATID"
       ) %>%
       filter(T_DAYS < time_death_censor) %>%
       filter(grepl("^(ADI)+",OBSCOMM_CODE)) %>%
-      mutate(val = as.numeric(OBSCOMM_RESULT),
-             T_DAYS = T_DAYS + deltat) %>%
+      mutate(val = as.numeric(OBSCOMM_RESULT)) %>%
       rename(var = OBSCOMM_CODE) %>%
-      mutate(var = paste0("SDH_",var)) %>%
+      mutate(var = paste0("CURR_SDH_",var)) %>%
       select(PATID,var,val,T_DAYS) %>% unique
   ) %>%
   bind_rows(
-    readRDS("./data/als_sel_sdoh_60.rda") %>%
+    readRDS("./data/als_sel_sdoh_obscomm_code_60.rda") %>%
       inner_join(
         tbl2 %>% select(PATID,time_death_censor),
         by="PATID"
       ) %>%
       filter(T_DAYS < time_death_censor) %>%
       filter(!grepl("^(ADI)+",OBSCOMM_CODE)) %>%
-      mutate(val = 1,T_DAYS = T_DAYS + deltat) %>%
+      mutate(val = 1) %>%
       mutate(var = paste0(OBSCOMM_CODE,":",OBSCOMM_RESULT)) %>%
       select(-OBSCOMM_CODE,-OBSCOMM_RESULT) %>%
-      mutate(var = paste0("SDH_",var)) %>%
+      mutate(var = paste0("CURR_SDH_",var)) %>%
       select(PATID,var,val,T_DAYS) %>% unique
   ) %>%
-  # attach time-invariant features
+  # attach time-invariant features, broadcast to each time point
   bind_rows(
     tbl2_demo_expand %>%
       select(PATID,var,val) %>% unique %>%
@@ -271,7 +359,10 @@ dt<-
         var = "T_DAYS"
       )
   ) %>%
+  # filter out post-outcome data points
   anti_join(excld,by=c("PATID","T_DAYS")) %>%
+  # filter out time-zero
+  filter(T_DAYS > 0) %>%
   mutate(var2=paste0("v",dense_rank(var))) 
 
 saveRDS(

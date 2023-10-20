@@ -128,9 +128,25 @@ case_ctrl %>%
     paste0("./res/als_confirmed_by_index.pdf")
   )
 
+case_ctrl<-univar_analysis_mixed(
+  df = tbl2,
+  id_col ="PATID",
+  var_lst = var_lst2,
+  facvar_lst  = facvar_lst2,
+  grp = tbl2$fda,
+  pretty = T,
+  var_lbl_df=var_lbl_df
+)
+case_ctrl %>%
+  save_kable(
+    paste0("./res/als_confirmed_by_fda.pdf")
+  )
+
 # confirmed + crosswalk
 tbl3<-tbl2 %>%
-  filter(COMPLT_FLAG == 'complete')
+  filter(
+    COMPLT_FLAG == 'complete'
+  )
 
 var_lst3<-var_lst2[!var_lst2 %in% c(
   "COMPLT_FLAG"
@@ -177,4 +193,47 @@ case_ctrl<-univar_analysis_mixed(
 case_ctrl %>%
   save_kable(
     paste0("./res/als_complete_by_fda.pdf")
+  )
+
+case_ctrl<-univar_analysis_mixed(
+  df = tbl3,
+  id_col ="PATID",
+  var_lst = var_lst3,
+  facvar_lst  = facvar_lst3,
+  grp = tbl3$aot,
+  pretty = T,
+  var_lbl_df=var_lbl_df
+)
+case_ctrl %>%
+  save_kable(
+    paste0("./res/als_complete_by_aot.pdf")
+  )
+
+# confirmed + crosswalk + reliable time-zero
+tbl4<-tbl3 %>%
+  filter(
+    INDEX_EVENT %in% c('DX','MEDICARE')
+  )
+var_lst4<-var_lst3[!var_lst3 %in% c(
+  "INDEX_EVENT",
+  "RUCA_99",
+  "spirulina"
+)]
+facvar_lst4<-facvar_lst3[!facvar_lst3 %in% c(
+  "INDEX_EVENT",
+  "RUCA_99",
+  "spirulina"
+)]
+case_ctrl<-univar_analysis_mixed(
+  df = tbl4,
+  id_col ="PATID",
+  var_lst = var_lst4,
+  facvar_lst  = facvar_lst4,
+  grp = tbl4$fda,
+  pretty = T,
+  var_lbl_df=var_lbl_df
+)
+case_ctrl %>%
+  save_kable(
+    paste0("./res/als_complete_t0_by_fda.pdf")
   )

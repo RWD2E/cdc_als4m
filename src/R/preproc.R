@@ -130,31 +130,4 @@ tbl1_sdoh_endpt_pce_prvdr<-readRDS("./data/tbl1_cov_endpt_pce.rds") %>%
   inner_join(prvdr,by="PATID")
 saveRDS(tbl1_sdoh_endpt_pce_prvdr,file="./data/tbl1_sdoh_endpt_pce_prvdr.rds")
 
-##==== Data Dictionary =====
-phecd_dd<-readRDS("C:/repo/GPC-Analytics-ALS-Cohort/data/dd_phecode.rds")
-med_dd<-readRDS("C:/repo/GPC-Analytics-ALS-Cohort/data/dd_med.rds")
-acs_dd<-readRDS("C:/repo/GPC-Analytics-ALS-Cohort/data/dd_acs.rds")
-ccspx_dd<-readRDS("C:/repo/GPC-Analytics-ALS-Cohort/data/dd_ccspx.rds")
-var_lbl_df<-data.frame(
-  var=c(
-     paste0('PHECD_',phecd_dd$phecode)
-    ,paste0('SDH_',acs_dd$OBSCOMM_CODE)
-    ,med_dd$MED_CD
-    ,ccspx_dd$PX_GRPCD
-  ),
-  varx=c(
-     paste0('xxPHECD_',phecd_dd$phecode)
-    ,paste0('xxSDH_',acs_dd$OBSCOMM_CODE)
-    ,paste0('xx',med_dd$MED_CD)
-    ,paste0('xx',ccspx_dd$PX_GRPCD)
-  ),
-  var_lbl=c(
-     phecd_dd$phecode_string
-    ,acs_dd$RAW_OBSCOMM_NAME
-    ,med_dd$RAW_RX_MED_NAME
-    ,ccspx_dd$PX_GRP
-  ),
-  stringsAsFactors = F
-) %>%
-  filter(!grepl("\\.",var))
-saveRDS(var_lbl_df,file="./data/data_dict.rds")
+

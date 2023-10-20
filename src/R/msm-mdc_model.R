@@ -24,15 +24,26 @@ y_lst<-c(
   "TX_fda",
   "TX_gastrostomy",
   "TX_non-invasive-ventilator",
-  "TX_power-wheelchairs",
+  "TX_wheelchairs",
   "PRVDR_neurology",
   "PRVDR_nurse",
   "PRVDR_pain",
   "PRVDR_pcp",
   "PRVDR_psychiatry",
   "PRVDR_pt_ot",
-  "OC_death",
-  "OC_censor"
+  "PRVDR_cardiology",
+  "PRVDR_genetic",
+  "PRVDR_ent",
+  "PRVDR_dietition",
+  "PRVDR_intv-radiology",
+  "PRVDR_social",
+  "PRVDR_palliative",
+  "PRVDR_surgery",
+  "PRVDR_eye",
+  "PRVDR_respiratory",
+  "PRVDR_slp",
+  # "PRVDR_other",
+  "OC_death"
 )
 
 rslt_set<-list()
@@ -43,21 +54,45 @@ for(y_str in y_lst){
     mutate(PATID2 = PATID) %>%
     unite("PATID_T",c("PATID","T_DAYS"),sep="_") %>%
     arrange(PATID_T) %>% 
+    # collect y
     filter(var == y_str) %>%
     select(PATID2,PATID_T,val)
-
-  trainX<-trainY %>% select(PATID_T) %>% # ensure alignment
+  
+  # ensure alignment
+  trainX<-trainY %>% 
+    select(PATID_T) %>%
     inner_join(
       readRDS("./data/trainX_82.rda") %>% 
         unite("PATID_T",c("PATID","T_DAYS"),sep="_"),
       by="PATID_T",multiple = "all"
-    ) %>%
+    )
+  
+  # manual feature selection
+  if(grepl("^(OC)+",y_str)){
+    trainX %<>%
+      semi_join(
+        readRDS("./data/var_encoder.rda") %>%
+          filter(!grepl("^(CURR_)+",var)),
+        by="var2"
+      )
+  }else{
+    trainX %<>%
+      semi_join(
+        readRDS("./data/var_encoder.rda") %>%
+          filter(!grepl("^(PAST_)+",var)),
+        by="var2"
+      )
+  }
+  
+  # transform to sparse matrix
+  trainX %<>%
     long_to_sparse_matrix(
       .,
       id = "PATID_T",
       variable = "var2",
       value = "val"
     )
+  
   # for dropping due to lack of X
   trainY %<>% 
     inner_join(data.frame(PATID_T = row.names(trainX)),by="PATID_T")
@@ -84,7 +119,8 @@ for(y_str in y_lst){
     filter(var == y_str) %>%
     select(PATID_T,val)
   
-  testX<-testY %>% select(PATID_T) %>% # ensure alignment
+  # ensure alignment
+  testX<-testY %>% select(PATID_T) %>% 
     inner_join(
       readRDS("./data/testX_82.rda") %>% 
         unite("PATID_T",c("PATID","T_DAYS"),sep="_"),
@@ -96,6 +132,7 @@ for(y_str in y_lst){
       variable = "var2",
       value = "val"
     )
+  
   # for dropping due to lack of X
   testY %<>% 
     inner_join(data.frame(PATID_T = row.names(testX)),by="PATID_T")
@@ -109,7 +146,7 @@ for(y_str in y_lst){
   dtrain<-xgb.DMatrix(data = trainX,label = trainY$val)
   dtest<-xgb.DMatrix(data = testX,label = testY$val)
   
-  # rapid xgb
+  # rapid xgb - only tune the number of trees
   xgb_rslt<-prune_xgb(
     dtrain = dtrain,
     dtest = dtest,
@@ -130,14 +167,18 @@ for(y_str in y_lst){
   )
   
   # shap explainer
+  time_idx<-readRDS("./data/var_encoder.rda") %>%
+    filter(var=="T_DAYS") %>% select(var2) %>% unlist()
   explainer<-explain_model(
     X = trainX,
     y = trainY$val,
     xgb_rslt = xgb_rslt,
-    top_k = 30,
+    top_k = 50,
+    var_lst = y_lst[!grepl("^(OC)+",y_lst)],
     boots = 10,
     nns = 30,
-    shap_cond = "v842" # time index
+    shap_cond = time_idx, # time index
+    verb = FALSE
   )
   
   # result set
@@ -153,124 +194,4 @@ for(y_str in y_lst){
   cat("finish modeling for:",y_str,".\n")
 }
 
-pr<-c(
-  "PRVDR_neurology",
-  "PRVDR_nurse",
-  "PRVDR_pain",
-  "PRVDR_pcp",
-  "PRVDR_psychiatry",
-  "PRVDR_pt_ot"
-)
 
-dd<-readRDS("./data/data_dict.rds")
-
-rslt<-readRDS("./data/tvm_OC_death.rda")
-
-explainer<-rslt$explain_model %>%
-  rename(var2 = var) %>%
-  inner_join(readRDS("./data/var_encoder.rda"),by="var2") %>%
-  group_by(val,cond,var,var2) %>%
-  summarise(eff_m = median(effect,na.rm=T),
-            eff_l = quantile(effect,probs = 0.025,na.rm=T),
-            eff_u = quantile(effect,probs = 0.975,na.rm=T),
-            .groups = "drop") %>%
-  left_join(readRDS("./data/data_dict.rds"),by="var") %>%
-  mutate(exp_eff_m = exp(eff_m),
-         exp_eff_l = exp(eff_l),
-         exp_eff_u = exp(eff_u)) %>%
-  filter(var2 != 'v842') %>%
-  mutate(var_lbl = coalesce(var_lbl,var))
-
-ggplot(
-  explainer %>% 
-    filter(grepl("^(TX|PRvDR|RX)+",var)),
-  aes(x=cond,y=exp_eff_m,color = factor(val))
-) + 
-  geom_point()+
-  geom_smooth(method = 'loess',formula = 'y ~ x')+
-  geom_errorbar(aes(ymax = exp_eff_u,ymin = exp_eff_l))+
-  labs(x = "Days Since Index", y = "Hazard Ratio") +
-  theme(
-    legend.position = "none",
-    text = element_text(face="bold")
-  )+
-  facet_wrap(~ var_lbl,ncol=3,scales ="free")
-
-
-ggplot(
-  explainer %>% 
-    filter(!grepl("^(TX|PRvDR|RX|SDH|AGE|HISP)+",var)),
-  aes(x=cond,y=exp_eff_m,color = factor(val))
-) + 
-  geom_point()+
-  geom_smooth(method = 'loess',formula = 'y ~ x')+
-  geom_errorbar(aes(ymax = exp_eff_u,ymin = exp_eff_l))+
-  labs(x = "Days Since Index", y = "Hazard Ratio") +
-  theme(
-    legend.position = "none",
-    text = element_text(face="bold")
-  )+
-  facet_wrap(~ var_lbl,ncol=4,scales ="free")
-
-
-ggplot(
-  explainer %>% 
-    filter(grepl("^(SDH|HISP)+",var) & !grepl("^(SDH_ADI)+",var)),
-  aes(x=cond,y=exp_eff_m,color = factor(val))
-) + 
-  geom_point()+
-  geom_smooth(method = 'loess',formula = 'y ~ x')+
-  geom_errorbar(aes(ymax = exp_eff_u,ymin = exp_eff_l))+
-  labs(x = "Days Since Index", y = "Hazard Ratio") +
-  theme(
-    legend.position = "none",
-    text = element_text(face="bold")
-  )+
-  facet_wrap(~ var_lbl,ncol=3,scales ="free")
-
-
-ggplot(
-  explainer %>% 
-    filter(grepl("^(SDH_ADI)+",var) & grepl("(NAT)+",var) & cond > 0),
-  aes(x=val,y=exp_eff_m,color = val)
-) + 
-  geom_point()+
-  geom_smooth(method = 'loess',formula = 'y ~ x')+
-  geom_errorbar(aes(ymax = exp_eff_u,ymin = exp_eff_l))+
-  labs(x = "ADI|NATRANK", y = "Hazard Ratio") +
-  theme(
-    legend.position = "none",
-    text = element_text(face="bold")
-  )+
-  facet_wrap(~ cond,ncol=6,scales ="free")
-
-
-ggplot(
-  explainer %>% 
-    filter(grepl("^(SDH_ADI)+",var) & grepl("(STAT)+",var) & cond > 0),
-  aes(x=val,y=exp_eff_m,color = val)
-) + 
-  geom_point()+
-  geom_smooth(method = 'loess',formula = 'y ~ x')+
-  geom_errorbar(aes(ymax = exp_eff_u,ymin = exp_eff_l))+
-  labs(x = "ADI|STATERANK", y = "Hazard Ratio") +
-  theme(
-    legend.position = "none",
-    text = element_text(face="bold")
-  )+
-  facet_wrap(~ cond,ncol=6,scales ="free")
-
-ggplot(
-  explainer %>% 
-    filter(grepl("^(AGE)+",var) & cond > 0),
-  aes(x=val,y=exp_eff_m,color = val)
-) + 
-  geom_point()+
-  geom_smooth(method = 'loess',formula = 'y ~ x')+
-  geom_errorbar(aes(ymax = exp_eff_u,ymin = exp_eff_l))+
-  labs(x = "Age at Index", y = "Hazard Ratio") +
-  theme(
-    legend.position = "none",
-    text = element_text(face="bold")
-  )+
-  facet_wrap(~ cond,ncol=6,scales ="free")
