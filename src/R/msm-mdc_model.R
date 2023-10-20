@@ -24,7 +24,7 @@ y_lst<-c(
   "TX_fda",
   "TX_gastrostomy",
   "TX_non-invasive-ventilator",
-  "TX_wheelchairs",
+  "TX_wheelchair",
   "PRVDR_neurology",
   "PRVDR_nurse",
   "PRVDR_pain",

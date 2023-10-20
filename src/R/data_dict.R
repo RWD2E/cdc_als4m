@@ -24,67 +24,52 @@ sf_conn <- DBI::dbConnect(
 phecd_dd<-tbl(sf_conn,sql(
   "select distinct DX, DX_TYPE, PHECD_DXGRPCD, PHECD_DXGRP 
    from GROUSE_ANALYTICS_DB.SX_ALS_GPC.ALS_ALL_PHECD"
-)) %>% collect()
-# saveRDS(phecd_dd,file="./data/dd_phecode.rds")
+)) %>% collect() %>% unique()
+saveRDS(phecd_dd,file="./data/dd_phecode.rds")
+rm(phecd_dd); gc()
 
 px_ccs_dd<-tbl(sf_conn,sql(
-  "select distinct PX, PX_TYPE, PX_GRPCD, PX_GRP 
+  "select distinct PX, PX_TYPE, CCS_PXGRPCD, CCS_PXGRP 
    from GROUSE_ANALYTICS_DB.SX_ALS_GPC.ALS_ALL_PX_CCS"
-)) %>% collect()
-# saveRDS(px_ccs_dd,file="./data/dd_ccspx.rds")
+)) %>% collect() %>% unique()
+saveRDS(px_ccs_dd,file="./data/dd_ccspx.rds")
+rm(px_ccs_dd); gc()
 
 obs_dd<-tbl(sf_conn,sql(
   "select distinct OBS_CODE_TYPE, OBS_CODE, OBS_NAME, OBS_SRC
    from GROUSE_ANALYTICS_DB.SX_ALS_GPC.ALS_ALL_OBS
    where OBS_CODE is not null and trim(OBS_CODE) <> ''"
-)) %>% collect()
-# saveRDS(obs_dd,file="./data/dd_obs.rds")
+)) %>% collect() %>% unique()
+saveRDS(obs_dd,file="./data/dd_obs.rds")
+rm(obs_dd); gc()
 
-acs_dd<-readRDS("./data/als_sdoh.rds") %>% 
-  select(OBSCOMM_CODE,RAW_OBSCOMM_NAME) %>% 
-  unique()
-# saveRDS(acs_dd,file="./data/dd_ace.rds")
-
-var_lbl_df<-data.frame(
-  var=c(
-     paste0('PHECD_',phecd_dd$phecode)
-    ,paste0('SDH_',acs_dd$OBSCOMM_CODE)
-    ,paste0()
-    ,med_dd$MED_CD
-    ,ccspx_dd$PX_GRPCD
-  ),
-  var_lbl=c(
-    phecd_dd$phecode_string
-    ,acs_dd$RAW_OBSCOMM_NAME
-    ,med_dd$RAW_RX_MED_NAME
-    ,ccspx_dd$PX_GRP
-  ),
-  stringsAsFactors = F
-) %>%
-  filter(!grepl("\\.",var))
+sdh_dd<-tbl(sf_conn,sql(
+  "select distinct OBSCOMM_CODE, RAW_OBSCOMM_NAME
+   from GROUSE_ANALYTICS_DB.SX_ALS_GPC.ALS_ALL_SDOH"
+)) %>% collect() %>% unique()
+saveRDS(sdh_dd,file="./data/dd_sdh.rds")
+rm(acs_dd); gc()
 
 # disconnect
 DBI::dbDisconnect(sf_conn)
 
 #==== tabulate ====
-phecd_dd<-readRDS("C:/repo/GPC-Analytics-ALS-Cohort/data/dd_phecode.rds")
-med_dd<-readRDS("C:/repo/GPC-Analytics-ALS-Cohort/data/dd_med.rds")
-acs_dd<-readRDS("C:/repo/GPC-Analytics-ALS-Cohort/data/dd_acs.rds")
-ccspx_dd<-readRDS("C:/repo/GPC-Analytics-ALS-Cohort/data/dd_ccspx.rds")
+phecd_dd<-readRDS("./data/dd_phecode.rds")
+pxccs_dd<-readRDS("./data/dd_ccspx.rds")
+sdh_dd<-readRDS("./data/dd_sdh.rds")
 var_lbl_df<-data.frame(
   var=c(
-    paste0('PHECD_',phecd_dd$phecode)
-    ,paste0('SDH_',acs_dd$OBSCOMM_CODE)
-    ,med_dd$MED_CD
-    ,ccspx_dd$PX_GRPCD
+     paste0('PHECD_',phecd_dd$PHECD_DXGRPCD)
+    ,paste0('PAST_SDH_',sdh_dd$OBSCOMM_CODE)
+    ,paste0('CURR_SDH_',sdh_dd$OBSCOMM_CODE)
+    ,paste0('PXCCS_',pxccs_dd$CCS_PXGRPCD)
   ),
   var_lbl=c(
-    phecd_dd$phecode_string
-    ,acs_dd$RAW_OBSCOMM_NAME
-    ,med_dd$RAW_RX_MED_NAME
-    ,ccspx_dd$PX_GRP
+     phecd_dd$PHECD_DXGRP
+    ,sdh_dd$RAW_OBSCOMM_NAME
+    ,sdh_dd$RAW_OBSCOMM_NAME
+    ,pxccs_dd$CCS_PXGRP
   ),
   stringsAsFactors = F
-) %>%
-  filter(!grepl("\\.",var))
+) %>% unique()
 saveRDS(var_lbl_df,file="./data/data_dict.rds")
