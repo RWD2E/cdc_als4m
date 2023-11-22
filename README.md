@@ -2,13 +2,11 @@
 
 Funding agency: CDC/ATSDR <br/>
 Funding period: 10/2022 - 10/2025 <br/>
-M-PI: Xing Song (MU); Jeffery Statland (KUMC) <br/>
+PI: Xing Song (MU); Jeffery Statland (KUMC) <br/>
 CDC Site: https://www.cdc.gov/als/ALSExternalResearchfundedbyRegistry.html <br/>
 NIH rePORT: https://reporter.nih.gov/search/cMUGhJhRq0-5CwKGt8cNcQ/project-details/10610610 <br/>
 Project Number: R01TS000336 <br/>
-GROUSE Cohort: ALS <br/> 
-Data Access Type: GROUSE, CMS, EHR, Others <br/> 
-GPC DROC request: #111 <br/>
+DROC request: #111 <br/>
 
 # Study Overview
 
