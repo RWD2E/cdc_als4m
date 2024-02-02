@@ -406,12 +406,12 @@
 -- ;
 
 
-select * from FDA_MEDS_RXCUI;
-select * from FDA_MEDS_NDC;
-select * from AOT_MEDS_RXCUI;
-select * from AOT_MEDS_NDC;
-select * from RXCUI_REF;
-select * from NDC_REF; 
+select * from FDA_MEDS_RXCUI limit 5;
+select * from FDA_MEDS_NDC limit 5;
+select * from AOT_MEDS_RXCUI limit 5;
+select * from AOT_MEDS_NDC limit 5;
+select * from RXCUI_REF limit 5;
+select * from NDC_REF limit 5; 
 create or replace procedure get_rx_long(
     REF_COHORT string,
     SITES array,

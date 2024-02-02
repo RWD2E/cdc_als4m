@@ -1,0 +1,150 @@
+IN,RXCUI,NAME,TTY,MANUAL
+scopolamine ,9601,scopolamine,IN,#N/A
+scopolamine ,9603,scopolamine hydrobromide,PIN,#N/A
+scopolamine ,1806063,scopolamine Transdermal System [Transderm Scop],SBDF,#N/A
+scopolamine ,1179184,Transderm Scop Topical Product,SBDG,#N/A
+scopolamine ,1296025,Transderm Scop Transdermal Product,SBDG,#N/A
+scopolamine ,226552,72 HR scopolamine 0.0139 MG/HR Transdermal System,SCD,scopolamine 
+scopolamine ,353526,scopolamine 0.0139 MG/HR,SCDC,#N/A
+scopolamine ,1806049,scopolamine Transdermal System,SCDF,#N/A
+scopolamine ,1295698,scopolamine Transdermal Product,SCDG,#N/A
+glycopyrrolate,1546438,glycopyrronium,IN,#N/A
+glycopyrrolate,4955,glycopyrrolate,PIN,#N/A
+glycopyrrolate,102166,glycopyrrolate 2 MG Oral Tablet [Robinul],SBD,glycopyrrolate
+glycopyrrolate,1437975,glycopyrrolate 1.5 MG Oral Tablet [Glycate],SBD,#N/A
+glycopyrrolate,1992571,glycopyrrolate 0.025 MG/ML Inhalation Solution [Lonhala],SBD,#N/A
+glycopyrrolate,205886,glycopyrrolate 1 MG Oral Tablet [Robinul],SBD,#N/A
+glycopyrrolate,2371715,5 ML glycopyrrolate 0.2 MG/ML Prefilled Syringe [Glyrx],SBD,#N/A
+glycopyrrolate,2473384,3 ML glycopyrrolate 0.2 MG/ML Prefilled Syringe [Glyrx],SBD,#N/A
+glycopyrrolate,2589281,glycopyrrolate 1.7 MG Disintegrating Oral Tablet [Dartisla],SBD,#N/A
+glycopyrrolate,2668160,glycopyrrolate 0.85 MG Disintegrating Oral Tablet [Dartisla],SBD,#N/A
+glycopyrrolate,999965,glycopyrrolate 0.2 MG/ML Oral Solution [Cuvposa],SBD,#N/A
+glycopyrrolate,1437971,glycopyrrolate 1.5 MG [Glycate],SBDC,#N/A
+glycopyrrolate,1992568,glycopyrrolate 0.025 MG/ML [Lonhala],SBDC,#N/A
+glycopyrrolate,2371712,glycopyrrolate 0.2 MG/ML [Glyrx],SBDC,#N/A
+glycopyrrolate,2589276,glycopyrrolate 1.7 MG [Dartisla],SBDC,#N/A
+glycopyrrolate,2668159,glycopyrrolate 0.85 MG [Dartisla],SBDC,#N/A
+glycopyrrolate,562942,glycopyrrolate 2 MG [Robinul],SBDC,#N/A
+glycopyrrolate,566774,glycopyrrolate 1 MG [Robinul],SBDC,#N/A
+glycopyrrolate,999963,glycopyrrolate 0.2 MG/ML [Cuvposa],SBDC,#N/A
+glycopyrrolate,1437972,glycopyrronium Oral Tablet [Glycate],SBDF,#N/A
+glycopyrrolate,2108427,glycopyrronium Inhalation Solution [Lonhala],SBDF,#N/A
+glycopyrrolate,2371713,glycopyrronium Prefilled Syringe [Glyrx],SBDF,#N/A
+glycopyrrolate,2589280,glycopyrronium Disintegrating Oral Tablet [Dartisla],SBDF,#N/A
+glycopyrrolate,369371,glycopyrronium Oral Tablet [Robinul],SBDF,#N/A
+glycopyrrolate,999964,glycopyrronium Oral Solution [Cuvposa],SBDF,#N/A
+glycopyrrolate,1173728,Cuvposa Oral Product,SBDG,#N/A
+glycopyrrolate,1185941,Robinul Oral Product,SBDG,#N/A
+glycopyrrolate,1185942,Robinul Pill,SBDG,#N/A
+glycopyrrolate,1437973,Glycate Oral Product,SBDG,#N/A
+glycopyrrolate,1437974,Glycate Pill,SBDG,#N/A
+glycopyrrolate,1720952,Utibron Inhalant Product,SBDG,#N/A
+glycopyrrolate,1790643,Bevespi Inhalant Product,SBDG,#N/A
+glycopyrrolate,1992570,Lonhala Inhalant Product,SBDG,#N/A
+glycopyrrolate,2387324,Breztri Inhalant Product,SBDG,#N/A
+glycopyrrolate,2589277,Dartisla Oral Product,SBDG,#N/A
+glycopyrrolate,2589278,Dartisla Pill,SBDG,#N/A
+glycopyrrolate,2589279,Dartisla Disintegrating Oral Product,SBDG,#N/A
+glycopyrrolate,1247658,glycopyrrolate 1.5 MG Oral Tablet,SCD,#N/A
+glycopyrrolate,197738,glycopyrrolate 1 MG Oral Tablet,SCD,glycopyrrolate
+glycopyrrolate,197739,glycopyrrolate 2 MG Oral Tablet,SCD,glycopyrrolate
+glycopyrrolate,1992566,glycopyrrolate 0.025 MG/ML Inhalation Solution,SCD,#N/A
+glycopyrrolate,2101490,1 ML glycopyrrolate 0.2 MG/ML Prefilled Syringe,SCD,#N/A
+glycopyrrolate,2101495,2 ML glycopyrrolate 0.2 MG/ML Prefilled Syringe,SCD,#N/A
+glycopyrrolate,2371710,5 ML glycopyrrolate 0.2 MG/ML Prefilled Syringe,SCD,#N/A
+glycopyrrolate,2473383,3 ML glycopyrrolate 0.2 MG/ML Prefilled Syringe,SCD,#N/A
+glycopyrrolate,2589274,glycopyrrolate 1.7 MG Disintegrating Oral Tablet,SCD,#N/A
+glycopyrrolate,2668158,glycopyrrolate 0.85 MG Disintegrating Oral Tablet,SCD,#N/A
+glycopyrrolate,999961,glycopyrrolate 0.2 MG/ML Oral Solution,SCD,#N/A
+glycopyrrolate,1247657,glycopyrrolate 1.5 MG,SCDC,#N/A
+glycopyrrolate,1720941,glycopyrrolate 0.0156 MG,SCDC,#N/A
+glycopyrrolate,1790635,glycopyrrolate 0.009 MG/ACTUAT,SCDC,#N/A
+glycopyrrolate,1992564,glycopyrrolate 0.025 MG/ML,SCDC,#N/A
+glycopyrrolate,2589271,glycopyrrolate 1.7 MG,SCDC,#N/A
+glycopyrrolate,2668157,glycopyrrolate 0.85 MG,SCDC,#N/A
+glycopyrrolate,315999,glycopyrrolate 0.2 MG/ML,SCDC,#N/A
+glycopyrrolate,316000,glycopyrrolate 1 MG,SCDC,#N/A
+glycopyrrolate,316001,glycopyrrolate 2 MG,SCDC,#N/A
+glycopyrrolate,385548,glycopyrrolate 0.5 MG/ML,SCDC,#N/A
+glycopyrrolate,2101489,glycopyrronium Prefilled Syringe,SCDF,#N/A
+glycopyrrolate,2108425,glycopyrronium Inhalation Solution,SCDF,#N/A
+glycopyrrolate,2589273,glycopyrronium Disintegrating Oral Tablet,SCDF,#N/A
+glycopyrrolate,372340,glycopyrronium Oral Tablet,SCDF,#N/A
+glycopyrrolate,999960,glycopyrronium Oral Solution,SCDF,#N/A
+glycopyrrolate,2109867,glycopyrronium Inhalant Product,SCDG,#N/A
+glycopyrrolate,2109871,glycopyrronium Pill,SCDG,#N/A
+glycopyrrolate,2109873,glycopyrronium Oral Product,SCDG,#N/A
+glycopyrrolate,2589272,glycopyrronium Disintegrating Oral Product,SCDG,#N/A
+amitriptyline ,704,amitriptyline,IN,#N/A
+amitriptyline ,203168,amitriptyline hydrochloride,PIN,#N/A
+amitriptyline ,235737,amitriptyline pamoate,PIN,#N/A
+amitriptyline ,236734,amitriptyline oxide,PIN,#N/A
+amitriptyline ,856836,amitriptyline hydrochloride 25 MG Oral Tablet [Elavil],SBD,#N/A
+amitriptyline ,856835,amitriptyline hydrochloride 25 MG [Elavil],SBDC,#N/A
+amitriptyline ,92568,amitriptyline Oral Tablet [Elavil],SBDF,#N/A
+amitriptyline ,1173858,Elavil Oral Product,SBDG,#N/A
+amitriptyline ,1173859,Elavil Pill,SBDG,#N/A
+amitriptyline ,1177370,Limbitrol Oral Product,SBDG,#N/A
+amitriptyline ,1177371,Limbitrol Pill,SBDG,#N/A
+amitriptyline ,856762,amitriptyline hydrochloride 100 MG Oral Tablet,SCD,amitriptyline 
+amitriptyline ,856773,amitriptyline hydrochloride 150 MG Oral Tablet,SCD,amitriptyline 
+amitriptyline ,856783,amitriptyline hydrochloride 10 MG Oral Tablet,SCD,amitriptyline 
+amitriptyline ,856834,amitriptyline hydrochloride 25 MG Oral Tablet,SCD,amitriptyline 
+amitriptyline ,856845,amitriptyline hydrochloride 50 MG Oral Tablet,SCD,amitriptyline 
+amitriptyline ,856853,amitriptyline hydrochloride 75 MG Oral Tablet,SCD,amitriptyline 
+amitriptyline ,856862,amitriptyline hydrochloride 10 MG/ML Oral Solution,SCD,#N/A
+amitriptyline ,856865,amitriptyline hydrochloride 25 MG Extended Release Oral Capsule,SCD,#N/A
+amitriptyline ,856867,amitriptyline hydrochloride 5 MG/ML Oral Solution,SCD,#N/A
+amitriptyline ,856868,amitriptyline hydrochloride 50 MG Extended Release Oral Capsule,SCD,#N/A
+amitriptyline ,856705,amitriptyline hydrochloride 10 MG,SCDC,#N/A
+amitriptyline ,856761,amitriptyline hydrochloride 100 MG,SCDC,#N/A
+amitriptyline ,856768,amitriptyline hydrochloride 12.5 MG,SCDC,#N/A
+amitriptyline ,856772,amitriptyline hydrochloride 150 MG,SCDC,#N/A
+amitriptyline ,856791,amitriptyline hydrochloride 25 MG,SCDC,#N/A
+amitriptyline ,856839,amitriptyline hydrochloride 50 MG,SCDC,#N/A
+amitriptyline ,856852,amitriptyline hydrochloride 75 MG,SCDC,#N/A
+amitriptyline ,856858,amitriptyline hydrochloride 10 MG/ML,SCDC,#N/A
+amitriptyline ,856866,amitriptyline hydrochloride 5 MG/ML,SCDC,#N/A
+amitriptyline ,370570,amitriptyline Oral Tablet,SCDF,#N/A
+amitriptyline ,370863,amitriptyline Extended Release Oral Capsule,SCDF,#N/A
+amitriptyline ,370864,amitriptyline Oral Solution,SCDF,#N/A
+amitriptyline ,1152275,amitriptyline Oral Product,SCDG,#N/A
+amitriptyline ,1152276,amitriptyline Pill,SCDG,#N/A
+atropine ,1223,atropine,IN,#N/A
+atropine ,153971,atropine sulfate,PIN,#N/A
+atropine ,1190607,atropine sulfate 0.833 MG/ML [Atropen],SBDC,#N/A
+atropine ,1190610,atropine sulfate 0.714 MG/ML [Atropen],SBDC,#N/A
+atropine ,1190612,atropine sulfate 1.43 MG/ML [Atropen],SBDC,#N/A
+atropine ,1190619,atropine sulfate 2.86 MG/ML [Atropen],SBDC,#N/A
+atropine ,1190663,atropine sulfate 10 MG/ML [Isopto Atropine],SBDC,#N/A
+atropine ,1190546,10 ML atropine sulfate 0.1 MG/ML Prefilled Syringe,SCD,#N/A
+atropine ,1190551,5 ML atropine sulfate 0.05 MG/ML Prefilled Syringe,SCD,#N/A
+atropine ,1190552,5 ML atropine sulfate 0.1 MG/ML Prefilled Syringe,SCD,#N/A
+atropine ,1190554,5 ML atropine sulfate 0.2 MG/ML Prefilled Syringe,SCD,#N/A
+atropine ,1190556,5 ML atropine sulfate 0.4 MG/ML Prefilled Syringe,SCD,#N/A
+atropine ,1046784,atropine sulfate 0.00388 MG/ML,SCDC,#N/A
+atropine ,1116911,atropine sulfate 15 MG/ML,SCDC,#N/A
+atropine ,1145628,atropine sulfate 0.54 MG/ML,SCDC,#N/A
+atropine ,1190535,atropine sulfate 0.833 MG/ML,SCDC,#N/A
+atropine ,1190537,atropine sulfate 0.714 MG/ML,SCDC,#N/A
+atropine ,1190539,atropine sulfate 1.43 MG/ML,SCDC,#N/A
+atropine ,1190541,atropine sulfate 2.86 MG/ML,SCDC,#N/A
+atropine ,1190545,atropine sulfate 0.1 MG/ML,SCDC,#N/A
+atropine ,1190547,atropine sulfate 0.3 MG/ML,SCDC,#N/A
+atropine ,1190550,atropine sulfate 0.05 MG/ML,SCDC,#N/A
+atropine ,1190553,atropine sulfate 0.2 MG/ML,SCDC,#N/A
+atropine ,1190555,atropine sulfate 0.4 MG/ML,SCDC,#N/A
+atropine ,1190562,atropine sulfate 0.005 MG/MG,SCDC,#N/A
+atropine ,1190566,atropine sulfate 0.005 MG/ML,SCDC,#N/A
+atropine ,1190569,atropine sulfate 0.01 MG/MG,SCDC,#N/A
+atropine ,1190654,atropine sulfate 10 MG/ML,SCDC,#N/A
+atropine ,1190667,atropine sulfate 5 MG/ML,SCDC,#N/A
+atropine ,1190746,atropine sulfate 0.14 MG/ML,SCDC,#N/A
+atropine ,1190765,atropine sulfate 0.31 MG/ML,SCDC,#N/A
+atropine ,1190784,atropine sulfate 0.6 MG/ML,SCDC,#N/A
+atropine ,1190789,atropine sulfate 0.62 MG/ML,SCDC,#N/A
+atropine ,1190794,atropine sulfate 1 MG/ML,SCDC,#N/A
+atropine ,1190799,atropine sulfate 1.25 MG/ML,SCDC,#N/A
+atropine ,1190805,atropine sulfate 2.5 MG/ML,SCDC,#N/A
+atropine ,1190816,atropine sulfate 20 MG/ML,SCDC,#N/A
+atropine ,727389,atropine Prefilled Syringe,SCDF,#N/A

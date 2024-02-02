@@ -5,6 +5,12 @@
 # Description: multifactorial computable phenotype for identifying ALS patients (CDC alg)
 # Dependency: pat-demo-master.sql, PAT_TABLE1
 */
+
+use role GROUSE_ROLE_C_ANALYTICS;
+use warehouse GROUSE_WH;
+use database GROUSE_DEID_ANALYTICS_DB; -- write-premitted database
+use schema SX_ALS_GPC;
+
 create or replace table FDA_MEDS_RXCUI as 
 select distinct     
        STR

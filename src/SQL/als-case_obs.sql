@@ -145,11 +145,11 @@ for(i=0; i<SITES.length; i++){
                      on a.patid = b.patid
               left join ONTOLOGY.LOINC.LOINC_V2_17 c
                      on b.obsclin_code = c.loinc_num and b.obsclin_type = 'LC'
-              where obsclin_result_num is not null
+              where b.obsclin_result_num is not null
                  or (
-                     coalesce(trim(b.obsclin_result_qual),trim(a.obsclin_result_text)) is not null 
-                     and coalesce(trim(b.obsclin_result_qual),trim(a.obsclin_result_text)) <> '' 
-                     and coalesce(trim(b.obsclin_result_qual),trim(a.obsclin_result_text)) not in ('UN','NI','OT')
+                     coalesce(trim(b.obsclin_result_qual),trim(b.obsclin_result_text)) is not null 
+                     and coalesce(trim(b.obsclin_result_qual),trim(b.obsclin_result_text)) <> '' 
+                     and coalesce(trim(b.obsclin_result_qual),trim(b.obsclin_result_text)) not in ('UN','NI','OT')
                     )
               ;
 

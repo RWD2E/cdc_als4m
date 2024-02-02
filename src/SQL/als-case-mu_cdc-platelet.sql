@@ -1,9 +1,8 @@
 /*
 # Copyright (c) 2021-2025 University of Missouri                   
 # Author: Xing Song, xsm7f@umsystem.edu                            
-# File: als-case_dx-alg.sql
-# Description: simple dx-based computable phenotype for identifying ALS patients, 
-#              2-year washup period
+# File: als-case-mu_cdc-platelet.sql
+# Description: collecting different variations of platelet profile for ALS patients 
 */
 
 /****************************************************************************************************************/
