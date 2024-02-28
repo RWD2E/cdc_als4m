@@ -224,4 +224,34 @@ select count(distinct patid), count(distinct ccs_pxgrpcd), count(*) from ALS_ALL
 
 select * from ALS_ALL_PX_CCS;
 
+select ccs_pxgrpcd, count(distinct patid) from ALS_ALL_PX_CCS
+group by ccs_pxgrpcd
+order by ccs_pxgrpcd;
+
 select * from ALS_ALL_PX_CCS limit 5;
+
+create or replace table ALS_SEL_PX_MDC as 
+select distinct 
+       PATID,
+       '99999' as CCS_PXGRPCD,
+       'possible mdc care' as CCS_PXGRP,
+       PX_DATE,
+       DAYS_SINCE_INDEX
+from ALS_ALL_PX a  
+where a.PX in (
+       -- als multidisciplinary care updated or planned
+       '0580F','H2000',
+       -- interdisciplinary care
+       '99366','99367','99368',
+       -- complex chronic care coordination
+       '99487','99488','99489',
+       -- prolonged services
+       '99354','99355'
+)
+;
+select * from ALS_SEL_PX_MDC;
+select count(distinct patid), count(*) from ALS_SEL_PX_MDC;
+
+insert into ALS_ALL_PX_CCS(patid, ccs_pxgrpcd, ccs_pxgrp, px_date, days_since_index)
+select * from ALS_SEL_PX_MDC
+;
