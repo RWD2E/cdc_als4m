@@ -29,9 +29,11 @@ sdoh_ruca<-readRDS("./data/als_sdoh.rds") %>%
   mutate(RUCA = OBSCOMM_RESULT_TEXT) %>%
   select(PATID,RUCA) %>%
   {. ->> sdoh_ruca_temp} %>% # save intermediate table which can be called later
-  bind_rows(tbl1 %>% select(PATID) %>%
-              anti_join(sdoh_ruca_temp,by="PATID") %>%
-              mutate(RUCA = "0")) %>%
+  bind_rows(
+    tbl1 %>% select(PATID) %>%
+      anti_join(sdoh_ruca_temp,by="PATID") %>%
+      mutate(RUCA = "0")
+  ) %>%
   mutate(RUCA_col = paste0("RUCA_",RUCA),
          ind=1) %>%
   select(PATID,RUCA,RUCA_col,ind) %>%
@@ -112,8 +114,10 @@ fda<-readRDS("./data/als_fda_rx.rds") %>%
   replace(is.na(.),0)
 
 aot<-readRDS("./data/als_aot_rx.rds") %>%
-  right_join(readRDS("./data/tbl1_cov_endpt.rds") %>% 
-               select(PATID),by="PATID") %>%
+  right_join(
+    readRDS("./data/tbl1_cov_endpt.rds") %>% 
+      select(PATID),by="PATID"
+  ) %>%
   replace(is.na(.),0)
 
 tbl1_sdoh_endpt_pce<-readRDS("./data/tbl1_cov_endpt.rds") %>%
@@ -126,8 +130,48 @@ prvdr<-readRDS("./data/als_mdc_prvdr.rds") %>%
   right_join(readRDS("./data/tbl1_cov_endpt.rds") %>% 
                select(PATID),by="PATID") %>%
   replace(is.na(.),0)
+
+cnt_spec<-function(v){
+  return(
+    ifelse(
+      any(grepl('neurolog',v)),
+      length(unique(v[!v %in% c('neurology','pcp')])),
+      0
+  ))
+}
+prvdrgrp<-prvdr %>%
+  pivot_longer(
+    cols = !PATID,
+    names_to = "prvdr",
+    values_to = "ind"
+  ) %>%
+  filter(ind==1) %>%
+  group_by(PATID) %>%
+  summarise(prvdr_spec_cnt = cnt_spec(prvdr),.groups = 'drop') %>% 
+  mutate(
+    PRVDR_w_1up = as.numeric(prvdr_spec_cnt>=1),
+    PRVDR_w_2up = as.numeric(prvdr_spec_cnt>=2),
+    PRVDR_w_3up = as.numeric(prvdr_spec_cnt>=3),
+    PRVDR_w_4up = as.numeric(prvdr_spec_cnt>=4),
+    PRVDR_w_5up = as.numeric(prvdr_spec_cnt>=5),
+    PRVDR_w_6up = as.numeric(prvdr_spec_cnt>=6),
+    PRVDR_w_7up = as.numeric(prvdr_spec_cnt>=7),
+    PRVDR_w_8up = as.numeric(prvdr_spec_cnt>=8)
+  ) %>%
+  right_join(readRDS("./data/tbl1_cov_endpt.rds") %>% 
+               select(PATID),by="PATID") %>%
+  replace(is.na(.),0)
+
+mdc<-readRDS("./data/als_mdc_px.rds") %>%
+  right_join(readRDS("./data/tbl1_cov_endpt.rds") %>% 
+               select(PATID),by="PATID") %>%
+  replace(is.na(.),0)
+
 tbl1_sdoh_endpt_pce_prvdr<-readRDS("./data/tbl1_cov_endpt_pce.rds") %>%
-  inner_join(prvdr,by="PATID")
+  inner_join(prvdr,by="PATID") %>%
+  inner_join(prvdrgrp,by="PATID") %>%
+  inner_join(mdc,by="PATID")
+
 saveRDS(tbl1_sdoh_endpt_pce_prvdr,file="./data/tbl1_sdoh_endpt_pce_prvdr.rds")
 
 

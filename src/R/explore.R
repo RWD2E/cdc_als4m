@@ -21,6 +21,7 @@ tbl1<-readRDS("C:/repo/cdc_als4m/data/tbl1_sdoh_endpt_pce_prvdr.rds") %>%
   ) %>%
   filter(time_death_censor > 0) 
 
+## any possible ALS patient (confirmed, likely)
 var_lst<-colnames(tbl1)[
   !colnames(tbl1) %in% c(
     "PATID",
@@ -39,8 +40,7 @@ numvar_lst<-var_lst[
   grepl("^(time)+",var_lst)
 ]
 facvar_lst<-var_lst[!var_lst %in% numvar_lst]
-var_lbl_df<-readRDS("./data/data_dict.rds") %>%
-  select(-varx)
+var_lbl_df<-readRDS("./data/data_dict.rds")
 
 case_ctrl<-univar_analysis_mixed(
   df = tbl1,
@@ -77,7 +77,7 @@ case_ctrl %>%
     paste0("./res/als_all_by_assert.pdf")
   )
 
-# confirmed
+##-- confirmed ALS cases
 tbl2<-tbl1 %>% 
   filter(
     CASE_ASSERT == "confirmed"
@@ -142,7 +142,35 @@ case_ctrl %>%
     paste0("./res/als_confirmed_by_fda.pdf")
   )
 
-# confirmed + crosswalk
+case_ctrl<-univar_analysis_mixed(
+  df = tbl2,
+  id_col ="PATID",
+  var_lst = var_lst2,
+  facvar_lst  = facvar_lst2,
+  grp = tbl2$MDC,
+  pretty = T,
+  var_lbl_df=var_lbl_df
+)
+case_ctrl %>%
+  save_kable(
+    paste0("./res/als_confirmed_by_mdc.pdf")
+  )
+
+case_ctrl<-univar_analysis_mixed(
+  df = tbl2,
+  id_col ="PATID",
+  var_lst = var_lst2,
+  facvar_lst  = facvar_lst2,
+  grp = tbl2$PRVDR_w_4up,
+  pretty = T,
+  var_lbl_df=var_lbl_df
+)
+case_ctrl %>%
+  save_kable(
+    paste0("./res/als_confirmed_by_team4up.pdf")
+  )
+
+##-- confirmed ALS cases with complete data (EHR+CMS)
 tbl3<-tbl2 %>%
   filter(
     COMPLT_FLAG == 'complete'
@@ -209,31 +237,30 @@ case_ctrl %>%
     paste0("./res/als_complete_by_aot.pdf")
   )
 
-# confirmed + crosswalk + reliable time-zero
-tbl4<-tbl3 %>%
-  filter(
-    INDEX_EVENT %in% c('DX','MEDICARE')
-  )
-var_lst4<-var_lst3[!var_lst3 %in% c(
-  "INDEX_EVENT",
-  "RUCA_99",
-  "spirulina"
-)]
-facvar_lst4<-facvar_lst3[!facvar_lst3 %in% c(
-  "INDEX_EVENT",
-  "RUCA_99",
-  "spirulina"
-)]
 case_ctrl<-univar_analysis_mixed(
-  df = tbl4,
+  df = tbl3,
   id_col ="PATID",
-  var_lst = var_lst4,
-  facvar_lst  = facvar_lst4,
-  grp = tbl4$fda,
+  var_lst = var_lst3,
+  facvar_lst  = facvar_lst3,
+  grp = tbl3$MDC,
   pretty = T,
   var_lbl_df=var_lbl_df
 )
 case_ctrl %>%
   save_kable(
-    paste0("./res/als_complete_t0_by_fda.pdf")
+    paste0("./res/als_complete_by_mdc.pdf")
+  )
+
+case_ctrl<-univar_analysis_mixed(
+  df = tbl3,
+  id_col ="PATID",
+  var_lst = var_lst3,
+  facvar_lst  = facvar_lst3,
+  grp = tbl3$PRVDR_w_4up,
+  pretty = T,
+  var_lbl_df=var_lbl_df
+)
+case_ctrl %>%
+  save_kable(
+    paste0("./res/als_complete_by_team4up.pdf")
   )

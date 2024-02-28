@@ -67,6 +67,15 @@ dat<-tbl(sf_conn,
   replace(is.na(.), 0)
 saveRDS(dat,file="./data/als_mdc_prvdr.rds")
 
+# collect provider specialty
+dat<-tbl(sf_conn,
+         sql("select distinct PATID, 'MDC' AS MDC_PX_IND from SX_ALS_GPC.ALS_SEL_PX_MDC")) %>% 
+  collect() %>%
+  mutate(ind = 1) %>%
+  spread(MDC_PX_IND, ind) %>%
+  replace(is.na(.), 0)
+saveRDS(dat,file="./data/als_mdc_px.rds")
+
 #==== ALS time-varying dataset ====
 deltat<-60
 t_seq<-seq(0,5*365.25,by=deltat)
@@ -162,7 +171,7 @@ for(i in 1:k){
         ))
       ) %>% collect()
     
-    }else if(tbl_part_map$part_col[i] %in% c("FDA_AOT","SPECIALTY_GROUP","OBSCOMM_CODE")){
+    }else if(tbl_part_map$part_col[i] %in% c("FDA_AOT","SPECIALTY_GROUP","CCS_PXGRPCD")){
       # no carry-over
       dat_t<-tbl(
         sf_conn,
