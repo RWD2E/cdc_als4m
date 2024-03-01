@@ -650,6 +650,8 @@ from ALS_ALL_RX_IN
 where FDA_AOT = 'aot'
 group by INGREDIENT;
 
-select INGREDIENT,count(distinct patid), count(distinct INGREDIENT), count(*) 
+select INGREDIENT,count(distinct patid)
 from ALS_ALL_RX_IN
-group by INGREDIENT;
+group by INGREDIENT
+order by count(distinct patid) desc
+;

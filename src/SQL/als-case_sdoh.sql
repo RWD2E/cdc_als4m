@@ -83,16 +83,9 @@ on a.patid = b.patid
 where b.enr_basis = 'D'
 ;
 
-select count(distinct patid) 
+select count(distinct patid), count(distinct obscomm_result_text) 
 from ALS_ALL_SDOH;
 -- 10,567
-
-select obscomm_result_text, count(distinct patid)
-from ALS_ALL_SDOH
-where obscomm_code like 'RUCA%'
-group by obscomm_result_text
-order by obscomm_result_text
-;
 
 select * from ALS_ALL_SDOH limit 5;
 

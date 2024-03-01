@@ -369,6 +369,10 @@ from ALS_SEL_OBS_BMI
 where dedup_idx = 1
 ;
 
+select count(distinct obs_name), count(distinct patid) 
+from ALS_SEL_OBS
+;
+
 select obs_name, count(distinct patid) 
 from ALS_SEL_OBS
 group by obs_name;

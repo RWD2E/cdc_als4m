@@ -58,6 +58,9 @@ from ALS_PX_PRVDR
 group by SPECIALTY_GROUP
 order by count(distinct patid) desc;
 
+select count(distinct SPECIALTY_GROUP), count(distinct patid)
+from ALS_PX_PRVDR
+;
 
 create or replace table ALS_OFFICE_PRVDR as
 select PATID,
