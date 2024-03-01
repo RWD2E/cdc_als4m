@@ -222,7 +222,7 @@ sel_prvdr<-c(
   "PRVDR_respiratory",
   "PRVDR_palliative",
   "PRVDR_cardiology",
-  "PRVDR_intv-radiology",
+  # "PRVDR_intv-radiology",
   "PRVDR_slp"
 )
 
@@ -241,7 +241,7 @@ ggplot(
     legend.position = "none",
     text = element_text(face="bold",size=15)
   )+
-  facet_wrap(~ var,ncol=8,scales ="free")
+  facet_wrap(~ var,ncol=7,scales ="free")
 
 # save figure
 ggsave(
@@ -257,7 +257,7 @@ ggsave(
 sel_tx<-c(
   "TX_fda",
   "TX_aot",
-  "TX_gastrostomy",
+  # "TX_gastrostomy",
   "TX_non-invasive-ventilator",
   "TX_wheelchair"
 )
@@ -276,14 +276,14 @@ ggplot(
     legend.position = "none",
     text = element_text(face="bold",size=15)
   )+
-  facet_wrap(~ var,ncol=3,scales ="free")
+  facet_wrap(~ var,ncol=2,scales ="free")
 
 # save figure
 ggsave(
   "./res/soc_tv_ate.png",
   dpi = 250,
-  width = 10, 
-  height = 8, 
+  width = 8, 
+  height = 6, 
   units = "in",
   device = "png"
 )

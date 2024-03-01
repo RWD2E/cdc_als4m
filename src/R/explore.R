@@ -214,6 +214,20 @@ case_ctrl<-univar_analysis_mixed(
   id_col ="PATID",
   var_lst = var_lst3,
   facvar_lst  = facvar_lst3,
+  grp = tbl3$neurology,
+  pretty = T,
+  var_lbl_df=var_lbl_df
+)
+case_ctrl %>%
+  save_kable(
+    paste0("./res/als_complete_by_neurology.pdf")
+  )
+
+case_ctrl<-univar_analysis_mixed(
+  df = tbl3,
+  id_col ="PATID",
+  var_lst = var_lst3,
+  facvar_lst  = facvar_lst3,
   grp = tbl3$fda,
   pretty = T,
   var_lbl_df=var_lbl_df
