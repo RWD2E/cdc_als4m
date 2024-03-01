@@ -228,18 +228,18 @@ dt<-data.frame(
       select(PATID,var,val,T_DAYS) %>% unique
   ) %>%
   #-- procedures
-  bind_rows(
-    readRDS("./data/als_all_px_ccs_ccs_pxgrpcd_60.rda") %>%
-      inner_join(
-        tbl2 %>% select(PATID,time_death_censor),
-        by="PATID"
-      ) %>%
-      filter(T_DAYS < time_death_censor) %>%
-      mutate(val = 1) %>%
-      rename(var = CCS_PXGRPCD) %>%
-      mutate(var = paste0("PXCCS_",var)) %>%
-      select(PATID,var,val,T_DAYS) %>% unique
-  ) %>%
+  # bind_rows(
+  #   readRDS("./data/als_all_px_ccs_ccs_pxgrpcd_60.rda") %>%
+  #     inner_join(
+  #       tbl2 %>% select(PATID,time_death_censor),
+  #       by="PATID"
+  #     ) %>%
+  #     filter(T_DAYS < time_death_censor) %>%
+  #     mutate(val = 1) %>%
+  #     rename(var = CCS_PXGRPCD) %>%
+  #     mutate(var = paste0("PXCCS_",var)) %>%
+  #     select(PATID,var,val,T_DAYS) %>% unique
+  # ) %>%
   #-- sdoh
   bind_rows(
     readRDS("./data/als_sel_sdoh_obscomm_code_60.rda") %>%

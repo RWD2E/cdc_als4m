@@ -24,12 +24,14 @@ var_encoder<-readRDS("./data/var_encoder.rda") %>%
 
 ##===== unadjusted model ====
 # outcomes of interests
-y_lst<-c(
+y_lst_tx<-c(
   "TX_aot",
   "TX_fda",
   "TX_gastrostomy",
   "TX_non-invasive-ventilator",
-  "TX_wheelchair",
+  "TX_wheelchair"
+)
+y_lst_prvdr<-c(
   "PRVDR_mdc",
   "PRVDR_NEURO_w4up",
   "PRVDR_psychiatry",
@@ -42,7 +44,7 @@ y_lst<-c(
   "PRVDR_ent",
   "PRVDR_ot",
   "PRVDR_social",
-  "PRVDR_genetic",
+  # "PRVDR_genetic", -- <1%
   "PRVDR_pain",  
   "PRVDR_dietition", 
   "PRVDR_nurse",
@@ -51,8 +53,13 @@ y_lst<-c(
   "PRVDR_palliative",
   "PRVDR_cardiology",
   "PRVDR_intv-radiology",
-  "PRVDR_slp",
+  "PRVDR_slp"
+)
+y_lst_oc<-c(
   "OC_death"
+)
+y_lst<-c(
+  y_lst_tx,y_lst_prvdr,y_lst_oc
 )
 
 for(y_str in y_lst){
@@ -78,11 +85,20 @@ for(y_str in y_lst){
       )
     
     # manual feature selection
-    if(grepl("^(OC)+",y_str)){
+    if(y_str %in% y_lst_oc){
+      #-- remove reverse cause
       trainX %<>%
         semi_join(
           var_encoder %>%
             filter(!grepl("^(CURR_)+",var)),
+          by="var2"
+        )
+    }else if(y_str %in% y_lst_prvdr){
+      #-- remove reverse cause
+      trainX %<>%
+        semi_join(
+          var_encoder %>%
+            filter(!grepl("^(PAST_)+",var)&!(var %in% y_lst_tx)),
           by="var2"
         )
     }else{

@@ -62,21 +62,6 @@ trainX %<>%
 trainY %<>% 
   inner_join(data.frame(PATID_T = row.names(trainX)),by="PATID_T")
 
-# customize folds (so same patient remain in the same fold)
-folds<-list()
-for(fold in 1:5){
-  fold_lst<-readRDS("./data/part_idx.rda") %>%
-    filter(hdout82==0&cv5==fold) %>%
-    select(PATID) %>%
-    left_join(
-      trainY %>% 
-        select(PATID2) %>% rowid_to_column(),
-      by = c("PATID" = "PATID2"),multiple = "all"
-    ) %>%
-    select(rowid)
-  folds[[fold]]<-fold_lst$rowid
-}
-
 # load testing data
 testY<-readRDS("./data/testY_82.rda") %>%
   unite("PATID_T",c("PATID","T_DAYS"),sep="_") %>%
@@ -107,6 +92,21 @@ shared<-colnames(trainX)[colnames(trainX) %in% colnames(testX)]
 trainX<-trainX[,shared]
 testX<-testX[,shared]
 
+# customize folds (so same patient remain in the same fold)
+folds<-list()
+for(fold in 1:5){
+  fold_lst<-readRDS("./data/part_idx.rda") %>%
+    filter(hdout82==0&cv5==fold) %>%
+    select(PATID) %>%
+    left_join(
+      trainY %>% 
+        select(PATID2) %>% rowid_to_column(),
+      by = c("PATID" = "PATID2"),multiple = "all"
+    ) %>%
+    select(rowid)
+  folds[[fold]]<-fold_lst$rowid
+}
+
 # generate iptw
 ps_comm<-c(
   "TX_fda",
@@ -128,7 +128,7 @@ ps_tgt<-c(
   "PRVDR_ent",
   "PRVDR_ot",
   "PRVDR_social", 
-  "PRVDR_genetic", 
+  # "PRVDR_genetic", 
   "PRVDR_pain",
   "PRVDR_dietition",
   "PRVDR_nurse",
@@ -141,9 +141,9 @@ ps_tgt<-c(
 )
 
 for(ps in c(ps_comm,ps_tgt)){
-  path_to_file<-file.path("./data/iptw",paste0("tvm_OC_death_",y_str,".rda"))
+  # ps<-ps_tgt[1] # uncomment for testing
+  path_to_file<-file.path("./data/iptw",paste0("tvm_OC_death_",ps,".rda"))
   if(!file.exists(path_to_file)){
-    # ps<-ps_tgt[1]
     # calculate iptw
     wt_long<-c()
     for(y_ps in c(ps)){
@@ -178,7 +178,6 @@ for(ps in c(ps_comm,ps_tgt)){
       wt_long = wt_long, 
       id_col = 'PATID', 
       time_col = 'T_DAYS', 
-      tgt_col = 'tgt', 
       wt_den_col = 'wt_den',
       wt_num_col = 'wt_num',
       ot_cols = c(),
@@ -342,21 +341,20 @@ for(ps in c(ps_comm,ps_tgt)){
     )
     
     # non-par formula of IPW
-    ps_idx<-var_encoder %>% 
-      filter(var==ps) %>% select(var2) %>% unlist()
+    ps_idx<-var_encoder %>% filter(var==ps) %>% select(var2) %>% unlist()
     intx<-testX[,ps_idx]
     #intervene with 1
     testX[,ps_idx]<-1
     dtest<-xgb.DMatrix(data = testX,label = testY$val)
-    y1_cf<-predict(xgb_tune,dtest)
+    y1_cf<-predict(xgb_rslt$model,dtest)
     #intervene with 0
     testX[,ps_idx]<-0
     dtest<-xgb.DMatrix(data = testX,label = testY$val)
-    y0_cf<-predict(xgb_tune,dtest)
+    y0_cf<-predict(xgb_rslt$model,dtest)
     ite_df<-data.frame(
-      PATID_T = attr(dtrain,''),
+      PATID_T = row.names(testX),
       intx = intx,
-      ps = getinfo(dtest,'weight'),
+      ps = iptw_align$iptw,
       y = testY$val,
       y1_cf = y1_cf,
       y0_cf = y0_cf
@@ -367,7 +365,7 @@ for(ps in c(ps_comm,ps_tgt)){
         ITE = y1_cf - y0_cf, #ipw
         ITE_aug = (y1_cf - y0_cf)+intx*(y-y1_cf)+(1-intx)*(y-y0_cf) #aipw
       )
-    
+
     # result set
     rslt_set<-list(
       fit_model = xgb_rslt,

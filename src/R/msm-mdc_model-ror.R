@@ -159,14 +159,14 @@ for(ps in c(ps_comm,ps_tgt)){
           select(PATID_T,iptw,actual),
         by="PATID_T") %>%
       mutate(
-        h = actual*iptw - (1-actual)/(1-1/iptw),
-        offset = log(pred/(1-pred))
+        res_ps = actual - 1/,
+        res_oc = val - pred
       )
     
     fit_logit<-function(df){
-      glm(val ~ h,offset=offset,family="binomial",data=df)
+      glm(val ~ res_ps + pred,offset=offset,family="binomial",data=df)
     }
-    fit_str_logit<-all_df %>%
+    fit_str<-all_df %>%
       select(T_DAYS,val,h,offset) %>%
       group_by(T_DAYS) %>%
       nest() %>%
@@ -191,12 +191,12 @@ for(ps in c(ps_comm,ps_tgt)){
         h = actual/iptw - (1-actual)/(1-iptw),
         offset = log(pred/(1-pred))
       ) %>%
-      left_join(fit_str_logit,by="T_DAYS") %>%
+      left_join(fit_tr,by="T_DAYS") %>%
       mutate(
         logit_ystar = offset + b0 + b1*h,
         ystar = exp(logit_ystar)/(1+exp(logit_ystar))
       ) 
-     
+    
     # fit <- glmer(
     #   val ~ (1+h|PATID),
     #   family = binomial,
