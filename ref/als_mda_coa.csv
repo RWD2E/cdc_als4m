@@ -1,365 +1,365 @@
-"idx","provider_name","center_type","phone","address_1","address_2","address_3"
-1,"university of miami als center","certified treatment center of excellence","18006902571","1150 nw 14th st.","ste. 609","miami; fl 33136"
-2,"georgetown university","mda care center","2024441774","3800 reservoir road nw",NA,"washington; dc 20007"
-3,"georgetown university als clinic","affiliated clinic","2024448525","pascquerilla healthcare center (phc); 7th floor","3800 reservoir road; nw","washington; dc 20007"
-4,"children's national medical center","mda care center","2024763094","111 michigan avenue nw",NA,"washington; dc 20010"
-5,"the john j. kelly als clinic","certified treatment center of excellence","2027412700","2150 pennsylvania ave. nw","7-401","washington; dc 20037"
-6,"yale new haven children’s hospital","mda care center","2037854081","1 long wharf drive","2nd floor","new haven; ct 06511"
-7,"yale medicine center for musculoskeletal care","affiliated clinic","2038634490","15 valley drive","suite 201","greenwich; ct 06831"
-8,"va connecticut interdisciplinary als clinic","certified treatment center of excellence","2039325711","950 campbell ave.",NA,"west haven; ct 06516"
-9,"the children's hospital of uab","mda care center","2056389941","1600 7th avenue south",NA,"birmingham; al 35233"
-10,"alabama neurology associates","recognized treatment center","2058032210","3105 independence drive suite 105",NA,"birmingham; al 35209"
-11,"the university of alabama at birmingham- kirklin clinic","mda care center","2059342120","1720 7th avenue south","suite 240","birmingham; al 35233"
-12,"als association certified center of excellence at swedish","certified treatment center of excellence","2063203494","500 17th ave.",NA,"seattle; wa 98122"
-13,"als association certified center of excellence at virginia mason","certified treatment center of excellence","2063411900","1100 ninth ave.",NA,"seattle; wa 98101"
-14,"uw neurology clinic","affiliated clinic","2065987688","1959 ne pacific st.",NA,"seattle; wa 98195"
-15,"als association certified center of excellence at va puget sound health care system","certified treatment center of excellence","2067165756","1660 s columbian way","s-rcs-117","seattle; wa 98108"
-16,"seattle children's hospital","mda care center","2069872114","4800 sand point way ne","ocean entrance 8th floor","seattle; wa 98105"
-17,"mid coast hospital als clinic","affiliated clinic","2073736099","329 bath rd.","suite 3a","brunswick; me 04011"
-18,"maine medical partners","mda care center","2078831414","92 campus drive","2nd floor","scarborough; me 04074"
-19,"northern light eastern maine medical center","mda clinic","2079736588","905 union street","suite 9","bangor; me 04401"
-20,"le bois neurology","affiliated clinic","2083436200","3875 e. overland road suite 201",NA,"meridian; id 83642"
-21,"st. luke's children's hospital","mda care center","2083816900","100 e. idaho street","suite 200","boise; id 83712"
-22,"st. luke’s rehabilitation hospital- als care center","mda care center","2083819375","600 n. robbins road","2nd floor","boise; id 83702"
-23,"idaho physical medicine and rehabilitation","mda clinic","2088841333","161 e mallard dr","suite 120","boise; id 83706"
-24,"st. luke’s rehabilitation hospital- adult care center","mda care center","2089085281","600 n. robbins road","suite 300","boise; id 83702"
-25,"university of texas health science center - san antonio","certified treatment center of excellence","2104509700","8300 floyd curl dr.","4th floor; mc 7883","san antonio; tx 78229"
-26,"children's hospital of san antonio","mda care affiliate","2107044841","333 n santa rosa st","4th floor","san antonio; tx 78207"
-27,"south texas va als clinic","affiliated clinic","2107924378","7400 merton minter",NA,"san antonio; tx 78229"
-28,"new york university","mda/als care center","2122636350","301 e. 17th street",NA,"new york; ny 10003"
-29,"columbia university medical center- adult care center","mda/als care center","2123051319","710 w. 168th street","3rd floor","new york; ny 10032"
-30,"columbia university medical center - eleanor and lou gehrig als center","certified treatment center of excellence","2123056788","710 west 168th st.",NA,"new york; ny 10032"
-31,"columbia university medical center- pediatric care center","mda/als care center","2123426867","180 fort washington avenue","5th floor","new york; ny 10032"
-32,"the als center at mount sinai downtown union square","certified treatment center of excellence","2128446188","department of neurology","10 union square east; 5th floor- 5d","new york; ny 10003"
-33,"children's medical center of dallas","mda clinic","2144562768","2350 n. stemmons freeway","5th floor","dallas; tx 75207"
-34,"university of texas- southwestern","mda/als care center","2146458300","5303 harry hines blvd",NA,"dallas; tx 75390"
-35,"texas neurology als center","affiliated clinic","2148273610","6080 north central expressway",NA,"dallas; tx 75206"
-36,"the children's hospital of philadelphia","mda care center","2155901719","3500 civic center blvd","10th floor","philadelphia; pa 19104"
-37,"hospital of the university of pennsylvania","mda/als care center","2156623606","3400 civic center blvd","south pavilion 2nd floor","philadelphia; pa 19104"
-38,"temple university hospital","mda/als care center","2157078457","3509 n. broad street","5th floor","philadelphia; pa 19140"
-39,"corporal michael j. crescenz va medical center","veterans administration","2158235800","3900 woodland ave.",NA,"philadelphia; pa 19104"
-40,"penn comprehensive als center","als center","2158293053","330 s. 9th street","3rd floor","philadelphia; pa 19107"
-41,"jefferson weinberg als center","certified treatment center of excellence","2159558800","909 walnut st.","second floor","philadelphia; pa 19107"
-42,"cleveland clinic","certified treatment center of excellence","2164445559","9500 euclid ave.",NA,"cleveland; oh 44195"
-43,"metrohealth medical center","mda care center","2167787800","2500 metrohealth drive",NA,"cleveland; oh 44109"
-44,"louis stokes cleveland department of veterans affairs medical center","certified treatment center of excellence","2167913800","sci service 128 w","10701 e. blvd.","cleveland; oh 44106"
-45,"university hospitals cleveland medical center","affiliated clinic","2168444854","3619 park east dr.","suite 109","beachwood; oh 44122"
-46,"carle medical group","mda care center","2173833440","610 n. lincoln avenue",NA,"urbana; il 61801"
-47,"southern illinois university","mda care center","2175458000","751 n. rutledge","neurology department suite 3100","springfield; il 62702"
-48,"essentia health- duluth clinic neurology","recognized treatment center","2187863925","400 east third st.",NA,"duluth; mn 55805"
-49,"our lady of the lake als clinic","affiliated clinic","2252152193","5247 didesse dr.",NA,"baton rouge; la 70808"
-50,"lee health als clinic","affiliated clinic","2393430776","13601 plantation rd.",NA,"fort myers; fl 33912"
-51,"beaumont health neuroscience center-adult and pediatric ","mda care center","2485517370","3555 w. 13 mile road",NA,"royal oak; mi 48073"
-52,"vm franciscan als clinic at st. joseph medical center","affiliated clinic","2534264416","1617 s. j street",NA,"tacoma; wa 98405"
-53,"va puget sound health care system","veterans administration","2535831646","9600 veterans dr.","sw a-117-rcs","tacoma; wa 98493"
-54,"kaiser permanente als clinic - tacoma","affiliated clinic","2535963410","9505 steele st s",NA,"tacoma; wa 98444"
-55,"central texas va als clinic (austin)","affiliated clinic","2543923264","7901 metropolis dr.",NA,"austin; tx 78744"
-56,"the als care clinic at crestwood medical center","certified treatment center of excellence","2564294113","610 airport road suite 110",NA,"huntsville; al 35802"
-57,"parkview neuroscience als clinic","affiliated clinic","2604256780","11104 parkview circle","suite 040","fort wayne; in 46845"
-58,"bronson neuroscience center","affiliated clinic","2693417500","601 john st.","suite m-124","kalamazoo; mi 49007"
-59,"alfred i. dupont hospital for children","mda care center","3026514200","1600 rockland road","orange module 3rd floor","wilmington; de 19803"
-60,"kaiser denver als clinic","affiliated clinic","3033384545","1375 east 20th ave.",NA,"denver; co 80124"
-61,"denver va als clinic","affiliated clinic","3037247408","1700 n. wheeling st.",NA,"aurora; co 80045"
-62,"national jewish health/blue sky neurology als clinic","affiliated clinic","3037814485","1400 jackson st.","suite 360","denver; co 80206"
-63,"west virginia university- pediatric care center","mda/als care center","3045984835","1 medical center drive","pediatric neurology suite 6th floor","morgantown; wv 26506"
-64,"west virginia university- school of medicine","affiliated clinic","3045986127","1 stadium dr.","3rd floor eye institute","morgantown; wv 26506"
-65,"marshall health als clinic","affiliated clinic","3046963246","1 john marshall dr.",NA,"huntington; wv 25755"
-66,"university of miami","mda/als care center","3052437400","1150 nw 14th street","suite 609","miami; fl 33136"
-67,"osf healthcare illinois neurological institute","mda care center","3096244000","200 e. pennsylvania avenue",NA,"peoria; il 61603"
-68,"harbor-ucla als clinic","affiliated clinic","3102223898","1000 w carson st.","n-24","torrance; ca 90509"
-69,"center for als care at cedars sinai medical center","certified treatment center of excellence","3104231525","127 s. san vicente blvd.","advanced health sciences pavilion; sixth floor; a660","los angeles; ca 90048"
-70,"cedars-sinai medical center","mda/als care center","3104235700","8700 beverly blvd","neurology department","los angeles; ca 90048"
-71,"veteran’s administration - west los angeles","veterans administration","3104783711","11301 wilshire blvd.",NA,"los angeles; ca 90073"
-72,"kaiser permanente als clinic - south bay","recognized treatment center","3105172336","25965 s. normandie ave.",NA,"harbor city; ca 90710"
-73,"university of california- los angeles","mda/als care center","3107941195","300 ucla medical plaza","suite b200","los angeles; ca 90095"
-74,"ann & robert h. lurie children's hospital of chicago","mda care center","3122273550","225 e. chicago avenue","3rd floor","chicago; il 60611"
-75,"university of illinois at chicago","mda care center","3123555265","1801 w.taylor street","suite 4-e","chicago; il 60612"
-76,"rush hospital als multidisciplinary clinic","affiliated clinic","3125632053","1753 w harrison","suite 1118","chicago; il 60612"
-77,"northwestern university","mda/als care center","3126957950","675 n. st. clair street","20th floor","chicago; il 60611"
-78,"rush university medical center","mda care center","3129425936","1725 w. harrison street","suite 1118","chicago; il 60612"
-79,"university of illinois hospital and health sciences system","certified treatment center of excellence","3129964780","1801 west taylor st.","room 4e","chicago; il 60612"
-80,"children's hospital of michigan","mda care center","3138329075","3901 beaubien",NA,"detroit; mi 48201"
-81,"harry j. hoenselaar clinic","certified treatment center of excellence","3139162835","2799 west grand blvd. k11-neurology detroit; mi 48202","k11-neurology","detroit; mi 48202"
-82,"va st. louis health care system als clinic","recognized treatment center","3142897914","915 n. grand blvd.",NA,"st. louis; mo 63106"
-83,"neuromuscular clinic","affiliated clinic","3143626981","department of neurology","660 s. euclid ave.","st. louis; mo 63110"
-84,"st. louis university health science center","certified treatment center of excellence","3149776082","1438 s grand blvd.",NA,"st louis; mo 63104"
-85,"syracuse va als clinic","veterans administration","3154254400","800 irving ave",NA,"syracuse; ny 13210"
-86,"suny upstate medical university","certified treatment center of excellence","3154644243","750 east adams st.",NA,"syracuse; ny 13210"
-87,"wichita als clinic","affiliated clinic","3166120188","3450 n. rock rd.","ste 503","wichita; ks 67226"
-88,"indiana university","mda care center","3179485450","355 w. 16th street","neurology 3rd floor","indianapolis; in 46202"
-89,"riley hospital for children","mda care center","3179487450","705 riley hospital drive",NA,"indianapolis; in 46202"
-90,"the indiana university als center at iu health","certified treatment center of excellence","3179637385","355 west 16th st.",NA,"indianapolis; in 46202"
-91,"richard l. roudebush va medical center","veterans administration","3179882715","1481 w 10th st.",NA,"indianapolis; in 46202"
-92,"louisiana state university- shreveport","mda care center","3186262482","1606 kings highway","neurology department","shreveport; la 71103"
-93,"rapides regional medical center","mda care center","3187697640","501 medical drive","4th floor suite 4-b","alexandria; la 71301"
-94,"iowa city va als clinic","recognized treatment center","3193380581","601 highway 6 west","(11e)","iowa city; ia 52246"
-95,"university of iowa- myotonic clinic","mda/als care center","3193534343","200 hawkins drive",NA,"iowa city; ia 52242"
-96,"university of iowa hospitals & clinics","mda/als care center","3193562229","200 hawkins drive",NA,"iowa city; ia 52242"
-97,"university of iowa health care","affiliated clinic","3193568958","200 hawkins dr.",NA,"iowa city; ia 52242"
-98,"university of iowa- cmt clinic","mda/als care center","3193846362","200 hawkins drive",NA,"iowa city; ia 52242"
-99,"university of iowa health care","affiliated clinic","3193847292","8605 chambery blvd.",NA,"johnston; ia 50131"
-100,"orlando health physicians group – neurology","affiliated clinic","3218429805","32 w. gore st.","3rd floor","orlando; fl 32806"
-101,"children's hospital of los angeles","mda care center","3233615919","4650 sunset blvd","neurology department","los angeles; ca 90027"
-102,"keck medicine of usc als clinic","certified treatment center of excellence","3234420259","1520 san pablo st.","suite 3000","los angeles; ca 90033"
-103,"children's hospital medical center of akron","mda care affiliate","3305438050","1 perkins square",NA,"akron; oh 44308"
-104,"dean martin neuromuscular clinic","mda care affiliate","3307467211","1044 belmont avenue",NA,"youngstown; oh 44501"
-105,"wake forest baptist health medical center","certified treatment center of excellence","3367162323","medical center blvd.",NA,"winston-salem; nc 27157"
-106,"wake forest university","mda care center","3367164101","1 medical center blvd","department of neurology","winston-salem; nc 27157"
-107,"uf health gainesville - norman fixel institute for neurological diseases","affiliated clinic","3522945400","3009 sw williston road",NA,"gainesville; fl 32608"
-108,"university of florida adult care center","mda care center","3522945757","2000 sw archer road","adult neurology 3rd floor","gainesville; fl 32610"
-109,"driscoll children's hospital","mda care center","3616946747","3533 s. alameda street",NA,"corpus christi; tx 78411"
-110,"the louise wilcox als clinic","recognized treatment center","4014443032","neurology foundation","593 eddy st.; apc bldg 5th floor","providence; ri 02903"
-111,"rhode island hospital- pediatric care center","mda clinic","4014443791","335-r prairie avenue","1st floor","providence; ri 02905"
-112,"rhode island hospital- adult care center","mda clinic","4014446447","593 eddy street","5th floor","providence; ri 02903"
-113,"neurology associates- pc","mda clinic","4024837226","2631 s. 70th street",NA,"lincoln; ne 68506"
-114,"the university of nebraska medical center","certified treatment center of excellence","4025526646","4242 farnam st.","suite 650","omaha; ne 68198"
-115,"university of nebraska","mda care center","4025598600","4239 farnam street","south tower 1st floor suite 105","omaha; ne 68131"
-116,"emory university","mda/als care center","4047783444","1365 clifton road building b","neuroscience suite 2nd floor","atlanta; ga 30322"
-117,"emory als center","certified treatment center of excellence","4047783754","12 executive park drive ne","suite 257","atlanta; ga 30316"
-118,"children's healthcare of atlanta at scottish rite","mda care center","4047854595","1001 johnson ferry road",NA,"atlanta; ga 30342"
-119,"integris southwest medical center","mda/als care center","4056445170","4401 s. western avenue","suite 5010","oklahoma city; ok 73109"
-120,"billings clinic hospital- adult care center","mda care center","4062382410","801 n. 29th street","neurology department","billings; mt 59101"
-121,"billings clinic","affiliated clinic","4062382500","801 n 29th st.",NA,"billings; mt 59101"
-122,"adventhealth medical group neurology at winter park als clinic","affiliated clinic","4073036729","1573 w fairbanks ave.; suite 210",NA,"winter park; fl 32789"
-123,"nemours children's hospital","mda care center","4076507250","13535 nemours parkway",NA,"orlando; fl 32827"
-124,"kaiser permanente als clinic - san jose","affiliated clinic","4089723000","275 hospital parkway",NA,"san jose; ca 95119"
-125,"university of maryland als clinic","certified treatment center of excellence","4103283100","827 linden avenue",NA,"baltimore; md 21201"
-126,"tidalhealth peninsula regional als clinic","recognized treatment center","4109122889","100 east carroll st.",NA,"salisbury; md 21801"
-127,"johns hopkins university- pediatric care center","mda care center","4109554259","601 n. caroline street","outpatient center 5th floor","baltimore; md 21287"
-128,"johns hopkins university- adult care center","mda care center","4109556435","601 n. caroline street","outpatient center 5th floor","baltimore; md 21287"
-129,"johns hopkins university- als care center","mda/als care center","4109558511","601 n. caroline street","outpatient center 5th floor","baltimore; md 21287"
-130,"allegheny health network als center","certified treatment center of excellence","4123598193","420 e. north ave.","suite 206","pittsburgh; pa 15212"
-131,"university of pittsburgh medical center","mda/als care center","4126924917","1471 5th avenue","suite 810","pittsburgh; pa 15213"
-132,"university of pittsburgh als clinic","affiliated clinic","4126924920","3471 fifth ave.",NA,"pittsburgh; pa 15213"
-133,"children's hospital of pittsburgh","mda care center","4126925520","4401 penn avenue","6th floor","pittsburgh; pa 15224"
-134,"baystate behavioral health","mda care affiliate","4137940000","759 chestnut street","pediatric clinic: 50 wason avenue","springfield; ma 01109"
-135,"children's hospital of wisconsin","mda care center","4142663464","9000 w. wisconsin avenue",NA,"milwaukee; wi 53226"
-136,"milwaukee va medical center als clinic","certified treatment center of excellence","4143842000","5000 west national ave.",NA,"milwaukee; wi 53295"
-137,"froedtert & the medical college of wisconsin","certified treatment center of excellence","4148055224","9200 w. wisconsin ave.",NA,"milwaukee; wi 53226"
-138,"froedtert memorial lutheran hospital","mda care center","4148058710","9200 w. wisconsin avenue",NA,"milwaukee; wi 53226"
-139,"the als research and treatment center at ucsf","certified treatment center of excellence","4153532122","400 parnassus ave.","8th floor","san francisco; ca 94117"
-140,"ucsf benioff children’s hospital","mda care center","4153533682","1825 4th street","suite 6a","san francisco; ca 94158"
-141,"kaiser permanente san rafael medical center","recognized treatment center","4154442000","99 monticello rd.",NA,"san rafael; ca 94903"
-142,"veteran’s administration - san francisco","recognized treatment center","4155517300","4150 clement st.","stop 15inc","san francisco; ca 94121"
-143,"forbes norris als research and treatment center","certified treatment center of excellence","4156001264","1100 van ness","6th floor","san francisco; ca 94109"
-144,"california pacific medical center","mda/als care center","4156003604","2324 sacramento street","suite 150","san francisco; ca 94115"
-145,"kaiser permanente san francisco als multidisciplinary clinic","recognized treatment center","4158334555","450 6th ave.","3rd floor neurology","san francisco; ca 94118"
-146,"the als clinic of the ozark","affiliated clinic","4178753087","department of neurology","3801 s. national ave.; suite 900","springfield; mo 65807"
-147,"toledo children's hospital","mda care center","4192915599","2150 w. central avenue",NA,"toledo; oh 43606"
-148,"als clinic at erlanger","affiliated clinic","4237789001","979 east third st.","suite c-830","chattanooga; tn 37403"
-149,"university of virginia pediatric care center","mda care center","4342436903","1204 w. main street","uva battle building","charlottesville; va 22908"
-150,"university of virginia adult care center","mda care center","4349248617","1215 lee street","4th floor of patient care","charlottesville; va 22908"
-151,"mayo clinic arizona","certified treatment center of excellence","4803018100","13400 e. shea blvd.",NA,"scottsdale; az 85259"
-152,"neuromuscular research center","affiliated clinic","4803141007","4545 e. shea blvd.","suite 175","phoenix; az 85028"
-153,"university of arkansas- pediatric care center","mda/als care center","5013644000","1 children's way",NA,"little rock; ar 72205"
-154,"university of arkansas for medical sciences","affiliated clinic","5016865838","4301 west markham street",NA,"little rock; ar 72205"
-155,"university of louisville physicians child neurology","mda care center","5025883650","411 e chestnut st","novak center suite 645","louisville; ky 40202"
-156,"university of louisville physicians adult neurology","mda care center","5025884800","401 e. chestnut street","suite 510","louisville; ky 40202"
-157,"university of louisville physicians","recognized treatment center","5025886000","401 e. chestnut st.","suite 510","louisville; ky 40202"
-158,"providence als center","certified treatment center of excellence","5032158580","5050 n.e. hoyt","suite 314","portland; or 97213"
-159,"va portland health care system - als clinic","certified treatment center of excellence","5032208262","3710 sw u.s. veterans hospital rd.",NA,"portland; or 97239"
-160,"shriners hospital for children- portland","mda care center","5032415090","3101 sw sam jackson park road",NA,"portland; or 97239"
-161,"oregon health & science university- adult care center","mda/als care center","5034947772","3303 sw bond avenue","8th floor","portland; or 97239"
-162,"kaiser permanente sunnyside medical center","affiliated clinic","5036522880","10180 se sunnyside rd.",NA,"clackamas; or 97015"
-163,"lsu als clinic","recognized treatment center","5044121415","478 south johnson st.",NA,"new orleans; la 70117"
-164,"louisiana state university","mda care center","5044121517","2025 gravier street","5th floor","new orleans; la 70112"
-165,"southeast louisiana veterans health care system als clinic","affiliated clinic","5045072000","2400 canal st.",NA,"new orleans; la 70119"
-166,"ochsner als clinic","certified treatment center of excellence","5048420113","1401 jefferson hwy.",NA,"jefferson; la 70121"
-167,"children's hospital of new orleans","mda care center","5048969283","200 henry clay avenue","neuromuscular clinic 1st floor (green elevators)","new orleans; la 70118"
-168,"university of new mexico hospital als clinic","certified treatment center of excellence","5052723160","2211 lomas; ne","msc 10 5620","albuquerque; nm 87131"
-169,"university of new mexico- pediatric","mda care center","5052729351","1127 university blvd. ne",NA,"albuquerque; nm 87102"
-170,"mayo clinic","certified treatment center of excellence","5075381037","200 first st.; s.w.",NA,"rochester; mn 55905"
-171,"mayo clinic- rochester","mda care center","5075383270","200 1st st sw","department of neurology","rochester; mn 55905"
-172,"university of massachusetts","mda care center","5083342527","55 lake avenue north","1st floor","worcester; ma 01655"
-173,"umass medical center","affiliated clinic","5088564147","55 lake ave. north","room ac1-044","worcester; ma 01655"
-174,"providence st. luke’s als center","affiliated clinic","5094736706","715 s cowley","suite 228","spokane; wa 99202"
-175,"shriners hospital for children- spokane","mda care affiliate","5096230400","911 w. 5th avenue",NA,"spokane; wa 99204"
-176,"kadlec als clinic","affiliated clinic","5099425560","1268 lee blvd.",NA,"richland; wa 99352"
-177,"kaiser permanente als clinic - san leandro","affiliated clinic","5104543180","department of neurology","2500 merced st.","san leandro; ca 94577"
-178,"central texas neurology consultants","affiliated clinic","5122181222","16040 park valley dr.",NA,"round rock; tx 78681"
-179,"child neurology consultants of austin","mda care affiliate","5124944000","6811 austin center blvd","suite 400","austin; tx 78731"
-180,"the emory bellard als clinic","recognized treatment center","5125094031","300 university blvd.","building a","round rock; tx 78665"
-181,"dell children's medical center","mda clinic","5126281855","4900 mueller blvd","suite 300","austin; tx 78723"
-182,"university of cincinnati - als multidisciplinary clinic","affiliated clinic","5134758730","151 w galbraith rd.",NA,"cincinnati ; oh 45216"
-183,"cincinnati children's hospital","mda care center","5138033000","3333 burnet avenue",NA,"cincinnati; oh 45229"
-184,"central iowa va healthcare system","veterans administration","5156995999","3600 30th st.",NA,"des moines; ia 50310"
-185,"northwell health","affiliated clinic","5163257000","611 northern blvd.","suite 150","great neck; ny 11021"
-186,"michigan state university","mda/als care center","5173538122","804 service road","suite a-117","east lansing; mi 48824"
-187,"albany medical center- pediatric care center","mda care affiliate","5182621700","391 myrtle avenue",NA,"albany; ny 12208"
-188,"albany medical center- adult care center","mda care affiliate","5182665226","47 new scotland avenue",NA,"albany; ny 12208"
-189,"the lewis golub clinic at st. peter's hospital- ","mda als care center; mda/als care center","5185251629","19 warehouse row",NA,"albany; ny 12205"
-190,"children's clinics for rehabilitative services","mda care center","5203243200","2600 n. wyatt drive",NA,"tucson; az 85712"
-191,"banner - university medical center south","affiliated clinic","5206948888","2800 e. ajo way",NA,"tucson; az 85713"
-192,"carilion clinic adult care center","mda care affiliate","5402245170","3 riverside circle","3rd floor","roanoke; va 24016"
-193,"carilion clinic pediatric care center","mda care affiliate","5409858454","102 highland avenue","suite 104","roanoke; va 24013"
-194,"st. charles medical center","affiliated clinic","5413823344","2200 ne neff rd.","suite 200","bend; or 97701"
-195,"oregon neurology","mda clinic","5418689430","1 hayden bridge way",NA,"springfield; or 97477"
-196,"valley children’s hospital","mda care center","5593536215","41169 goodwin way",NA,"madera; ca 93636"
-197,"community regional medical center","mda care affiliate","5594592396","2335 e. kashian lane","suite 301","fresno; ca 93701"
-198,"rancho los amigos national rehabilitation center","mda clinic","5624017111","7601 e. imperial highway",NA,"downey; ca 90242"
-199,"als clinic at geisinger medical center","affiliated clinic","5702716472","100 north academy ave.",NA,"danville; pa 17822"
-200,"geisinger medical center","mda care center","5702717994","100 n. academy avenue","1st floor d1","danville; pa 17822"
-201,"geisinger medical center als clinic","recognized treatment center","5704161867","549 fair st.",NA,"bloomsburg; pa 17815"
-202,"geisinger wyoming valley","mda care center","5708086028","620 baltimore dr",NA,"wilkes-barre; pa 18702"
-203,"saint francis medical center","affiliated clinic","5736513188","211 st. francis dr.",NA,"cape girardeau; mo 63703"
-204,"university of missouri- adult care center","mda care center","5738821515","1020 hitt street","3rd floor","columbia; mo 65201"
-205,"university of missouri- pediatric care center","mda care center","5738826921","404 n. keene street","1st floor","columbia; mo 65201"
-206,"university of missouri healthcare als treatment center","certified treatment center of excellence","5738840994","1020 hitt st.",NA,"columbia; mo 65212"
-207,"elkhart clinic llc","mda care affiliate","5742963282","303 s. nappanee",NA,"elkhart; in 46514"
-208,"strong memorial hospital","affiliated clinic","5852752559","601 elmwood avenue",NA,"rochester; ny 14642"
-209,"university of mississippi","mda care center","6019845500","350 w. woodrow wilson",NA,"jackson; ms 39213"
-210,"carl t. hayden veterans affairs medical center","veterans administration","6022775551","650 e. indian school",NA,"phoenix; az 85012"
-211,"honor health neurology and phoenix neurological associates als clinic","certified treatment center of excellence","6023075842","7242 e. osborn road","suite 400","scottsdale; az 85251"
-212,"gregory f. fulton als clinic at barrow neurological institute","certified treatment center of excellence","6024062704","240 w. thomas rd.","suite 400","phoenix; az 85013"
-213,"phoenix children's hospital","mda care center","6029330970","1919 e. thomas road","3rd floor","phoenix; az 85016"
-214,"the als center at dartmouth-hitchcock medical center","certified treatment center of excellence","6036505000","18 old etna rd.",NA,"lebanon; nh 03766"
-215,"dartmouth-hitchcock medical center- adult care center","mda care center","6036505104","one medical center drive","suite 3-c","lebanon; nh 03756"
-216,"dartmouth hitchcock medical center- pediatric care center","mda care center","6036539669","one medical center drive","6th floor","lebanon; nh 03756"
-217,"dartmouth-hitchcock- manchester","mda care center","6036952940","87 mcgregor street","suite 2200","manchester; nh 03110"
-218,"sanford clinic in sioux falls","mda care center","6053121000","1600 w. 22nd street",NA,"sioux falls; sd 57105"
-219,"avera brain and spine institute","recognized treatment center","6053228993","800 e 21st st.",NA,"sioux falls; sd 57105"
-220,"sioux falls va health system","veterans administration","6053363230","2501 w 22nd st.",NA,"sioux falls; sd 57117"
-221,"dean neurological institute & spine center","mda care affiliate","6082603425","700 s. park street","3rd floor","madison; wi 53715"
-222,"university of wisconsin health","mda care center","6082620547","600 highland avenue","h6-544","madison; wi 53792"
-223,"uw health university hospital als clinic","affiliated clinic","6082635442","600 highland ave.",NA,"madison; wi 53792"
-224,"american family children's hospital","mda care center","6082636420","1675 highland avenue",NA,"madison; wi 53792"
-225,"gundersen health system als clinic","affiliated clinic","6087759000","1900 south ave.",NA,"la crosse; wi 54601"
-226,"neuromuscular and als center for comprehensive care at lehigh valley hospital","recognized treatment center","6104028420","1210 s. cedar crest blvd.",NA,"allentown; pa 18103"
-227,"good shepherd rehabilitation hospital","mda/als care center","6107763100","850 s. 5th street",NA,"allentown; pa 18103"
-228,"university of minnesota","mda/als care center","6123656777","2512 s. 7th street","3rd floor","minneapolis; mn 55454"
-229,"m health fairview als clinic","certified treatment center of excellence","6126266688","909 fulton st. se","3rd floor; mc 2121cj","minneapolis; mn 55455"
-230,"minneapolis va health care system (vahcs) als center of excellence","certified treatment center of excellence","6126297005","one veteran's dr.",NA,"minneapolis; mn 55417"
-231,"university of minnesota- twin cities","mda/als care center","6126727422","909 fulton street se","3rd floor","minneapolis; mn 55455"
-232,"als center of excellence at hennepin healthcare","certified treatment center of excellence","6128735465","715 south 8th st.","3rd floor neurology clinic","minneapolis; mn 55415"
-233,"ohio state university","mda/als care center","6142934969","543 taylor avenue",NA,"columbus; oh 43203"
-234,"nationwide children's hospital","mda care center","6147222203","555 s 18th st",NA,"columbus; oh 43205"
-235,"ohiohealth als clinic","certified treatment center of excellence","6147882445","300 polaris parkway","suite 2350","westerville; oh 43082"
-236,"vanderbilt university","mda/als care center","6159360060","2200 pierce avenue",NA,"nashville; tn 37232"
-237,"helen devos children's hospital","mda care center","6162672500","100 michigan street ne",NA,"grand rapids; mi 49503"
-238,"spectrum health als multidisciplinary clinic","certified treatment center of excellence","6162677104","2750 e. beltline ne grand rapids; mi 49525",NA,"grand rapids; mi 49525"
-239,"trinity health medical group-neuromuscular","certified treatment center of excellence","6166855050","220 cherry st.",NA,"grand rapids; mi 49503"
-240,"boston children's hospital","mda care center","6173558235","300 longwood avenue","11th floor","boston; ma 02115"
-241,"brigham & women's hospital","mda care center","6175257443","60 fenwood road","neuroscience 1st floor","boston; ma 02115"
-242,"tufts medical center","mda care affiliate","6176365848","800 washington street",NA,"boston; ma 02111"
-243,"massachusetts general hospital- pediatric care center","mda care center","6176434645","165 cambridge street","8th floor","boston; ma 02114"
-244,"beth israel deaconess medical center","affiliated clinic","6176678130","330 brookline ave.",NA,"boston; ma 02215"
-245,"sean m. healey & amg center for als","affiliated clinic","6177243914","15 parkman st.",NA,"boston; ma 02114"
-246,"massachusetts general hospital","mda clinic","6177263642","boston; ma 02114",NA,NA
-247,"uc san diego als center","certified treatment center of excellence","6195435300","200 west arbor dr.",NA,"san diego; ca 92103"
-248,"stony brook university hospital als center","certified treatment center of excellence","6314444623","179 belle meade rd.","suite 3 east","setauket; ny 11733"
-249,"stony brook children's hospital","mda care affiliate","6314445437","4 technology drive",NA,"east setauket; ny 11733"
-250,"st. charles hospital and rehabilitation","mda care center","6314746300","200 belle terre road",NA,"port jefferson; ny 11777"
-251,"als association program at the hospital for special surgery","certified treatment center of excellence","6467146135","525 east 71st st.",NA,"new york; ny 10021"
-252,"hospital for special surgery","mda/als care center","6467978917","525 e. 71st street","5th floor","new york; ny 10021"
-253,"veteran’s administration - palo alto","veterans administration","6504935000","3801 miranda ave.",NA,"palo alto; ca 94304"
-254,"lucile packard children's hospital","mda care center","6507230993","730 welch road","2nd floor","palo alto; ca 94304"
-255,"stanford mda/als neuroscience clinic","affiliated clinic","6507236469","213 quarry rd.","1st floor","palo alto; ca 94304"
-256,"gillette children's specialty healthcare","mda care center","6512908707","200 e. university avenue",NA,"st. paul; mn 55101"
-257,"healthpartners neuroscience center","affiliated clinic","6514956307","295 phalen blvd.",NA,"st. paul; mn 55130"
-258,"cook children's medical center","mda care center","6828852500","1500 cooper street","4th floor","fort worth; tx 76104"
-259,"sanford coordinated treatment center","mda care center","7012346600","736 broadway rt 1049",NA,"fargo; nd 58122"
-260,"roseman university als clinic","affiliated clinic","7024634040","5380 s. rainbow","ste 120","las vegas; nv 89118"
-261,"las vegas clinic – als clinic","affiliated clinic","7025054230","351 n. buffalo dr.","suite b","las vegas; nv 89145"
-262,"carolinas medical center","mda clinic","7044461900","1010 edgehill road north",NA,"charlotte; nc 28207"
-263,"atrium health als center","affiliated clinic","7044466254","university of north carolina school of medicine – charlotte campus","1010 edgehill rd.","north charlotte; nc 28207"
-264,"augusta university als clinic","certified treatment center of excellence","7067212681","1120 15th st.",NA,"augusta; ga 30912"
-265,"macon als clinic","affiliated clinic","7067214581","3351 northside dr.",NA,"macon; ga 31210"
-266,"edward hines- jr. va als multidisciplinary clinic","veterans administration","7082028387","5000 s. 5th ave.","bld 228 neurology; 5th floor","hines; il 60141"
-267,"houston methodist neurological institute","mda/als care center","7133637310","6560 fannin street","suite 802","houston; tx 77030"
-268,"houston methodist als clinic","certified treatment center of excellence","7134413760","6560 fannin","suite 802","houston; tx 77030"
-269,"baylor college of medicine","mda clinic","7137982273","7200 cambridge street suite 9a",NA,"houston; tx 77030"
-270,"baylor college of medicine","certified treatment center of excellence","7137987411","6550 fannin st.","suite 1801 (smith tower)","houston; tx 77030"
-271,"uc irvine als clinic","certified treatment center of excellence","7144562332","200 s. manchester","suite 110","orange; ca 92868"
-272,"children's hospital of orange county","mda care center","7145097981","501 s. main street","suite 350","orange; ca 92868"
-273,"dent neurologic institute","affiliated clinic","7162502000","3980 sheridan drive",NA,"buffalo; ny 14226"
-274,"university of buffalo","mda care center","7169326080","1001 main street",NA,"buffalo; ny 14203"
-275,"penn state hershey medical center","mda care center","7175313828","30 hope drive","suite 1300","hershey; pa 17033"
-276,"suny downstate medical center","mda care center","7182707207","450 clarkson avenue",NA,"brooklyn; ny 11203"
-277,"suny downstate at maimonides medical center","mda care center","7182837470","6323 7th ave",NA,"brooklyn; ny 11220"
-278,"montefiore medical center","mda care center","7184058140","1515 blondell ave.","suite 220","bronx; ny 10461"
-279,"als association clinic program at the james j. peters va medical center","veterans administration","7185849000","130 west kingsbridge rd.","jjpvamc room 5c-02; 5th floor","bronx; ny 10468"
-280,"children's hospital of colorado","mda care center","7207772806","13123 e. 16th avenue",NA,"aurora; co 80045"
-281,"university of colorado","affiliated clinic","7208482080","12605 e. 16th ave.",NA,"aurora; co 80045"
-282,"st. anthony's neurology group","mda care center","7278207701","1201 5th avenue north","medical office building suite 202","st. petersburg; fl 33705"
-283,"rutgers robert wood johnson medical school","certified treatment center of excellence","7322357733","125 paterson st.","clinical academic bldg.; suite 6100","new brunswick; nj 08903"
-284,"hackensack meridian jersey shore university medical center als center","certified treatment center of excellence","7327763307","2100 corlies avenue","suite 2","neptune; nj 07753"
-285,"university of michigan- pediatric rehabilitation center","mda care center","7349364179","2205 commonwealth blvd",NA,"ann arbor; mi 48105"
-286,"university of michigan- adult","mda care center","7349369006","325 e eisenhower pkwy","suite 100","ann arbor; mi 48108"
-287,"the university of michigan health system","certified treatment center of excellence","7349369020","1500 east medical center dr. ann arbor; mi 48109",NA,"ann arbor; mi 48109"
-288,"sentara als clinic","affiliated clinic","7575070600","1950 glenn mitchell dr.","suite 200","virginia beach; va 23456"
-289,"the riverside als clinic","affiliated clinic","7576377500","850 enterprise parkway; ste. 1400",NA,"hampton; va 23666"
-290,"children's hospital of the kings daughters","mda care center","7576686494","850 southampton avenue","neurology 1st floor","norfolk; va 23510"
-291,"maple grove clinic","mda clinic","7638981080","14500 99th avenue north",NA,"maple grove; mn 55369"
-292,"shriners hospital for children- chicago","mda care center","7736225400","2211 n. oak park avenue",NA,"chicago; il 60707"
-293,"the university of chicago","certified treatment center of excellence","7737025659","5841 s. maryland ave.","mc 2030","chicago; il 60637"
-294,"st mary’s medical group als clinic","affiliated clinic","7757703554","645 n. arlington ave.","suite 655","reno; nv 89503"
-295,"lahey clinic","mda care affiliate","7817445100","41 burlington mall road",NA,"burlington; ma 01805"
-296,"the curt and shonda schilling als clinic at lahey hospital and medical center","certified treatment center of excellence","7817447273","41 mall rd.",NA,"burlington; ma 01805"
-297,"instituto de rehabilitación del caribe","mda care center","7875047554","264 calle convento",NA,"san juan; pr 00911"
-298,"university of puerto rico","mda care center","7877587910","1101-1113 cll 56 se",NA,"san juan; pr 00921"
-299,"ponce health sciences university","mda care center","7878400052","388 zona ind reparada 2",NA,"ponce; pr 00716"
-300,"oregon health and sciences university als clinic","certified treatment center of excellence","8002456478","3181 sw sam jackson park rd.","cr120","portland; or 97239"
-301,"richard r. dart als clinic","certified treatment center of excellence","8002513627","university hospital","1221 lee st.; fourth floor","charlottesville; va 22908"
-302,"penn state hershey als clinic and research center","certified treatment center of excellence","8002923332","30 hope dr.",NA,"hershey; pa 17033"
-303,"sanford health neuroscience","affiliated clinic","8004374010","736 broadway",NA,"fargo; nd 58122"
-304,"marshfield clinic","mda care affiliate","8006993377","1000 n. oak avenue",NA,"marshfield; wi 54449"
-305,"jim ""catfish"" hunter als clinic","recognized treatment center","8007754840","outpatient rehab building","2310 stantonsburg rd.","greenville; nc 27835"
-306,"kaiser permanente als clinic - la","recognized treatment center","8009548000","1505 n. edgemont st.","5th floor","los angeles; ca 90027"
-307,"university of utah mnd clinic","certified treatment center of excellence","8015856052","175 n. medical dr.","5th floor","salt lake city; ut 84132"
-308,"university of utah medical center","mda/als care center","8015857575","175 n. medical drive east","4th floor","salt lake city; ut 84132"
-309,"university of vermont medical center als clinic","certified treatment center of excellence","8028474589","790 college parkway",NA,"colchester; vt 05401"
-310,"children's hospital of richmond","mda care center","8046285804","1000 e. broad street","3rd floor room 3-336","richmond; va 23298"
-311,"virginia commonwealth university als clinic","affiliated clinic","8048280371","11958 w. broad st.",NA,"henrico; va 23233"
-312,"virginia commonwealth university","mda care center","8048289350","11958 w. broad street","4th floor","richmond; va 23233"
-313,"kaiser permanente als clinic - honolulu","affiliated clinic","8084328000","3288 moanalua rd.","4th floor; neurology","honolulu; hi 96819"
-314,"neurology associates- honolulu","mda clinic","8085235886","321 n. kuakini street",NA,"honolulu; hi 96817"
-315,"university of south florida als clinic","certified treatment center of excellence","8139749273","13330 laurel dr.",NA,"tampa; fl 33612"
-316,"conemaugh health system als clinic","affiliated clinic","8142695061","1450 scalp ave.","suite 120","johnstown; pa 15904"
-317,"upmc northshore neurosciences","mda clinic","8148774600","120 e. 2nd street","3rd floor","erie; pa 16507"
-318,"upmc northshore neurology","affiliated clinic","8148778000","120 e 2nd st.","3rd floor","erie; pa 16507"
-319,"methodist neurology associates","mda care affiliate","8172250410","2800 e. broad street","suite 421","mansfield; tx 76063"
-320,"olive view medical center","mda care center","8183643104","14445 olive view drive",NA,"sylmar; ca 91342"
-321,"texas children's hospital","mda care center","8328223554","6701 fannin street","9th floor","houston; tx 77030"
-322,"ralph h. johnson vamc als clinic","veterans administration","8435775011","109 bee st.",NA,"charleston; sc 29401"
-323,"medical university of south carolina","certified treatment center of excellence","8437923223","135 rutledge ave.",NA,"charleston; sc 29425"
-324,"kaiser permanente als clinic - woodland hills","affiliated clinic","8558920919","5601 de soto avenue",NA,"woodland hills; ca 91367"
-325,"va boston healthcare system","veterans administration","8573646964","150 south huntington avenue",NA,"jamaica plain; ma 02130"
-326,"university of california- san diego- adult care center","mda/als care center","8586578540","4510 executive drive","suite 325","san diego; ca 92121"
-327,"rady children's hospital","mda care center","8589668108","8001 frost street","3rd floor","san diego; ca 92123"
-328,"university of kentucky","certified treatment center of excellence","8592185061","740 south limestone st.",NA,"lexington; ky 40536"
-329,"the neuromuscular center at hospital for special care","certified treatment center of excellence","8608274924","2150 corbin ave.",NA,"new britain; ct 06053"
-330,"connecticut children's medical center - farmington","mda care center","8608377500","505 farmington avenue","2nd floor","farmington; ct 06032"
-331,"greenville health system als clinic","recognized treatment center","8644544500","200 patewood dr.","suite b350","greenville; sc 29615"
-332,"greenville hospital system pediatric care center","mda clinic","8645738732","249 n. grove medical park drive",NA,"spartanburg; sc 29303"
-333,"northshore university health system","affiliated clinic","8775707020","2100 pfingsten rd.",NA,"glenview; il 60026"
-334,"wesley neurology","mda/als care center","9012613500","8000 centerview parkway","suite 305","cordova; tn 38018"
-335,"methodist le bonheur community outreach","mda care center","9012876265","600 jefferson ave",NA,"memphis; tn 38105"
-336,"the als clinic of the midsouth","affiliated clinic","9017544425","1365 s germantown rd",NA,"germantown; tn 38138"
-337,"uf health jacksonville multidisciplinary als clinic","certified treatment center of excellence","9042449922","580 west 8th st.","tower 1; 9th floor","jacksonville; fl 32209"
-338,"mayo clinic florida","certified treatment center of excellence","9049532000","4500 san pablo rd. south",NA,"jacksonville; fl 32224"
-339,"mayo clinic- jacksonville","mda/als care center","9049536869","4500 san pablo road south","2nd floor","jacksonville; fl 32224"
-340,"kaiser permanente als clinic - fontana","affiliated clinic","9094275416","9985 sierra ave.",NA,"fontana; ca 92335"
-341,"the center for restorative neurology at loma linda university neurology","certified treatment center of excellence","9095585977","11370 anderson st.","suite 2400","loma linda; ca 92354"
-342,"loma linda university - upland","mda clinic","9098351810","901 san bernardino road","suite 302","upland; ca 91786"
-343,"university of kansas medical center","certified treatment center of excellence","9135880656","3599 rainbow blvd.","ms 2012","kansas city; ks 66160"
-344,"university of kansas medical center","mda/als care center","9135886820","3599 rainbow blvd.",NA,"kansas city; ks 66103"
-345,"white plains hospital and medical center","mda care affiliate","9146811128","41 east post rd.",NA,"white plains; ny 10601"
-346,"texas tech university health sciences center el paso","affiliated clinic","9152155900","4801 alberta ave.",NA,"el paso; tx 79905"
-347,"uc davis multidisciplinary als clinic","certified treatment center of excellence","9167346304","4860 y st.","suite 1700","sacramento; ca 95817"
-348,"university of california- davis","mda/als care center","9167347041","4860 y street ste. 1700","department of physical medicine & rehabilitation","sacramento; ca 95817"
-349,"neurology llpc of tulsa","mda care center","9187477517","1919 s. wheeling avenue","suite 707","tulsa; ok 74104"
-350,"lennox baker children's hospital","mda clinic","9196136832","3000 erwin road",NA,"durham; nc 27705"
-351,"duke university als center","certified treatment center of excellence","9196682875","932 morreene rd.","box 3333","durham; nc 27705"
-352,"duke university","mda care center","9196815176","200 trent drive","clinic 1-l","durham; nc 27710"
-353,"the als clinic at the university of north carolina at chapel hill","affiliated clinic","9198437857","194 finley gold course rd.","suite 200","chapel hill; nc 27517"
-354,"university of north carolina","mda care center","9199669281","194 finley golf course road","suite 200","chapel hill; nc 27517"
-355,"prevea health- pediatric care center","mda care center","9202721270","1821 s. webster avenue",NA,"green bay; wi 54301"
-356,"prevea health- adult care center","mda care center","9202721610","1821 s. webster avenue",NA,"green bay; wi 54301"
-357,"children's hospital of wisconsin- fox valley","mda care center","9209697900","130 2nd st","west pavillion","neenah; wi 54956"
-358,"kaiser permanente als clinic - martinez","affiliated clinic","9253721768","200 muir rd.","martinez; ca 94553","joanna dearlove m.d."
-359,"sarasota memorial health care system - center for neuromuscular disorders","affiliated clinic","9419178900","5880 rand blvd.","ste. 209","sarasota; fl 34239"
-360,"kaiser permanente als clinic - riverside","affiliated clinic","9513534360","neurology department","10800 magnolia ave.","riverside; ca 92505"
-361,"phil smith neuroscience institute als clinic & research center at holy cross health","certified treatment center of excellence","9545423436","1931 ne 47th street",NA,"fort lauderdale; fl 33308"
-362,"doctors' hospital at renaissance","affiliated clinic","9563622440","2821 michael angelo dr.","ste. 306","edinburg; tx 78539"
-363,"rutgers university hospital","mda clinic","9739720977","90 bergen street suite 8100",NA,"newark; nj 07103"
-364,"vanderbilt university medical center als clinic","affiliated clinic","6159360060","1211 medical center drive",NA,"nashville; tn 37232"
+idx,provider_name,center_type,phone,address_1,address_2,address_3,network
+103,children's hospital medical center of akron,mda care affiliate,3305438050,1 perkins square,NA,akron; oh 44308,
+189,the lewis golub clinic at st. peter's hospital- ,mda als care center; mda/als care center,5185251629,19 warehouse row,NA,albany; ny 12205,
+188,albany medical center- adult care center,mda care affiliate,5182665226,47 new scotland avenue,NA,albany; ny 12208,
+187,albany medical center- pediatric care center,mda care affiliate,5182621700,391 myrtle avenue,NA,albany; ny 12208,
+169,university of new mexico- pediatric,mda care center,5052729351,1127 university blvd. ne,NA,albuquerque; nm 87102,
+168,university of new mexico hospital als clinic,certified treatment center of excellence,5052723160,2211 lomas; ne,msc 10 5620,albuquerque; nm 87131,
+93,rapides regional medical center,mda care center,3187697640,501 medical drive,4th floor suite 4-b,alexandria; la 71301,
+227,good shepherd rehabilitation hospital,mda/als care center,6107763100,850 s. 5th street,NA,allentown; pa 18103,
+226,neuromuscular and als center for comprehensive care at lehigh valley hospital,recognized treatment center,6104028420,1210 s. cedar crest blvd.,NA,allentown; pa 18103,
+285,university of michigan- pediatric rehabilitation center,mda care center,7349364179,2205 commonwealth blvd,NA,ann arbor; mi 48105,pcornet
+286,university of michigan- adult,mda care center,7349369006,325 e eisenhower pkwy,suite 100,ann arbor; mi 48108,pcornet
+287,the university of michigan health system,certified treatment center of excellence,7349369020,1500 east medical center dr. ann arbor; mi 48109,NA,ann arbor; mi 48109,pcornet
+117,emory als center,certified treatment center of excellence,4047783754,12 executive park drive ne,suite 257,atlanta; ga 30316,
+116,emory university,mda/als care center,4047783444,1365 clifton road building b,neuroscience suite 2nd floor,atlanta; ga 30322,
+118,children's healthcare of atlanta at scottish rite,mda care center,4047854595,1001 johnson ferry road,NA,atlanta; ga 30342,
+264,augusta university als clinic,certified treatment center of excellence,7067212681,1120 15th st.,NA,augusta; ga 30912,
+280,children's hospital of colorado,mda care center,7207772806,13123 e. 16th avenue,NA,aurora; co 80045,
+61,denver va als clinic,affiliated clinic,3037247408,1700 n. wheeling st.,NA,aurora; co 80045,va
+281,university of colorado,affiliated clinic,7208482080,12605 e. 16th ave.,NA,aurora; co 80045,
+181,dell children's medical center,mda clinic,5126281855,4900 mueller blvd,suite 300,austin; tx 78723,
+179,child neurology consultants of austin,mda care affiliate,5124944000,6811 austin center blvd,suite 400,austin; tx 78731,
+55,central texas va als clinic (austin),affiliated clinic,2543923264,7901 metropolis dr.,NA,austin; tx 78744,va
+125,university of maryland als clinic,certified treatment center of excellence,4103283100,827 linden avenue,NA,baltimore; md 21201,
+128,johns hopkins university- adult care center,mda care center,4109556435,601 n. caroline street,outpatient center 5th floor,baltimore; md 21287,pcornet
+129,johns hopkins university- als care center,mda/als care center,4109558511,601 n. caroline street,outpatient center 5th floor,baltimore; md 21287,pcornet
+127,johns hopkins university- pediatric care center,mda care center,4109554259,601 n. caroline street,outpatient center 5th floor,baltimore; md 21287,pcornet
+19,northern light eastern maine medical center,mda clinic,2079736588,905 union street,suite 9,bangor; me 04401,
+49,our lady of the lake als clinic,affiliated clinic,2252152193,5247 didesse dr.,NA,baton rouge; la 70808,
+45,university hospitals cleveland medical center,affiliated clinic,2168444854,3619 park east dr.,suite 109,beachwood; oh 44122,
+194,st. charles medical center,affiliated clinic,5413823344,2200 ne neff rd.,suite 200,bend; or 97701,
+121,billings clinic,affiliated clinic,4062382500,801 n 29th st.,NA,billings; mt 59101,
+120,billings clinic hospital- adult care center,mda care center,4062382410,801 n. 29th street,neurology department,billings; mt 59101,
+10,alabama neurology associates,recognized treatment center,2058032210,3105 independence drive suite 105,NA,birmingham; al 35209,
+9,the children's hospital of uab,mda care center,2056389941,1600 7th avenue south,NA,birmingham; al 35233,
+11,the university of alabama at birmingham- kirklin clinic,mda care center,2059342120,1720 7th�avenue south,suite 240,birmingham; al 35233,pcornet
+201,geisinger medical center als clinic,recognized treatment center,5704161867,549 fair st.,NA,bloomsburg; pa 17815,pcornet
+24,st. lukes rehabilitation hospital- adult care center,mda care center,2089085281,600 n. robbins road,suite 300,boise; id 83702,
+22,st. lukes rehabilitation hospital- als care center,mda care center,2083819375,600 n. robbins road,2nd floor,boise; id 83702,
+23,idaho physical medicine and rehabilitation,mda clinic,2088841333,161 e mallard dr,suite 120,boise; id 83706,
+21,st. luke's children's hospital,mda care center,2083816900,100 e. idaho street,suite 200,boise; id 83712,
+242,tufts medical center,mda care affiliate,6176365848,800 washington street,NA,boston; ma 02111,
+243,massachusetts general hospital- pediatric care center,mda care center,6176434645,165 cambridge street,8th floor,boston; ma 02114,
+245,sean m. healey & amg center for als,affiliated clinic,6177243914,15 parkman st.,NA,boston; ma 02114,
+240,boston children's hospital,mda care center,6173558235,300 longwood avenue,11th floor,boston; ma 02115,
+241,brigham & women's hospital,mda care center,6175257443,60 fenwood road,neuroscience 1st floor,boston; ma 02115,
+244,beth israel deaconess medical center,affiliated clinic,6176678130,330 brookline ave.,NA,boston; ma 02215,
+278,montefiore medical center,mda care center,7184058140,1515 blondell ave.,suite 220,bronx; ny 10461,
+279,als association clinic program at the james j. peters va medical center,veterans administration,7185849000,130 west kingsbridge rd.,jjpvamc room 5c-02; 5th floor,bronx; ny 10468,va
+276,suny downstate medical center,mda care center,7182707207,450 clarkson avenue,NA,brooklyn; ny 11203,pcornet
+277,suny downstate at maimonides medical center,mda care center,7182837470,6323 7th ave,NA,brooklyn; ny 11220,
+17,mid coast hospital als clinic,affiliated clinic,2073736099,329 bath rd.,suite 3a,brunswick; me 04011,
+274,university of buffalo,mda care center,7169326080,1001 main street,NA,buffalo; ny 14203,
+273,dent neurologic institute,affiliated clinic,7162502000,3980 sheridan drive,NA,buffalo; ny 14226,
+295,lahey clinic,mda care affiliate,7817445100,41 burlington mall road,NA,burlington; ma 01805,
+296,the curt and shonda schilling als clinic at lahey hospital and medical center,certified treatment center of excellence,7817447273,41 mall rd.,NA,burlington; ma 01805,
+203,saint francis medical center,affiliated clinic,5736513188,211 st. francis dr.,NA,cape girardeau; mo 63703,
+353,the als clinic at the university of north carolina at chapel hill,affiliated clinic,9198437857,194 finley gold course rd.,suite 200,chapel hill; nc 27517,pcornet
+354,university of north carolina,mda care center,9199669281,194 finley golf course road,suite 200,chapel hill; nc 27517,
+322,ralph h. johnson vamc als clinic,veterans administration,8435775011,109 bee st.,NA,charleston; sc 29401,va
+323,medical university of south carolina,certified treatment center of excellence,8437923223,135 rutledge ave.,NA,charleston; sc 29425,pcornet
+262,carolinas medical center,mda clinic,7044461900,1010 edgehill road north,NA,charlotte; nc 28207,
+301,richard r. dart als clinic,certified treatment center of excellence,8002513627,university hospital,1221 lee st.; fourth floor,charlottesville; va 22908,
+150,university of virginia adult care center,mda care center,4349248617,1215 lee street,4th floor of patient care,charlottesville; va 22908,
+149,university of virginia pediatric care center,mda care center,4342436903,1204 w. main street,uva battle building,charlottesville; va 22908,
+148,als clinic at erlanger,affiliated clinic,4237789001,979 east third st.,suite c-830,chattanooga; tn 37403,
+74,ann & robert h. lurie children's hospital of chicago,mda care center,3122273550,225 e. chicago avenue,3rd floor,chicago; il 60611,
+77,northwestern university,mda/als care center,3126957950,675 n. st. clair street,20th floor,chicago; il 60611,
+76,rush hospital als multidisciplinary clinic,affiliated clinic,3125632053,1753 w harrison,suite 1118,chicago; il 60612,pcornet
+78,rush university medical center,mda care center,3129425936,1725 w. harrison street,suite 1118,chicago; il 60612,pcornet
+75,university of illinois at chicago,mda care center,3123555265,1801 w.taylor street,suite 4-e,chicago; il 60612,
+79,university of illinois hospital and health sciences system,certified treatment center of excellence,3129964780,1801 west taylor st.,room 4e,chicago; il 60612,
+293,the university of chicago,certified treatment center of excellence,7737025659,5841 s. maryland ave.,mc 2030,chicago; il 60637,
+292,shriners hospital for children- chicago,mda care center,7736225400,2211 n. oak park avenue,NA,chicago; il 60707,
+182,university of cincinnati - als multidisciplinary clinic,affiliated clinic,5134758730,151 w galbraith rd.,NA,cincinnati ; oh 45216,
+183,cincinnati children's hospital,mda care center,5138033000,3333 burnet avenue,NA,cincinnati; oh 45229,
+162,kaiser permanente sunnyside medical center,affiliated clinic,5036522880,10180 se sunnyside rd.,NA,clackamas; or 97015,
+44,louis stokes cleveland department of veterans affairs medical center,certified treatment center of excellence,2167913800,sci service 128 w,10701 e. blvd.,cleveland; oh 44106,va
+43,metrohealth medical center,mda care center,2167787800,2500 metrohealth drive,NA,cleveland; oh 44109,
+42,cleveland clinic,certified treatment center of excellence,2164445559,9500 euclid ave.,NA,cleveland; oh 44195,
+309,university of vermont medical center als clinic,certified treatment center of excellence,8028474589,790 college parkway,NA,colchester; vt 05401,
+204,university of missouri- adult care center,mda care center,5738821515,1020 hitt street,3rd floor,columbia; mo 65201,pcornet
+205,university of missouri- pediatric care center,mda care center,5738826921,404 n. keene street,1st floor,columbia; mo 65201,
+206,university of missouri healthcare als treatment center,certified treatment center of excellence,5738840994,1020 hitt st.,NA,columbia; mo 65212,pcornet
+233,ohio state university,mda/als care center,6142934969,543 taylor avenue,NA,columbus; oh 43203,pcornet
+234,nationwide children's hospital,mda care center,6147222203,555 s 18th st,NA,columbus; oh 43205,
+334,wesley neurology,mda/als care center,9012613500,8000 centerview parkway,suite 305,cordova; tn 38018,
+109,driscoll children's hospital,mda care center,3616946747,3533 s. alameda street,NA,corpus christi; tx 78411,
+35,texas neurology als center,affiliated clinic,2148273610,6080 north central expressway,NA,dallas; tx 75206,
+33,children's medical center of dallas,mda clinic,2144562768,2350 n. stemmons freeway,5th floor,dallas; tx 75207,
+34,university of texas- southwestern,mda/als care center,2146458300,5303 harry hines blvd,NA,dallas; tx 75390,pcornet
+199,als clinic at geisinger medical center,affiliated clinic,5702716472,100 north academy ave.,NA,danville; pa 17822,pcornet
+200,geisinger medical center,mda care center,5702717994,100 n. academy avenue,1st floor d1,danville; pa 17822,pcornet
+60,kaiser denver als clinic,affiliated clinic,3033384545,1375 east 20th ave.,NA,denver; co 80124,
+62,national jewish health/blue sky neurology als clinic,affiliated clinic,3037814485,1400 jackson st.,suite 360,denver; co 80206,
+184,central iowa va healthcare system,veterans administration,5156995999,3600 30th st.,NA,des moines; ia 50310,va
+80,children's hospital of michigan,mda care center,3138329075,3901 beaubien,NA,detroit; mi 48201,
+81,harry j. hoenselaar clinic,certified treatment center of excellence,3139162835,2799 west grand blvd. k11-neurology detroit; mi 48202,k11-neurology,detroit; mi 48202,
+198,rancho los amigos national rehabilitation center,mda clinic,5624017111,7601 e. imperial highway,NA,downey; ca 90242,
+48,essentia health- duluth clinic neurology,recognized treatment center,2187863925,400 east third st.,NA,duluth; mn 55805,pcornet
+351,duke university als center,certified treatment center of excellence,9196682875,932 morreene rd.,box 3333,durham; nc 27705,pcornet
+350,lennox baker children's hospital,mda clinic,9196136832,3000 erwin road,NA,durham; nc 27705,
+352,duke university,mda care center,9196815176,200 trent drive,clinic 1-l,durham; nc 27710,pcornet
+186,michigan state university,mda/als care center,5173538122,804 service road,suite a-117,east lansing; mi 48824,
+249,stony brook children's hospital,mda care affiliate,6314445437,4 technology drive,NA,east setauket; ny 11733,
+362,doctors' hospital at renaissance,affiliated clinic,9563622440,2821 michael angelo dr.,ste. 306,edinburg; tx 78539,
+346,texas tech university health sciences center el paso,affiliated clinic,9152155900,4801 alberta ave.,NA,el paso; tx 79905,
+207,elkhart clinic llc,mda care affiliate,5742963282,303 s. nappanee,NA,elkhart; in 46514,
+318,upmc northshore neurology,affiliated clinic,8148778000,120 e 2nd st.,3rd floor,erie; pa 16507,
+317,upmc northshore neurosciences,mda clinic,8148774600,120 e. 2nd street,3rd floor,erie; pa 16507,
+259,sanford coordinated treatment center,mda care center,7012346600,736 broadway rt 1049,NA,fargo; nd 58122,
+303,sanford health neuroscience,affiliated clinic,8004374010,736 broadway,NA,fargo; nd 58122,
+330,connecticut children's medical center - farmington,mda care center,8608377500,505 farmington avenue,2nd floor,farmington; ct 06032,
+340,kaiser permanente als clinic - fontana,affiliated clinic,9094275416,9985 sierra ave.,NA,fontana; ca 92335,
+361,phil smith neuroscience institute als clinic & research center at holy cross health,certified treatment center of excellence,9545423436,1931 ne 47th street,NA,fort lauderdale; fl 33308,
+50,lee health als clinic,affiliated clinic,2393430776,13601 plantation rd.,NA,fort myers; fl 33912,
+57,parkview neuroscience als clinic,affiliated clinic,2604256780,11104 parkview circle,suite 040,fort wayne; in 46845,
+258,cook children's medical center,mda care center,6828852500,1500 cooper street,4th floor,fort worth; tx 76104,
+197,community regional medical center,mda care affiliate,5594592396,2335 e. kashian lane,suite 301,fresno; ca 93701,
+107,uf health gainesville - norman fixel institute for neurological diseases,affiliated clinic,3522945400,3009 sw williston road,NA,gainesville; fl 32608,
+108,orlando health physicians group neurology,mda care center,3522945757,2000 sw archer road,adult neurology 3rd floor,gainesville; fl 32610,pcornet
+336,the als clinic of the midsouth,affiliated clinic,9017544425,1365 s germantown rd,NA,germantown; tn 38138,
+333,northshore university health system,affiliated clinic,8775707020,2100 pfingsten rd.,NA,glenview; il 60026,
+237,helen devos children's hospital,mda care center,6162672500,100 michigan street ne,NA,grand rapids; mi 49503,
+239,trinity health medical group-neuromuscular,certified treatment center of excellence,6166855050,220 cherry st.,NA,grand rapids; mi 49503,
+238,spectrum health als multidisciplinary clinic,certified treatment center of excellence,6162677104,2750 e. beltline ne grand rapids; mi 49525,NA,grand rapids; mi 49525,
+185,northwell health,affiliated clinic,5163257000,611 northern blvd.,suite 150,great neck; ny 11021,
+356,prevea health- adult care center,mda care center,9202721610,1821 s. webster avenue,NA,green bay; wi 54301,
+355,prevea health- pediatric care center,mda care center,9202721270,1821 s. webster avenue,NA,green bay; wi 54301,
+305,"jim ""catfish"" hunter als clinic",recognized treatment center,8007754840,outpatient rehab building,2310 stantonsburg rd.,greenville; nc 27835,
+331,greenville health system als clinic,recognized treatment center,8644544500,200 patewood dr.,suite b350,greenville; sc 29615,
+7,yale medicine center for musculoskeletal care,affiliated clinic,2038634490,15 valley drive,suite 201,greenwich; ct 06831,
+289,the riverside als clinic,affiliated clinic,7576377500,850 enterprise parkway; ste. 1400,NA,hampton; va 23666,
+72,kaiser permanente als clinic - south bay,recognized treatment center,3105172336,25965 s. normandie ave.,NA,harbor city; ca 90710,
+311,virginia commonwealth university als clinic,affiliated clinic,8048280371,11958 w. broad st.,NA,henrico; va 23233,
+302,penn state hershey als clinic and research center,certified treatment center of excellence,8002923332,30 hope dr.,NA,hershey; pa 17033,
+275,penn state hershey medical center,mda care center,7175313828,30 hope drive,suite 1300,hershey; pa 17033,pcornet
+266,edward hines- jr. va als multidisciplinary clinic,veterans administration,7082028387,5000 s. 5th ave.,bld 228 neurology; 5th floor,hines; il 60141,va
+314,neurology associates- honolulu,mda clinic,8085235886,321 n. kuakini street,NA,honolulu; hi 96817,
+313,kaiser permanente als clinic - honolulu,affiliated clinic,8084328000,3288 moanalua rd.,4th floor; neurology,honolulu; hi 96819,
+269,baylor college of medicine,mda clinic,7137982273,7200 cambridge street suite 9a,NA,houston; tx 77030,pcornet
+270,baylor college of medicine,certified treatment center of excellence,7137987411,6550 fannin st.,suite 1801 (smith tower),houston; tx 77030,pcornet
+268,houston methodist als clinic,certified treatment center of excellence,7134413760,6560 fannin,suite 802,houston; tx 77030,pcornet
+267,houston methodist neurological institute,mda/als care center,7133637310,6560 fannin street,suite 802,houston; tx 77030,pcornet
+321,texas children's hospital,mda care center,8328223554,6701 fannin street,9th floor,houston; tx 77030,
+65,marshall health als clinic,affiliated clinic,3046963246,1 john marshall dr.,NA,huntington; wv 25755,
+56,the als care clinic at crestwood medical center,certified treatment center of excellence,2564294113,610 airport road suite 110,NA,huntsville; al 35802,
+88,indiana university,mda care center,3179485450,355 w. 16th street,neurology 3rd floor,indianapolis; in 46202,
+91,richard l. roudebush va medical center,veterans administration,3179882715,1481 w 10th st.,NA,indianapolis; in 46202,va
+89,riley hospital for children,mda care center,3179487450,705 riley hospital drive,NA,indianapolis; in 46202,
+90,the indiana university als center at iu health,certified treatment center of excellence,3179637385,355 west 16th st.,NA,indianapolis; in 46202,
+98,university of iowa- cmt clinic,mda/als care center,3193846362,200 hawkins drive,NA,iowa city; ia 52242,pcornet
+97,university of iowa health care,affiliated clinic,3193568958,200 hawkins dr.,NA,iowa city; ia 52242,pcornet
+96,university of iowa hospitals & clinics,mda/als care center,3193562229,200 hawkins drive,NA,iowa city; ia 52242,pcornet
+95,university of iowa- myotonic clinic,mda/als care center,3193534343,200 hawkins drive,NA,iowa city; ia 52242,pcornet
+94,iowa city va als clinic,recognized treatment center,3193380581,601 highway 6 west,(11e),iowa city; ia 52246,va
+209,university of mississippi,mda care center,6019845500,350 w. woodrow wilson,NA,jackson; ms 39213,
+337,uf health jacksonville multidisciplinary als clinic,certified treatment center of excellence,9042449922,580 west 8th st.,tower 1; 9th floor,jacksonville; fl 32209,
+338,mayo clinic florida,certified treatment center of excellence,9049532000,4500 san pablo rd. south,NA,jacksonville; fl 32224,pcornet
+339,mayo clinic- jacksonville,mda/als care center,9049536869,4500 san pablo road south,2nd floor,jacksonville; fl 32224,pcornet
+325,va boston healthcare system,veterans administration,8573646964,150 south huntington avenue,NA,jamaica plain; ma 02130,va
+166,ochsner als clinic,certified treatment center of excellence,5048420113,1401 jefferson hwy.,NA,jefferson; la 70121,pcornet
+358,kaiser permanente als clinic - martinez,affiliated clinic,9253721768,200 muir rd.,martinez; ca 94553,joanna dearlove m.d.,
+99,university of iowa health care,affiliated clinic,3193847292,8605 chambery blvd.,NA,johnston; ia 50131,pcornet
+316,conemaugh health system als clinic,affiliated clinic,8142695061,1450 scalp ave.,suite 120,johnstown; pa 15904,
+58,bronson neuroscience center,affiliated clinic,2693417500,601 john st.,suite m-124,kalamazoo; mi 49007,
+344,university of kansas medical center,mda/als care center,9135886820,3599 rainbow blvd.,NA,kansas city; ks 66103,pcornet
+343,university of kansas medical center,certified treatment center of excellence,9135880656,3599 rainbow blvd.,ms 2012,kansas city; ks 66160,pcornet
+225,gundersen health system als clinic,affiliated clinic,6087759000,1900 south ave.,NA,la crosse; wi 54601,
+260,roseman university als clinic,affiliated clinic,7024634040,5380 s. rainbow,ste 120,las vegas; nv 89118,
+261,las vegas clinic – als clinic,affiliated clinic,7025054230,351 n. buffalo dr.,suite b,las vegas; nv 89145,
+216,dartmouth hitchcock medical center- pediatric care center,mda care center,6036539669,one medical center drive,6th floor,lebanon; nh 03756,
+215,dartmouth-hitchcock medical center- adult care center,mda care center,6036505104,one medical center drive,suite 3-c,lebanon; nh 03756,
+214,the als center at dartmouth-hitchcock medical center,certified treatment center of excellence,6036505000,18 old etna rd.,NA,lebanon; nh 03766,
+328,university of kentucky,certified treatment center of excellence,8592185061,740 south limestone st.,NA,lexington; ky 40536,
+113,neurology associates- pc,mda clinic,4024837226,2631 s. 70th street,NA,lincoln; ne 68506,
+154,university of arkansas for medical sciences,affiliated clinic,5016865838,4301 west markham street,NA,little rock; ar 72205,pcornet
+153,university of arkansas- pediatric care center,mda/als care center,5013644000,1 children's way,NA,little rock; ar 72205,pcornet
+341,the center for restorative neurology at loma linda university neurology,certified treatment center of excellence,9095585977,11370 anderson st.,suite 2400,loma linda; ca 92354,
+101,children's hospital of los angeles,mda care center,3233615919,4650 sunset blvd,neurology department,los angeles; ca 90027,
+306,kaiser permanente als clinic - la,recognized treatment center,8009548000,1505 n. edgemont st.,5th floor,los angeles; ca 90027,
+102,keck medicine of usc als clinic,certified treatment center of excellence,3234420259,1520 san pablo st.,suite 3000,los angeles; ca 90033,
+70,cedars-sinai medical center,mda/als care center,3104235700,8700 beverly blvd,neurology department,los angeles; ca 90048,
+69,center for als care at cedars sinai medical center,certified treatment center of excellence,3104231525,127 s. san vicente blvd.,advanced health sciences pavilion; sixth floor; a660,los angeles; ca 90048,
+71,veterans administration - west los angeles,veterans administration,3104783711,11301 wilshire blvd.,NA,los angeles; ca 90073,va
+73,university of california- los angeles,mda/als care center,3107941195,300 ucla medical plaza,suite b200,los angeles; ca 90095,
+157,university of louisville physicians,recognized treatment center,5025886000,401 e. chestnut st.,suite 510,louisville; ky 40202,
+156,university of louisville physicians adult neurology,mda care center,5025884800,401 e. chestnut street,suite 510,louisville; ky 40202,
+155,university of louisville physicians child neurology,mda care center,5025883650,411 e chestnut st,novak center suite 645,louisville; ky 40202,
+265,macon als clinic,affiliated clinic,7067214581,3351 northside dr.,NA,macon; ga 31210,
+196,valley childrens hospital,mda care center,5593536215,41169 goodwin way,NA,madera; ca 93636,
+221,dean neurological institute & spine center,mda care affiliate,6082603425,700 s. park street,3rd floor,madison; wi 53715,
+224,american family children's hospital,mda care center,6082636420,1675 highland avenue,NA,madison; wi 53792,
+222,university of wisconsin health,mda care center,6082620547,600 highland avenue,h6-544,madison; wi 53792,
+223,uw health university hospital als clinic,affiliated clinic,6082635442,600 highland ave.,NA,madison; wi 53792,
+217,dartmouth-hitchcock- manchester,mda care center,6036952940,87 mcgregor street,suite 2200,manchester; nh 03110,
+319,methodist neurology associates,mda care affiliate,8172250410,2800 e. broad street,suite 421,mansfield; tx 76063,
+291,maple grove clinic,mda clinic,7638981080,14500 99th avenue north,NA,maple grove; mn 55369,
+304,marshfield clinic,mda care affiliate,8006993377,1000 n. oak avenue,NA,marshfield; wi 54449,pcornet
+335,methodist le bonheur community outreach,mda care center,9012876265,600 jefferson ave,NA,memphis; tn 38105,
+20,le bois neurology,affiliated clinic,2083436200,3875 e. overland road suite 201,NA,meridian; id 83642,
+66,university of miami,mda/als care center,3052437400,1150 nw 14th street,suite 609,miami; fl 33136,
+1,university of miami als center,certified treatment center of excellence,18006902571,1150 nw 14th st.,ste. 609,miami; fl 33136,pcornet
+135,children's hospital of wisconsin,mda care center,4142663464,9000 w. wisconsin avenue,NA,milwaukee; wi 53226,
+137,froedtert & the medical college of wisconsin,certified treatment center of excellence,4148055224,9200 w. wisconsin ave.,NA,milwaukee; wi 53226,pcornet
+138,froedtert memorial lutheran hospital,mda care center,4148058710,9200 w. wisconsin avenue,NA,milwaukee; wi 53226,
+136,milwaukee va medical center als clinic,certified treatment center of excellence,4143842000,5000 west national ave.,NA,milwaukee; wi 53295,va
+232,als center of excellence at hennepin healthcare,certified treatment center of excellence,6128735465,715 south 8th st.,3rd floor neurology clinic,minneapolis; mn 55415,
+230,minneapolis va health care system (vahcs) als center of excellence,certified treatment center of excellence,6126297005,one veteran's dr.,NA,minneapolis; mn 55417,va
+228,university of minnesota,mda/als care center,6123656777,2512 s. 7th street,3rd floor,minneapolis; mn 55454,
+229,m health fairview als clinic,certified treatment center of excellence,6126266688,909 fulton st. se,3rd floor; mc 2121cj,minneapolis; mn 55455,
+231,university of minnesota- twin cities,mda/als care center,6126727422,909 fulton street se,3rd floor,minneapolis; mn 55455,
+63,west virginia university- pediatric care center,mda/als care center,3045984835,1 medical center drive,pediatric neurology suite 6th floor,morgantown; wv 26506,
+64,west virginia university- school of medicine,affiliated clinic,3045986127,1 stadium dr.,3rd floor eye institute,morgantown; wv 26506,
+246,massachusetts general hospital,mda clinic,6177263642,boston; ma 02114,NA,NA,
+236,vanderbilt university,mda/als care center,6159360060,2200 pierce avenue,NA,nashville; tn 37232,pcornet
+364,vanderbilt university medical center als clinic,affiliated clinic,6159360060,1211 medical center drive,NA,nashville; tn 37232,pcornet
+357,children's hospital of wisconsin- fox valley,mda care center,9209697900,130 2nd st,west pavillion,neenah; wi 54956,
+284,hackensack meridian jersey shore university medical center als center,certified treatment center of excellence,7327763307,2100 corlies avenue,suite 2,neptune; nj 07753,
+329,the neuromuscular center at hospital for special care,certified treatment center of excellence,8608274924,2150 corbin ave.,NA,new britain; ct 06053,
+283,rutgers robert wood johnson medical school,certified treatment center of excellence,7322357733,125 paterson st.,clinical academic bldg.; suite 6100,new brunswick; nj 08903,
+6,yale new haven childrens hospital,mda care center,2037854081,1 long wharf drive,2nd floor,new haven; ct 06511,
+164,louisiana state university,mda care center,5044121517,2025 gravier street,5th floor,new orleans; la 70112,
+163,lsu als clinic,recognized treatment center,5044121415,478 south johnson st.,NA,new orleans; la 70117,
+167,children's hospital of new orleans,mda care center,5048969283,200 henry clay avenue,neuromuscular clinic 1st floor (green elevators),new orleans; la 70118,
+165,southeast louisiana veterans health care system als clinic,affiliated clinic,5045072000,2400 canal st.,NA,new orleans; la 70119,va
+28,new york university,mda/als care center,2122636350,301 e. 17th street,NA,new york; ny 10003,pcornet
+32,the als center at mount sinai downtown union square,certified treatment center of excellence,2128446188,department of neurology,10 union square east; 5th floor- 5d,new york; ny 10003,pcornet
+251,als association program at the hospital for special surgery,certified treatment center of excellence,6467146135,525 east 71st st.,NA,new york; ny 10021,
+252,hospital for special surgery,mda/als care center,6467978917,525 e. 71st street,5th floor,new york; ny 10021,
+30,columbia university medical center - eleanor and lou gehrig als center,certified treatment center of excellence,2123056788,710 west 168th st.,NA,new york; ny 10032,pcornet
+29,columbia university medical center- adult care center,mda/als care center,2123051319,710 w. 168th street,3rd floor,new york; ny 10032,pcornet
+31,columbia university medical center- pediatric care center,mda/als care center,2123426867,180 fort washington avenue,5th floor,new york; ny 10032,pcornet
+363,rutgers university hospital,mda clinic,9739720977,90 bergen street suite 8100,NA,newark; nj 07103,
+290,children's hospital of the kings daughters,mda care center,7576686494,850 southampton avenue,neurology 1st floor,norfolk; va 23510,
+263,atrium health als center,affiliated clinic,7044466254,university of north carolina school of medicine – charlotte campus,1010 edgehill rd.,north charlotte; nc 28207,
+119,integris southwest medical center,mda/als care center,4056445170,4401 s. western avenue,suite 5010,oklahoma city; ok 73109,
+115,university of nebraska,mda care center,4025598600,4239 farnam street,south tower 1st floor suite 105,omaha; ne 68131,
+114,the university of nebraska medical center,certified treatment center of excellence,4025526646,4242 farnam st.,suite 650,omaha; ne 68198,pcornet
+272,children's hospital of orange county,mda care center,7145097981,501 s. main street,suite 350,orange; ca 92868,
+271,uc irvine als clinic,certified treatment center of excellence,7144562332,200 s. manchester,suite 110,orange; ca 92868,pcornet
+100,orlando health physicians group neurology,affiliated clinic,3218429805,32 w. gore st.,3rd floor,orlando; fl 32806,pcornet
+123,nemours children's hospital,mda care center,4076507250,13535 nemours parkway,NA,orlando; fl 32827,
+254,lucile packard children's hospital,mda care center,6507230993,730 welch road,2nd floor,palo alto; ca 94304,
+255,stanford mda/als neuroscience clinic,affiliated clinic,6507236469,213 quarry rd.,1st floor,palo alto; ca 94304,pcornet
+253,veterans administration - palo alto,veterans administration,6504935000,3801 miranda ave.,NA,palo alto; ca 94304,va
+67,osf healthcare illinois neurological institute,mda care center,3096244000,200 e. pennsylvania avenue,NA,peoria; il 61603,
+39,corporal michael j. crescenz va medical center,veterans administration,2158235800,3900 woodland ave.,NA,philadelphia; pa 19104,
+37,hospital of the university of pennsylvania,mda/als care center,2156623606,3400 civic center blvd,south pavilion 2nd floor,philadelphia; pa 19104,
+36,the children's hospital of philadelphia,mda care center,2155901719,3500 civic center blvd,10th floor,philadelphia; pa 19104,
+41,jefferson weinberg als center,certified treatment center of excellence,2159558800,909 walnut st.,second floor,philadelphia; pa 19107,
+40,penn comprehensive als center,als center,2158293053,330 s. 9th street,3rd floor,philadelphia; pa 19107,
+38,temple university hospital,mda/als care center,2157078457,3509 n. broad street,5th floor,philadelphia; pa 19140,pcornet
+210,carl t. hayden veterans affairs medical center,veterans administration,6022775551,650 e. indian school,NA,phoenix; az 85012,va
+212,gregory f. fulton als clinic at barrow neurological institute,certified treatment center of excellence,6024062704,240 w. thomas rd.,suite 400,phoenix; az 85013,
+213,phoenix children's hospital,mda care center,6029330970,1919 e. thomas road,3rd floor,phoenix; az 85016,
+152,neuromuscular research center,affiliated clinic,4803141007,4545 e. shea blvd.,suite 175,phoenix; az 85028,
+130,allegheny health network als center,certified treatment center of excellence,4123598193,420 e. north ave.,suite 206,pittsburgh; pa 15212,
+132,university of pittsburgh als clinic,affiliated clinic,4126924920,3471 fifth ave.,NA,pittsburgh; pa 15213,pcornet
+131,university of pittsburgh medical center,mda/als care center,4126924917,1471 5th avenue,suite 810,pittsburgh; pa 15213,pcornet
+133,children's hospital of pittsburgh,mda care center,4126925520,4401 penn avenue,6th floor,pittsburgh; pa 15224,
+299,ponce health sciences university,mda care center,7878400052,388 zona ind reparada 2,NA,ponce; pr 00716,
+250,st. charles hospital and rehabilitation,mda care center,6314746300,200 belle terre road,NA,port jefferson; ny 11777,
+158,providence als center,certified treatment center of excellence,5032158580,5050 n.e. hoyt,suite 314,portland; or 97213,
+161,oregon health & science university- adult care center,mda/als care center,5034947772,3303 sw bond avenue,8th floor,portland; or 97239,
+300,oregon health and sciences university als clinic,certified treatment center of excellence,8002456478,3181 sw sam jackson park rd.,cr120,portland; or 97239,
+160,shriners hospital for children- portland,mda care center,5032415090,3101 sw sam jackson park road,NA,portland; or 97239,pcornet
+159,va portland health care system - als clinic,certified treatment center of excellence,5032208262,3710 sw u.s. veterans hospital rd.,NA,portland; or 97239,va
+112,rhode island hospital- adult care center,mda clinic,4014446447,593 eddy street,5th floor,providence; ri 02903,
+110,the louise wilcox als clinic,recognized treatment center,4014443032,neurology foundation,593 eddy st.; apc bldg 5th floor,providence; ri 02903,
+111,rhode island hospital- pediatric care center,mda clinic,4014443791,335-r prairie avenue,1st floor,providence; ri 02905,
+294,st marys medical group als clinic,affiliated clinic,7757703554,645 n. arlington ave.,suite 655,reno; nv 89503,
+176,kadlec als clinic,affiliated clinic,5099425560,1268 lee blvd.,NA,richland; wa 99352,
+312,virginia commonwealth university,mda care center,8048289350,11958 w. broad street,4th floor,richmond; va 23233,
+310,children's hospital of richmond,mda care center,8046285804,1000 e. broad street,3rd floor room 3-336,richmond; va 23298,
+360,kaiser permanente als clinic - riverside,affiliated clinic,9513534360,neurology department,10800 magnolia ave.,riverside; ca 92505,
+193,carilion clinic pediatric care center,mda care affiliate,5409858454,102 highland avenue,suite 104,roanoke; va 24013,
+192,carilion clinic adult care center,mda care affiliate,5402245170,3 riverside circle,3rd floor,roanoke; va 24016,
+170,mayo clinic,certified treatment center of excellence,5075381037,200 first st.; s.w.,NA,rochester; mn 55905,pcornet
+171,mayo clinic- rochester,mda care center,5075383270,200 1st st sw,department of neurology,rochester; mn 55905,pcornet
+208,strong memorial hospital,affiliated clinic,5852752559,601 elmwood avenue,NA,rochester; ny 14642,
+180,the emory bellard als clinic,recognized treatment center,5125094031,300 university blvd.,building a,round rock; tx 78665,pcornet
+178,central texas neurology consultants,affiliated clinic,5122181222,16040 park valley dr.,NA,round rock; tx 78681,
+51,beaumont health neuroscience center-adult and pediatric ,mda care center,2485517370,3555 w. 13 mile road,NA,royal oak; mi 48073,
+347,uc davis multidisciplinary als clinic,certified treatment center of excellence,9167346304,4860 y st.,suite 1700,sacramento; ca 95817,
+348,university of california- davis,mda/als care center,9167347041,4860 y street ste. 1700,department of physical medicine & rehabilitation,sacramento; ca 95817,
+126,tidalhealth peninsula regional als clinic,recognized treatment center,4109122889,100 east carroll st.,NA,salisbury; md 21801,
+308,university of utah medical center,mda/als care center,8015857575,175 n. medical drive east,4th floor,salt lake city; ut 84132,pcornet
+307,university of utah mnd clinic,certified treatment center of excellence,8015856052,175 n. medical dr.,5th floor,salt lake city; ut 84132,pcornet
+26,children's hospital of san antonio,mda care affiliate,2107044841,333 n santa rosa st,4th floor,san antonio; tx 78207,
+27,south texas va als clinic,affiliated clinic,2107924378,7400 merton minter,NA,san antonio; tx 78229,va
+25,university of texas health science center - san antonio,certified treatment center of excellence,2104509700,8300 floyd curl dr.,4th floor; mc 7883,san antonio; tx 78229,pcornet
+247,uc san diego als center,certified treatment center of excellence,6195435300,200 west arbor dr.,NA,san diego; ca 92103,pcornet
+326,university of california- san diego- adult care center,mda/als care center,8586578540,4510 executive drive,suite 325,san diego; ca 92121,
+327,rady children's hospital,mda care center,8589668108,8001 frost street,3rd floor,san diego; ca 92123,
+143,forbes norris als research and treatment center,certified treatment center of excellence,4156001264,1100 van ness,6th floor,san francisco; ca 94109,
+144,california pacific medical center,mda/als care center,4156003604,2324 sacramento street,suite 150,san francisco; ca 94115,
+139,the als research and treatment center at ucsf,certified treatment center of excellence,4153532122,400 parnassus ave.,8th floor,san francisco; ca 94117,pcornet
+145,kaiser permanente san francisco als multidisciplinary clinic,recognized treatment center,4158334555,450 6th ave.,3rd floor neurology,san francisco; ca 94118,
+142,veterans administration - san francisco,recognized treatment center,4155517300,4150 clement st.,stop 15inc,san francisco; ca 94121,va
+140,ucsf benioff childrens hospital,mda care center,4153533682,1825 4th street,suite 6a,san francisco; ca 94158,pcornet
+124,kaiser permanente als clinic - san jose,affiliated clinic,4089723000,275 hospital parkway,NA,san jose; ca 95119,
+297,instituto de rehabilitación del caribe,mda care center,7875047554,264 calle convento,NA,san juan; pr 00911,
+298,university of puerto rico,mda care center,7877587910,1101-1113 cll 56 se,NA,san juan; pr 00921,
+177,kaiser permanente als clinic - san leandro,affiliated clinic,5104543180,department of neurology,2500 merced st.,san leandro; ca 94577,
+141,kaiser permanente san rafael medical center,recognized treatment center,4154442000,99 monticello rd.,NA,san rafael; ca 94903,
+359,sarasota memorial health care system - center for neuromuscular disorders,affiliated clinic,9419178900,5880 rand blvd.,ste. 209,sarasota; fl 34239,
+18,maine medical partners,mda care center,2078831414,92 campus drive,2nd floor,scarborough; me 04074,
+211,honor health neurology and phoenix neurological associates als clinic,certified treatment center of excellence,6023075842,7242 e. osborn road,suite 400,scottsdale; az 85251,
+151,mayo clinic arizona,certified treatment center of excellence,4803018100,13400 e. shea blvd.,NA,scottsdale; az 85259,pcornet
+13,als association certified center of excellence at virginia mason,certified treatment center of excellence,2063411900,1100 ninth ave.,NA,seattle; wa 98101,
+16,seattle children's hospital,mda care center,2069872114,4800 sand point way ne,ocean entrance 8th floor,seattle; wa 98105,
+15,als association certified center of excellence at va puget sound health care system,certified treatment center of excellence,2067165756,1660 s columbian way,s-rcs-117,seattle; wa 98108,va
+12,als association certified center of excellence at swedish,certified treatment center of excellence,2063203494,500 17th ave.,NA,seattle; wa 98122,
+14,uw neurology clinic,affiliated clinic,2065987688,1959 ne pacific st.,NA,seattle; wa 98195,pcornet
+248,stony brook university hospital als center,certified treatment center of excellence,6314444623,179 belle meade rd.,suite 3 east,setauket; ny 11733,
+92,louisiana state university- shreveport,mda care center,3186262482,1606 kings highway,neurology department,shreveport; la 71103,
+219,avera brain and spine institute,recognized treatment center,6053228993,800 e 21st st.,NA,sioux falls; sd 57105,
+218,sanford clinic in sioux falls,mda care center,6053121000,1600 w. 22nd street,NA,sioux falls; sd 57105,
+220,sioux falls va health system,veterans administration,6053363230,2501 w 22nd st.,NA,sioux falls; sd 57117,va
+332,greenville hospital system pediatric care center,mda clinic,8645738732,249 n. grove medical park drive,NA,spartanburg; sc 29303,
+174,providence st. lukes als center,affiliated clinic,5094736706,715 s cowley,suite 228,spokane; wa 99202,
+175,shriners hospital for children- spokane,mda care affiliate,5096230400,911 w. 5th avenue,NA,spokane; wa 99204,
+47,southern illinois university,mda care center,2175458000,751 n. rutledge,neurology department suite 3100,springfield; il 62702,
+134,baystate behavioral health,mda care affiliate,4137940000,759 chestnut street,pediatric clinic: 50 wason avenue,springfield; ma 01109,
+146,the als clinic of the ozark,affiliated clinic,4178753087,department of neurology,3801 s. national ave.; suite 900,springfield; mo 65807,
+195,oregon neurology,mda clinic,5418689430,1 hayden bridge way,NA,springfield; or 97477,
+84,st. louis university health science center,certified treatment center of excellence,3149776082,1438 s grand blvd.,NA,st louis; mo 63104,
+82,va st. louis health care system als clinic,recognized treatment center,3142897914,915 n. grand blvd.,NA,st. louis; mo 63106,va
+83,washington university school of medicine neuromuscular clinic,affiliated clinic,3143626981,department of neurology,660 s. euclid ave.,st. louis; mo 63110,pcornet
+256,gillette children's specialty healthcare,mda care center,6512908707,200 e. university avenue,NA,st. paul; mn 55101,
+257,healthpartners neuroscience center,affiliated clinic,6514956307,295 phalen blvd.,NA,st. paul; mn 55130,
+282,st. anthony's neurology group,mda care center,7278207701,1201 5th avenue north,medical office building suite 202,st. petersburg; fl 33705,
+320,olive view medical center,mda care center,8183643104,14445 olive view drive,NA,sylmar; ca 91342,
+86,suny upstate medical university,certified treatment center of excellence,3154644243,750 east adams st.,NA,syracuse; ny 13210,
+85,syracuse va als clinic,veterans administration,3154254400,800 irving ave,NA,syracuse; ny 13210,va
+52,vm franciscan als clinic at st. joseph medical center,affiliated clinic,2534264416,1617 s. j street,NA,tacoma; wa 98405,
+54,kaiser permanente als clinic - tacoma,affiliated clinic,2535963410,9505 steele st s,NA,tacoma; wa 98444,
+53,va puget sound health care system,veterans administration,2535831646,9600 veterans dr.,sw a-117-rcs,tacoma; wa 98493,va
+315,university of south florida als clinic,certified treatment center of excellence,8139749273,13330 laurel dr.,NA,tampa; fl 33612,pcornet
+147,toledo children's hospital,mda care center,4192915599,2150 w. central avenue,NA,toledo; oh 43606,
+68,harbor-ucla als clinic,affiliated clinic,3102223898,1000 w carson st.,n-24,torrance; ca 90509,
+190,children's clinics for rehabilitative services,mda care center,5203243200,2600 n. wyatt drive,NA,tucson; az 85712,
+191,banner - university medical center south,affiliated clinic,5206948888,2800 e. ajo way,NA,tucson; az 85713,
+349,neurology llpc of tulsa,mda care center,9187477517,1919 s. wheeling avenue,suite 707,tulsa; ok 74104,
+342,loma linda university - upland,mda clinic,9098351810,901 san bernardino road,suite 302,upland; ca 91786,
+46,carle medical group,mda care center,2173833440,610 n. lincoln avenue,NA,urbana; il 61801,
+288,sentara als clinic,affiliated clinic,7575070600,1950 glenn mitchell dr.,suite 200,virginia beach; va 23456,
+2,georgetown university,mda care center,2024441774,3800 reservoir road nw,NA,washington; dc 20007,
+3,georgetown university als clinic,affiliated clinic,2024448525,pascquerilla healthcare center (phc); 7th floor,3800 reservoir road; nw,washington; dc 20007,
+4,children's national medical center,mda care center,2024763094,111 michigan avenue nw,NA,washington; dc 20010,
+5,the john j. kelly als clinic,certified treatment center of excellence,2027412700,2150 pennsylvania ave. nw,7-401,washington; dc 20037,
+8,va connecticut interdisciplinary als clinic,certified treatment center of excellence,2039325711,950 campbell ave.,NA,west haven; ct 06516,va
+235,ohiohealth als clinic,certified treatment center of excellence,6147882445,300 polaris parkway,suite 2350,westerville; oh 43082,
+345,white plains hospital and medical center,mda care affiliate,9146811128,41 east post rd.,NA,white plains; ny 10601,
+87,wichita als clinic,affiliated clinic,3166120188,3450 n. rock rd.,ste 503,wichita; ks 67226,
+202,geisinger wyoming valley,mda care center,5708086028,620 baltimore dr,NA,wilkes-barre; pa 18702,pcornet
+59,alfred i. dupont hospital for children,mda care center,3026514200,1600 rockland road,orange module 3rd floor,wilmington; de 19803,
+105,wake forest baptist health medical center,certified treatment center of excellence,3367162323,medical center blvd.,NA,winston-salem; nc 27157,
+106,wake forest university,mda care center,3367164101,1 medical center blvd,department of neurology,winston-salem; nc 27157,
+122,adventhealth medical group neurology at winter park als clinic,affiliated clinic,4073036729,1573 w fairbanks ave.; suite 210,NA,winter park; fl 32789,pcornet
+324,kaiser permanente als clinic - woodland hills,affiliated clinic,8558920919,5601 de soto avenue,NA,woodland hills; ca 91367,
+173,umass medical center,affiliated clinic,5088564147,55 lake ave. north,room ac1-044,worcester; ma 01655,
+172,university of massachusetts,mda care center,5083342527,55 lake avenue north,1st floor,worcester; ma 01655,
+104,dean martin neuromuscular clinic,mda care affiliate,3307467211,1044 belmont avenue,NA,youngstown; oh 44501,
