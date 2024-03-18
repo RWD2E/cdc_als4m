@@ -201,8 +201,8 @@ tve_df %<>%
 
 # interventions - providers
 sel_prvdr<-c(
-  # "PRVDR_mdc",
-  # "PRVDR_NEURO_w4up",
+  "PRVDR_mdc",
+  "PRVDR_NEURO_w4up",
   "PRVDR_neurology",
   "PRVDR_psychiatry",
   "PRVDR_home-health",
@@ -211,18 +211,18 @@ sel_prvdr<-c(
   "PRVDR_surgery",
   "PRVDR_pt",
   "PRVDR_ent",
-  "PRVDR_ot",
+  # "PRVDR_ot",
   # "PRVDR_social",
-  # "PRVDR_rehap",
-  # "PRVDR_genetic",
-  # "PRVDR_pain",
+  "PRVDR_rehap",
+  "PRVDR_genetic",
+  "PRVDR_pain",
   # "PRVDR_dietition",
   "PRVDR_nurse",
-  "PRVDR_urology",
+  # "PRVDR_urology",
   "PRVDR_respiratory",
   "PRVDR_palliative",
   "PRVDR_cardiology",
-  # "PRVDR_intv-radiology",
+  "PRVDR_intv-radiology",
   "PRVDR_slp"
 )
 
@@ -239,16 +239,16 @@ ggplot(
   labs(x = "Days Since Index", y = "Hazard Ratio") +
   theme(
     legend.position = "none",
-    text = element_text(face="bold",size=15)
+    text = element_text(face="bold",size=20)
   )+
-  facet_wrap(~ var,ncol=7,scales ="free")
+  facet_wrap(~ var,ncol=4,scales ="free")
 
 # save figure
 ggsave(
   "./res/provider_tv_ate.png",
   dpi = 300,
-  width = 30, 
-  height = 8, 
+  width = 22, 
+  height = 15, 
   units = "in",
   device = "png"
 )
@@ -287,7 +287,6 @@ ggsave(
   units = "in",
   device = "png"
 )
-
 prdvr_rpt<-explainer %>% 
   filter(adj_by == var) %>%
   filter(grepl("^(PRVDR_)+",var)) %>%
@@ -388,6 +387,8 @@ ggplot(
     text = element_text(face="bold")
   ) +
   facet_wrap(~ var_lbl,ncol=6,scales ="free")
+
+
 
 # sdoh
 ggplot(
