@@ -233,7 +233,7 @@ ggplot(
   aes(x=cond,y=exp_eff_m,color = estmod,group=estmod,linetype=estmod)
 ) + 
   geom_point()+
-  geom_smooth(method = 'lm',formula = 'y ~ x')+
+  geom_smooth(method = 'gam',formula = 'y ~ x')+
   geom_errorbar(aes(ymax = exp_eff_u,ymin = exp_eff_l))+
   geom_hline(aes(yintercept = 1),linetype=2) + 
   labs(x = "Days Since Index", y = "Hazard Ratio") +
@@ -247,8 +247,8 @@ ggplot(
 ggsave(
   "./res/provider_tv_ate.png",
   dpi = 300,
-  width = 22, 
-  height = 15, 
+  width = 15, 
+  height = 8, 
   units = "in",
   device = "png"
 )
