@@ -201,28 +201,28 @@ tve_df %<>%
 
 # interventions - providers
 sel_prvdr<-c(
-  "PRVDR_mdc",
-  "PRVDR_NEURO_w4up",
+  # "PRVDR_mdc",
+  # "PRVDR_NEURO_w4up",
   "PRVDR_neurology",
   "PRVDR_psychiatry",
-  "PRVDR_home-health",
+  # "PRVDR_home-health",
   # "PRVDR_pcp",
   "PRVDR_eye",
   "PRVDR_surgery",
-  "PRVDR_pt",
+  # "PRVDR_pt",
   "PRVDR_ent",
   # "PRVDR_ot",
   # "PRVDR_social",
-  "PRVDR_rehap",
-  "PRVDR_genetic",
-  "PRVDR_pain",
+  # "PRVDR_rehap",
+  # "PRVDR_genetic",
+  # "PRVDR_pain",
   # "PRVDR_dietition",
   "PRVDR_nurse",
   # "PRVDR_urology",
   "PRVDR_respiratory",
-  "PRVDR_palliative",
+  # "PRVDR_palliative",
   "PRVDR_cardiology",
-  "PRVDR_intv-radiology",
+  # "PRVDR_intv-radiology",
   "PRVDR_slp"
 )
 
@@ -233,15 +233,15 @@ ggplot(
   aes(x=cond,y=exp_eff_m,color = estmod,group=estmod,linetype=estmod)
 ) + 
   geom_point()+
-  geom_smooth(method = 'loess',formula = 'y ~ x')+
+  geom_smooth(method = 'lm',formula = 'y ~ x')+
   geom_errorbar(aes(ymax = exp_eff_u,ymin = exp_eff_l))+
   geom_hline(aes(yintercept = 1),linetype=2) + 
   labs(x = "Days Since Index", y = "Hazard Ratio") +
   theme(
-    legend.position = "none",
+    legend.position = "right",
     text = element_text(face="bold",size=20)
   )+
-  facet_wrap(~ var,ncol=4,scales ="free")
+  facet_wrap(~ var,ncol=3,scales ="free")
 
 # save figure
 ggsave(
@@ -273,7 +273,7 @@ ggplot(
   geom_hline(aes(yintercept = 1),linetype=2) + 
   labs(x = "Days Since Index", y = "Hazard Ratio") +
   theme(
-    legend.position = "none",
+    legend.position = "right",
     text = element_text(face="bold",size=15)
   )+
   facet_wrap(~ var,ncol=2,scales ="free")

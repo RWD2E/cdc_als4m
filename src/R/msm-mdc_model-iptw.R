@@ -328,6 +328,11 @@ for(ps in c(ps_comm,ps_tgt)){
       filter(var %in% c(ps_comm,ps_tgt)) %>% 
       select(var2) %>% unlist()
     
+    # hte by separating between late-onset and late-incld-of-early-onset
+    pt<-readRDS("C:/repo/cdc_als4m/data/als_tbl1.rds") %>%
+      select(PATID,AGE_AT_INDEX) %>%
+      mutate(late_onset = as.numeric(AGE_AT_INDEX>=64))
+    
     explainer<-explain_model(
       X = testX,
       y = testY$val,
