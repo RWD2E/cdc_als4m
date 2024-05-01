@@ -99,7 +99,7 @@ $$
 /**
  * Stored procedure to collect a Table 1 for ALS case assertainment events:
  * - ICD9: 335.20 or
- * - ICD10: I12.21 or
+ * - ICD10: G12.21 or
  * - Riluzole or Endaravone or Relyvrio or Tofersen
  * - Neurologist office visit
  * @param {array} SITES: an array of site acronyms (matching schema name suffix) - include CMS
@@ -128,7 +128,7 @@ for(i=0; i<SITES.length; i++){
                 '`+ site +`'
         FROM GROUSE_DB.`+ site_cdm +`.LDS_DIAGNOSIS a
         JOIN GROUSE_DB.`+ site_cdm +`.LDS_DEMOGRAPHIC b ON a.patid = b.patid
-        WHERE a.dx LIKE '335.20%' OR a.dx LIKE 'I12.21%';`;
+        WHERE a.dx LIKE '335.20%' OR a.dx LIKE 'G12.21%';`;
 
     var sqlstmt_par_drx = `
         INSERT INTO ALS_EVENT_LONG
