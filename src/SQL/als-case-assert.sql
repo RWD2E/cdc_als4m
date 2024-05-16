@@ -288,25 +288,28 @@ select a.patid
             when a.complt_ind = 0 and a.ehr_ind = 1 then 'enr_only'
             else 'cms_only'
        end as complt_flag
-      ,case when a.distinct_event_cnt > 1 then 'confirmed'
+      ,case when a.distinct_event_cnt > 2 then 'confirmed'
             else 'likely'
        end as case_assert 
 from cte_ord a 
 join PAT_TABLE1 b on a.patid = b.patid
 join cte_dx1 c on a.patid = c.patid
 where a.rn = 1 and b.birth_date is not null
-      and a.distinct_date_cnt > 1 and a.event_str like '%DX%' -- at least likely
+      and a.distinct_date_cnt > 1 
+      and (a.event_str like '%DX%' and a.event_str <> 'DX') -- at least likely, only 1 DX is considered "undetermined"
 ;
 
 select * from ALS_TABLE1 limit 5;
 
 select count(distinct patid), count(*) from ALS_TABLE1;
--- 12,490
+-- 27,939
 
 select case_assert, count(distinct patid) 
 from ALS_TABLE1
 group by case_assert
 ;
+-- confirmed	11432
+-- likely	12441
 
 select index_src, count(distinct patid) 
 from ALS_TABLE1
