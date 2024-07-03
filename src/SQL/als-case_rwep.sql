@@ -276,10 +276,6 @@ with cte_stg1 as (
               row_number() over (partition by a.patid order by a.LAST_OBS_SINCE_INDEX desc) rn_desc
        from ALS_ENDPT_LONG a
        where a.endpt_type = 'censor' 
-              and not exists (
-                     select 1 from cte_stg4
-                     where a.patid = cte_stg4.patid        
-              )
 )
 select patid,stage,stage_date,stage_since_index,endpt_type,endpt,endpt_sub from cte_stg1 where rn = 1
 union

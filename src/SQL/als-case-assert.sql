@@ -6,11 +6,6 @@
 # Dependency: pat-demo-master.sql, PAT_TABLE1
 */
 
-use role GROUSE_ROLE_C_ANALYTICS;
-use warehouse GROUSE_WH;
-use database GROUSE_DEID_ANALYTICS_DB; -- write-premitted database
-use schema SX_ALS_GPC;
-
 create or replace table FDA_MEDS_RXCUI as 
 select distinct     
        STR
@@ -302,7 +297,7 @@ where a.rn = 1 and b.birth_date is not null
 select * from ALS_TABLE1 limit 5;
 
 select count(distinct patid), count(*) from ALS_TABLE1;
--- 27,939
+-- 23873
 
 select case_assert, count(distinct patid) 
 from ALS_TABLE1
