@@ -65,8 +65,8 @@ for(i=0; i<SITES.length; i++){
                             ELSE 'ot' END AS hispanic,
                     '`+ site +`' as index_src,
                     row_number() over (partition by e.patid order by coalesce(e.admit_date::date,current_date)) rn
-                FROM GROUSE_DB.`+ site_cdm +`.LDS_DEMOGRAPHIC d 
-                LEFT JOIN GROUSE_DB.`+ site_cdm +`.LDS_ENCOUNTER e ON d.PATID = e.PATID
+                FROM GROUSE_DEID_DB.`+ site_cdm +`.V_DEID_DEMOGRAPHIC d 
+                LEFT JOIN GROUSE_DEID_DB.`+ site_cdm +`.V_DEID_ENCOUNTER e ON d.PATID = e.PATID
                 )
                 SELECT DISTINCT
                      cte.patid
@@ -137,7 +137,7 @@ with cte_ord as(
            max(case when b.chart = 'Y' then 1 else 0 end) over (partition by a.patid) as xwalk_ind,
            row_number() over (partition by a.patid order by coalesce(a.index_date,current_date)) as rn
     from PAT_DEMO_LONG a
-    left join GROUSE_DB.CMS_PCORNET_CDM.LDS_ENROLLMENT b 
+    left join GROUSE_DEID_DB.CMS_PCORNET_CDM.V_DEID_ENROLLMENT b 
     on a.patid = b.patid
 )
 select patid
@@ -156,7 +156,7 @@ where rn = 1
 ;
 
 select count(distinct patid), count(*) from PAT_TABLE1;
--- 43,882,486
+-- 43,882,488
 
 select xwalk_ind, count(distinct patid) 
 from PAT_TABLE1

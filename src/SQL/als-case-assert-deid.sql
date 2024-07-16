@@ -121,8 +121,8 @@ for(i=0; i<SITES.length; i++){
                 NVL(a.dx_date,a.admit_date) AS event_date,
                 round(datediff(day,b.birth_date,NVL(a.dx_date,a.admit_date))/365.25) AS age_at_event,
                 '`+ site +`'
-        FROM GROUSE_DEID_DB.`+ site_cdm +`.V_DEID_DIAGNOSIS a
-        JOIN GROUSE_DEID_DB.`+ site_cdm +`.V_DEID_DEMOGRAPHIC b ON a.patid = b.patid
+        FROM GROUSE_DB.`+ site_cdm +`.LDS_DIAGNOSIS a
+        JOIN GROUSE_DB.`+ site_cdm +`.LDS_DEMOGRAPHIC b ON a.patid = b.patid
         WHERE a.dx LIKE '335.20%' OR a.dx LIKE 'G12.21%';`;
 
     var sqlstmt_par_drx = `
@@ -132,9 +132,9 @@ for(i=0; i<SITES.length; i++){
                 a.dispense_date AS event_date,
                 round(datediff(day,b.birth_date,a.dispense_date)/365.25) AS age_at_event,
                 '`+ site +`'
-        FROM GROUSE_DEID_DB.`+ site_cdm +`.V_DEID_DISPENSING a
+        FROM GROUSE_DB.`+ site_cdm +`.LDS_DISPENSING a
         JOIN FDA_MEDS_NDC d ON a.NDC = d.NDC
-        JOIN GROUSE_DEID_DB.`+ site_cdm +`.V_DEID_DEMOGRAPHIC b ON a.patid = b.patid;`;
+        JOIN GROUSE_DB.`+ site_cdm +`.LDS_DEMOGRAPHIC b ON a.patid = b.patid;`;
     
     var sqlstmt_par_prx = `
        INSERT INTO ALS_EVENT_LONG
@@ -143,9 +143,9 @@ for(i=0; i<SITES.length; i++){
                 coalesce(a.rx_order_date,a.rx_start_date) AS event_date,
                 round(datediff(day,b.birth_date,coalesce(a.rx_order_date,a.rx_start_date))/365.25) AS age_at_event,
                 '`+ site +`'
-        FROM GROUSE_DEID_DB.`+ site_cdm +`.V_DEID_PRESCRIBING a
+        FROM GROUSE_DB.`+ site_cdm +`.LDS_PRESCRIBING a
         JOIN FDA_MEDS_RXCUI p ON a.RXNORM_CUI = p.RXCUI
-        JOIN GROUSE_DEID_DB.`+ site_cdm +`.V_DEID_DEMOGRAPHIC b ON a.patid = b.patid;`;
+        JOIN GROUSE_DB.`+ site_cdm +`.LDS_DEMOGRAPHIC b ON a.patid = b.patid;`;
     
     var sqlstmt_par_px = `
        INSERT INTO ALS_EVENT_LONG
@@ -154,10 +154,10 @@ for(i=0; i<SITES.length; i++){
                 a.px_date AS event_date,
                 round(datediff(day,b.birth_date,a.px_date)/365.25) AS age_at_event,
                 '`+ site +`'
-        FROM GROUSE_DEID_DB.`+ site_cdm +`.V_DEID_PROCEDURES a
-        JOIN GROUSE_DEID_DB.`+ site_cdm +`.V_DEID_PROVIDER p ON a.PROVIDERID = p.PROVIDERID
+        FROM GROUSE_DB.`+ site_cdm +`.LDS_PROCEDURES a
+        JOIN GROUSE_DB.`+ site_cdm +`.LDS_PROVIDER p ON a.PROVIDERID = p.PROVIDERID
         JOIN NEURO_TAXONOMY n on n.PROVIDER_SPECIALTY_PRIMARY = p.PROVIDER_SPECIALTY_PRIMARY
-        JOIN GROUSE_DEID_DB.`+ site_cdm +`.V_DEID_DEMOGRAPHIC b ON a.patid = b.patid
+        JOIN GROUSE_DB.`+ site_cdm +`.LDS_DEMOGRAPHIC b ON a.patid = b.patid
         WHERE a.PX in ('99201','99202','99203','99204','99205',
                        '99206','99207','99208','99209','99210',
                        '99211','99212','99213','99214','99215');`;
@@ -169,8 +169,8 @@ for(i=0; i<SITES.length; i++){
                 a.ENR_START_DATE,
                 round(datediff(day,b.birth_date,a.ENR_START_DATE)/365.25) AS age_at_event,
                 row_number() over (partition by a.patid order by a.ENR_START_DATE) AS rn
-        FROM GROUSE_DEID_DB.`+ site_cdm +`.V_DEID_ENROLLMENT a
-        JOIN GROUSE_DEID_DB.`+ site_cdm +`.V_DEID_DEMOGRAPHIC b ON a.patid = b.patid
+        FROM GROUSE_DB.`+ site_cdm +`.LDS_ENROLLMENT a
+        JOIN GROUSE_DB.`+ site_cdm +`.LDS_DEMOGRAPHIC b ON a.patid = b.patid
         WHERE round(datediff(day,b.birth_date,a.ENR_START_DATE)/365.25) < 65
        )
        SELECT patid,
@@ -257,7 +257,7 @@ with cte_ord as (
            max(case when b.enr_start_date is null then 1 else 0 end) over (partition by a.patid) as ehr_ind,
            row_number() over (partition by a.patid order by a.event_date) as rn
     from ALS_EVENT_LONG a
-    left join GROUSE_DEID_DB.CMS_PCORNET_CDM.V_DEID_ENROLLMENT b 
+    left join GROUSE_DB.CMS_PCORNET_CDM.LDS_ENROLLMENT b 
     on a.patid = b.patid
 ), cte_dx1 as(
     select patid,
@@ -311,3 +311,11 @@ from ALS_TABLE1
 group by case_assert, complt_flag
 order by case_assert, complt_flag
 ;
+
+-- confirmed	cms_only	4068
+-- confirmed	complete	5751
+-- confirmed	enr_only	1613
+-- likely	    cms_only	6261
+-- likely	    complete	4451
+-- likely	    enr_only	1729
+
