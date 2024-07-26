@@ -635,15 +635,12 @@ from cte_stk
 
 select count(distinct patid), count(distinct INGREDIENT), count(*) 
 from ALS_ALL_RX_IN;
--- 10212	1549	2706791
+-- 19958	1453	4634507
 
-select FDA_APPROVED,count(distinct patid), count(distinct INGREDIENT), count(*) 
+select FDA_AOT,count(distinct patid), count(distinct INGREDIENT), count(*) 
 from ALS_ALL_RX_IN
-group by FDA_APPROVED;
+group by FDA_AOT;
 
-select *
-from ALS_ALL_RX_IN
-where FDA_APPROVED is not null and AOT_POSSIBLE is not null;
 
 select INGREDIENT,count(distinct patid), count(distinct INGREDIENT), count(*) 
 from ALS_ALL_RX_IN

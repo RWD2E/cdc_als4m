@@ -146,6 +146,7 @@ with phecd_map_cte as (
        join ONTOLOGY.GROUPER_VALUESETS.ICD10CM_PHECODEX phe on dx.DX = phe."icd10" and dx.DX_TYPE = '10'
               and phe."phecode" not like '%.%'
        join ONTOLOGY.GROUPER_VALUESETS.PHECODEX_REF ref on phe."phecode" = ref."phecode" 
+       where dx.dx <> 'G12.21'
        union
        select distinct dx.*,
               phe."phecode" as phecd_dxgrpcd, 
@@ -154,13 +155,14 @@ with phecd_map_cte as (
        join ONTOLOGY.GROUPER_VALUESETS.ICD9CM_PHECODEX phe on dx.DX = phe."icd9" and dx.DX_TYPE = '09'
               and phe."phecode" not like '%.%'
        join ONTOLOGY.GROUPER_VALUESETS.PHECODEX_REF ref on phe."phecode" = ref."phecode"
+       where dx.dx <> '335.20'
 ), phecd_fill_na as (
        select * from phecd_map_cte
        union 
        select dx.*,'00000', 'NI'
        from ALS_ALL_DX dx
-       where not exists (select 1 from phecd_map_cte cte where cte.diagnosisid = dx.diagnosisid) 
-             and dx.dx not in ('335.20','I12.21')
+       where not exists (select 1 from phecd_map_cte cte where cte.diagnosisid = dx.diagnosisid)
+             and dx.dx not in ('G12.21','335.20')
 )
 select distinct
        patid,
@@ -174,7 +176,7 @@ from phecd_fill_na
 ;
 
 select count(distinct patid), count(distinct phecd_dxgrpcd) from ALS_ALL_PHECD;
--- 12490	678
+-- 23370	682
 
 -- map to CCS category
 create or replace table ALS_ALL_DX_CCS as 
@@ -185,6 +187,7 @@ with ccs_map_cte as (
     from ALS_ALL_DX dx 
     join ONTOLOGY.GROUPER_VALUESETS.ICD10CM_CCS ccs 
     on replace(dx.DX,'.','') = replace(ccs.ICD10CM,'''','') and dx.DX_TYPE = '10'
+    where dx.dx <> 'G12.21'
     union
     select distinct dx.*,
            replace(icd9.ccs_slvl1,'''','') as ccs_dxgrpcd, 
@@ -192,13 +195,14 @@ with ccs_map_cte as (
     from ALS_ALL_DX dx 
     join ONTOLOGY.GROUPER_VALUESETS.ICD9DX_CCS icd9 
     on rpad(replace(dx.DX,'.',''),5,'0') = replace(icd9.ICD9,'''','') and dx.DX_TYPE = '09'
+    where dx.dx <> '335.20'
 ), ccs_fill_na as (
     select * from ccs_map_cte
     union 
     select dx.*,'00000', 'NI'
     from ALS_ALL_DX dx
     where not exists (select 1 from ccs_map_cte cte where cte.diagnosisid = dx.diagnosisid) 
-          and dx.dx not in ('335.20','I12.21')
+          and dx.dx not in ('335.20','G12.21')
 )
 select distinct
        patid,
@@ -211,4 +215,6 @@ select distinct
 from ccs_fill_na
 ;
 
-select count(distinct patid) from ALS_ALL_DX_CCS;
+select count(distinct patid), count(distinct ccs_dxgrpcd) 
+from ALS_ALL_DX_CCS;
+-- 23371	532
