@@ -25,8 +25,8 @@ dat<-tbl(sf_conn,in_schema("SX_ALS_GPC","ALS_TABLE1")) %>% collect()
 saveRDS(dat,file="./data/als_tbl1.rds")
 
 # collect SDOH
-dat<-tbl(sf_conn,in_schema("SX_ALS_GPC","ALS_ALL_SDOH")) %>% collect()
-saveRDS(dat,file="./data/als_sdoh.rds")
+# dat<-tbl(sf_conn,in_schema("SX_ALS_GPC","ALS_ALL_SDOH")) %>% collect()
+# saveRDS(dat,file="./data/als_sdoh.rds")
 
 # collect ALS staging file
 dat<-tbl(sf_conn,in_schema("SX_ALS_GPC","ALS_ENDPTS")) %>% collect()
@@ -76,7 +76,8 @@ dat<-tbl(sf_conn,
   replace(is.na(.), 0)
 saveRDS(dat,file="./data/als_mdc_px.rds")
 
-#==== ALS time-varying dataset ====
+#==================================================================================
+#==== ALS time-varying dataset
 deltat<-60
 t_seq<-seq(0,5*365.25,by=deltat)
 drop_rt<-0.01
@@ -231,6 +232,9 @@ for(i in 1:k){
     tbl_part_map$tbl[i],":",tbl_part_map$part_col[i],
     "extracted."))
 }
+#==================================================================================
+# data dictionary
+
 
 #==================================================================================
 # disconnect

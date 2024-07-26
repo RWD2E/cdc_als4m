@@ -430,6 +430,7 @@ dt<-data.frame(
   anti_join(excld,by=c("PATID","T_DAYS")) %>%
   # filter out time-zero
   filter(T_DAYS > 0) %>%
+  # encode raw variable
   mutate(var2=paste0("v",dense_rank(var)))
 
 # low-frequency filter

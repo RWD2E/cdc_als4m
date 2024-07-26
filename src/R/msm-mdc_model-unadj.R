@@ -63,7 +63,7 @@ y_lst<-c(
 )
 
 for(y_str in y_lst){
-  # y_str<-'PRVDR_mdc'
+  y_str<-'PRVDR_neurology'
   path_to_file<-file.path("./data/unadj",paste0("tvm_",y_str,".rda"))
   if(!file.exists(path_to_file)){
     # load training data
