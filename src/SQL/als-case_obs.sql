@@ -229,7 +229,7 @@ call get_obs_long(
 select * from ALS_ALL_OBS limit 5;
 
 select count(distinct patid), count(*) from ALS_ALL_OBS;
--- 6,655
+-- 11623	5979774
 
 select obs_name, obs_code, count(distinct patid)
 from als_all_obs
@@ -269,6 +269,7 @@ where obs_name in (
        'MCV',
        'MCHC',
        'MCH',
+       'MPV',
        'AST',
        'ALT',
        'TOTAL PROTEIN',
@@ -281,7 +282,10 @@ where obs_name in (
        'PHOSPHORUS',
        'ALK PHOSPHATASE',
        'INR',
-       'TOTAL BILIRUBIN'
+       'TOTAL BILIRUBIN',
+       'VITAMIN B12',
+       'TSH',
+       'RDW'
 )
 union
 select * from ALS_ALL_OBS
@@ -372,6 +376,7 @@ where dedup_idx = 1
 select count(distinct obs_name), count(distinct patid) 
 from ALS_SEL_OBS
 ;
+-- 32	11491
 
 select obs_name, count(distinct patid) 
 from ALS_SEL_OBS

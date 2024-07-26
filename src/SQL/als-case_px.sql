@@ -220,7 +220,7 @@ from ccs_fill_na
 ;
 
 select count(distinct patid), count(distinct ccs_pxgrpcd), count(*) from ALS_ALL_PX_CCS;
--- 12404	245	6223548
+-- 23368	245	10523605
 
 select * from ALS_ALL_PX_CCS;
 
@@ -255,3 +255,7 @@ select count(distinct patid), count(*) from ALS_SEL_PX_MDC;
 insert into ALS_ALL_PX_CCS(patid, ccs_pxgrpcd, ccs_pxgrp, px_date, days_since_index)
 select * from ALS_SEL_PX_MDC
 ;
+
+select ccs_pxgrpcd, count(distinct patid) from ALS_ALL_PX_CCS
+group by ccs_pxgrpcd
+order by ccs_pxgrpcd;
