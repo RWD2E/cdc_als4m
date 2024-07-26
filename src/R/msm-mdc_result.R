@@ -233,7 +233,7 @@ ggplot(
   aes(x=cond,y=exp_eff_m,color = estmod,group=estmod,linetype=estmod)
 ) + 
   geom_point()+
-  geom_smooth(method = 'gam',formula = 'y ~ x')+
+  geom_smooth(method = 'loess',formula = 'y ~ x')+
   geom_errorbar(aes(ymax = exp_eff_u,ymin = exp_eff_l))+
   geom_hline(aes(yintercept = 1),linetype=2) + 
   labs(x = "Days Since Index", y = "Hazard Ratio") +
