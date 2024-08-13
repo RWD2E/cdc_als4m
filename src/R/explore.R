@@ -9,6 +9,7 @@ pacman::p_load(
   kableExtra
 )
 
+# install.packages("webshot2")
 # webshot::install_phantomjs() # needed for save_kabel()
 source_url("https://raw.githubusercontent.com/sxinger/utils/master/analysis_util.R")
 
@@ -40,7 +41,9 @@ numvar_lst<-var_lst[
   grepl("^(time)+",var_lst)
 ]
 facvar_lst<-var_lst[!var_lst %in% numvar_lst]
-var_lbl_df<-readRDS("./data/data_dict.rds")
+var_lbl_df<-readRDS("./data/data_dict.rds") %>%
+  rename("var" = "VAR","var_lbl"="VAR_LABEL") %>%
+  select(var,var_lbl)
 
 case_ctrl<-univar_analysis_mixed(
   df = tbl1,
@@ -52,16 +55,18 @@ case_ctrl<-univar_analysis_mixed(
 )
 case_ctrl %>%
   save_kable(
-    paste0("./res/als_all.pdf")
+    file.path('./res','als_all.html')
   )
 
 var_lst2<-var_lst[!var_lst %in% c(
   "CASE_ASSERT",
-  "als1dx"
+  "als1dx",
+  "streptomycin"
 )]
 facvar_lst2<-facvar_lst[!facvar_lst %in% c(
   "CASE_ASSERT",
-  "als1dx"
+  "als1dx",
+  "streptomycin"
 )]
 case_ctrl<-univar_analysis_mixed(
   df = tbl1,
@@ -74,7 +79,7 @@ case_ctrl<-univar_analysis_mixed(
 )
 case_ctrl %>%
   save_kable(
-    paste0("./res/als_all_by_assert.pdf")
+    file.path('./res','als_all_by_assert.html')
   )
 
 ##-- confirmed ALS cases
@@ -82,6 +87,7 @@ tbl2<-tbl1 %>%
   filter(
     CASE_ASSERT == "confirmed"
   ) %>%
+  select(-streptomycin) %>%
   mutate(INDEX_EVENT = case_when(
     INDEX_EVENT=="NEUROLOGIST" ~ 'DX', 
     TRUE ~ INDEX_EVENT
@@ -97,7 +103,7 @@ case_ctrl<-univar_analysis_mixed(
 )
 case_ctrl %>%
   save_kable(
-    paste0("./res/als_confirmed.pdf")
+    file.path('./res','als_confirmed.html')
   )
 
 case_ctrl<-univar_analysis_mixed(
@@ -111,7 +117,7 @@ case_ctrl<-univar_analysis_mixed(
 )
 case_ctrl %>%
   save_kable(
-    paste0("./res/als_confirmed_by_xwalk.pdf")
+    file.path('./res','als_confirmed_by_xwalk.html')
   )
 
 case_ctrl<-univar_analysis_mixed(
@@ -125,7 +131,7 @@ case_ctrl<-univar_analysis_mixed(
 )
 case_ctrl %>%
   save_kable(
-    paste0("./res/als_confirmed_by_index.pdf")
+    file.path('./res','als_confirmed_by_index.html')
   )
 
 case_ctrl<-univar_analysis_mixed(
@@ -139,7 +145,7 @@ case_ctrl<-univar_analysis_mixed(
 )
 case_ctrl %>%
   save_kable(
-    paste0("./res/als_confirmed_by_fda.pdf")
+    file.path('./res','als_confirmed_by_fda.html')
   )
 
 case_ctrl<-univar_analysis_mixed(
@@ -153,7 +159,7 @@ case_ctrl<-univar_analysis_mixed(
 )
 case_ctrl %>%
   save_kable(
-    paste0("./res/als_confirmed_by_mdc.pdf")
+    file.path('./res','als_confirmed_by_mdc.html')
   )
 
 case_ctrl<-univar_analysis_mixed(
@@ -167,7 +173,7 @@ case_ctrl<-univar_analysis_mixed(
 )
 case_ctrl %>%
   save_kable(
-    paste0("./res/als_confirmed_by_team4up.pdf")
+    file.path('./res','als_confirmed_by_team4up.html')
   )
 
 ##-- confirmed ALS cases with complete data (EHR+CMS)
@@ -192,7 +198,7 @@ case_ctrl<-univar_analysis_mixed(
 )
 case_ctrl %>%
   save_kable(
-    paste0("./res/als_complete.pdf")
+    file.path('./res','als_confirmed_complete.html')
   )
 
 case_ctrl<-univar_analysis_mixed(
@@ -206,7 +212,7 @@ case_ctrl<-univar_analysis_mixed(
 )
 case_ctrl %>%
   save_kable(
-    paste0("./res/als_complete_by_index.pdf")
+    file.path('./res','als_confirmed_complete_by_index.html')
   )
 
 case_ctrl<-univar_analysis_mixed(
@@ -220,7 +226,7 @@ case_ctrl<-univar_analysis_mixed(
 )
 case_ctrl %>%
   save_kable(
-    paste0("./res/als_complete_by_neurology.pdf")
+    file.path('./res','als_confirmed_complete_by_neurology.html')
   )
 
 case_ctrl<-univar_analysis_mixed(
@@ -234,7 +240,7 @@ case_ctrl<-univar_analysis_mixed(
 )
 case_ctrl %>%
   save_kable(
-    paste0("./res/als_complete_by_fda.pdf")
+    file.path('./res','als_conirmed_complete_by_fda.html')
   )
 
 case_ctrl<-univar_analysis_mixed(
@@ -248,7 +254,7 @@ case_ctrl<-univar_analysis_mixed(
 )
 case_ctrl %>%
   save_kable(
-    paste0("./res/als_complete_by_aot.pdf")
+    file.path('./res','als_confirmed_complete_by_aot.html')
   )
 
 case_ctrl<-univar_analysis_mixed(
@@ -262,7 +268,7 @@ case_ctrl<-univar_analysis_mixed(
 )
 case_ctrl %>%
   save_kable(
-    paste0("./res/als_complete_by_mdc.pdf")
+    file.path('./res','als_confirmed_complete_by_mdc.html')
   )
 
 case_ctrl<-univar_analysis_mixed(
@@ -276,5 +282,6 @@ case_ctrl<-univar_analysis_mixed(
 )
 case_ctrl %>%
   save_kable(
-    paste0("./res/als_complete_by_team4up.pdf")
+    file.path('./res','als_confirmed_complete_by_team4up.html')
+    paste0("./res/.pdf")
   )
