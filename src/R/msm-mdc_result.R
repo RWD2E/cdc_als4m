@@ -50,38 +50,46 @@ var_encoder<-readRDS("./data/var_encoder.rda") %>%
   select(var,var2) %>% unique %>%
   left_join(
     readRDS("./data/data_dict.rds") %>%
-      select(var,var_lbl),
-    by="var")
+      select(VAR,VAR_LABEL),
+    by=c("var"="VAR")) %>%
+  mutate(var_lbl = coalesce(VAR_LABEL,var))
 
 # unadjusted model
 rslt<-readRDS("./data/unadj/tvm_OC_death.rda")
 feat_imp<-rslt$fit_model$feat_imp %>%
   rename(var2 = Feature) %>%
   inner_join(var_encoder,by="var2") %>%
-  mutate(adj_ind = 'unadj',
-         adj_by = 'unadj')
+  mutate(
+    adj_ind = 'unadj',
+    adj_by = 'unadj'
+  )
 
 explainer<-rslt$explain_model %>%
   rename(var2 = var) %>%
   inner_join(var_encoder,by="var2") %>%
-  group_by(val,cond,var,var2) %>%
-  summarise(eff_m = median(effect,na.rm=T),
-            eff_l = quantile(effect,probs = 0.025,na.rm=T),
-            eff_u = quantile(effect,probs = 0.975,na.rm=T),
-            .groups = "drop") %>%
-  left_join(readRDS("./data/data_dict.rds"),by="var",multiple = "all") %>%
-  mutate(exp_eff_m = exp(eff_m),
-         exp_eff_l = exp(eff_l),
-         exp_eff_u = exp(eff_u)) %>%
-  mutate(var_lbl = coalesce(var_lbl,var)) %>%
-  mutate(adj_ind = 'unadj',
-         adj_by = 'unadj')
+  filter(!var %in% c(ps_comm,ps_tgt)) %>%
+  group_by(val,cond,var,var2,var_lbl) %>%
+  summarise(
+    eff_m = median(effect,na.rm=T),
+    eff_l = quantile(effect,probs = 0.025,na.rm=T),
+    eff_u = quantile(effect,probs = 0.975,na.rm=T),
+    .groups = "drop"
+  ) %>%
+  mutate(
+    exp_eff_m = exp(eff_m),
+    exp_eff_l = exp(eff_l),
+    exp_eff_u = exp(eff_u)
+  ) %>%
+  mutate(
+    adj_ind = 'unadj',
+    adj_by = 'unadj'
+  )
 
 tv_ate<-rslt$explain_model %>%
   rename(var2 = var) %>%
   inner_join(var_encoder,by="var2") %>%
   filter(var %in% c(ps_comm,ps_tgt)) %>%
-  group_by(val,cond,var,var2) %>%
+  group_by(val,cond,var,var2,var_lbl) %>%
   summarise(
     at_m = mean(effect,na.rm=T),
     at_l = quantile(effect,probs = 0.025,na.rm=T),
@@ -106,6 +114,7 @@ tve_df<-tv_ate
 for(ps in c(ps_comm,ps_tgt)){
   # ps<-ps_tgt[1]
   for(m in c('iptw','tmle')){
+    #---- treatment effect
     # m<-"tmle"
     rslt<-readRDS(file.path("./data",m,paste0("tvm_OC_death_",ps,".rda")))
     if(m=="iptw"){
@@ -116,7 +125,7 @@ for(ps in c(ps_comm,ps_tgt)){
         filter(var == ps) %>%
         group_by(val,cond,var,var2) %>%
         summarise(
-          at_m = mean(effect,na.rm=T),
+          at_m = median(effect,na.rm=T),
           at_l = quantile(effect,probs = 0.025,na.rm=T),
           at_u = quantile(effect,probs = 0.975,na.rm=T),
           .groups="drop"
@@ -140,7 +149,7 @@ for(ps in c(ps_comm,ps_tgt)){
           rslt$ite_df %>%
             group_by(T_DAYS) %>%
             summarise(
-              ate_m = mean(ITE),
+              ate_m = median(ITE),
               ate_l = quantile(ITE,probs = 0.025,na.rm=T),
               ate_u = quantile(ITE,probs = 0.975,na.rm=T),
               .groups = "drop"
@@ -157,7 +166,7 @@ for(ps in c(ps_comm,ps_tgt)){
           rslt$ite_df %>%
             group_by(T_DAYS) %>%
             summarise(
-              ate_m = mean(ITE_aug),
+              ate_m = median(ITE_aug),
               ate_l = quantile(ITE_aug,probs = 0.025,na.rm=T),
               ate_u = quantile(ITE_aug,probs = 0.975,na.rm=T),
               .groups = "drop"
@@ -171,11 +180,37 @@ for(ps in c(ps_comm,ps_tgt)){
             )
         )
       
+      #---- other covariates
+      explainer %<>%
+        bind_rows(
+          rslt$explain_model %>%
+            rename(var2 = var) %>%
+            inner_join(var_encoder,by="var2") %>%
+            filter(!var %in% c(ps_comm,ps_tgt)) %>%
+            group_by(val,cond,var,var2,var_lbl) %>%
+            summarise(
+              eff_m = median(effect,na.rm=T),
+              eff_l = quantile(effect,probs = 0.025,na.rm=T),
+              eff_u = quantile(effect,probs = 0.975,na.rm=T),
+              .groups = "drop"
+            ) %>%
+            mutate(
+              exp_eff_m = exp(eff_m),
+              exp_eff_l = exp(eff_l),
+              exp_eff_u = exp(eff_u)
+            ) %>%
+            mutate(
+              adj_ind = m,
+              adj_by = ps
+            )
+        )
+      
     }else if(m=="tmle"){
       tv_ate<-rslt$ite_df %>%
         group_by(T_DAYS) %>%
+        arrange(logit_ystar) %>%
         summarise(
-          ate_m = mean(logit_ystar),
+          ate_m = median(logit_ystar),
           ate_l = quantile(logit_ystar,probs = 0.025,na.rm=T),
           ate_u = quantile(logit_ystar,probs = 0.975,na.rm=T),
           .groups = "drop"
@@ -206,12 +241,12 @@ sel_prvdr<-c(
   "PRVDR_neurology",
   "PRVDR_psychiatry",
   # "PRVDR_home-health",
-  # "PRVDR_pcp",
+  "PRVDR_pcp",
   "PRVDR_eye",
   "PRVDR_surgery",
-  # "PRVDR_pt",
-  "PRVDR_ent",
-  # "PRVDR_ot",
+  "PRVDR_pt",
+  # "PRVDR_ent",
+  "PRVDR_ot",
   # "PRVDR_social",
   # "PRVDR_rehap",
   # "PRVDR_genetic",
@@ -220,9 +255,9 @@ sel_prvdr<-c(
   "PRVDR_nurse",
   # "PRVDR_urology",
   "PRVDR_respiratory",
-  # "PRVDR_palliative",
-  "PRVDR_cardiology",
-  # "PRVDR_intv-radiology",
+  "PRVDR_palliative",
+  # "PRVDR_cardiology",
+  "PRVDR_intv-radiology",
   "PRVDR_slp"
 )
 
@@ -245,12 +280,12 @@ ggplot(
 
 # save figure
 ggsave(
-  "./res/provider_tv_ate.png",
+  "./res/provider_tv_ate.pdf",
   dpi = 300,
   width = 15, 
   height = 8, 
   units = "in",
-  device = "png"
+  device = "pdf"
 )
 
 # interventions - soc
@@ -280,35 +315,18 @@ ggplot(
 
 # save figure
 ggsave(
-  "./res/soc_tv_ate.png",
+  "./res/soc_tv_ate.pdf",
   dpi = 250,
   width = 8, 
   height = 6, 
   units = "in",
-  device = "png"
+  device = "pdf"
 )
-prdvr_rpt<-explainer %>% 
-  filter(adj_by == var) %>%
-  filter(grepl("^(PRVDR_)+",var)) %>%
-  group_by(cond,var,var2,var_lbl,adj_ind,adj_by) %>%
-  mutate(norm_by = eff_m[val==0]) %>%
-  ungroup %>%
-  mutate(
-    eff_m = eff_m - norm_by,
-    eff_l = eff_l - norm_by,
-    eff_u = eff_u - norm_by,
-    exp_eff_m = exp(eff_m),
-    exp_eff_l = exp(eff_l),
-    exp_eff_u = exp(eff_u)
-  ) %>%
-  filter(val == 1 & cond <= 1000) %>%
-  group_by(var,var2,var_lbl,adj_ind,adj_by) %>%
-  filter(exp_eff_m == min(exp_eff_m))
 
-# demographic
+
+# demographic - sex
 ggplot(
-  explainer %>% 
-    filter(grepl("^(DEMO)+",var) & !grepl("(AGE)+",var)),
+  explainer %>% filter(grepl("^(DEMO)+",var) & grepl("(SEX)+",var)),
   aes(x=cond,y=exp_eff_m,color = factor(val),linetype = adj_ind)
 ) + 
   geom_point()+
@@ -321,38 +339,32 @@ ggplot(
   )+
   facet_wrap(~ var_lbl,ncol=3,scales ="free")
 
+# demographic - age
 ggplot(
   explainer %>% 
     filter(grepl("^(DEMO)+",var) & grepl("(AGE)+",var)),
-  aes(x=val,y=exp_eff_m,color = cond,group = cond, linetype = adj_ind)
+  aes(x=val,y=exp_eff_m,color = cond, group = cond)
 ) + 
   geom_point()+
   geom_smooth(method = 'loess',formula = 'y ~ x')+
-  scale_colour_gradient(low = "green", high = "red") +
+  scale_colour_gradient(low = "yellow", high = "blue") +
   geom_errorbar(aes(ymax = exp_eff_u,ymin = exp_eff_l))+
   geom_hline(aes(yintercept = 1),linetype=2) + 
-  labs(x = "Age at Index", y = "Hazard Ratio", color = "days_since_index") +
+  labs(x = "Age at Index", y = "Hazard Ratio", color = "Days Since Index") +
   theme(
-    text = element_text(face="bold")
+    text = element_text(face="bold"),
+    legend.position="bottom"
   )
 
-# marginal effect of time
-ggplot(
-  explainer %>% 
-    filter(var=="T_DAYS"),
-  aes(x=cond,y=exp_eff_m,color=adj_ind)
-) + 
-  geom_point()+
-  geom_smooth(method = 'loess',formula = 'y ~ x')+
-  geom_errorbar(aes(ymax = exp_eff_u,ymin = exp_eff_l))+
-  geom_hline(aes(yintercept = 1),linetype=2) + 
-  labs(x = "Days Since Index", y = "Hazard Ratio") +
-  theme(
-    text = element_text(face="bold")
-  )
-
-time_idx<-readRDS("./data/var_encoder.rda") %>%
-  filter(var=="T_DAYS") %>% select(var2) %>% unlist()
+# save figure
+ggsave(
+  "./res/age_tv_ate.pdf",
+  dpi = 150,
+  width = 6, 
+  height = 4, 
+  units = "in",
+  device = "pdf"
+)
 
 # comorbidities
 ggplot(
@@ -363,6 +375,7 @@ ggplot(
   geom_point()+
   geom_smooth(method = 'loess',formula = y ~ x)+
   geom_errorbar(aes(ymax = exp_eff_u,ymin = exp_eff_l))+
+  scale_colour_manual(values = c("yellow","blue"))+
   geom_hline(aes(yintercept = 1),linetype=2) + 
   labs(x = "Days Since Index", y = "Hazard Ratio") +
   theme(
@@ -370,59 +383,99 @@ ggplot(
     text = element_text(face="bold")
   )+
   facet_wrap(~ var_lbl,ncol=4,scales ="free")
+
+# save figure
+ggsave(
+  "./res/phecd_tv_ate.pdf",
+  dpi = 250,
+  width = 12, 
+  height = 25, 
+  units = "in",
+  device = "pdf"
+)
 
 # labs
 ggplot(
   explainer %>% 
     filter(grepl("^(LAB)+",var) & val > 0),
-  aes(x=val,y=exp_eff_m,color = cond,group = cond,linetype = adj_ind)
+  aes(x=val,y=exp_eff_m,color = cond,group = cond)
 ) + 
   geom_point()+
   geom_smooth(method = 'loess',formula = y ~ x,se = FALSE)+
-  scale_colour_gradient(low = "green", high = "red") +
+  scale_colour_gradient(low = "yellow", high = "blue") +
   geom_errorbar(aes(ymax = exp_eff_u,ymin = exp_eff_l))+
   geom_hline(aes(yintercept = 1),linetype=2) + 
-  labs(x = "lab values", y = "Hazard Ratio") +
+  labs(x = "lab values", y = "Hazard Ratio", color="Days since Index") +
   theme(
-    text = element_text(face="bold")
+    text = element_text(face="bold"),
+    legend.position="bottom"
   ) +
-  facet_wrap(~ var_lbl,ncol=6,scales ="free")
+  facet_wrap(~ var_lbl,ncol=4,scales ="free")
 
-
+# save figure
+ggsave(
+  "./res/labs_tv_ate.pdf",
+  dpi = 250,
+  width = 12, 
+  height = 15, 
+  units = "in",
+  device = "pdf"
+)
 
 # sdoh
 ggplot(
   explainer %>% 
     filter(grepl("(SDH)+",var) & !grepl("(ADI)+",var)),
-  aes(x=cond,y=exp_eff_m,color = factor(val),linetype = adj_ind)
+  aes(x=cond,y=exp_eff_m,color = factor(val))
 ) + 
   geom_point()+
   geom_smooth(method = 'loess',formula = y ~ x)+
   geom_errorbar(aes(ymax = exp_eff_u,ymin = exp_eff_l))+
+  scale_colour_manual(values = c("yellow","blue"))+
   geom_hline(aes(yintercept = 1),linetype=2) + 
   labs(x = "Days Since Index", y = "Hazard Ratio") +
   theme(
     legend.position = "none",
     text = element_text(face="bold")
   )+
-  facet_wrap(~ var_lbl,ncol=4,scales ="free")
+  facet_wrap(~ var_lbl,ncol=2,scales ="free")
 
+# save figure
+ggsave(
+  "./res/sdh_tv_ate.pdf",
+  dpi = 150,
+  width = 8, 
+  height = 6, 
+  units = "in",
+  device = "pdf"
+)
 
 ggplot(
   explainer %>% 
     filter(grepl("(SDH)+",var) & grepl("(ADI)+",var)),
-  aes(x=val,y=exp_eff_m,color = cond,group = cond,linetype = adj_ind)
+  aes(x=val,y=exp_eff_m,color = cond,group = cond)
 ) + 
   geom_point()+
   geom_smooth(method = 'loess',formula = 'y ~ x')+
-  scale_colour_gradient(low = "green", high = "red") +
+  scale_colour_gradient(low = "yellow", high = "blue") +
   geom_errorbar(aes(ymax = exp_eff_u,ymin = exp_eff_l))+
   geom_hline(aes(yintercept = 1),linetype=2) + 
-  labs(x = "Days Since Index", y = "Hazard Ratio") +
+  labs(x = "Days Since Index", y = "Hazard Ratio", color="Days since Index") +
   theme(
-    text = element_text(face="bold")
+    text = element_text(face="bold"),
+    legend.position="bottom"
   )+
   facet_wrap(~ var,ncol=4,scales ="free")
+
+# save figure
+ggsave(
+  "./res/adi_tv_ate.pdf",
+  dpi = 150,
+  width = 8, 
+  height = 6, 
+  units = "in",
+  device = "pdf"
+)
 
 # fig<-plot_ly(
 #   explainer %>% filter(grepl("^(AGE)+",var) & cond > 0),
