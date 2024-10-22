@@ -7,6 +7,7 @@ Environmental data
 - [ ] Water: **https://www.waterqualitydata.us/#countrycode=US**
      - bulk download first (suggested name: wqa_us_raw_station.zip), then unzip and extract
 - [ ] Toxics Release Inventory: https://edap.epa.gov/public/extensions/TRIToxicsTracker/TRIToxicsTracker.html#continue
+- [ ] Superfund Sites: https://cumulis.epa.gov/supercpad/cursites/srchrslt.cfm?start=1 
 
 Other relevant resources (include as needed): 
 database| geographical level | data provider | estimated variable #

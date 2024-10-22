@@ -560,9 +560,20 @@ create or replace table ALS_GEO_ST as
 select substr(fips,1,2) as fips_st, 
         calyr, 
         sum(CMS_TOTAL) as CMS_TOTAL, 
-        sum(ALS_TOTAL) as ALS_TOTAL
+        sum(ALS_TOTAL) as ALS_TOTAL,
+        count(distinct fips) as CNTY_CNT
 from ALS_GEO_FINAL
 group by calyr,substr(fips,1,2)
 ;
 
 select * from ALS_GEO_ST order by fips_st,calyr;
+
+select fips_st,CNTY_CNT,
+       sum(CMS_TOTAL) as den, 
+       sum(ALS_TOTAL) as num, 
+       round(sum(ALS_TOTAL)/sum(CMS_TOTAL)*100000,1) as prev_rt
+from ALS_GEO_ST
+-- where calyr >= 2014
+group by fips_st,CNTY_CNT
+order by fips_st
+;

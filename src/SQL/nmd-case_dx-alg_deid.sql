@@ -2,18 +2,13 @@
 # Copyright (c) 2021-2025 University of Missouri                   
 # Author: Xing Song, xsm7f@umsystem.edu                            
 # File: als-case_dx-alg.sql
-# Description: simple dx-based computable phenotype for identifying ALS patients, 
-#              2-year washup period
+# Description: simple dx-based computable phenotype for identifying NMD patients, 
 */
-
 /****************************************************************************************************************/
 /*set environment*/
 use role GROUSE_ROLE_C_ANALYTICS;
 use warehouse GROUSE_WH;
 use database GROUSE_DEID_ANALYTICS_DB; -- write-premitted database
-
-create schema if not exists ALS_GPC;
-use schema ALS_GPC;
 
 set cms_cdm_schema = 'GROUSE_DEID_DB.CMS_PCORNET_CDM';
 set diagnosis = $cms_cdm_schema || '.V_DEID_DIAGNOSIS';

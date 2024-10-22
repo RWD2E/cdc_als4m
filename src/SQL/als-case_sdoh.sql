@@ -231,6 +231,85 @@ where b.enr_basis = 'D'
 select count(distinct patid), count(distinct sdoh_var), count(*) from ALS_ALL_SDOH;
 -- 20077 200	28526514
 
+select * from ALS_ALL_SDOH limit 5;
+
+create or replace table FILT_REF as 
+with cte_n as (
+    select count(distinct patid) as N
+    from ALS_ALL_SDOH
+), cte_rt as (
+    select a.sdoh_type, a.sdoh_var, 
+        count(distinct a.patid)/cte_n.N as rt
+    from ALS_ALL_SDOH a 
+    natural full outer join cte_n
+    group by a.sdoh_type,a.sdoh_var,cte_n.N  
+), cte_imp as (
+    -- median
+    select sdoh_var, median(sdoh_val) as imp_val 
+    from ALS_ALL_SDOH
+    where sdoh_type = 'N' and regexp_like(sdoh_val, '^[0-9]+$')
+    group by sdoh_var
+    union
+    select sdoh_var, null as imp_val
+    from ALS_ALL_SDOH
+    where sdoh_type = 'C'
+    group by sdoh_var
+)
+select cte_rt.*, cte_imp.imp_val
+from cte_rt
+join cte_imp 
+on cte_rt.sdoh_var = cte_imp.sdoh_var    
+;
+select * from FILT_REF limit 5; 
+
+create or replace table ALS_FILT_SDOH as 
+with cte_filt as (
+       select a.*
+from ALS_ALL_SDOH a 
+join FILT_REF b
+on a.sdoh_var = b.sdoh_var
+where b.rt >= 0.05 -- sparsity-based filtering
+)
+-- numerical features
+select patid, days_since_index, sdoh_var, sdoh_val
+from cte_filt 
+where sdoh_type = 'N' and regexp_like(sdoh_val, '^[0-9]+$')
+union 
+-- categorical features
+select patid, days_since_index, sdoh_var || sdoh_val as sdoh_var, 1 as sdoh_val
+from cte_filt 
+where sdoh_type = 'C'
+union
+-- engineered: grouped RUCA
+select patid, days_since_index,
+       case when SDOH_VAL in ('1','2','3') then 'RUCAgrp_metro'
+            when SDOH_VAL in ('4','5','6') then 'RUCAgrp_micro'
+            when SDOH_VAL in ('7','8','9','10') then 'RUCAgrp_small'
+            else 'RUCAgrp_unk'
+       end as sdoh_var, 
+       1 as sdoh_val 
+from cte_filt
+where sdoh_var = 'RUCA_PRIMARY'            
+;
+
+select * from ALS_FILT_SDOH limit 5;
+
+select count(distinct patid), count(distinct sdoh_var), count(*) 
+from ALS_FILT_SDOH;
+
+create or replace table ALS_FILT_SDOH_BASE as 
+with cte_rk as (
+       select a.*, row_number() over (partition by a.patid, a.sdoh_var order by a.days_since_index) as rn 
+       from ALS_FILT_SDOH a
+)
+select cte_rk.* exclude rn 
+from cte_rk
+where rn = 1
+;
+
+select count(distinct patid), count(distinct sdoh_var), count(*) 
+from ALS_FILT_SDOH_BASE;
+
 create or replace table ALS_SEL_SDOH as
 with cte_stk as(
        select patid, 
