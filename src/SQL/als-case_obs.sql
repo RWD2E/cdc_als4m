@@ -41,7 +41,8 @@ for(i=0; i<SITES.length; i++){
                      ,datediff(day,a.index_date,coalesce(b.specimen_date, b.lab_order_date, b.result_date)) as DAYS_SINCE_INDEX
                      ,'LC' as OBS_CODE_TYPE
                      ,b.lab_loinc as OBS_CODE
-                     ,coalesce(b.raw_lab_name, c.long_common_name) as OBS_NAME
+                     ,coalesce(c.long_common_name,b.raw_lab_name) as OBS_NAME
+                     ,coalesce(c.component,b.raw_lab_name) as OBS_COMP
                      ,b.result_num as OBS_NUM
                      ,b.result_unit as OBS_UNIT
                      ,b.norm_range_low as OBS_REF_LOW
