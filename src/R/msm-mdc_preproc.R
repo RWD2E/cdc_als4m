@@ -5,7 +5,7 @@ pacman::p_load(
   broom
 )
 
-deltat<-60
+deltat<-30
 t_seq<-seq(0,5*365.25,by=deltat)
 tn<-length(t_seq)
 
@@ -17,7 +17,7 @@ tbl2<-readRDS("./data/tbl1_cov_endpt.rds") %>%
   ) 
 
 # exclude post-censor and post-death period
-excld<-readRDS("./data/als_endpts_endpt_sub_60.rda") %>%
+excld<-readRDS(paste0("./data/als_endpts_endpt_sub_",deltat,".rda")) %>%
   semi_join(tbl2,by="PATID") %>%
   mutate(val = 1) %>%
   spread(ENDPT_SUB,val) %>%
@@ -56,7 +56,7 @@ dt<-data.frame(
 ) %>%
   # death and censor
   bind_rows(
-    readRDS("./data/als_endpts_endpt_sub_60.rda") %>%
+    readRDS(paste0("./data/als_endpts_endpt_sub_",deltat,".rda")) %>%
       mutate(val = 1) %>%
       rename(var = ENDPT_SUB) %>%
       mutate(var = paste0("TX_",var)) %>%
@@ -64,7 +64,7 @@ dt<-data.frame(
   ) %>%
   # any use of FDA-approved drug or AOT
   bind_rows(
-    readRDS("./data/als_all_rx_in_fda_aot_60.rda") %>%
+    readRDS(paste0("./data/als_all_rx_in_fda_aot_",deltat,".rda")) %>%
       mutate(val = 1) %>%
       rename(var = FDA_AOT) %>%
       mutate(var = paste0("TX_",var)) %>%
@@ -72,7 +72,7 @@ dt<-data.frame(
   ) %>%
   # any use of PEG, NIV, and wheelchairs
   bind_rows(
-    readRDS("./data/als_sel_device_device_60.rda") %>%
+    readRDS(paste0("./data/als_sel_device_device_",deltat,".rda")) %>%
       mutate(val = 1) %>%
       rename(var = DEVICE) %>%
       mutate(var = paste0("TX_",var)) %>%
@@ -80,7 +80,7 @@ dt<-data.frame(
   ) %>%
   # providers - individual specialty
   bind_rows(
-    readRDS("./data/als_px_prvdr_specialty_group_60.rda") %>%
+    readRDS(paste0("./data/als_px_prvdr_specialty_group_",deltat,".rda")) %>%
       mutate(val = 1) %>%
       rename(var = SPECIALTY_GROUP) %>%
       mutate(var = paste0("PRVDR_",var)) %>%
@@ -88,7 +88,7 @@ dt<-data.frame(
   ) %>%
   # providers - specialty care team
   bind_rows(
-    readRDS("./data/als_px_prvdr_specialty_group_60.rda") %>%
+    readRDS(paste0("./data/als_px_prvdr_specialty_group_",deltat,".rda")) %>%
       filter(!SPECIALTY_GROUP %in% c('other','eye','surgery','home-health','icu','palliative')) %>%
       group_by(PATID,T_DAYS) %>%
       summarise(spec_cnt=cnt_spec(SPECIALTY_GROUP),.groups="drop") %>%
@@ -98,14 +98,14 @@ dt<-data.frame(
   ) %>%
   # mdc px code
   bind_rows(
-    readRDS("./data/als_all_px_ccs_ccs_pxgrpcd_60.rda") %>%
+    readRDS(paste0("./data/als_all_px_ccs_ccs_pxgrpcd_",deltat,".rda")) %>%
       filter(CCS_PXGRPCD=='99999') %>%
       mutate(val = 1,var = 'PRVDR_mdc') %>%
       select(PATID,var,val,T_DAYS) %>% unique
   ) %>%
   # attach overall outcomes
   bind_rows(
-    readRDS("./data/als_endpts_endpt_sub_60.rda") %>%
+    readRDS(paste0("./data/als_endpts_endpt_sub_",deltat,".rda")) %>%
       filter(ENDPT_SUB %in% c("death","censor")) %>%
       mutate(val=1) %>%
       rename(var = ENDPT_SUB) %>%
@@ -203,7 +203,7 @@ dt<-data.frame(
   # lagged features
   #-- phecodes
   bind_rows(
-    readRDS("./data/als_all_phecd_phecd_dxgrpcd_60.rda") %>%
+    readRDS(paste0("./data/als_all_phecd_phecd_dxgrpcd_",deltat,".rda")) %>%
       inner_join(
         tbl2 %>% select(PATID,time_death_censor),
         by="PATID"
@@ -216,7 +216,7 @@ dt<-data.frame(
   ) %>%
   #-- meds
   bind_rows(
-    readRDS("./data/als_all_rx_in_ingredient_60.rda") %>%
+    readRDS(paste0("./data/als_all_rx_in_ingredient_",deltat,".rda")) %>%
       inner_join(
         tbl2 %>% select(PATID,time_death_censor),
         by="PATID"
@@ -242,7 +242,7 @@ dt<-data.frame(
   # ) %>%
   #-- sdoh
   bind_rows(
-    readRDS("./data/als_sel_sdoh_obscomm_code_60.rda") %>%
+    readRDS(paste0("./data/als_sel_sdoh_obscomm_code_",deltat,".rda")) %>%
       inner_join(
         tbl2 %>% select(PATID,time_death_censor),
         by="PATID"
@@ -255,7 +255,7 @@ dt<-data.frame(
       select(PATID,var,val,T_DAYS) %>% unique
   ) %>%
   bind_rows(
-    readRDS("./data/als_sel_sdoh_obscomm_code_60.rda") %>%
+    readRDS(paste0("./data/als_sel_sdoh_obscomm_code_",deltat,".rda")) %>%
       inner_join(
         tbl2 %>% select(PATID,time_death_censor),
         by="PATID"
@@ -270,7 +270,7 @@ dt<-data.frame(
   ) %>%
   #-- use of riluzole, endarovone, or AOT
   bind_rows(
-    readRDS("./data/als_all_rx_in_fda_aot_60.rda") %>%
+    readRDS(paste0("./data/als_all_rx_in_fda_aot_",deltat,".rda")) %>%
       inner_join(
         tbl2 %>% select(PATID,time_death_censor),
         by="PATID"
@@ -283,7 +283,7 @@ dt<-data.frame(
   ) %>%
   #-- use of NIV, PEG, Wheelchair
   bind_rows(
-    readRDS("./data/als_sel_device_device_60.rda") %>%
+    readRDS(paste0("./data/als_sel_device_device_",deltat,".rda")) %>%
       inner_join(
         tbl2 %>% select(PATID,time_death_censor),
         by="PATID"
@@ -296,7 +296,7 @@ dt<-data.frame(
   ) %>%
   #-- providers - individual specialty
   bind_rows(
-    readRDS("./data/als_px_prvdr_specialty_group_60.rda") %>%
+    readRDS(paste0("./data/als_px_prvdr_specialty_group_",deltat,".rda")) %>%
       inner_join(
         tbl2 %>% select(PATID,time_death_censor),
         by="PATID"
@@ -309,7 +309,7 @@ dt<-data.frame(
   ) %>%
   # providers - specialty care team
   bind_rows(
-    readRDS("./data/als_px_prvdr_specialty_group_60.rda") %>%
+    readRDS(paste0("./data/als_px_prvdr_specialty_group_",deltat,".rda")) %>%
       filter(!SPECIALTY_GROUP %in% c('other','eye','surgery','home-health','icu','palliative')) %>%
       inner_join(
         tbl2 %>% select(PATID,time_death_censor),
@@ -324,7 +324,7 @@ dt<-data.frame(
   ) %>%
   # providers - mdc px code
   bind_rows(
-    readRDS("./data/als_all_px_ccs_ccs_pxgrpcd_60.rda") %>%
+    readRDS(paste0("./data/als_all_px_ccs_ccs_pxgrpcd_",deltat,".rda")) %>%
       inner_join(
         tbl2 %>% select(PATID,time_death_censor),
         by="PATID"
@@ -336,7 +336,7 @@ dt<-data.frame(
   ) %>%
   #-- labs: indicator
   bind_rows(
-    readRDS("./data/als_sel_obs_obs_name_60.rda") %>%
+    readRDS(paste0("./data/als_sel_obs_obs_name_",deltat,".rda")) %>%
       inner_join(
         tbl2 %>% select(PATID,time_death_censor),
         by="PATID"
@@ -349,7 +349,7 @@ dt<-data.frame(
   ) %>%
   #-- labs: numerical
   bind_rows(
-    readRDS("./data/als_sel_obs_obs_name_60.rda") %>%
+    readRDS(paste0("./data/als_sel_obs_obs_name_",deltat,".rda")) %>%
       inner_join(
         tbl2 %>% select(PATID,time_death_censor),
         by="PATID"
@@ -361,7 +361,7 @@ dt<-data.frame(
   ) %>%
   #-- labs: categorical
   bind_rows(
-    readRDS("./data/als_sel_obs_obs_name_60.rda") %>%
+    readRDS(paste0("./data/als_sel_obs_obs_name_",deltat,".rda")) %>%
       inner_join(
         tbl2 %>% select(PATID,time_death_censor),
         by="PATID"
@@ -380,7 +380,7 @@ dt<-data.frame(
   # attach concurrent features
   # - ADI, RUCA, LIS_DUAL, PART_C, PART_D
   bind_rows(
-    readRDS("./data/als_sel_sdoh_obscomm_code_60.rda") %>%
+    readRDS(paste0("./data/als_sel_sdoh_obscomm_code_",deltat,".rda")) %>%
       inner_join(
         tbl2 %>% select(PATID,time_death_censor),
         by="PATID"
@@ -393,7 +393,7 @@ dt<-data.frame(
       select(PATID,var,val,T_DAYS) %>% unique
   ) %>%
   bind_rows(
-    readRDS("./data/als_sel_sdoh_obscomm_code_60.rda") %>%
+    readRDS(paste0("./data/als_sel_sdoh_obscomm_code_",deltat,".rda")) %>%
       inner_join(
         tbl2 %>% select(PATID,time_death_censor),
         by="PATID"

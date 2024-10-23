@@ -10,11 +10,8 @@ pacman::p_load(
   kableExtra,
   xgboost,
   Matrix,
-  ParBayesianOptimization,
-  plotly
+  ParBayesianOptimization
 )
-
-deltat<-60
 
 source_url("https://raw.githubusercontent.com/sxinger/utils/master/preproc_util.R")
 source_url("https://raw.githubusercontent.com/sxinger/utils/master/model_util.R")
@@ -141,8 +138,8 @@ ps_tgt<-c(
 )
 
 for(ps in c(ps_comm,ps_tgt)){
-  # ps<-ps_tgt[1] # uncomment for testing
-  path_to_file<-file.path("./data/iptw",paste0("tvm_OC_death_",ps,".rda"))
+  # ps<-ps_comm[1] # uncomment for testing
+  path_to_file<-file.path("./data/msm",paste0("tvm_OC_death_",ps,".rda"))
   if(!file.exists(path_to_file)){
     # calculate iptw
     wt_long<-c()
@@ -329,9 +326,9 @@ for(ps in c(ps_comm,ps_tgt)){
       select(var2) %>% unlist()
     
     # hte by separating between late-onset and late-incld-of-early-onset
-    pt<-readRDS("C:/repo/cdc_als4m/data/als_tbl1.rds") %>%
-      select(PATID,AGE_AT_INDEX) %>%
-      mutate(late_onset = as.numeric(AGE_AT_INDEX>=64))
+    # pt<-readRDS("C:/repo/cdc_als4m/data/als_tbl1.rds") %>%
+    #   select(PATID,AGE_AT_INDEX) %>%
+    #   mutate(late_onset = as.numeric(AGE_AT_INDEX>=64))
     
     explainer<-explain_model(
       X = testX,
@@ -344,38 +341,11 @@ for(ps in c(ps_comm,ps_tgt)){
       shap_cond = time_idx, # time index
       verb = FALSE
     )
-    
-    # non-par formula of IPW
-    ps_idx<-var_encoder %>% filter(var==ps) %>% select(var2) %>% unlist()
-    intx<-testX[,ps_idx]
-    #intervene with 1
-    testX[,ps_idx]<-1
-    dtest<-xgb.DMatrix(data = testX,label = testY$val)
-    y1_cf<-predict(xgb_rslt$model,dtest)
-    #intervene with 0
-    testX[,ps_idx]<-0
-    dtest<-xgb.DMatrix(data = testX,label = testY$val)
-    y0_cf<-predict(xgb_rslt$model,dtest)
-    ite_df<-data.frame(
-      PATID_T = row.names(testX),
-      intx = intx,
-      ps = iptw_align$iptw,
-      y = testY$val,
-      y1_cf = y1_cf,
-      y0_cf = y0_cf
-    ) %>%
-      separate(PATID_T,c("PATID",'T_DAYS'),sep="_") %>%
-      mutate(
-        T_DAYS = as.numeric(T_DAYS),
-        ITE = y1_cf - y0_cf, #ipw
-        ITE_aug = (y1_cf - y0_cf)+intx*(y-y1_cf)+(1-intx)*(y-y0_cf) #aipw
-      )
 
     # result set
     rslt_set<-list(
       fit_model = xgb_rslt,
-      explain_model = explainer,
-      ite_df = ite_df
+      explain_model = explainer
     )
     saveRDS(rslt_set,file = path_to_file)
     

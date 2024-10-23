@@ -10,11 +10,8 @@ pacman::p_load(
   kableExtra,
   xgboost,
   Matrix,
-  ParBayesianOptimization,
-  plotly
+  ParBayesianOptimization
 )
-
-deltat<-60
 
 source_url("https://raw.githubusercontent.com/sxinger/utils/master/preproc_util.R")
 source_url("https://raw.githubusercontent.com/sxinger/utils/master/model_util.R")
@@ -63,7 +60,7 @@ y_lst<-c(
 )
 
 for(y_str in y_lst){
-  y_str<-'PRVDR_neurology'
+  # y_str<-'PRVDR_neurology'
   path_to_file<-file.path("./data/unadj",paste0("tvm_",y_str,".rda"))
   if(!file.exists(path_to_file)){
     # load training data

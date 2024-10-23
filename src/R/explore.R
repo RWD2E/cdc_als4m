@@ -283,5 +283,4 @@ case_ctrl<-univar_analysis_mixed(
 case_ctrl %>%
   save_kable(
     file.path('./res','als_confirmed_complete_by_team4up.html')
-    paste0("./res/.pdf")
   )

@@ -14,8 +14,6 @@ pacman::p_load(
   plotly
 )
 
-deltat<-60
-
 source_url("https://raw.githubusercontent.com/sxinger/utils/master/preproc_util.R")
 source_url("https://raw.githubusercontent.com/sxinger/utils/master/model_util.R")
 
@@ -39,6 +37,32 @@ trainY<-readRDS("./data/trainY_82.rda") %>%
     by=c("PATID_T"="id"),multiple = "all"
   )
 
+# ensure alignment
+trainX<-trainY %>% 
+  select(PATID_T) %>%
+  inner_join(
+    readRDS("./data/trainX_82.rda") %>% 
+      unite("PATID_T",c("PATID","T_DAYS"),sep="_"),
+    by="PATID_T",multiple = "all"
+  )
+
+# manual feature selection
+trainX %<>%
+  semi_join(
+    var_encoder %>%
+      filter(!grepl("^(CURR_)+",var)),
+    by="var2"
+  )
+
+# transform to sparse matrix
+trainX %<>%
+  long_to_sparse_matrix(
+    .,
+    id = "PATID_T",
+    variable = "var2",
+    value = "val"
+  )
+
 # load testing data
 testY<-readRDS("./data/testY_82.rda") %>%
   mutate(PATID2 = PATID,T_DAYS2 = T_DAYS) %>%
@@ -50,6 +74,29 @@ testY<-readRDS("./data/testY_82.rda") %>%
     unadj$fit_model$pred_ts %>% select(id, pred),
     by=c("PATID_T"="id"),multiple = "all"
   )
+
+# ensure alignment
+testX<-testY %>% select(PATID_T) %>% 
+  inner_join(
+    readRDS("./data/testX_82.rda") %>% 
+      unite("PATID_T",c("PATID","T_DAYS"),sep="_"),
+    by="PATID_T",multiple = "all"
+  ) %>%
+  long_to_sparse_matrix(
+    .,
+    id = "PATID_T",
+    variable = "var2",
+    value = "val"
+  )
+
+# for dropping due to lack of X
+testY %<>% 
+  inner_join(data.frame(PATID_T = row.names(testX)),by="PATID_T")
+
+# align feature sets
+shared<-colnames(trainX)[colnames(trainX) %in% colnames(testX)]
+trainX<-trainX[,shared]
+testX<-testX[,shared]
 
 # customize folds (so same patient remain in the same fold)
 folds<-list()
@@ -100,14 +147,14 @@ ps_tgt<-c(
 )
 
 for(ps in c(ps_comm,ps_tgt)){
-  # ps<-ps_tgt[1] #uncomment for testing
+  # ps<-ps_comm[1] #uncomment for testing
   path_to_file<-file.path("./data/tmle",paste0("tvm_OC_death_",ps,".rda"))
   if(!file.exists(path_to_file)){
-    # calculate iptw
-    wt_long<-c()
+    # extract ps
+    ps_df<-c()
     for(y_ps in c(ps)){
       ps_fit<-readRDS(paste0("./data/unadj/tvm_",y_ps,".rda"))
-      wt_long %<>%
+      ps_df %<>%
         bind_rows(
           ps_fit$fit_model$pred_tr %>% 
             separate('id',c('PATID','T_DAYS'),sep='_') %>%
@@ -115,12 +162,17 @@ for(ps in c(ps_comm,ps_tgt)){
               ps_fit$fit_model$pred_ts %>% 
                 separate('id',c('PATID','T_DAYS'),sep='_')) %>%
             mutate(T_DAYS = as.numeric(T_DAYS),tgt = y_ps) %>%
-            rename(wt_den = pred)
+            mutate(
+              h = actual/pred - (1-actual)/(1-pred),
+              h1 = 1/pred,
+              h0 = -1/(1-pred),
+              wt_den = pred
+            )
         )
     }
     
     # calculate wt stabilizer
-    wt_long %<>%
+    ps_df %<>%
       group_by(T_DAYS,tgt,prev) %>%
       mutate(wt_num_marginal = sum(wt_den)) %>%
       group_by(T_DAYS,tgt,actual,prev) %>%
@@ -134,7 +186,7 @@ for(ps in c(ps_comm,ps_tgt)){
     
     # calculate time-varying iptw
     iptw_df<-ipw.naive(
-      wt_long = wt_long, 
+      wt_long = ps_df, 
       id_col = 'PATID', 
       time_col = 'T_DAYS', 
       wt_den_col = 'wt_den',
@@ -145,29 +197,66 @@ for(ps in c(ps_comm,ps_tgt)){
       truncate_upper = 0.95
     ) %>% 
       inner_join(
-        wt_long %>% filter(tgt == ps) %>%
+        ps_df %>% filter(tgt == ps) %>%
           select(PATID,T_DAYS,actual),
         by=c("PATID","T_DAYS")
       )
     
-    # create covariate matrix with the "clever covariate" and time index
+    ps_df %<>%
+      left_join(
+        iptw_df %>% select(PATID,T_DAYS,iptw),
+        by = c("PATID","T_DAYS")
+      )
+
+    # estimate counterfactuals
+    ps_idx<-var_encoder %>% filter(var==ps) %>% select(var2) %>% unlist()
+    intx_tr<-trainX[,ps_idx]
+    intx_ts<-testX[,ps_idx]
+    #intervene with 1
+    trainX[,ps_idx]<-1
+    testX[,ps_idx]<-1
+    dtrain<-xgb.DMatrix(data = trainX,label = trainY$val)
+    dtest<-xgb.DMatrix(data = testX,label = testY$val)
+    y1_cf<-c(
+      predict(unadj$fit_model$model,dtrain),
+      predict(unadj$fit_model$model,dtest)
+    )
+    #intervene with 0
+    trainX[,ps_idx]<-0
+    testX[,ps_idx]<-0
+    dtrain<-xgb.DMatrix(data = trainX,label = trainY$val)
+    dtest<-xgb.DMatrix(data = testX,label = testY$val)
+    y0_cf<-c(
+      predict(unadj$fit_model$model,dtrain),
+      predict(unadj$fit_model$model,dtest)
+    )
+
+    # extract "clever covarite"
     all_df<-trainY %>%
       bind_rows(testY) %>%
+      mutate(
+        y1_cf = y1_cf,
+        y0_cf = y0_cf
+      ) %>%
       left_join(
-        iptw_df %>%
+        ps_df %>%
           unite("PATID_T",c("PATID","T_DAYS"),sep="_") %>%
-          select(PATID_T,iptw,actual),
+          select(PATID_T,h,h1,h0,actual,pred,iptw) %>%
+          rename(ps = pred),
         by="PATID_T") %>%
       mutate(
-        h = actual*iptw - (1-actual)/(1-1/iptw),
-        offset = log(pred/(1-pred))
+        offset = log(pred/(1-pred)),
+        offset1 = log(y1_cf/(1-y1_cf)),
+        offset0 = log(y0_cf/(1-y0_cf))
       )
     
-    fit_logit<-function(df){
-      glm(val ~ h,offset=offset,family="binomial",data=df)
+    # fit the adjustment model
+    fit_logit<-function(df,wts){
+      # https://github.com/cran/tmle/blob/a15f7203befd07bed27b7179bfb8682ca909507a/R/tmle.R#L903
+      glm(val ~ -1+h,offset=offset,family="binomial",weights = iptw,data=df)
     }
     fit_str_logit<-all_df %>%
-      select(T_DAYS,val,h,offset) %>%
+      select(T_DAYS,val,h,offset,iptw) %>%
       group_by(T_DAYS) %>%
       nest() %>%
       mutate(
@@ -181,21 +270,31 @@ for(ps in c(ps_comm,ps_tgt)){
         values_from = estimate
       ) %>%
       rename(
-        b0 = `(Intercept)`,
         b1 = h
       )
     
+    # estimate TMLE on testing set
     ite_df<-all_df %>%
       semi_join(testY,by="PATID_T") %>%
-      mutate(
-        h = actual/iptw - (1-actual)/(1-iptw),
-        offset = log(pred/(1-pred))
-      ) %>%
       left_join(fit_str_logit,by="T_DAYS") %>%
       mutate(
-        logit_ystar = offset + b0 + b1*h,
-        ystar = exp(logit_ystar)/(1+exp(logit_ystar))
-      ) 
+        logit_ystar = offset + b1*h,
+        logit_ystar1 = offset1 + b1*h1,
+        logit_ystar0 = offset0 + b1*h0,
+        ystar = exp(logit_ystar)/(1+exp(logit_ystar)),
+        ystar1 = exp(logit_ystar1)/(1+exp(logit_ystar1)),
+        ystar0 = exp(logit_ystar0)/(1+exp(logit_ystar0))
+      ) %>%
+      mutate(
+        ITE = ystar1/pmax(ystar0,0.025),
+        # ITE = exp(logit_ystar1-logit_ystar0),
+        ITE_ub = quantile(ITE,probs = 0.8,na.rm=T),
+        ITE_lb = quantile(ITE,probs = 0.01,na.rm=T)
+      ) %>%
+      # clipping
+      mutate(
+        ITE = pmin(pmax(ITE,ITE_lb),ITE_ub)
+      )
      
     # fit <- glmer(
     #   val ~ (1+h|PATID),
@@ -205,62 +304,6 @@ for(ps in c(ps_comm,ps_tgt)){
     #   control = glmerControl(optimizer = "bobyqa")
     # )
     # summary(fit)
-    
-    # create covariate matrix with the "clever covariate" and time index
-    # trainX<-trainY %>% 
-    #   select(PATID_T,PATID,T_DAYS) %>%
-    #   left_join(
-    #     iptw_df %>%
-    #       unite("PATID_T",c("PATID","T_DAYS"),sep="_") %>%
-    #       select(PATID_T,iptw,actual),
-    #     by="PATID_T") %>%
-    #   mutate(
-    #     h = actual/iptw - (1-actual)/(1-iptw)
-    #   ) %>% 
-    #   select(-PATID,-actual,-iptw)
-    # 
-    # testX<-testY %>% 
-    #     select(PATID_T,PATID,T_DAYS) %>%
-    #     left_join(
-    #       iptw_df %>%
-    #         unite("PATID_T",c("PATID","T_DAYS"),sep="_") %>%
-    #         select(PATID_T,iptw,actual),
-    #       by="PATID_T") %>%
-    #   mutate(
-    #     h = actual/iptw - (1-actual)/(1-iptw)
-    #   ) %>% 
-    #   select(-PATID,-actual,-iptw)
-    # 
-    # # convert to DMatrix
-    # trainX<-as.matrix(trainX %>% select(-PATID_T)); gc()
-    # dtrain<-xgb.DMatrix(data = trainX,label = trainY$val)
-    # attr(dtrain,'id')<-trainY$PATID_T # assume the order doesn't change
-    # setinfo(dtrain,'base_margin',trainY$pred)
-    # testX<-as.matrix(testX %>% select(-PATID_T,-T_DAYS)); gc()
-    # dtest<-xgb.DMatrix(data = testX,label = testY$val)
-    # attr(dtest,'id')<-testY$PATID_T # assume the order doesn't change
-    # setinfo(dtest,'base_margin',testY$pred)
-    # 
-    # # rapid xgb - only tune the number of trees
-    # xgb_rslt<-prune_xgb(
-    #   # dtrain, dtest are required to have attr:'id'
-    #   dtrain = dtrain,
-    #   dtest = dtest,
-    #   folds = folds,
-    #   params=list(
-    #     booster = "gbtree",
-    #     max_depth = 10,
-    #     min_child_weight = 2,
-    #     colsample_bytree = 0.8,
-    #     subsample = 0.7,
-    #     eta = 0.05,
-    #     lambda = 1,
-    #     alpha = 0,
-    #     gamma = 1,
-    #     objective = "binary:logistic",
-    #     eval_metric = "auc"
-    #   )
-    # )
     
     # result set
     rslt_set<-list(
