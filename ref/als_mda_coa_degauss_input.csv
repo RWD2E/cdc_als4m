@@ -1,0 +1,365 @@
+idx,address
+1,1 perkins square akron  oh 44308
+2,19 warehouse row albany  ny 12205
+3,47 new scotland avenue albany  ny 12208
+4,391 myrtle avenue albany  ny 12208
+5,1127 university blvd. ne albuquerque  nm 87102
+6,2211 lomas  ne albuquerque  nm 87131
+7,501 medical drive alexandria  la 71301
+8,850 s. 5th street allentown  pa 18103
+9,1210 s. cedar crest blvd. allentown  pa 18103
+10,2205 commonwealth blvd ann arbor  mi 48105
+11,325 e eisenhower pkwy ann arbor  mi 48108
+12,1500 east medical center dr. ann arbor  mi 48109 ann arbor  mi 48109
+13,12 executive park drive ne atlanta  ga 30316
+14,1365 clifton road building b atlanta  ga 30322
+15,1001 johnson ferry road atlanta  ga 30342
+16,1120 15th st. augusta  ga 30912
+17,13123 e. 16th avenue aurora  co 80045
+18,1700 n. wheeling st. aurora  co 80045
+19,12605 e. 16th ave. aurora  co 80045
+20,4900 mueller blvd austin  tx 78723
+21,6811 austin center blvd austin  tx 78731
+22,7901 metropolis dr. austin  tx 78744
+23,827 linden avenue baltimore  md 21201
+24,601 n. caroline street baltimore  md 21287
+25,601 n. caroline street baltimore  md 21287
+26,601 n. caroline street baltimore  md 21287
+27,905 union street bangor  me 04401
+28,5247 didesse dr. baton rouge  la 70808
+29,3619 park east dr. beachwood  oh 44122
+30,2200 ne neff rd. bend  or 97701
+31,801 n 29th st. billings  mt 59101
+32,801 n. 29thÂ street billings  mt 59101
+33,3105 independence drive suite 105 birmingham  al 35209
+34,1600 7th avenue south birmingham  al 35233
+35,1720 7th avenue south birmingham  al 35233
+36,549 fair st. bloomsburg  pa 17815
+37,600 n. robbins road boise  id 83702
+38,600 n. robbins road boise  id 83702
+39,161 e mallard dr boise  id 83706
+40,100 e. idaho street boise  id 83712
+41,800 washington street boston  ma 02111
+42,165 cambridge street boston  ma 02114
+43,15 parkman st. boston  ma 02114
+44,300 longwood avenue boston  ma 02115
+45,60 fenwood road boston  ma 02115
+46,330 brookline ave. boston  ma 02215
+47,1515 blondell ave. bronx  ny 10461
+48,130 west kingsbridge rd. bronx  ny 10468
+49,450 clarkson avenue brooklyn  ny 11203
+50,6323 7th ave brooklyn  ny 11220
+51,329 bath rd. brunswick  me 04011
+52,1001 main street buffalo  ny 14203
+53,3980 sheridan drive buffalo  ny 14226
+54,41 burlington mall road burlington  ma 01805
+55,41 mall rd. burlington  ma 01805
+56,211 st. francis dr. cape girardeau  mo 63703
+57,194 finley gold course rd. chapel hill  nc 27517
+58,194 finley golf course road chapel hill  nc 27517
+59,109 bee st. charleston  sc 29401
+60,135 rutledge ave. charleston  sc 29425
+61,1010 edgehill road north charlotte  nc 28207
+62,university hospital charlottesville  va 22908
+63,1215 lee street charlottesville  va 22908
+64,1204 w. main street charlottesville  va 22908
+65,979 east third st. chattanooga  tn 37403
+66,225 e. chicago avenue chicago  il 60611
+67,675 n. st. clair street chicago  il 60611
+68,1753 w harrison chicago  il 60612
+69,1725 w. harrison street chicago  il 60612
+70,1801 w.taylor street chicago  il 60612
+71,1801 west taylor st. chicago  il 60612
+72,5841 s. maryland ave. chicago  il 60637
+73,2211 n. oak park avenue chicago  il 60707
+74,151 w galbraith rd. cincinnati   oh 45216
+75,3333 burnet avenue cincinnati  oh 45229
+76,10180 se sunnyside rd. clackamas  or 97015
+77,sci service 128 w cleveland  oh 44106
+78,2500 metrohealth drive cleveland  oh 44109
+79,9500 euclid ave. cleveland  oh 44195
+80,790 college parkway colchester  vt 05401
+81,1020 hitt street columbia  mo 65201
+82,404 n. keene street columbia  mo 65201
+83,1020 hitt st. columbia  mo 65212
+84,543 taylor avenue columbus  oh 43203
+85,555 s 18th st columbus  oh 43205
+86,8000 centerview parkway cordova  tn 38018
+87,3533 s. alameda street corpus christi  tx 78411
+88,6080 north central expressway dallas  tx 75206
+89,2350 n. stemmons freeway dallas  tx 75207
+90,5303 harry hines blvd dallas  tx 75390
+91,100 north academy ave. danville  pa 17822
+92,100 n. academy avenue danville  pa 17822
+93,1375 east 20th ave. denver  co 80124
+94,1400 jackson st. denver  co 80206
+95,3600 30th st. des moines  ia 50310
+96,3901 beaubien detroit  mi 48201
+97,2799 west grand blvd. k11-neurology detroit  mi 48202 detroit  mi 48202
+98,7601 e. imperial highway downey  ca 90242
+99,400 east third st. duluth  mn 55805
+100,932 morreene rd. durham  nc 27705
+101,3000 erwin road durham  nc 27705
+102,200 trent drive durham  nc 27710
+103,804 service road east lansing  mi 48824
+104,4 technology drive east setauket  ny 11733
+105,2821 michael angelo dr. edinburg  tx 78539
+106,4801 alberta ave. el paso  tx 79905
+107,303 s. nappanee elkhart  in 46514
+108,120 e 2nd st. erie  pa 16507
+109,120 e. 2nd street erie  pa 16507
+110,736 broadway rt 1049 fargo  nd 58122
+111,736 broadway fargo  nd 58122
+112,505 farmington avenue farmington  ct 06032
+113,9985 sierra ave. fontana  ca 92335
+114,1931 ne 47th street fort lauderdale  fl 33308
+115,13601 plantation rd. fort myers  fl 33912
+116,11104 parkview circle fort wayne  in 46845
+117,1500 cooper street fort worth  tx 76104
+118,2335 e. kashian lane fresno  ca 93701
+119,3009 sw williston road gainesville  fl 32608
+120,2000 sw archer road gainesville  fl 32610
+121,1365 s germantown rd germantown  tn 38138
+122,2100 pfingsten rd. glenview  il 60026
+123,100 michigan street ne grand rapids  mi 49503
+124,220 cherry st. grand rapids  mi 49503
+125,2750 e. beltline ne grand rapids  mi 49525 grand rapids  mi 49525
+126,611 northern blvd. great neck  ny 11021
+127,1821 s. webster avenue green bay  wi 54301
+128,1821 s. webster avenue green bay  wi 54301
+129,outpatient rehab building greenville  nc 27835
+130,200 patewood dr. greenville  sc 29615
+131,15 valley drive greenwich  ct 06831
+132,850 enterprise parkway  ste. 1400 hampton  va 23666
+133,25965 s. normandie ave. harbor city  ca 90710
+134,11958 w. broad st. henrico  va 23233
+135,30 hope dr. hershey  pa 17033
+136,30 hope drive hershey  pa 17033
+137,5000 s. 5th ave. hines  il 60141
+138,321 n. kuakini street honolulu  hi 96817
+139,3288 moanalua rd. honolulu  hi 96819
+140,7200 cambridge street suite 9a houston  tx 77030
+141,6550 fannin st. houston  tx 77030
+142,6560 fannin houston  tx 77030
+143,6560 fannin street houston  tx 77030
+144,6701 fannin street houston  tx 77030
+145,1 john marshall dr. huntington  wv 25755
+146,610 airport road suite 110 huntsville  al 35802
+147,355 w. 16th street indianapolis  in 46202
+148,1481 w 10th st. indianapolis  in 46202
+149,705 riley hospital drive indianapolis  in 46202
+150,355 west 16th st. indianapolis  in 46202
+151,200 hawkins drive iowa city  ia 52242
+152,200 hawkins dr. iowa city  ia 52242
+153,200 hawkins drive iowa city  ia 52242
+154,200 hawkins drive iowa city  ia 52242
+155,601 highway 6 west iowa city  ia 52246
+156,350 w. woodrow wilson jackson  ms 39213
+157,580 west 8th st. jacksonville  fl 32209
+158,4500 san pablo rd. south jacksonville  fl 32224
+159,4500 san pablo road south jacksonville  fl 32224
+160,150 south huntington avenue jamaica plain  ma 02130
+161,1401 jefferson hwy. jefferson  la 70121
+162,200 muir rd. joanna dearlove m.d.
+163,8605 chambery blvd. johnston  ia 50131
+164,1450 scalp ave. johnstown  pa 15904
+165,601 john st. kalamazoo  mi 49007
+166,3599 rainbow blvd. kansas city  ks 66103
+167,3599 rainbow blvd. kansas city  ks 66160
+168,1900 south ave. la crosse  wi 54601
+169,5380 s. rainbow las vegas  nv 89118
+170,351 n. buffalo dr. las vegas  nv 89145
+171,one medical center drive lebanon  nh 03756
+172,one medical center drive lebanon  nh 03756
+173,18 old etna rd. lebanon  nh 03766
+174,740 south limestone st. lexington  ky 40536
+175,2631 s. 70th street lincoln  ne 68506
+176,4301 west markham street little rock  ar 72205
+177,1 children's way little rock  ar 72205
+178,11370 anderson st. loma linda  ca 92354
+179,4650 sunset blvd los angeles  ca 90027
+180,1505 n. edgemont st. los angeles  ca 90027
+181,1520 san pablo st. los angeles  ca 90033
+182,8700 beverly blvd los angeles  ca 90048
+183,127 s. san vicente blvd. los angeles  ca 90048
+184,11301 wilshire blvd. los angeles  ca 90073
+185,300 ucla medical plaza los angeles  ca 90095
+186,401 e. chestnut st. louisville  ky 40202
+187,401 e. chestnut street louisville  ky 40202
+188,411 e chestnut st louisville  ky 40202
+189,3351 northside dr. macon  ga 31210
+190,41169 goodwin way madera  ca 93636
+191,700 s. park street madison  wi 53715
+192,1675 highland avenue madison  wi 53792
+193,600 highland avenue madison  wi 53792
+194,600 highland ave. madison  wi 53792
+195,87 mcgregor street manchester  nh 03110
+196,2800 e. broad street mansfield  tx 76063
+197,14500 99th avenue north maple grove  mn 55369
+198,1000 n. oak avenue marshfield  wi 54449
+199,600 jefferson ave memphis  tn 38105
+200,3875 e. overland road suite 201 meridian  id 83642
+201,1150 nw 14th street miami  fl 33136
+202,1150 nw 14th st. miami  fl 33136
+203,9000 w. wisconsin avenue milwaukee  wi 53226
+204,9200 w. wisconsin ave. milwaukee  wi 53226
+205,9200 w. wisconsin avenue milwaukee  wi 53226
+206,5000 west national ave. milwaukee  wi 53295
+207,715 south 8th st. minneapolis  mn 55415
+208,one veteran's dr. minneapolis  mn 55417
+209,2512 s. 7th street minneapolis  mn 55454
+210,909 fulton st. se minneapolis  mn 55455
+211,909 fulton street se minneapolis  mn 55455
+212,1 medical center drive morgantown  wv 26506
+213,1 stadium dr. morgantown  wv 26506
+214,boston  ma 02114 NA
+215,2200 pierce avenue nashville  tn 37232
+216,1211 medical center drive nashville  tn 37232
+217,130 2nd st neenah  wi 54956
+218,2100 corlies avenue neptune  nj 07753
+219,2150 corbin ave. new britain  ct 06053
+220,125 paterson st. new brunswick  nj 08903
+221,1 long wharf drive new haven  ct 06511
+222,2025 gravier street new orleans  la 70112
+223,478 south johnson st. new orleans  la 70117
+224,200 henry clay avenue new orleans  la 70118
+225,2400 canal st. new orleans  la 70119
+226,301 e. 17th street new york  ny 10003
+227,department of neurology new york  ny 10003
+228,525 east 71st st. new york  ny 10021
+229,525 e. 71st street new york  ny 10021
+230,710 west 168th st. new york  ny 10032
+231,710 w. 168th street new york  ny 10032
+232,180 fort washington avenue new york  ny 10032
+233,90 bergen street suite 8100 newark  nj 07103
+234,850 southampton avenue norfolk  va 23510
+235,university of north carolina school of medicine charlotte campus north charlotte  nc 28207
+236,4401 s. western avenue oklahoma city  ok 73109
+237,4239 farnam street omaha  ne 68131
+238,4242 farnam st. omaha  ne 68198
+239,501 s. main street orange  ca 92868
+240,200 s. manchester orange  ca 92868
+241,32 w. gore st. orlando  fl 32806
+242,13535 nemours parkway orlando  fl 32827
+243,730 welch road palo alto  ca 94304
+244,213 quarry rd. palo alto  ca 94304
+245,3801 miranda ave. palo alto  ca 94304
+246,200 e. pennsylvania avenue peoria  il 61603
+247,3900 woodland ave. philadelphia  pa 19104
+248,3400 civic center blvd philadelphia  pa 19104
+249,3500 civic center blvd philadelphia  pa 19104
+250,909 walnut st. philadelphia  pa 19107
+251,330 s. 9th street philadelphia  pa 19107
+252,3509 n. broad street philadelphia  pa 19140
+253,650 e. indian school phoenix  az 85012
+254,240 w. thomas rd. phoenix  az 85013
+255,1919 e. thomas road phoenix  az 85016
+256,4545 e. shea blvd. phoenix  az 85028
+257,420 e. north ave. pittsburgh  pa 15212
+258,3471 fifth ave. pittsburgh  pa 15213
+259,1471 5th avenue pittsburgh  pa 15213
+260,4401 penn avenue pittsburgh  pa 15224
+261,388 zona ind reparada 2 ponce  pr 00716
+262,200 belle terre road port jefferson  ny 11777
+263,5050 n.e. hoyt portland  or 97213
+264,3303 sw bond avenue portland  or 97239
+265,3181 sw sam jackson park rd. portland  or 97239
+266,3101 sw sam jackson park road portland  or 97239
+267,3710 sw u.s. veterans hospital rd. portland  or 97239
+268,593 eddy street providence  ri 02903
+269,neurology foundation providence  ri 02903
+270,335-r prairie avenue providence  ri 02905
+271,645 n. arlington ave. reno  nv 89503
+272,1268 lee blvd. richland  wa 99352
+273,11958 w. broad street richmond  va 23233
+274,1000 e. broad street richmond  va 23298
+275,neurology department riverside  ca 92505
+276,102 highland avenue roanoke  va 24013
+277,3 riverside circle roanoke  va 24016
+278,200 first st.  s.w. rochester  mn 55905
+279,200 1st st sw rochester  mn 55905
+280,601 elmwood avenue rochester  ny 14642
+281,300 university blvd. round rock  tx 78665
+282,16040 park valley dr. round rock  tx 78681
+283,3555 w. 13 mile road royal oak  mi 48073
+284,4860 y st. sacramento  ca 95817
+285,4860 y street ste. 1700 sacramento  ca 95817
+286,100 east carroll st. salisbury  md 21801
+287,175 n. medical drive east salt lake city  ut 84132
+288,175 n. medical dr. salt lake city  ut 84132
+289,333 n santa rosa st san antonio  tx 78207
+290,7400 merton minter san antonio  tx 78229
+291,8300 floyd curl dr. san antonio  tx 78229
+292,200 west arbor dr. san diego  ca 92103
+293,4510 executive drive san diego  ca 92121
+294,8001 frost street san diego  ca 92123
+295,1100 van ness san francisco  ca 94109
+296,2324 sacramento street san francisco  ca 94115
+297,400 parnassus ave. san francisco  ca 94117
+298,450 6th ave. san francisco  ca 94118
+299,4150 clement st. san francisco  ca 94121
+300,1825 4th street san francisco  ca 94158
+301,275 hospital parkway san jose  ca 95119
+302,264 calle convento san juan  pr 00911
+303,1101-1113 cll 56 se san juan  pr 00921
+304,department of neurology san leandro  ca 94577
+305,99 monticello rd. san rafael  ca 94903
+306,5880 rand blvd. sarasota  fl 34239
+307,92 campus drive scarborough  me 04074
+308,7242 e. osborn road scottsdale  az 85251
+309,13400 e. shea blvd. scottsdale  az 85259
+310,1100 ninth ave. seattle  wa 98101
+311,4800 sand point way ne seattle  wa 98105
+312,1660 s columbian way seattle  wa 98108
+313,500 17th ave. seattle  wa 98122
+314,1959 ne pacific st. seattle  wa 98195
+315,179 belle meade rd. setauket  ny 11733
+316,1606 kings highway shreveport  la 71103
+317,800 e 21st st. sioux falls  sd 57105
+318,1600 w. 22nd street sioux falls  sd 57105
+319,2501 w 22nd st. sioux falls  sd 57117
+320,249 n. grove medical park drive spartanburg  sc 29303
+321,715 s cowley spokane  wa 99202
+322,911 w. 5th avenue spokane  wa 99204
+323,751 n. rutledge springfield  il 62702
+324,759 chestnut street springfield  ma 01109
+325,department of neurology springfield  mo 65807
+326,1 hayden bridge way springfield  or 97477
+327,1438 s grand blvd. st louis  mo 63104
+328,915 n. grand blvd. st. louis  mo 63106
+329,department of neurology st. louis  mo 63110
+330,200 e. university avenue st. paul  mn 55101
+331,295 phalen blvd. st. paul  mn 55130
+332,1201 5th avenue north st. petersburg  fl 33705
+333,14445 olive view drive sylmar  ca 91342
+334,750 east adams st. syracuse  ny 13210
+335,800 irving ave syracuse  ny 13210
+336,1617 s. j street tacoma  wa 98405
+337,9505 steele st s tacoma  wa 98444
+338,9600 veterans dr. tacoma  wa 98493
+339,13330 laurel dr. tampa  fl 33612
+340,2150 w. central avenue toledo  oh 43606
+341,1000 w carson st. torrance  ca 90509
+342,2600 n. wyatt drive tucson  az 85712
+343,2800 e. ajo way tucson  az 85713
+344,1919 s. wheeling avenue tulsa  ok 74104
+345,901 san bernardino road upland  ca 91786
+346,610 n. lincoln avenue urbana  il 61801
+347,1950 glenn mitchell dr. virginia beach  va 23456
+348,3800 reservoir road nw washington  dc 20007
+349,pascquerilla healthcare center (phc)  7th floor washington  dc 20007
+350,111 michigan avenue nw washington  dc 20010
+351,2150 pennsylvania ave. nw washington  dc 20037
+352,950 campbell ave. west haven  ct 06516
+353,300 polaris parkway westerville  oh 43082
+354,41 east post rd. white plains  ny 10601
+355,3450 n. rock rd. wichita  ks 67226
+356,620 baltimore dr wilkes-barre  pa 18702
+357,1600 rockland road wilmington  de 19803
+358,medical center blvd. winston-salem  nc 27157
+359,1 medical center blvd winston-salem  nc 27157
+360,1573 w fairbanks ave.  suite 210 winter park  fl 32789
+361,5601 de soto avenue woodland hills  ca 91367
+362,55 lake ave. north worcester  ma 01655
+363,55 lake avenue north worcester  ma 01655
+364,1044 belmont avenue youngstown  oh 44501

@@ -134,7 +134,7 @@ for(i=0; i<SITES.length; i++){
                      ,datediff(day,a.index_date,coalesce(b.obsclin_start_date, b.obsclin_stop_date)) as DAYS_SINCE_INDEX
                      ,b.obsclin_type as OBS_CODE_TYPE
                      ,b.obsclin_code as OBS_CODE
-                     ,coalesce(b.raw_obsclin_name, c.long_common_name) as OBS_NAME
+                     ,coalesce(c.component,b.raw_obsclin_name) as OBS_NAME
                      ,b.obsclin_result_num as OBS_NUM
                      ,b.obsclin_result_unit as OBS_UNIT
                      ,coalesce(trim(b.obsclin_result_qual),trim(a.obsclin_result_text)) as OBS_QUAL
@@ -208,8 +208,8 @@ create or replace table ALS_ALL_OBS (
 call get_obs_long(
        'ALS_TABLE1',
        array_construct(
-         'CMS'
-        ,'ALLINA'
+       --   'CMS'
+         'ALLINA'
         ,'IHC'
         ,'KUMC'
         ,'MCRI'
@@ -239,53 +239,37 @@ group by obs_name, obs_code
 order by count(distinct patid) desc;
 
 
-select obs_name, count(distinct patid)
+create or replace table ALS_OBS_SUMM as 
+select obs_name
+      ,count(distinct patid) as lab_n
 from als_all_obs
 group by  obs_name
-order by count(distinct patid) desc
 ;
+select * from ALS_OBS_SUMM;
 
 
 create or replace table ALS_SEL_OBS as
-select * from ALS_ALL_OBS
-where obs_name in (
-       'SMOKING',
-       'TOBACCO',
-       -- 'SYSTOLIC',
-       -- 'DIASTOILC',
-       -- 'WT',
-       -- 'HT',
-       -- 'ORIGINAL_BMI',
-       'CREATININE',
-       'CALCIUM',
-       'ALBUMIN',
-       'POTASSIUM',
-       'SODIUM',
-       'CHLORIDE',
-       'ANION GAP',
-       'HEMATOCRIT',
-       'HEMOGRLOBIN',
-       'PLATELET COUNT',
-       'MCV',
-       'MCHC',
-       'MCH',
-       'MPV',
-       'AST',
-       'ALT',
-       'TOTAL PROTEIN',
-       'CO2',
-       'MPV',
-       'GLUCOSE',
-       'MAGNESIUM',
-       'RBC COUNT',
-       'WBC COUNT',
-       'PHOSPHORUS',
-       'ALK PHOSPHATASE',
-       'INR',
-       'TOTAL BILIRUBIN',
-       'VITAMIN B12',
-       'TSH',
-       'RDW'
+with dem as (
+       select count(distinct PATID) as N 
+       from als_all_obs    
+), lab_sel as (
+       select distinct 
+              a.obs_name,a.lab_n
+       from ALS_OBS_SUMM a
+       cross join dem 
+       where a.lab_n/dem.N >= 0.2 -- at least populated for 20% of the population
+)
+select a.* 
+from ALS_ALL_OBS a
+where exists (
+       select 1 from lab_sel
+       where lab_sel.obs_name = a.obs_name
+) and a.obs_name not in (
+       'SYSTOLIC',
+       'DIASTOILC',
+       'WT',
+       'HT',
+       'ORIGINAL_BMI'
 )
 union
 select * from ALS_ALL_OBS
@@ -296,9 +280,6 @@ select * from ALS_ALL_OBS
 where obs_name = 'DIASTOILC'
   and obs_num between 1 and 250
 ;
-
-select * from ALS_SEL_OBS
-where obs_name = 'SMOKING';
 
 create or replace table ALS_SEL_OBS_BMI as
 with cte_wt as (
@@ -376,7 +357,7 @@ where dedup_idx = 1
 select count(distinct obs_name), count(distinct patid) 
 from ALS_SEL_OBS
 ;
--- 32	11491
+-- 70	11571
 
 select obs_name, count(distinct patid) 
 from ALS_SEL_OBS
