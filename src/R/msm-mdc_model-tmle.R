@@ -17,15 +17,26 @@ pacman::p_load(
 source_url("https://raw.githubusercontent.com/sxinger/utils/master/preproc_util.R")
 source_url("https://raw.githubusercontent.com/sxinger/utils/master/model_util.R")
 
-var_encoder<-readRDS("./data/var_encoder.rda") %>%
+deltat<-120
+
+var_encoder<-readRDS(file.path(
+  "./data",paste0("t_",deltat,"d"),
+  "var_encoder.rda")
+) %>%
   select(var,var2) %>% unique
 
 ##===== tmle-adjusted model ====
 # load unadj outcome result
-unadj<-readRDS("./data/unadj/tvm_OC_death.rda")
+unadj<-readRDS(file.path(
+  "./data",paste0("t_",deltat,"d"),
+  "unadj/tvm_OC_death.rda"
+))
 
 # load training data
-trainY<-readRDS("./data/trainY_82.rda") %>%
+trainY<-readRDS(file.path(
+  "./data",paste0("t_",deltat,"d"),
+  "trainY_82.rda"
+)) %>%
   mutate(PATID2 = PATID,T_DAYS2 = T_DAYS) %>%
   unite("PATID_T",c("PATID2","T_DAYS2"),sep="_") %>%
   arrange(PATID_T) %>% 
@@ -41,7 +52,10 @@ trainY<-readRDS("./data/trainY_82.rda") %>%
 trainX<-trainY %>% 
   select(PATID_T) %>%
   inner_join(
-    readRDS("./data/trainX_82.rda") %>% 
+    readRDS(file.path(
+      "./data",paste0("t_",deltat,"d"),
+      "trainX_82.rda"
+    )) %>% 
       unite("PATID_T",c("PATID","T_DAYS"),sep="_"),
     by="PATID_T",multiple = "all"
   )
@@ -64,7 +78,10 @@ trainX %<>%
   )
 
 # load testing data
-testY<-readRDS("./data/testY_82.rda") %>%
+testY<-readRDS(file.path(
+  "./data",paste0("t_",deltat,"d"),
+  "testY_82.rda"
+)) %>%
   mutate(PATID2 = PATID,T_DAYS2 = T_DAYS) %>%
   unite("PATID_T",c("PATID2","T_DAYS2"),sep="_") %>%
   arrange(PATID_T) %>% 
@@ -78,7 +95,10 @@ testY<-readRDS("./data/testY_82.rda") %>%
 # ensure alignment
 testX<-testY %>% select(PATID_T) %>% 
   inner_join(
-    readRDS("./data/testX_82.rda") %>% 
+    readRDS(file.path(
+      "./data",paste0("t_",deltat,"d"),
+      "testX_82.rda"
+    )) %>% 
       unite("PATID_T",c("PATID","T_DAYS"),sep="_"),
     by="PATID_T",multiple = "all"
   ) %>%
@@ -101,7 +121,10 @@ testX<-testX[,shared]
 # customize folds (so same patient remain in the same fold)
 folds<-list()
 for(fold in 1:5){
-  fold_lst<-readRDS("./data/part_idx.rda") %>%
+  fold_lst<-readRDS(file.path(
+    "./data",paste0("t_",deltat,"d"),
+    "part_idx.rda"
+  )) %>%
     filter(hdout82==0&cv5==fold) %>%
     select(PATID) %>%
     left_join(
@@ -148,12 +171,18 @@ ps_tgt<-c(
 
 for(ps in c(ps_comm,ps_tgt)){
   # ps<-ps_comm[1] #uncomment for testing
-  path_to_file<-file.path("./data/tmle",paste0("tvm_OC_death_",ps,".rda"))
+  path_to_file<-file.path(
+    "./data",paste0("t_",deltat,"d"),"tmle",
+    paste0("tvm_OC_death_",ps,".rda")
+  )
   if(!file.exists(path_to_file)){
     # extract ps
     ps_df<-c()
     for(y_ps in c(ps)){
-      ps_fit<-readRDS(paste0("./data/unadj/tvm_",y_ps,".rda"))
+      ps_fit<-readRDS(file.path(
+        "./data",paste0("t_",deltat,"d"),"unadj",
+        paste0("tvm_",y_ps,".rda")
+      ))
       ps_df %<>%
         bind_rows(
           ps_fit$fit_model$pred_tr %>% 

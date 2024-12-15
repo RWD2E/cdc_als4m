@@ -376,7 +376,13 @@ ggsave(
 # labs
 ggplot(
   explainer %>% 
-    filter(grepl("^(LAB)+",var) & val > 0),
+    filter(
+      grepl("^(LAB)+",var) & val > 0 &
+      !(grepl("(BMI)+",var) & val >50) &
+      !(grepl("(VITAMIN B12)+",var) & val >1500) &
+      !(grepl("(PLATELET COUNT)+",var) & val >400) &
+      !(grepl("(GLUCOSE)+",var) & val >150)
+    ),
   aes(x=val,y=eff_m,color = cond,group = cond)
 ) + 
   geom_point()+

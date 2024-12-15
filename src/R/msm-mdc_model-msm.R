@@ -16,12 +16,20 @@ pacman::p_load(
 source_url("https://raw.githubusercontent.com/sxinger/utils/master/preproc_util.R")
 source_url("https://raw.githubusercontent.com/sxinger/utils/master/model_util.R")
 
-var_encoder<-readRDS("./data/var_encoder.rda") %>%
+deltat<-90
+
+var_encoder<-readRDS(file.path(
+  "./data",paste0("t_",deltat,"d"),
+  "var_encoder.rda")
+) %>%
   select(var,var2) %>% unique
 
 ##===== iptw-adjusted model ====
 # load training data
-trainY<-readRDS("./data/trainY_82.rda") %>%
+trainY<-readRDS(file.path(
+  "./data",paste0("t_",deltat,"d"),
+  "trainY_82.rda"
+)) %>%
   mutate(PATID2 = PATID) %>%
   unite("PATID_T",c("PATID","T_DAYS"),sep="_") %>%
   arrange(PATID_T) %>% 
@@ -33,7 +41,10 @@ trainY<-readRDS("./data/trainY_82.rda") %>%
 trainX<-trainY %>% 
   select(PATID_T) %>%
   inner_join(
-    readRDS("./data/trainX_82.rda") %>% 
+    readRDS(file.path(
+      "./data",paste0("t_",deltat,"d"),
+      "trainX_82.rda"
+    )) %>% 
       unite("PATID_T",c("PATID","T_DAYS"),sep="_"),
     by="PATID_T",multiple = "all"
   )
@@ -60,7 +71,10 @@ trainY %<>%
   inner_join(data.frame(PATID_T = row.names(trainX)),by="PATID_T")
 
 # load testing data
-testY<-readRDS("./data/testY_82.rda") %>%
+testY<-readRDS(file.path(
+  "./data",paste0("t_",deltat,"d"),
+  "testY_82.rda"
+)) %>%
   unite("PATID_T",c("PATID","T_DAYS"),sep="_") %>%
   arrange(PATID_T) %>% 
   filter(var == 'OC_death') %>%
@@ -69,7 +83,10 @@ testY<-readRDS("./data/testY_82.rda") %>%
 # ensure alignment
 testX<-testY %>% select(PATID_T) %>% 
   inner_join(
-    readRDS("./data/testX_82.rda") %>% 
+    readRDS(file.path(
+      "./data",paste0("t_",deltat,"d"),
+      "testX_82.rda"
+    )) %>% 
       unite("PATID_T",c("PATID","T_DAYS"),sep="_"),
     by="PATID_T",multiple = "all"
   ) %>%
@@ -92,7 +109,10 @@ testX<-testX[,shared]
 # customize folds (so same patient remain in the same fold)
 folds<-list()
 for(fold in 1:5){
-  fold_lst<-readRDS("./data/part_idx.rda") %>%
+  fold_lst<-readRDS(file.path(
+    "./data",paste0("t_",deltat,"d"),
+    "part_idx.rda"
+  )) %>%
     filter(hdout82==0&cv5==fold) %>%
     select(PATID) %>%
     left_join(
@@ -139,12 +159,18 @@ ps_tgt<-c(
 
 for(ps in c(ps_comm,ps_tgt)){
   # ps<-ps_comm[1] # uncomment for testing
-  path_to_file<-file.path("./data/msm",paste0("tvm_OC_death_",ps,".rda"))
+  path_to_file<-file.path(
+    "./data",paste0("t_",deltat,"d"),
+    "msm",paste0("tvm_OC_death_",ps,".rda")
+  )
   if(!file.exists(path_to_file)){
     # calculate iptw
     wt_long<-c()
     for(y_ps in c(ps)){
-      ps_fit<-readRDS(paste0("./data/unadj/tvm_",y_ps,".rda"))
+      ps_fit<-readRDS(file.path(
+        "./data",paste0("t_",deltat,"d"),"unadj",
+        paste0("tvm_",y_ps,".rda")
+      ))
       wt_long %<>%
         bind_rows(
           ps_fit$fit_model$pred_tr %>% 
@@ -321,14 +347,10 @@ for(ps in c(ps_comm,ps_tgt)){
     time_idx<-var_encoder %>%
       filter(var=="T_DAYS") %>% 
       select(var2) %>% unlist()
+    
     var_sel<-var_encoder %>%
       filter(var %in% c(ps_comm,ps_tgt)) %>% 
       select(var2) %>% unlist()
-    
-    # hte by separating between late-onset and late-incld-of-early-onset
-    # pt<-readRDS("C:/repo/cdc_als4m/data/als_tbl1.rds") %>%
-    #   select(PATID,AGE_AT_INDEX) %>%
-    #   mutate(late_onset = as.numeric(AGE_AT_INDEX>=64))
     
     explainer<-explain_model(
       X = testX,

@@ -1,5 +1,5 @@
 rm(list=ls()); gc()
-setwd("C:/repo/cdc_als4m")
+setwd("C:/repos/cdc_als4m")
 
 # install.packages("pacman")
 pacman::p_load(
@@ -78,7 +78,7 @@ saveRDS(dat,file="./data/als_mdc_px.rds")
 
 #==================================================================================
 #==== ALS time-varying dataset
-deltat<-30
+deltat<-120
 t_seq<-seq(0,5*365.25,by=deltat)
 drop_rt<-0.01
 
@@ -224,7 +224,7 @@ for(i in 1:k){
   }
   # save table
   fn<-paste0(tolower(tbl_part_map$tbl[i]),"_",tolower(tbl_part_map$part_col[i]),"_",deltat,".rda")
-  saveRDS(tbl_long,file=file.path('./data',fn))
+  saveRDS(tbl_long,file=file.path('./data',paste0("t_",deltat,"d"),fn))
   
   # report progress
   print(paste(
