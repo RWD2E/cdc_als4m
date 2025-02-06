@@ -1,0 +1,37 @@
+﻿NO,FIELD_NAME,DESCRIPTION
+1,TRI_FACILITY_NAME,Name of the reporting facility.
+2,TRI_FACILITY_ID,The unique TRI facility identification number assigned to each facility for TRI reporting purposes.
+3,FRSID,Unique identification number assigned by EPA’s Facility Registry Service (FRS) to the TRI facility.
+4,YEAR,Calendar year in which the reported activities occurred.
+5,CENSUS_TRACT,FIPS code for census tract
+6,CENSUS_BLOCK_GROUP,FIPS code for census block group
+7,DEMOGRAPHIC_INDEX_PERCENTILE,percentile rank of demographic index
+8,SUPPLEMENTAL_DEMOGRAPHIC_INDEX_PERCENTILE,percentile rank of supplemental demographic index
+9,PEOPLE_OF_COLOR_PERCENTILE,percentile rank of proportion of people of color
+10,LOW_INCOME_PERCENTILE,percentile rank of low income population
+11,UNEMPLOYMENT_RATE_PERCENTILE,percentile rank of unemployment rate
+12,LIMITED_ENGLISH_SPEAKING_PERCENTILE,percentile rank of limited english speaking population 
+13,LESS_THAN_HIGH_SCHOOL_EDUCATION_PERCENTILE,percentile rank of people obtaining degress less than high school
+14,UNDER_AGE_5_PERCENTILE,percentile rank of people under 5 years old
+15,OVER_AGE_64_PERCENTILE,percentile rank of people over 64 years ol
+16,ZIP_CODE,ZIP code of the reporting facility.
+17,STREET_ADDRESS,Street address of the reporting facility.
+18,CITY,City in which the reporting facility is located.
+19,COUNTY,County in which the reporting facility is located.
+20,STATE,Two-letter state code of the reporting facility.
+21,EPA_REGION,EPA region where the facility is located
+22,LATITUDE,The latitude value that best represents the facility according to EPA’s Facility Registry System (FRS).
+23,LONGITUDE,The longitude value that best represents the facility according to EPA’s Facility Registry System (FRS).
+24,CHEMICAL,"Name of the chemical as listed on the TRI chemical list, or generic name, if the chemical is claimed as a trade secret."
+25,DOCCTRLNUM,"Unique identification number assigned to each TRI form submission. Format: TTYYNNNNNNNNN, where: TT = document type; YY = reporting year; NNNNNNNNN= assigned number"
+26,INDUSTRY_SECTOR,"The industry or sector (e.g., Coal Mining, Metal Mining, Electrical Utilities, etc.) a facility belongs to."
+27,PARENT_COMPANY,Name of the corporation or other business entity that controls the reporting facility.
+28,FEDERAL_FACILITY_AGENCY_NAME,Name of the federal agency owning and operating the facility
+29,RELEASES_LB,The total on- and off-site releases (lb)
+30,AIR_RELEASES_LB,The total on- and off-site releases into air
+31,WATER_RELEASES_LB,The total on- and off-site releases into water
+32,LAND_RELEASES_LB,The total on- and off-site releases into land
+33,OFF_SITE_RELEASES_LB,The total off-site releases
+34,WASTE_MANAGED_LB,Total waste managed by the facility
+35,RSEI_SCORE,EPA's Risk-Screening Environmental Indicators 
+36,NUMBER_OF_SOURCE_REDUCTION_ACTIVITIES,Total number of source reduction activities

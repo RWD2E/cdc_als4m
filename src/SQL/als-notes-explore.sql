@@ -17,10 +17,31 @@ where lower(deid_note) like '%national als registry%';
 -- where lower(deid_note) like '%national als registry%';
 -- 12
 
-select * from 
+select * from als4m_db.notes.sample_potentially_deid_alsnotes
 where patid = '255089'
 order by obsgen_start_date
 ;
+
+select * from als4m_db.notes.all_potentially_deid_alsnotes
+where patid = '255089'
+order by obsgen_start_date
+;
+
+select * from PCORNET_CDM.CDM.DEATH
+where patid = '255089'
+;
+
+select * from PCORNET_CDM.CDM.ENCOUNTER
+where patid = '255089'
+order by admit_date
+;
+
+select * from PCORNET_CDM.CDM.DIAGNOSIS
+where patid = '255089'
+order by admit_date
+;
+
+select * from 
 
 select * from als4m_db.notes.sample_potentially_deid_alsnotes
 where lower(deid_note) like '%subject: general message%';

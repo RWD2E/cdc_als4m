@@ -1,0 +1,1727 @@
+id,name,description,codesystem,code,op
+C20000,alsfrsr,presence of a record of amyotrophic lateral sclerosis functional rating scale - revised [ALSFRS-R],loinc,82954-9,exists
+C20001,alsfrsrQ1Speech,revised ALS functional rating scale - speech,loinc,82940-8,"[,3]"
+C20002,alsfrsrQ2Salivation,revised ALS functional rating scale - salivation,loinc,82941-6,"[,3]"
+C20003,alsfrsrQ3Swallowing,revised ALS functional rating scale - swallowing,loinc,82942-4,"[,3]"
+C20004,alsfrsrQ4Handwriting,revised ALS functional rating scale - handwriting,loinc,82943-2,"[,3]"
+C20005,alsfrsrQ5CuttingWo,revised ALS functional rating scale - cutting food and handling utensils (patients without gastronomy),loinc,82944-0,"[,3]"
+C20006,alsfrsrQ5CuttingW,revised ALS functional rating scale - cutting food and handling utensils (patients with gastronomy),loinc,82945-7,"[,3]"
+C20007,alsfrsrQ6Dressing,revised ALS functional rating scale - dressing and hygiene,loinc,82946-5,"[,3]"
+C20008,alsfrsrQ7Turning,revised ALS functional rating scale - turning in bed and adjusting bed clothes,loinc,82947-3,"[,3]"
+C20009,alsfrsrQ8Walking,revised ALS functional rating scale - walking,loinc,82948-1,"[,3]"
+C20010,alsfrsrQ9Climbing,revised ALS functional rating scale - climbing stairs,loinc,82948-1,"[,3]"
+C20011,alsfrsrQ10Dyspnea,revised ALS functional rating scale - dyspnea,loinc,82950-7,"[,3]"
+C20012,alsfrsrQ10Dyspnea,revised ALS functional rating scale - dyspnea,loinc,82950-7,"[,3]"
+C20013,alsfrsrQ11Orthopnea,revised ALS functional rating scale - orthopnea,loinc,82951-5,"[,3]"
+C20014,alsfrsrQ12Respiratory,revised ALS functional rating scale - respiratory insufficiency,loinc,82952-3,"[,3]"
+C20015,alsfrsrRespType,revised ALS functional rating scale - respondent type,loinc,83129-7,exists
+C20016,alsfrsrTotal,revised ALS functional rating scale - total score,loinc,82953-1,"[,47]"
+C10172,ForcedVitalCapacityResltVal,"Value of the Forced Vital Capacity (FVC), in liters, as the maximum volume of air that can be exhaled as rapidly, forcefully, and completely as possible from the point of maximal inhalation",loinc,19868-9,"[,5]"
+C10172,ForcedVitalCapacityResltVal,"Value of the Forced Vital Capacity (FVC), in liters, as the maximum volume of air that can be exhaled as rapidly, forcefully, and completely as possible from the point of maximal inhalation",loinc,19870-5,"[,5]"
+C10177,SlowVitalCapPcntPredctdNormVal,percentage of the predicted normal value of Slow Vital Capacity (sVC) to grade the severity of the abnormality,loinc,19866-3,"[,5]"
+C10177,SlowVitalCapPcntPredctdNormVal,percentage of the predicted normal value of Slow Vital Capacity (sVC) to grade the severity of the abnormality,loinc,19867-1,"[,5]"
+C20017,fvcPercent,forced vital capacity (percent of predicted normal value),loinc,19872-1,"[,90]"
+C20018,svcPercent,slow vital capacity (percent of predicted normal value),loinc,19872-1,"[,90]"
+C10974,ManualMuscleTestScore,,loinc,80322-1,exists
+C20019,ManualMuscleTestScoreSABDLeft,Manual Muscle Testing (MMT) for left shoulder abduction,loinc,80322-1,"[,4]"
+C20019,ManualMuscleTestScoreSABDLeft,Manual Muscle Testing (MMT) for left shoulder abduction,loinc,41299-9,"[,149]"
+C20019,ManualMuscleTestScoreSABDLeft,Manual Muscle Testing (MMT) for left shoulder abduction,loinc,41300-5,"[,149]"
+C20020,ManualMuscleTestScoreSABDRight,Manual Muscle Testing (MMT) for right shoulder abduction,loinc,80322-1,"[,4]"
+C20020,ManualMuscleTestScoreSABDRight,Manual Muscle Testing (MMT) for right shoulder abduction,loinc,41311-2,"[,149]"
+C20020,ManualMuscleTestScoreSABDRight,Manual Muscle Testing (MMT) for right shoulder abduction,loinc,41300-5,"[,149]"
+C20021,ManualMuscleTestScoreSFLeft,Manual Muscle Testing (MMT) for left shoulder flexion,loinc,80322-1,exists
+C20021,ManualMuscleTestScoreSFLeft,Manual Muscle Testing (MMT) for left shoulder flexion,loinc,41295-7,"[,159]"
+C20021,ManualMuscleTestScoreSFLeft,Manual Muscle Testing (MMT) for left shoulder flexion,loinc,41296-5,"[,159]"
+C20022,ManualMuscleTestScoreSFRight,Manual Muscle Testing (MMT) for right shoulder flexion,loinc,80322-1,exists
+C20022,ManualMuscleTestScoreSFRight,Manual Muscle Testing (MMT) for right shoulder flexion,loinc,41307-0,exists
+C20022,ManualMuscleTestScoreSFRight,Manual Muscle Testing (MMT) for right shoulder flexion,loinc,41308-8,exists
+C20023,ManualMuscleTestScoreEFLeft,Manual Muscle Testing (MMT) for left elbow flexion,loinc,80322-1,exists
+C20023,ManualMuscleTestScoreEFLeft,Manual Muscle Testing (MMT) for left elbow flexion,loinc,41351-8,exists
+C20023,ManualMuscleTestScoreEFLeft,Manual Muscle Testing (MMT) for left elbow flexion,loinc,41352-6,exists
+C20024,ManualMuscleTestScoreEELeft,Manual Muscle Testing (MMT) for left elbow extension,loinc,80322-1,exists
+C20024,ManualMuscleTestScoreEELeft,Manual Muscle Testing (MMT) for left elbow extension,loinc,41353-4,exists
+C20024,ManualMuscleTestScoreEELeft,Manual Muscle Testing (MMT) for left elbow extension,loinc,41354-2,exists
+C20025,ManualMuscleTestScoreEFRight,Manual Muscle Testing (MMT) for right elbow flexion,loinc,80322-1,exists
+C20025,ManualMuscleTestScoreEFRight,Manual Muscle Testing (MMT) for right elbow flexion,loinc,41355-9,exists
+C20025,ManualMuscleTestScoreEFRight,Manual Muscle Testing (MMT) for right elbow flexion,loinc,41356-7,exists
+C20026,ManualMuscleTestScoreEERight,Manual Muscle Testing (MMT) for right elbow extension,loinc,80322-1,exists
+C20026,ManualMuscleTestScoreEERight,Manual Muscle Testing (MMT) for right elbow extension,loinc,41357-5,exists
+C20026,ManualMuscleTestScoreEERight,Manual Muscle Testing (MMT) for right elbow extension,loinc,41358-3,exists
+C20027,ManualMuscleTestScoreHFLeft,Manual Muscle Testing (MMT) for left hip flexion,loinc,80322-1,exists
+C20027,ManualMuscleTestScoreHFLeft,Manual Muscle Testing (MMT) for left hip flexion,loinc,41319-5,exists
+C20027,ManualMuscleTestScoreHFLeft,Manual Muscle Testing (MMT) for left hip flexion,loinc,41320-3,exists
+C20028,ManualMuscleTestScoreHELeft,Manual Muscle Testing (MMT) for left hip extension,loinc,80322-1,exists
+C20028,ManualMuscleTestScoreHELeft,Manual Muscle Testing (MMT) for left hip extension,loinc,41321-1,exists
+C20028,ManualMuscleTestScoreHELeft,Manual Muscle Testing (MMT) for left hip extension,loinc,41322-9,exists
+C20029,ManualMuscleTestScoreHABDLeft,Manual Muscle Testing (MMT) for left hip abduction,loinc,80322-1,exists
+C20029,ManualMuscleTestScoreHABDLeft,Manual Muscle Testing (MMT) for left hip abduction,loinc,41323-7,exists
+C20029,ManualMuscleTestScoreHABDLeft,Manual Muscle Testing (MMT) for left hip abduction,loinc,41324-5,exists
+C20030,ManualMuscleTestScoreHADDLeft,Manual Muscle Testing (MMT) for left hip adduction,loinc,80322-1,exists
+C20030,ManualMuscleTestScoreHADDLeft,Manual Muscle Testing (MMT) for left hip adduction,loinc,41325-2,exists
+C20030,ManualMuscleTestScoreHADDLeft,Manual Muscle Testing (MMT) for left hip adduction,loinc,41326-0,exists
+C20031,ManualMuscleTestScoreHERLeft,Manual Muscle Testing (MMT) for left hip external rotation,loinc,80322-1,exists
+C20031,ManualMuscleTestScoreHERLeft,Manual Muscle Testing (MMT) for left hip external rotation,loinc,41329-4,exists
+C20031,ManualMuscleTestScoreHERLeft,Manual Muscle Testing (MMT) for left hip external rotation,loinc,41330-2,exists
+C20032,ManualMuscleTestScoreHFRight,Manual Muscle Testing (MMT) for right hip flexion,loinc,80322-1,exists
+C20032,ManualMuscleTestScoreHFRight,Manual Muscle Testing (MMT) for right hip flexion,loinc,41331-0,exists
+C20032,ManualMuscleTestScoreHFRight,Manual Muscle Testing (MMT) for right hip flexion,loinc,41332-8,exists
+C20033,ManualMuscleTestScoreHERight,Manual Muscle Testing (MMT) for right hip extension,loinc,80322-1,exists
+C20033,ManualMuscleTestScoreHERight,Manual Muscle Testing (MMT) for right hip extension,loinc,41333-6,exists
+C20033,ManualMuscleTestScoreHERight,Manual Muscle Testing (MMT) for right hip extension,loinc,41334-4,exists
+C20034,ManualMuscleTestScoreHABDRight,Manual Muscle Testing (MMT) for right hip abduction,loinc,80322-1,exists
+C20034,ManualMuscleTestScoreHABDRight,Manual Muscle Testing (MMT) for right hip abduction,loinc,41335-1,exists
+C20034,ManualMuscleTestScoreHABDRight,Manual Muscle Testing (MMT) for right hip abduction,loinc,41336-9,exists
+C20035,ManualMuscleTestScoreHADDRight,Manual Muscle Testing (MMT) for right hip adduction,loinc,80322-1,exists
+C20035,ManualMuscleTestScoreHADDRight,Manual Muscle Testing (MMT) for right hip adduction,loinc,41337-7,exists
+C20035,ManualMuscleTestScoreHADDRight,Manual Muscle Testing (MMT) for right hip adduction,loinc,41338-5,exists
+C20036,ManualMuscleTestScoreHERRight,Manual Muscle Testing (MMT) for right hip external rotation,loinc,80322-1,exists
+C20036,ManualMuscleTestScoreHERRight,Manual Muscle Testing (MMT) for right hip external rotation,loinc,41341-9,exists
+C20036,ManualMuscleTestScoreHERRight,Manual Muscle Testing (MMT) for right hip external rotation,loinc,41342-7,exists
+C20037,ManualMuscleTestScoreKFLeft,Manual Muscle Testing (MMT) for left knee flexion,loinc,80322-1,exists
+C20037,ManualMuscleTestScoreKFLeft,Manual Muscle Testing (MMT) for left knee flexion,loinc,41343-5,exists
+C20037,ManualMuscleTestScoreKFLeft,Manual Muscle Testing (MMT) for left knee flexion,loinc,41344-3,exists
+C20038,ManualMuscleTestScoreKELeft,Manual Muscle Testing (MMT) for left knee extension,loinc,80322-1,exists
+C20038,ManualMuscleTestScoreKELeft,Manual Muscle Testing (MMT) for left knee extension,loinc,41345-0,exists
+C20038,ManualMuscleTestScoreKELeft,Manual Muscle Testing (MMT) for left knee extension,loinc,41346-8,exists
+C20039,ManualMuscleTestScoreKFRight,Manual Muscle Testing (MMT) for right knee flexion,loinc,80322-1,exists
+C20039,ManualMuscleTestScoreKFRight,Manual Muscle Testing (MMT) for right knee flexion,loinc,41347-6,exists
+C20039,ManualMuscleTestScoreKFRight,Manual Muscle Testing (MMT) for right knee flexion,loinc,41348-4,exists
+C20040,ManualMuscleTestScoreKERight,Manual Muscle Testing (MMT) for right knee extension,loinc,80322-1,exists
+C20040,ManualMuscleTestScoreKERight,Manual Muscle Testing (MMT) for right knee extension,loinc,41349-2,exists
+C20040,ManualMuscleTestScoreKERight,Manual Muscle Testing (MMT) for right knee extension,loinc,41350-0,exists
+C20041,ManualMuscleTestScoreWFLeft,Manual Muscle Testing (MMT) for left wrist flexion,loinc,80322-1,exists
+C20042,ManualMuscleTestScoreWELeft,Manual Muscle Testing (MMT) for left wrist extension,loinc,80322-1,exists
+C20043,ManualMuscleTestScoreWFRight,Manual Muscle Testing (MMT) for right wrist flexion,loinc,80322-1,exists
+C20044,ManualMuscleTestScoreWERight,Manual Muscle Testing (MMT) for right wrist extension,loinc,80322-1,exists
+C20045,ManualMuscleTestScoreNF,Manual Muscle Testing (MMT) for neck flexion,loinc,80322-1,exists
+C20046,ManualMuscleTestScoreNE,Manual Muscle Testing (MMT) for neck extension,loinc,80322-1,exists
+C20047,ManualMuscleTestScoreADLeft,Manual Muscle Testing (MMT) for left ankle dorsiflexion,loinc,80322-1,exists
+C20048,ManualMuscleTestScoreAPLLeft,Manual Muscle Testing (MMT) for left ankle plantarflexion,loinc,80322-1,exists
+C20049,ManualMuscleTestScoreADRight,Manual Muscle Testing (MMT) for right ankle dorsiflexion,loinc,80322-1,exists
+C20050,ManualMuscleTestScoreAPLRight,Manual Muscle Testing (MMT) for right ankle plantarflexion,loinc,80322-1,exists
+C20051,ManualMuscleTestScoreTHABDLeft,Manual Muscle Testing (MMT) for left thenar abductor pollicis brevis,loinc,80322-1,exists
+C20052,ManualMuscleTestScoreTHABDRight,Manual Muscle Testing (MMT) for right thenar abductor pollicis brevis,loinc,80322-1,exists
+C20053,ManualMuscleTestScoreFDMLeft,Manual Muscle Testing (MMT) for left flexor digiti minimi,loinc,80322-1,exists
+C20054,ManualMuscleTestScoreFDMRight,Manual Muscle Testing (MMT) for right flexor digiti minimi,loinc,80322-1,exists
+C20055,ManualMuscleTestScoreFDILeft,Manual Muscle Testing (MMT) for left first dorsal interossei,loinc,80322-1,exists
+C20056,ManualMuscleTestScoreFDIRight,Manual Muscle Testing (MMT) for right first dorsal interossei,loinc,80322-1,exists
+C20057,DiagnosALS,diagnosis of amyotrophic lateral sclerosis,icd9cm,335.20,descendent-of
+C20057,DiagnosALS,diagnosis of amyotrophic lateral sclerosis,icd10cm,G12.21,descendent-of
+C20058,SymptmSpeech,speech disorder or deficit,icd9cm,315.39,descendent-of
+C20058,SymptmSpeech,speech disorder or deficit,icd9cm,438.1,descendent-of
+C20058,SymptmSpeech,speech disorder or deficit,icd9cm,784.3,descendent-of
+C20058,SymptmSpeech,speech disorder or deficit,icd9cm,784.4,descendent-of
+C20058,SymptmSpeech,speech disorder or deficit,icd9cm,784.5,descendent-of
+C20058,SymptmSpeech,speech disorder or deficit,icd10cm,F80.0,descendent-of
+C20058,SymptmSpeech,speech disorder or deficit,icd10cm,F80.89,descendent-of
+C20058,SymptmSpeech,speech disorder or deficit,icd10cm,R47,descendent-of
+C20058,SymptmSpeech,speech disorder or deficit,icd10cm,R49,descendent-of
+C20058,SymptmSpeech,speech disorder or deficit,icd10cm,I69.92,descendent-of
+C20059,SymptmSwallowing,"swallowing disturbance, pain in throat, dysphasia",icd9cm,787.2,descendent-of
+C20059,SymptmSwallowing,"swallowing disturbance, pain in throat, dysphasia",icd9cm,438.82,descendent-of
+C20059,SymptmSwallowing,"swallowing disturbance, pain in throat, dysphasia",icd9cm,527.7,descendent-of
+C20059,SymptmSwallowing,"swallowing disturbance, pain in throat, dysphasia",icd9cm,527.8,descendent-of
+C20059,SymptmSwallowing,"swallowing disturbance, pain in throat, dysphasia",icd9cm,784.1,descendent-of
+C20059,SymptmSwallowing,"swallowing disturbance, pain in throat, dysphasia",icd10cm,R13,descendent-of
+C20059,SymptmSwallowing,"swallowing disturbance, pain in throat, dysphasia",icd10cm,I69.99,descendent-of
+C20059,SymptmSwallowing,"swallowing disturbance, pain in throat, dysphasia",icd10cm,K11,descendent-of
+C20059,SymptmSwallowing,"swallowing disturbance, pain in throat, dysphasia",icd10cm,R68.2,descendent-of
+C20059,SymptmSwallowing,"swallowing disturbance, pain in throat, dysphasia",icd10cm,R07.0,descendent-of
+C20060,SymptmMuscleWeakness,"muscle weakness, disuse, atrophy, or ligament disorder",icd10cm,M60,descendent-of
+C20060,SymptmMuscleWeakness,"muscle weakness, disuse, atrophy, or ligament disorder",icd10cm,M61,descendent-of
+C20060,SymptmMuscleWeakness,"muscle weakness, disuse, atrophy, or ligament disorder",icd10cm,M62,descendent-of
+C20060,SymptmMuscleWeakness,"muscle weakness, disuse, atrophy, or ligament disorder",icd10cm,M63,descendent-of
+C20060,SymptmMuscleWeakness,"muscle weakness, disuse, atrophy, or ligament disorder",icd10cm,M24.2,descendent-of
+C20060,SymptmMuscleWeakness,"muscle weakness, disuse, atrophy, or ligament disorder",icd10cm,M35.7,descendent-of
+C20060,SymptmMuscleWeakness,"muscle weakness, disuse, atrophy, or ligament disorder",icd10cm,M71,descendent-of
+C20061,SymptmMuscleMovement,"involuntary muscle movement (cramping, spasm, switching, fasciculation, myopathy)",icd9cm,729.82,descendent-of
+C20061,SymptmMuscleMovement,"involuntary muscle movement (cramping, spasm, switching, fasciculation, myopathy)",icd9cm,728.85,descendent-of
+C20061,SymptmMuscleMovement,"involuntary muscle movement (cramping, spasm, switching, fasciculation, myopathy)",icd9cm,781.0,descendent-of
+C20061,SymptmMuscleMovement,"involuntary muscle movement (cramping, spasm, switching, fasciculation, myopathy)",icd9cm,359,descendent-of
+C20061,SymptmMuscleMovement,"involuntary muscle movement (cramping, spasm, switching, fasciculation, myopathy)",icd10cm,M62.4,descendent-of
+C20061,SymptmMuscleMovement,"involuntary muscle movement (cramping, spasm, switching, fasciculation, myopathy)",icd10cm,M62.83,descendent-of
+C20061,SymptmMuscleMovement,"involuntary muscle movement (cramping, spasm, switching, fasciculation, myopathy)",icd10cm,R25,descendent-of
+C20061,SymptmMuscleMovement,"involuntary muscle movement (cramping, spasm, switching, fasciculation, myopathy)",icd10cm,G72,descendent-of
+C20061,SymptmMuscleMovement,"involuntary muscle movement (cramping, spasm, switching, fasciculation, myopathy)",icd10cm,G73.7,descendent-of
+C20062,SymptmPainJointLimb,pain in joint or pain in limb,icd9cm,719.4,descendent-of
+C20062,SymptmPainJointLimb,pain in joint or pain in limb,icd9cm,729.5,descendent-of
+C20062,SymptmPainJointLimb,pain in joint or pain in limb,icd10cm,M25.5,descendent-of
+C20062,SymptmPainJointLimb,pain in joint or pain in limb,icd10cm,M79.6,descendent-of
+C20063,SymptmWalking,difficulty walking or gait abnormality,icd9cm,719.7,descendent-of
+C20063,SymptmWalking,difficulty walking or gait abnormality,icd9cm,781.2,descendent-of
+C20063,SymptmWalking,difficulty walking or gait abnormality,icd9cm,781.3,descendent-of
+C20063,SymptmWalking,difficulty walking or gait abnormality,icd10cm,R26,descendent-of
+C20063,SymptmWalking,difficulty walking or gait abnormality,icd10cm,R27,descendent-of
+C20064,MobilityDeviceWalkerCane,mobility device - walker or cane,hpc,E0100,exists
+C20064,MobilityDeviceWalkerCane,mobility device - walker or cane,hpc,E0105,exists
+C20064,MobilityDeviceWalkerCane,mobility device - walker or cane,hpc,E0130,exists
+C20064,MobilityDeviceWalkerCane,mobility device - walker or cane,hpc,E0135,exists
+C20064,MobilityDeviceWalkerCane,mobility device - walker or cane,hpc,E0140,exists
+C20064,MobilityDeviceWalkerCane,mobility device - walker or cane,hpc,E0141,exists
+C20064,MobilityDeviceWalkerCane,mobility device - walker or cane,hpc,E0143,exists
+C20064,MobilityDeviceWalkerCane,mobility device - walker or cane,hpc,E0144,exists
+C20064,MobilityDeviceWalkerCane,mobility device - walker or cane,hpc,E0147,exists
+C20064,MobilityDeviceWalkerCane,mobility device - walker or cane,hpc,E0148,exists
+C20064,MobilityDeviceWalkerCane,mobility device - walker or cane,hpc,E0149,exists
+C20064,MobilityDeviceWalkerCane,mobility device - walker or cane,hpc,E0153,exists
+C20064,MobilityDeviceWalkerCane,mobility device - walker or cane,hpc,E0154,exists
+C20064,MobilityDeviceWalkerCane,mobility device - walker or cane,hpc,E0155,exists
+C20064,MobilityDeviceWalkerCane,mobility device - walker or cane,hpc,E0156,exists
+C20064,MobilityDeviceWalkerCane,mobility device - walker or cane,hpc,E0157,exists
+C20064,MobilityDeviceWalkerCane,mobility device - walker or cane,hpc,E0158,exists
+C20064,MobilityDeviceWalkerCane,mobility device - walker or cane,hpc,E0159,exists
+C20065,MobilityDeviceHygiene,"mobility devices for maintaining hygiene (commodes, bedpands, urinals, shower assistive device)",hpc,E163,exists
+C20065,MobilityDeviceHygiene,"mobility devices for maintaining hygiene (commodes, bedpands, urinals, shower assistive device)",hpc,E164,exists
+C20065,MobilityDeviceHygiene,"mobility devices for maintaining hygiene (commodes, bedpands, urinals, shower assistive device)",hpc,E165,exists
+C20065,MobilityDeviceHygiene,"mobility devices for maintaining hygiene (commodes, bedpands, urinals, shower assistive device)",hpc,E166,exists
+C20065,MobilityDeviceHygiene,"mobility devices for maintaining hygiene (commodes, bedpands, urinals, shower assistive device)",hpc,E167,exists
+C20065,MobilityDeviceHygiene,"mobility devices for maintaining hygiene (commodes, bedpands, urinals, shower assistive device)",hpc,E168,exists
+C20065,MobilityDeviceHygiene,"mobility devices for maintaining hygiene (commodes, bedpands, urinals, shower assistive device)",hpc,E169,exists
+C20065,MobilityDeviceHygiene,"mobility devices for maintaining hygiene (commodes, bedpands, urinals, shower assistive device)",hpc,E170,exists
+C20065,MobilityDeviceHygiene,"mobility devices for maintaining hygiene (commodes, bedpands, urinals, shower assistive device)",hpc,E171,exists
+C20065,MobilityDeviceHygiene,"mobility devices for maintaining hygiene (commodes, bedpands, urinals, shower assistive device)",hpc,E172,exists
+C20065,MobilityDeviceHygiene,"mobility devices for maintaining hygiene (commodes, bedpands, urinals, shower assistive device)",hpc,E173,exists
+C20065,MobilityDeviceHygiene,"mobility devices for maintaining hygiene (commodes, bedpands, urinals, shower assistive device)",hpc,E174,exists
+C20065,MobilityDeviceHygiene,"mobility devices for maintaining hygiene (commodes, bedpands, urinals, shower assistive device)",hpc,E175,exists
+C20065,MobilityDeviceHygiene,"mobility devices for maintaining hygiene (commodes, bedpands, urinals, shower assistive device)",hpc,E240,exists
+C20065,MobilityDeviceHygiene,"mobility devices for maintaining hygiene (commodes, bedpands, urinals, shower assistive device)",hpc,E241,exists
+C20065,MobilityDeviceHygiene,"mobility devices for maintaining hygiene (commodes, bedpands, urinals, shower assistive device)",hpc,E242,exists
+C20065,MobilityDeviceHygiene,"mobility devices for maintaining hygiene (commodes, bedpands, urinals, shower assistive device)",hpc,E243,exists
+C20065,MobilityDeviceHygiene,"mobility devices for maintaining hygiene (commodes, bedpands, urinals, shower assistive device)",hpc,E244,exists
+C20065,MobilityDeviceHygiene,"mobility devices for maintaining hygiene (commodes, bedpands, urinals, shower assistive device)",hpc,E245,exists
+C20065,MobilityDeviceHygiene,"mobility devices for maintaining hygiene (commodes, bedpands, urinals, shower assistive device)",hpc,E246,exists
+C20065,MobilityDeviceHygiene,"mobility devices for maintaining hygiene (commodes, bedpands, urinals, shower assistive device)",hpc,E247,exists
+C20065,MobilityDeviceHygiene,"mobility devices for maintaining hygiene (commodes, bedpands, urinals, shower assistive device)",hpc,E248,exists
+C20065,MobilityDeviceHygiene,"mobility devices for maintaining hygiene (commodes, bedpands, urinals, shower assistive device)",hpc,E249,exists
+C20065,MobilityDeviceHygiene,"mobility devices for maintaining hygiene (commodes, bedpands, urinals, shower assistive device)",hpc,E275,exists
+C20065,MobilityDeviceHygiene,"mobility devices for maintaining hygiene (commodes, bedpands, urinals, shower assistive device)",hpc,E276,exists
+C20065,MobilityDeviceHygiene,"mobility devices for maintaining hygiene (commodes, bedpands, urinals, shower assistive device)",hpc,E325,exists
+C20065,MobilityDeviceHygiene,"mobility devices for maintaining hygiene (commodes, bedpands, urinals, shower assistive device)",hpc,E326,exists
+C20066,MobilityDeviceTransfer,lifts and support systems and safety devices,hpc,E621,exists
+C20066,MobilityDeviceTransfer,lifts and support systems and safety devices,hpc,E622,exists
+C20066,MobilityDeviceTransfer,lifts and support systems and safety devices,hpc,E623,exists
+C20066,MobilityDeviceTransfer,lifts and support systems and safety devices,hpc,E624,exists
+C20066,MobilityDeviceTransfer,lifts and support systems and safety devices,hpc,E625,exists
+C20066,MobilityDeviceTransfer,lifts and support systems and safety devices,hpc,E626,exists
+C20066,MobilityDeviceTransfer,lifts and support systems and safety devices,hpc,E627,exists
+C20066,MobilityDeviceTransfer,lifts and support systems and safety devices,hpc,E628,exists
+C20066,MobilityDeviceTransfer,lifts and support systems and safety devices,hpc,E629,exists
+C20066,MobilityDeviceTransfer,lifts and support systems and safety devices,hpc,E630,exists
+C20066,MobilityDeviceTransfer,lifts and support systems and safety devices,hpc,E631,exists
+C20066,MobilityDeviceTransfer,lifts and support systems and safety devices,hpc,E632,exists
+C20066,MobilityDeviceTransfer,lifts and support systems and safety devices,hpc,E633,exists
+C20066,MobilityDeviceTransfer,lifts and support systems and safety devices,hpc,E634,exists
+C20066,MobilityDeviceTransfer,lifts and support systems and safety devices,hpc,E635,exists
+C20066,MobilityDeviceTransfer,lifts and support systems and safety devices,hpc,E636,exists
+C20066,MobilityDeviceTransfer,lifts and support systems and safety devices,hpc,E637,exists
+C20066,MobilityDeviceTransfer,lifts and support systems and safety devices,hpc,E638,exists
+C20066,MobilityDeviceTransfer,lifts and support systems and safety devices,hpc,E639,exists
+C20066,MobilityDeviceTransfer,lifts and support systems and safety devices,hpc,E640,exists
+C20066,MobilityDeviceTransfer,lifts and support systems and safety devices,hpc,E641,exists
+C20066,MobilityDeviceTransfer,lifts and support systems and safety devices,hpc,E642,exists
+C20066,MobilityDeviceTransfer,lifts and support systems and safety devices,hpc,E700,exists
+C20066,MobilityDeviceTransfer,lifts and support systems and safety devices,hpc,E701,exists
+C20066,MobilityDeviceTransfer,lifts and support systems and safety devices,hpc,E702,exists
+C20066,MobilityDeviceTransfer,lifts and support systems and safety devices,hpc,E703,exists
+C20066,MobilityDeviceTransfer,lifts and support systems and safety devices,hpc,E704,exists
+C20066,MobilityDeviceTransfer,lifts and support systems and safety devices,hpc,E705,exists
+C20066,MobilityDeviceTransfer,lifts and support systems and safety devices,hpc,E706,exists
+C20066,MobilityDeviceTransfer,lifts and support systems and safety devices,hpc,E707,exists
+C20066,MobilityDeviceTransfer,lifts and support systems and safety devices,hpc,E708,exists
+C20066,MobilityDeviceTransfer,lifts and support systems and safety devices,hpc,E709,exists
+C20066,MobilityDeviceTransfer,lifts and support systems and safety devices,hpc,E710,exists
+C20066,MobilityDeviceTransfer,lifts and support systems and safety devices,hpc,E711,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E950,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E951,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E952,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E953,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E954,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E955,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E956,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E957,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E958,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E959,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E960,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E961,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E962,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E963,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E964,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E965,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E966,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E967,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E968,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E969,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E970,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E971,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E972,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E973,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E974,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E975,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E976,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E977,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E978,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E979,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E980,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E981,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E982,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E983,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E984,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E985,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E986,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E987,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E988,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E989,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E990,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E991,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E992,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E993,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E994,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E995,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E996,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E997,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E998,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E999,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1000,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1001,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1002,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1003,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1004,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1005,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1006,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1007,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1008,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1009,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1010,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1011,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1012,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1013,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1014,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1015,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1016,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1017,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1018,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1019,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1020,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1021,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1022,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1023,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1024,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1025,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1026,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1027,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1028,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1029,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1030,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1031,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1032,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1033,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1034,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1035,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1036,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1037,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1038,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1039,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1040,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1041,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1042,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1043,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1044,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1045,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1046,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1047,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1048,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1049,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1050,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1051,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1052,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1053,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1054,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1055,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1056,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1057,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1058,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1059,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1060,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1061,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1062,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1063,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1064,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1065,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1066,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1067,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1068,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1069,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1070,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1071,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1072,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1073,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1074,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1075,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1076,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1077,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1078,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1079,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1080,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1081,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1082,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1083,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1084,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1085,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1086,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1087,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1088,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1089,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1090,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1091,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1092,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1093,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1094,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1095,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1096,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1097,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1098,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1099,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1100,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1101,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1102,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1103,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1104,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1105,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1106,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1107,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1108,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1109,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1110,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1111,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1112,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1113,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1114,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1115,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1116,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1117,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1118,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1119,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1120,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1121,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1122,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1123,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1124,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1125,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1126,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1127,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1128,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1129,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1130,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1131,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1132,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1133,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1134,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1135,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1136,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1137,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1138,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1139,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1140,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1141,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1142,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1143,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1144,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1145,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1146,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1147,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1148,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1149,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1150,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1151,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1152,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1153,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1154,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1155,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1156,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1157,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1158,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1159,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1160,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1161,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1162,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1163,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1164,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1165,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1166,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1167,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1168,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1169,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1170,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1171,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1172,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1173,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1174,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1175,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1176,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1177,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1178,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1179,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1180,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1181,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1182,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1183,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1184,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1185,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1186,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1187,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1188,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1189,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1190,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1191,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1192,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1193,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1194,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1195,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1196,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1197,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1198,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1199,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1200,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1201,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1202,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1203,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1204,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1205,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1206,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1207,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1208,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1209,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1210,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1211,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1212,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1213,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1214,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1215,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1216,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1217,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1218,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1219,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1220,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1221,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1222,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1223,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1224,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1225,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1226,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1227,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1228,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1229,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1230,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1231,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1232,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1233,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1234,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1235,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1236,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1237,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1238,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1239,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1240,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1241,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1242,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1243,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1244,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1245,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1246,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1247,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1248,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1249,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1250,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1251,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1252,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1253,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1254,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1255,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1256,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1257,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1258,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1259,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1260,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1261,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1262,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1263,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1264,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1265,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1266,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1267,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1268,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1269,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1270,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1271,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1272,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1273,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1274,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1275,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1276,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1277,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1278,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1279,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1280,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1281,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1282,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1283,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1284,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1285,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1286,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1287,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1288,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1289,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1290,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1291,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1292,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1293,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1294,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1295,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1296,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1297,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E1298,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2201,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2202,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2203,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2204,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2205,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2206,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2207,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2208,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2209,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2210,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2211,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2212,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2213,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2214,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2215,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2216,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2217,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2218,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2219,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2220,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2221,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2222,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2223,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2224,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2225,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2226,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2227,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2228,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2229,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2230,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2231,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2232,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2233,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2234,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2235,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2236,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2237,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2238,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2239,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2240,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2241,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2242,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2243,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2244,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2245,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2246,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2247,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2248,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2249,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2250,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2251,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2252,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2253,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2254,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2255,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2256,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2257,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2258,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2259,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2260,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2261,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2262,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2263,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2264,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2265,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2266,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2267,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2268,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2269,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2270,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2271,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2272,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2273,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2274,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2275,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2276,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2277,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2278,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2279,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2280,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2281,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2282,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2283,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2284,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2285,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2286,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2287,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2288,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2289,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2290,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2291,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2292,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2293,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2294,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2295,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2296,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2297,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2298,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2601,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2602,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2603,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2604,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2605,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2606,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2607,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2608,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2609,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2610,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2611,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2612,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2613,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2614,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2615,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2616,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2617,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2618,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2619,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2620,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2621,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2622,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2623,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2624,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2625,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2626,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2627,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2628,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2629,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2630,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2631,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2632,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,E2633,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K813,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K814,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K815,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K816,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K817,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K818,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K819,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K820,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K821,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K822,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K823,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K824,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K825,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K826,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K827,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K828,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K829,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K830,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K831,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K832,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K833,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K834,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K835,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K836,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K837,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K838,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K839,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K840,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K841,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K842,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K843,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K844,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K845,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K846,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K847,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K848,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K849,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K850,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K851,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K852,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K853,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K854,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K855,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K856,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K857,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K858,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K859,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K860,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K861,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K862,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K863,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K864,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K865,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K866,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K867,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K868,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K869,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K870,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K871,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K872,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K873,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K874,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K875,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K876,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K877,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K878,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K879,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K880,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K881,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K882,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K883,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K884,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K885,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K886,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K887,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K888,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K889,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K890,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K891,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K892,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K893,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K894,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K895,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K896,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K897,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K898,exists
+C20067,MobilityDeviceWheelchair,manual or power wheelchairs and transport chairs,hpc,K899,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E1902,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2500,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2501,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2502,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2503,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2504,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2505,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2506,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2507,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2508,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2509,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2510,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2511,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2512,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2513,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2514,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2515,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2516,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2517,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2518,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2519,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2520,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2521,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2522,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2523,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2524,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2525,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2526,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2527,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2528,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2529,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2530,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2531,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2532,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2533,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2534,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2535,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2536,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2537,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2538,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2539,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2540,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2541,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2542,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2543,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2544,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2545,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2546,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2547,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2548,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2549,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2550,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2551,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2552,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2553,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2554,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2555,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2556,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2557,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2558,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2559,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2560,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2561,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2562,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2563,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2564,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2565,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2566,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2567,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2568,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2569,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2570,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2571,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2572,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2573,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2574,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2575,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2576,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2577,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2578,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2579,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2580,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2581,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2582,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2583,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2584,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2585,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2586,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2587,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2588,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2589,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2590,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2591,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2592,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2593,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2594,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2595,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2596,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2597,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2598,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,hpc,E2599,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,cpt4,92605,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,cpt4,92606,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,cpt4,92607,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,cpt4,92608,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,cpt4,92609,exists
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,icd10pcs,F06Z0,descendent-of
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,icd10pcs,F06Z1,descendent-of
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,icd10pcs,F06Z3,descendent-of
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,icd10pcs,F06Z6,descendent-of
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,icd10pcs,F06Z8,descendent-of
+C20068,MobilityDeviceCommunication,AAC and other speech-language pathology related devices,icd10pcs,F06Z9,descendent-of
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,hpc,B4034,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,hpc,B4035,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,hpc,B4036,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,hpc,B4037,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,hpc,B4038,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,hpc,B4039,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,hpc,B4040,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,hpc,B4041,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,hpc,B4042,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,hpc,B4043,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,hpc,B4044,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,hpc,B4045,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,hpc,B4046,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,hpc,B4047,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,hpc,B4048,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,hpc,B4049,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,hpc,B4050,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,hpc,B4051,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,hpc,B4052,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,hpc,B4053,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,hpc,B4054,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,hpc,B4055,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,hpc,B4056,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,hpc,B4057,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,hpc,B4058,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,hpc,B4059,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,hpc,B4060,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,hpc,B4061,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,hpc,B4062,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,hpc,B4063,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,hpc,B4064,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,hpc,B4065,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,hpc,B4066,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,hpc,B4067,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,hpc,B4068,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,hpc,B4069,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,hpc,B4070,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,hpc,B4071,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,hpc,B4072,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,hpc,B4073,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,hpc,B4074,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,hpc,B4075,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,hpc,B4076,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,hpc,B4077,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,hpc,B4078,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,hpc,B4079,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,hpc,B4080,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,hpc,B4081,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,hpc,B4082,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,hpc,B4083,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,hpc,B4084,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,hpc,B4085,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,hpc,B4086,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,hpc,B4087,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,hpc,B4088,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43500,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43501,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43502,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43503,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43504,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43505,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43506,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43507,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43508,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43509,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43510,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43511,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43512,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43513,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43514,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43515,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43516,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43517,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43518,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43519,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43520,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43521,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43522,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43523,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43524,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43525,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43526,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43527,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43528,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43529,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43530,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43531,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43532,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43533,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43534,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43535,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43536,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43537,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43538,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43539,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43540,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43541,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43542,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43543,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43544,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43545,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43546,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43547,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43548,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43549,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43550,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43551,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43552,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43553,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43554,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43555,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43556,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43557,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43558,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43559,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43560,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43561,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43562,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43563,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43564,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43565,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43566,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43567,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43568,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43569,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43570,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43571,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43572,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43573,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43574,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43575,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43576,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43577,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43578,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43579,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43580,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43581,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43582,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43583,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43584,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43585,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43586,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43587,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43588,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43589,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43590,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43591,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43592,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43593,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43594,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43595,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43596,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43597,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43598,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43599,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43600,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43601,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43602,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43603,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43604,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43605,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43606,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43607,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43608,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43609,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43610,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43611,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43612,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43613,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43614,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43615,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43616,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43617,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43618,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43619,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43620,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43621,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43622,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43623,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43624,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43625,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43626,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43627,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43628,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43629,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43630,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43631,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43632,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43633,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43634,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43635,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43636,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43637,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43638,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43639,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43640,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43641,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43642,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43643,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43644,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43645,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43646,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43647,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43648,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43649,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43650,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43651,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43652,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43653,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43654,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43655,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43656,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43657,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43658,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43659,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43660,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43661,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43662,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43663,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43664,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43665,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43666,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43667,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43668,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43669,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43670,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43671,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43672,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43673,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43674,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43675,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43676,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43677,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43678,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43679,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43680,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43681,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43682,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43683,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43684,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43685,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43686,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43687,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43688,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43689,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43690,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43691,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43692,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43693,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43694,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43695,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43696,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43697,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43698,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43699,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43700,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43701,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43702,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43703,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43704,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43705,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43706,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43707,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43708,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43709,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43710,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43711,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43712,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43713,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43714,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43715,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43716,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43717,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43718,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43719,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43720,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43721,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43722,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43723,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43724,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43725,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43726,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43727,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43728,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43729,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43730,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43731,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43732,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43733,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43734,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43735,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43736,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43737,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43738,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43739,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43740,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43741,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43742,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43743,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43744,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43745,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43746,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43747,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43748,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43749,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43750,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43751,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43752,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43753,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43754,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43755,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43756,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43757,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43758,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43759,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43760,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43761,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43762,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43763,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43764,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43765,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43766,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43767,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43768,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43769,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43770,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43771,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43772,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43773,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43774,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43775,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43776,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43777,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43778,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43779,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43780,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43781,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43782,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43783,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43784,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43785,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43786,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43787,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43788,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43789,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43790,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43791,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43792,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43793,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43794,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43795,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43796,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43797,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43798,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43799,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43800,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43801,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43802,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43803,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43804,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43805,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43806,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43807,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43808,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43809,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43810,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43811,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43812,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43813,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43814,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43815,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43816,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43817,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43818,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43819,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43820,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43821,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43822,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43823,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43824,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43825,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43826,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43827,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43828,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43829,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43830,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43831,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43832,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43833,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43834,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43835,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43836,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43837,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43838,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43839,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43840,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43841,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43842,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43843,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43844,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43845,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43846,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43847,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43848,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43849,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43850,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43851,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43852,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43853,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43854,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43855,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43856,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43857,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43858,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43859,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43860,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43861,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43862,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43863,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43864,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43865,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43866,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43867,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43868,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43869,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43870,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43871,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43872,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43873,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43874,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43875,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43876,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43877,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43878,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43879,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43880,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43881,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43882,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43883,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43884,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43885,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43886,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43887,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43888,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43889,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43890,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43891,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43892,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43893,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43894,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43895,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43896,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43897,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43898,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43899,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43900,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43901,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43902,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43903,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43904,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43905,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43906,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43907,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43908,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43909,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43910,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43911,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43912,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43913,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43914,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43915,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43916,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43917,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43918,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43919,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43920,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43921,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43922,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43923,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43924,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43925,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43926,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43927,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43928,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43929,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43930,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43931,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43932,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43933,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43934,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43935,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43936,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43937,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43938,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43939,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43940,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43941,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43942,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43943,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43944,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43945,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43946,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43947,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43948,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43949,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43950,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43951,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43952,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43953,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43954,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43955,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43956,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43957,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43958,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43959,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43960,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43961,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43962,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43963,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43964,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43965,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43966,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43967,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43968,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43969,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43970,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43971,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43972,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43973,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43974,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43975,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43976,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43977,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43978,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43979,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43980,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43981,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43982,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43983,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43984,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43985,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43986,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43987,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43988,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43989,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43990,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43991,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43992,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43993,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43994,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43995,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43996,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43997,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43998,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,cpt4,43999,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,icd9proc,43.11,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,icd9proc,97.01,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,icd9proc,97.02,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,icd9proc,97.03,exists
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,icd10pcs,0DH6,descendent-of
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,icd10pcs,0DW60UZ,descendent-of
+C20069,EnteralFeedingEquipment,enteral feeding supplies and equipment or gastrostomy,icd10cm,Z93.1,descendent-of
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E424,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E425,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E426,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E427,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E428,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E429,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E430,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E431,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E432,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E433,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E434,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E435,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E436,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E437,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E438,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E439,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E440,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E441,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E442,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E443,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E444,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E445,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E446,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E447,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E448,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E449,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E450,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E451,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E452,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E453,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E454,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E455,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E456,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E457,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E458,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E459,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E460,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E461,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E462,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E463,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E464,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E466,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E467,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E468,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E469,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E470,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E471,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E472,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E473,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E474,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E475,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E476,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E477,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E478,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E479,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E480,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E481,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E482,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E483,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E484,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E485,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E486,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E487,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E488,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E489,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E490,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E491,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E492,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,E493,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,A7000,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,A7001,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,A7002,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,A7003,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,A7004,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,A7005,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,A7006,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,A7007,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,A7008,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,A7009,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,A7010,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,A7011,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,A7012,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,A7013,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,A7014,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,A7015,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,A7016,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,A7017,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,A7018,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,A7019,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,A7020,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,A7021,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,A7022,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,A7023,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,A7024,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,A7025,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,A7026,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,A7027,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,A7028,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,A7029,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,A7030,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,A7031,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,A7032,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,A7033,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,A7034,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,A7035,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,A7036,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,A7037,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,A7038,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,A7039,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,A7040,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,A7041,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,A7042,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,A7043,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,A7044,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,A7045,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,A7046,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,A7047,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,A7048,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,hpc,A7049,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,cpt4,94002,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,cpt4,94003,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,cpt4,94004,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,cpt4,94005,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,cpt4,94660,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,icd9proc,93.90,exists
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,icd10pcs,5A093,in
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,icd10pcs,5A094,in
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,icd10pcs,5A095,in
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,icd10cm,Z99.0,descendent-of
+C20070,RespiratoryDeviceNIV,non-invasive ventilator or BiPAP ,icd10cm,Z99.1,descendent-of
+C20071,InvasiveRespiratoryDeviceMV,invasive ventilator or tracheostomy,cpt4,31600,exists
+C20071,InvasiveRespiratoryDeviceMV,invasive ventilator or tracheostomy,cpt4,31601,exists
+C20071,InvasiveRespiratoryDeviceMV,invasive ventilator or tracheostomy,cpt4,31602,exists
+C20071,InvasiveRespiratoryDeviceMV,invasive ventilator or tracheostomy,cpt4,31603,exists
+C20071,InvasiveRespiratoryDeviceMV,invasive ventilator or tracheostomy,cpt4,31604,exists
+C20071,InvasiveRespiratoryDeviceMV,invasive ventilator or tracheostomy,cpt4,31605,exists
+C20071,InvasiveRespiratoryDeviceMV,invasive ventilator or tracheostomy,cpt4,31606,exists
+C20071,InvasiveRespiratoryDeviceMV,invasive ventilator or tracheostomy,cpt4,31607,exists
+C20071,InvasiveRespiratoryDeviceMV,invasive ventilator or tracheostomy,cpt4,31608,exists
+C20071,InvasiveRespiratoryDeviceMV,invasive ventilator or tracheostomy,cpt4,31609,exists
+C20071,InvasiveRespiratoryDeviceMV,invasive ventilator or tracheostomy,cpt4,31610,exists
+C20071,InvasiveRespiratoryDeviceMV,invasive ventilator or tracheostomy,cpt4,31611,exists
+C20071,InvasiveRespiratoryDeviceMV,invasive ventilator or tracheostomy,cpt4,31612,exists
+C20071,InvasiveRespiratoryDeviceMV,invasive ventilator or tracheostomy,cpt4,31613,exists
+C20071,InvasiveRespiratoryDeviceMV,invasive ventilator or tracheostomy,cpt4,31614,exists
+C20071,InvasiveRespiratoryDeviceMV,invasive ventilator or tracheostomy,hpc,E0465,exists
+C20071,InvasiveRespiratoryDeviceMV,invasive ventilator or tracheostomy,icd9proc,94.7,in
+C20071,InvasiveRespiratoryDeviceMV,invasive ventilator or tracheostomy,icd10pcs,5A09B,in
+C20071,InvasiveRespiratoryDeviceMV,invasive ventilator or tracheostomy,icd10pcs,5A09C,in
+C20071,InvasiveRespiratoryDeviceMV,invasive ventilator or tracheostomy,icd10pcs,5A09D,in
+C20071,InvasiveRespiratoryDeviceMV,invasive ventilator or tracheostomy,icd10cm,Z93.0,descendent-of
+C020072,NeurologyVisit,visit to neurologist,cmsSpecialty,13,exists
+C020072,NeurologyVisit,visit to neurologist,cmsTaxonomy,2084A2900X,exists
+C020072,NeurologyVisit,visit to neurologist,cmsTaxonomy,2084D0003X,exists
+C020072,NeurologyVisit,visit to neurologist,cmsTaxonomy,2084N0008X,exists
+C020072,NeurologyVisit,visit to neurologist,cmsTaxonomy,2084N0400X,exists
+C020072,NeurologyVisit,visit to neurologist,cmsTaxonomy,2084N0600X,exists
+C020072,NeurologyVisit,visit to neurologist,cmsTaxonomy,2084V0102X,exists
+C020072,NeurologyVisit,visit to neurologist,cmsTaxonomy,111NN0400X,exists
+C020072,NeurologyVisit,visit to neurologist,cmsTaxonomy,2251N0400X,exists
+C020072,NeurologyVisit,visit to neurologist,snomedct,38238005,exists
+C020072,NeurologyVisit,visit to neurologist,pcornet,HOSPITAL_OUTPATIENT_NEUROLOGY_CLINIC,exists
+C020072,NeurologyVisit,visit to neurologist,other,(neuro)+,regex
+C020073,riluzole,prescription or dispensing of riluzole,rxnorm,35623,exists
+C020073,riluzole,prescription or dispensing of riluzole,rxnorm,152915,exists
+C020073,riluzole,prescription or dispensing of riluzole,rxnorm,2059266,exists
+C020073,riluzole,prescription or dispensing of riluzole,rxnorm,2267572,exists
+C020073,riluzole,prescription or dispensing of riluzole,rxnorm,2059262,exists
+C020073,riluzole,prescription or dispensing of riluzole,rxnorm,2267568,exists
+C020073,riluzole,prescription or dispensing of riluzole,rxnorm,565105,exists
+C020073,riluzole,prescription or dispensing of riluzole,rxnorm,2059263,exists
+C020073,riluzole,prescription or dispensing of riluzole,rxnorm,2269644,exists
+C020073,riluzole,prescription or dispensing of riluzole,rxnorm,368026,exists
+C020073,riluzole,prescription or dispensing of riluzole,rxnorm,1184724,exists
+C020073,riluzole,prescription or dispensing of riluzole,rxnorm,1184725,exists
+C020073,riluzole,prescription or dispensing of riluzole,rxnorm,2059264,exists
+C020073,riluzole,prescription or dispensing of riluzole,rxnorm,2059265,exists
+C020073,riluzole,prescription or dispensing of riluzole,rxnorm,2267570,exists
+C020073,riluzole,prescription or dispensing of riluzole,rxnorm,2269645,exists
+C020073,riluzole,prescription or dispensing of riluzole,rxnorm,199206,exists
+C020073,riluzole,prescription or dispensing of riluzole,rxnorm,2058147,exists
+C020073,riluzole,prescription or dispensing of riluzole,rxnorm,2265862,exists
+C020073,riluzole,prescription or dispensing of riluzole,rxnorm,2058144,exists
+C020073,riluzole,prescription or dispensing of riluzole,rxnorm,317486,exists
+C020073,riluzole,prescription or dispensing of riluzole,rxnorm,2058146,exists
+C020073,riluzole,prescription or dispensing of riluzole,rxnorm,2269642,exists
+C020073,riluzole,prescription or dispensing of riluzole,rxnorm,373787,exists
+C020073,riluzole,prescription or dispensing of riluzole,rxnorm,1165471,exists
+C020073,riluzole,prescription or dispensing of riluzole,rxnorm,1165472,exists
+C020073,riluzole,prescription or dispensing of riluzole,rxnorm,2058145,exists
+C020073,riluzole,prescription or dispensing of riluzole,rxnorm,2269641,exists
+C020073,riluzole,prescription or dispensing of riluzole,ndc,24987070060,exists
+C020073,riluzole,prescription or dispensing of riluzole,ndc,70515070060,exists
+C020073,riluzole,prescription or dispensing of riluzole,ndc,70726030301,exists
+C020073,riluzole,prescription or dispensing of riluzole,ndc,70726030302,exists
+C020073,riluzole,prescription or dispensing of riluzole,ndc,10094035060,exists
+C020073,riluzole,prescription or dispensing of riluzole,ndc,70510220101,exists
+C020073,riluzole,prescription or dispensing of riluzole,ndc,70510220102,exists
+C020073,riluzole,prescription or dispensing of riluzole,ndc,00115300013,exists
+C020073,riluzole,prescription or dispensing of riluzole,ndc,00378414591,exists
+C020073,riluzole,prescription or dispensing of riluzole,ndc,42291077560,exists
+C020073,riluzole,prescription or dispensing of riluzole,ndc,60505328506,exists
+C020073,riluzole,prescription or dispensing of riluzole,ndc,62756053818,exists
+C020073,riluzole,prescription or dispensing of riluzole,ndc,62756053883,exists
+C020073,riluzole,prescription or dispensing of riluzole,ndc,62756053886,exists
+C020073,riluzole,prescription or dispensing of riluzole,ndc,62756053888,exists
+C020073,riluzole,prescription or dispensing of riluzole,ndc,64980019106,exists
+C020073,riluzole,prescription or dispensing of riluzole,ndc,67877028605,exists
+C020073,riluzole,prescription or dispensing of riluzole,ndc,67877028610,exists
+C020073,riluzole,prescription or dispensing of riluzole,ndc,67877028614,exists
+C020073,riluzole,prescription or dispensing of riluzole,ndc,67877028660,exists
+C020073,riluzole,prescription or dispensing of riluzole,ndc,67877028690,exists
+C020073,riluzole,prescription or dispensing of riluzole,ndc,68084090895,exists
+C020073,riluzole,prescription or dispensing of riluzole,ndc,68462038110,exists
+C020073,riluzole,prescription or dispensing of riluzole,ndc,68462038160,exists
+C020073,riluzole,prescription or dispensing of riluzole,ndc,69076020044,exists
+C020073,riluzole,prescription or dispensing of riluzole,ndc,69076020060,exists
+C020074,edaravone,prescription and dispensing of edaravone,rxnorm,1921877,exists
+C020074,edaravone,prescription and dispensing of edaravone,rxnorm,1924317,exists
+C020074,edaravone,prescription and dispensing of edaravone,rxnorm,2602122,exists
+C020074,edaravone,prescription and dispensing of edaravone,rxnorm,1921883,exists
+C020074,edaravone,prescription and dispensing of edaravone,rxnorm,2602118,exists
+C020074,edaravone,prescription and dispensing of edaravone,rxnorm,1921884,exists
+C020074,edaravone,prescription and dispensing of edaravone,rxnorm,2602121,exists
+C020074,edaravone,prescription and dispensing of edaravone,rxnorm,1921885,exists
+C020074,edaravone,prescription and dispensing of edaravone,rxnorm,2602119,exists
+C020074,edaravone,prescription and dispensing of edaravone,rxnorm,2602120,exists
+C020074,edaravone,prescription and dispensing of edaravone,rxnorm,1924316,exists
+C020074,edaravone,prescription and dispensing of edaravone,rxnorm,2602117,exists
+C020074,edaravone,prescription and dispensing of edaravone,rxnorm,1921878,exists
+C020074,edaravone,prescription and dispensing of edaravone,rxnorm,2602113,exists
+C020074,edaravone,prescription and dispensing of edaravone,rxnorm,1921880,exists
+C020074,edaravone,prescription and dispensing of edaravone,rxnorm,2602116,exists
+C020074,edaravone,prescription and dispensing of edaravone,rxnorm,1921879,exists
+C020074,edaravone,prescription and dispensing of edaravone,rxnorm,2602114,exists
+C020074,edaravone,prescription and dispensing of edaravone,rxnorm,2602115,exists
+C020074,edaravone,prescription and dispensing of edaravone,ndc,70510217101,exists
+C020074,edaravone,prescription and dispensing of edaravone,ndc,70510217102,exists
+C020074,edaravone,prescription and dispensing of edaravone,ndc,70510232101,exists
+C020074,edaravone,prescription and dispensing of edaravone,ndc,70510232102,exists
+C020074,edaravone,prescription and dispensing of edaravone,ndc,70510232201,exists
+C020074,edaravone,prescription and dispensing of edaravone,ndc,70510232301,exists
+C020074,edaravone,prescription and dispensing of edaravone,ndc,70510232401,exists
+C020075,tofersen,prescription and dispensing of tofersen,rxnorm,2634995,exists
+C020075,tofersen,prescription and dispensing of tofersen,rxnorm,2635005,exists
+C020075,tofersen,prescription and dispensing of tofersen,rxnorm,2635002,exists
+C020075,tofersen,prescription and dispensing of tofersen,rxnorm,2635004,exists
+C020075,tofersen,prescription and dispensing of tofersen,rxnorm,2635003,exists
+C020075,tofersen,prescription and dispensing of tofersen,rxnorm,2634999,exists
+C020075,tofersen,prescription and dispensing of tofersen,rxnorm,2634996,exists
+C020075,tofersen,prescription and dispensing of tofersen,rxnorm,2634998,exists
+C020075,tofersen,prescription and dispensing of tofersen,rxnorm,2634997,exists
+C020075,tofersen,prescription and dispensing of tofersen,ndc,64406010901,exists

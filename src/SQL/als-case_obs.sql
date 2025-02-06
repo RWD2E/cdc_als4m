@@ -361,4 +361,76 @@ from ALS_SEL_OBS
 
 select obs_name, count(distinct patid) 
 from ALS_SEL_OBS
-group by obs_name;
+group by obs_name
+order by count(distinct patid) desc;
+
+-- SYSTOLIC	11137
+-- DIASTOLIC	11131
+-- BMI	11095
+-- SMOKING	10371
+-- TOBACCO	9658
+-- Protein	8337
+-- Creatinine	8105
+-- Albumin	8068
+-- Bilirubin	8003
+-- Glucose	7967
+-- TOBACCO_TYPE	7910
+-- Aspartate aminotransferase	7878
+-- Calcium	7867
+-- Potassium	7818
+-- Urea nitrogen	7812
+-- Sodium	7805
+-- Chloride	7800
+-- Alanine aminotransferase	7788
+-- Alkaline phosphatase	7702
+-- Erythrocytes	7584
+-- Hemoglobin	7571
+-- Hematocrit	7524
+-- Leukocytes	7519
+-- Platelets	7510
+-- Erythrocyte mean corpuscular volume	7507
+-- Erythrocyte mean corpuscular hemoglobin concentration	7474
+-- Erythrocyte distribution width	7446
+-- Erythrocyte mean corpuscular hemoglobin	6931
+-- Platelet mean volume	6763
+-- Carbon dioxide	6564
+-- Monocytes	6501
+-- Lymphocytes	6487
+-- Basophils	6416
+-- Eosinophils	6411
+-- Monocytes/100 leukocytes	6372
+-- Lymphocytes/100 leukocytes	6262
+-- Neutrophils	6001
+-- Basophils/100 leukocytes	5959
+-- Anion gap	5905
+-- Eosinophils/100 leukocytes	5711
+-- Neutrophils/100 leukocytes	5525
+-- Glomerular filtration rate/1.73 sq M.predicted.non black	5360
+-- Creatine kinase	5141
+-- Glomerular filtration rate/1.73 sq M.predicted.black	4919
+-- Thyrotropin	4394
+-- Coagulation tissue factor induced.INR	4015
+-- pH	3882
+-- Bicarbonate	3728
+-- Cobalamins	3706
+-- Specific gravity	3692
+-- Coagulation tissue factor induced	3463
+-- Copper	3462
+-- Nitrite	3356
+-- Magnesium	3295
+-- Bilirubin.glucuronidated+Bilirubin.albumin bound	3182
+-- Urobilinogen	3124
+-- Leukocyte esterase	3057
+-- Hemoglobin A1c/Hemoglobin.total	3012
+-- Phosphate	2917
+-- Erythrocyte sedimentation rate	2862
+-- Glomerular filtration rate/1.73 sq M.predicted	2813
+-- Ketones	2806
+-- Color	2742
+-- Triglyceride	2716
+-- Cholesterol	2661
+-- Granulocytes.immature	2653
+-- Cholesterol.in HDL	2636
+-- Cholesterol.in LDL	2621
+-- Coagulation surface induced	2617
+-- Granulocytes.immature/100 leukocytes	2347

@@ -56,17 +56,18 @@ for(i=0; i<SITES.length; i++){
                     round(datediff(day,d.birth_date::date,e.admit_date::date)/365.25) AS age_at_index,
                     d.sex, 
                     CASE WHEN d.race IN ('05') THEN 'white' 
-                            WHEN d.race IN ('03') THEN 'black'
-                            WHEN d.race IN ('NI','UN',NULL) THEN 'NI'
-                            ELSE 'ot' END AS race, 
+                         WHEN d.race IN ('03') THEN 'black'
+                         WHEN d.race IN ('02') THEN 'asian'
+                         WHEN d.race IN ('NI','UN',NULL) THEN 'NI'
+                         ELSE 'ot' END AS race, 
                     CASE WHEN d.hispanic = 'Y' THEN 'hispanic' 
-                            WHEN d.hispanic = 'N' THEN 'non-hispanic' 
-                            WHEN d.hispanic IN ('NI','UN',NULL) THEN 'NI'
-                            ELSE 'ot' END AS hispanic,
+                         WHEN d.hispanic = 'N' THEN 'non-hispanic' 
+                         WHEN d.hispanic IN ('NI','UN',NULL) THEN 'NI'
+                         ELSE 'ot' END AS hispanic,
                     '`+ site +`' as index_src,
                     row_number() over (partition by e.patid order by coalesce(e.admit_date::date,current_date)) rn
-                FROM GROUSE_DEID_DB.`+ site_cdm +`.V_DEID_DEMOGRAPHIC d 
-                LEFT JOIN GROUSE_DEID_DB.`+ site_cdm +`.V_DEID_ENCOUNTER e ON d.PATID = e.PATID
+                FROM GROUSE_DB.`+ site_cdm +`.LDS_DEMOGRAPHIC d 
+                LEFT JOIN GROUSE_DB.`+ site_cdm +`.LDS_ENCOUNTER e ON d.PATID = e.PATID
                 )
                 SELECT DISTINCT
                      cte.patid
@@ -137,7 +138,7 @@ with cte_ord as(
            max(case when b.chart = 'Y' then 1 else 0 end) over (partition by a.patid) as xwalk_ind,
            row_number() over (partition by a.patid order by coalesce(a.index_date,current_date)) as rn
     from PAT_DEMO_LONG a
-    left join GROUSE_DEID_DB.CMS_PCORNET_CDM.V_DEID_ENROLLMENT b 
+    left join GROUSE_DB.CMS_PCORNET_CDM.LDS_ENROLLMENT b 
     on a.patid = b.patid
 )
 select patid

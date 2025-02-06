@@ -1,0 +1,123 @@
+﻿NO,FIELD_NAME,RAW_FIELD_NAME,TYPE,DESCRIPTION,REFERENCE,MAX_LENGTH
+1,YEAR,YEAR,C,Calendar year in which the reported activities occurred.,"Part I, Section 1",4
+2,TRIFD,TRIFID,C,The unique TRI facility identification number assigned to each facility for TRI reporting purposes.,"Part I, Section 4.1",15
+3,FRS_ID,FRS ID,C,Unique identification number assigned by EPA’s Facility Registry Service (FRS) to the TRI facility.,,12
+4,FACILITY_NAME,FACILITY NAME,C,Name of the reporting facility.,"Part I, Section 4.1",62
+5,STREET_ADDRESS,STREET ADDRESS,C,,"Part I, Section 4.1",62
+6,CITY,CITY,C,,"Part I, Section 4.1",28
+7,COUNTY,COUNTY,C,,"Part I, Section 4.1",50
+8,ST,STATE,C,,"Part I, Section 4.1",2
+9,ZIP,ZIP,C,ZIP code of the reporting facility.,"Part I, Section 4.1",9
+10,BIA,BIA,C,Three-letter Bureau of Indian Affairs (BIA) code indicating the tribe on whose land the reporting facility is located.,,3
+11,TRIBE,TRIBE,C,Name of the tribe on whose land the reporting facility is located.,,350
+12,LATITUDE,LATITUDE,N,The latitude value that best represents the facility according to EPA’s Facility Registry System (FRS).,,"9,6"
+13,LONGITUDE,LONGITUDE,N,The longitude value that best represents the facility according to EPA’s Facility Registry System (FRS).,,"10,6"
+14,HORIZONTAL_DATUM,HORIZONTAL DATUM,C,"The horizontal datum used in determining the latitude and longitude coordinates. Allowed values: NAD27, NAD83 and WGS84.",,5
+15,PARENT_CO_NAME,PARENT CO NAME,C,Name of the corporation or other business entity that controls the reporting facility.,"Part I, Section 5.1",60
+16,PARENT_CO_DB_NUM,PARENT CO DB NUM,C,Unique identification number assigned by Dun and Bradstreet to the parent company of the reporting facility.,"Part I, Section 5.2",9
+17,STANDARD_PARENT_CO_NAME,STANDARDIZED PARENT COMPANY NAME,C,A data field developed by EPA that is intended to best reflect the current ultimate U.S. parent company of the facility.,,
+18,FOREIGN_PARENT_CO_NAME,FOREIGN PARENT CO NAME,C,Name of the foreign corporation that owns the facility if there is a higher-level parent company outside of the United States.,"Part I, Section 5.3",
+19,FOREIGN_PARENT_CO_DB_NUM,FOREIGN PARENT CO D&B NUM,C,"Unique identification number assigned by Dun and Bradstreet to the foreign parent company of the reporting facility, if one exists.","Part I, Section 5.4",
+20,STANDARD_FOREIGN_PARENT_CO_NAME,STND FOREIGN PARENT CO,C,A data field developed by EPA that is intended to best reflect the current foreign parent company of the facility.,,
+21,FEDERAL_FACILITY,FEDERAL FACILITY IND,C,Flag indicating whether the facility is federally owned and operated.,Part I Section 4.2c,3
+22,INDUSTRY_SECTOR_CODE,INDUSTRY SECTOR CODE,C,North American Industry Classification System (NAICS) code used to identify the facility’s sector.,,4
+23,INDUSTRY_SECTOR,INDUSTRY SECTOR,C,"The industry or sector (e.g., Coal Mining, Metal Mining, Electrical Utilities, etc.) a facility belongs to.",,120
+24,PRIMARY_SIC,PRIMARY SIC,C,Primary 4-digit Standard Industrial Classification (SIC) code.,"Part I, Section 4.5a",4
+25,SIC_2,SIC 2,C,Second 4-digit Standard Industrial Classification (SIC) code entered by facility.,"Part I, Section 4.5b",4
+26,SIC_3,SIC 3,C,Third four-digit Standard Industrial Classification (SIC) code entered by facility.,"Part I, Section 4.5c",4
+27,SIC_4,SIC 4,C,Fourth four-digit Standard Industrial Classification (SIC) code entered by facility.,"Part I, Section 4.5d",4
+28,SIC_5,SIC 5,C,Fifth four-digit Standard Industrial Classification (SIC) code entered by facility.,"Part I, Section 4.5d",4
+29,SIC_6,SIC 6,C,Six four-digit Standard Industrial Classification (SIC) code entered by facility.,"Part I, Section 4.5d",4
+30,PRIMARY_NAICS,PRIMARY NAICS,C,Primary 6-digit North American Standard Industry Classification System (NAICS) code.,"Part I, Section 4.5a",6
+31,NAICS_2,NAICS 2,C,Second 6-digit North American Standard Industry Classification System (NAICS) code entered by facility.,"Part I, Section 4.5b",6
+32,NAICS_3,NAICS 3,C,Third 6-digit North American Standard Industry Classification System (NAICS) code entered by facility.,"Part I, Section 4.5b",6
+33,NAICS_4,NAICS 4,C,Fourth 6-digit North American Standard Industry Classification System (NAICS) code entered by facility.,"Part I, Section 4.5b",6
+34,NAICS_5,NAICS 5,C,Fifth 6-digit North American Standard Industry Classification System (NAICS) code entered by facility.,"Part I, Section 4.5b",6
+35,NAICS_6,NAICS 6,C,Sixth 6-digit North American Standard Industry Classification System (NAICS) code entered by facility.,"Part I, Section 4.5b",6
+36,DOC_CTRL_NUM,DOC_CTRL_NUM,C,"Unique identification number assigned to each TRI form submission. Format: TTYYNNNNNNNNN, where: TT = document type; YY = reporting year; NNNNNNNNN= assigned number",NA (System-generated),13
+37,CHEMICAL,CHEMICAL,C,"Name of the chemical as listed on the TRI chemical list, or generic name, if the chemical is claimed as a trade secret.","Part II, Section 1.2 or Part II, Section 1.3",70
+38,ELEMENTAL_METAL_INCLUDED,ELEMENTAL METAL INCLUDED IND,N,Flag indicating whether the facility submitted a combined reporting form for a metal compound and the corresponding elemental metal.,"Part II, Section 1.2",3
+39,TRI_CHEMICALCOMPOUND_ID,TRI CHEMICAL /COMPOUND ID,C,TRI Chemical ID is an internal program number that uniquely identifies chemical or category codes (for compounds). The number is the same as the CAS number but with a different format (no dashes and left padded with zeroes for non-compounds).,"Part II, Section 1.1",10
+40,CAS,CAS NUMBER,C,Unique numerical identifier assigned by the Chemical Abstracts Service to every chemical substance. Note: CAS number 9999999999 is for sanitized trade secret submissions.,NA,12
+41,SRS_ID,SRS ID,C,The Substance Registry System (SRS) identification number. This is a unique identifier assigned to a substance for internal tracking within EPA systems.,NA,9
+42,CLEAN_AIR_ACT_CHEMICAL,CLEAN AIR ACT CHEMICAL,C,Flag indicating whether the chemical is listed as a hazardous air pollutant under the Clean Air Act (CAA).,,3
+43,CLASSIFICATION,CLASSIFICATION,C,"Indicates the classification of the chemical. Chemicals can be classified as either a dioxin or dioxin-like compound, a Persistent, Bioaccumulative and Toxic chemical, or a general EPCRA Section 313 chemical.",NONE,6
+44,METAL,METAL,C,Flag indicating whether the chemical is a metal with TRI reporting restrictions. Yes = Metal with reporting restrictions; No = TRI chemical without reporting restrictions,NA,3
+45,METAL_CATEGORY,METAL CATEGORY,C,"Category of metal. Values are either 1, 2, 3, or 4. See “Appendix A: Chemical Classifications: Metals” for a list of metals in each of the four categories.",NA,1
+46,CARCINOGEN,CARCINOGEN,C,Flag indicating whether the chemical is classified as a carcinogen by the Occupational Safety and Health Administration (OSHA). Yes = CARC; No = Non-CARC. See “Appendix B: Chemical Classifications – Carcinogens” for a list of TRI chemicals classified as OSHA carcinogens.,NA,3
+47,PBT,PBT,C,"Flag indicating a chemical as a persistent, bioaccumulative, toxic (PBT) chemical.",NA,3
+48,PFAS,PFAS,C,Flag identifying a chemical as a per- and polyfluoroalkyl substance (PFAS). PFAS chemicals were added to TRI in reporting year 2020.,NA,3
+49,FORM_TYPE,FORM TYPE,C,Indicates whether the facility submitted a Reporting Form R or Form A Certification Statement.,Type of Form Used,1
+50,UNIT_OF_MEASURE,UNIT OF MEASURE,C,"Indicates the unit of measure used to quantify the chemical. Dioxin and dioxin-like compounds are reported in grams, while all other TRI chemicals are reported in pounds.",NA,6
+51,FUGITIVE_AIR,5.1 – FUGITIVE AIR,N,An estimate of the total quantity of the toxic chemical released as fugitive air emissions at the reporting facility.,"Part II, Section 5.1.A","22,7"
+52,STACK_AIR,5.2 – STACK AIR,N,An estimate of the total quantity of the chemical released as stack (point source) air emissions at the reporting facility.,"Part II, Section 5.2.A","22,7"
+53,WATER,5.3 – WATER,N,,"Part II, Section 5.3","22,7"
+54,UNDERGROUND,5.4 – UNDERGROUND,N,"An estimate of the total quantity of the chemical injected on site at the facility into underground injection wells. Note: This data element was reported from RY 1987 through 1995. In RY 1996, it was replaced by “UNDERGROUND CLASS I” and “UNDERGROUND CLASS II-V.”","Part II, Section 5.4.1","22,7"
+55,UNDERGROUND_CL_I,5.4.1 – UNDERGROUND CLASS I,N,An estimate of the total quantity of the chemical injected on site at the facility into Class I wells.,"Part II, Section 5.4.1A","22,7"
+56,UNDERGROUND_C_II_V,5.4.2 – UNDERGROUND CLASS II-V,N,An estimate of the total quantity of the chemical injected on site at the facility into Class II-V wells.,"Part II, Section 5.4.2.A","22,7"
+57,LANDFILLS,5.5.1 – LANDFILLS,N,"An estimate of the total quantity of the chemical released to landfills at the facility. Note: This data element was reported from RY 1987 through 1995. In RY 1996, it was replaced by “ON-SITE RCRA SUBTITLE C LANDFILLS” and “OTHER LANDFILLS.”","Part II, Section 5.5.1","22,7"
+58,RCRA_C_LANDFILL,5.5.1A – RCRA C LANDFILLS,N,An estimate of the total quantity of the chemical released to RCRA Subtitle C landfills at the facility.,"Part II, Section 5.5.1A.A","22,7"
+59,OTHER_LANDFILLS,5.5.1B – OTHER LANDFILLS,N,An estimate of the total quantity of the chemical released to other on-site (non-RCRA Subtitle C) landfills.,"Part II, Section 5.5.1B.A","22,7"
+60,LAND_TREATMENT,5.5.2 – LAND TREATMENT,N,An estimate of the quantity of the chemical disposed of through land treatment/application farming at the facility.,"Part II, Section 5.5.2.A","22,7"
+61,SURFACE_IMPNDMNT,5.5.3 – SURFACE IMPOUNDMENT,N,"An estimate of the total quantity of the chemical released into surface impoundments at the facility. Note: this data element was reported from RY 1987 through 2002. In RY 2003, it was replaced by “RCRA C SURFACE IMPOUNDMENT” and “OTHER SURFACE IMPOUNDMENT.”","Part II, Section 5.5.3. col. A","22,7"
+62,RCRA_SURFACE_IM,5.5.3A – RCRA SURFACE IMPOUNDMENT,N,An estimate of the total quantity of the chemical released into RCRA Subtitle C surface impoundments at the facility. This field was added in RY 2003.,"Part II, Section 5.5.3A col. A","22,7"
+63,OTHER_SURFACE_I,5.5.3B – OTHER SURFACE IMPOUNDMENT,N,An estimate of the total quantity of the chemical released into other (non-RCRA Subtitle C) surface impoundments at the facility. This field was added in RY 2003.,"Part II, Section 5.5.3B col. A","22,7"
+64,OTHER_DISPOSAL,5.5.4 – OTHER DISPOSAL,N,"An estimate of the total quantity of the chemical released to other disposal units (other than landfills, land treatment, and surface impoundments) at the facility.","Part II, Section 5.5.4 col. A","22,7"
+65,ON_SITE_RELEASE_TOTAL,ON-SITE RELEASE TOTAL,N,"Total quantity of the chemical released to the air, water, and land at the facility. This is the sum of rows #51 through #64.",NA,"22,7"
+66,POTW_TRNS_RLSE,6.1 – POTW – TRANSFERS FOR RELEASE,N,The total quantity of the chemical reported as transferred off site to a POTW for release or disposal. See “Appendix E: POTW Release and Treatment Calculations” for details regarding this calculation.,"Part II, Section 6.1","22,7"
+67,POTW_TRNS_TRT,6.1 – POTW – TRANSFERS FOR TREATMENT,N,The total quantity of the chemical reported as transferred off site to a POTW for further treatment. See “Appendix E: POTW Release and Treatment Calculations” for details regarding this calculation.,"Part II, Section 6.1","22,7"
+68,POTW_TOTAL_TRANSFERS,POTW – TOTAL TRANSFERS,N,This is the total amount of the chemical that was transferred to a POTW. Sum of rows #66 and #67.,NA,"22,7"
+69,M10,6.2 – M10,N,The total quantity of the chemical reported as transferred off site for disposal using code “M10: Storage Only.”,"Part II, Section 6.2A","22,7"
+70,M41,6.2 – M41,N,The total quantity of a metal or metal compound reported as transferred off site for solidification/stabilization using disposal transfer code “M41: Solidification/Stabilization - Metals and Metal Category Compounds Only.”,"Part II, Section 6.2A","22,7"
+71,M62,6.2 – M62,N,The total quantity of a metal or metal compound reported as transferred off site for wastewater treatment not at POTWs using disposal transfer code M62.,"Part II, Section 6.2A","22,7"
+72,M40_METAL,6.2 – M40 METAL,N,Total quantity of the chemical reported as transferred off site for disposal using the code “M40: Solidification/Stabilization” when the chemical is a type 1 metal or Vanadium.,"Part II, Section 6.2A","22,7"
+73,M61_METAL,6.2 – M61 METAL,N,Total quantity of the chemical reported as transferred off site for disposal using the code “M61: Wastewater Treatment (Excluding POTWs)” when the chemical is a type 1 metal or Vanadium.,"Part II, Section 6.2A","22,7"
+74,M71,6.2 – M71,N,"The total quantity of the chemical reported as transferred off site for disposal using the code “M71: Underground Injection.” Note: Effective for RY 2003, code M71 was deleted and replaced with codes M81 and M82.","Part II, Section 6.2A","22,7"
+75,M81,6.2 – M81,N,Total quantity of the chemical reported as transferred off site for disposal using code “M81: Underground Injection to Class I Wells.” This field was added in RY 2003.,"Part II, Section 6.2A","22,7"
+76,M82,6.2 – M82,N,Total quantity of the chemical reported as transferred off site for disposal using code “M82: Underground Injection to Class II-V Wells.” This field was added in RY 2003.,"Part II, Section 6.2A","22,7"
+77,M72,6.2 – M72,N,"The total quantity of the chemical reported as transferred off site for disposal using the code “M72: Landfills/Disposal Surface Impoundments.” Note: Effective for RY 2002, code M72 was deleted and replaced with code M63, M64, and M65.","Part II, Section 6.2A","22,7"
+78,M63,6.2 – M63,N,"The total quantity of the chemical reported as transferred off site for disposal using the code “M63: Surface Impoundment.” Note: Effective for RY 2003, code M63 was deleted and replaced with code M66 and M67.","Part II, Section 6.2A","22,7"
+79,M66,6.2 – M66,N,Total quantity of the chemical reported as transferred off site for disposal using code “M66: RCRA Subtitle C Surface Impoundments.” This field was added in RY 2003.,"Part II, Section 6.2A","22,7"
+80,M67,6.2 – M67,N,Total quantity of the chemical reported as transferred off site for disposal using code “M67: Other Surface Impoundments.” This field was added in RY 2003.,"Part II, Section 6.2A","22,7"
+81,M64,6.2 – M64,N,Total quantity of the chemical reported as transferred off site for disposal using code “M64: Other Landfills.” This field was added in RY 2002.,"Part II, Section 6.2A","22,7"
+82,M65,6.2 – M65,N,Total quantity of the chemical reported as transferred off site for disposal using code “M65: RCRA Subtitle C Landfills.” This field was added in RY 2002.,"Part II, Section 6.2A","22,7"
+83,M73,6.2 – M73,N,Total quantity of the chemical reported as transferred off site for disposal using code “M73: Land Treatment.”,"Part II, Section 6.2A","22,7"
+84,M79,6.2 – M79,N,Total quantity of the chemical reported as transferred off site for disposal using code “M79: Other Land Disposal.”,"Part II, Section 6.2A","22,7"
+85,M90,6.2 – M90,N,Total quantity of the chemical reported as transferred off site for disposal using code “M90: Other Off-Site Management.”,"Part II, Section 6.2A","22,7"
+86,M94,6.2 – M94,N,Total quantity of the chemical reported as transferred off site for disposal using code “M94: Transfer to Waste Broker for Disposal.”,"Part II, Section 6.2A","22,7"
+87,M99,6.2 – M99,N,Total quantity of the chemical reported as transferred off site for disposal using code “M99: Unknown.”,"Part II, Section 6.2A","22,7"
+88,OFF_SITE_RELEASE_TOTAL,OFF-SITE RELEASE TOTAL,N,Total quantity of the toxic chemical reported as transferred to off-site locations for release or disposal. Sum of rows #66 + (#69 through #87).,"Part II, Section 6.2","22,7"
+89,M20,6.2 – M20,N,Total quantity of the chemical reported as transferred off site for recycling using the code “M20: Solvents/Organics Recovery.”,"Part II, Section 6.2A","22,7"
+90,M24,6.2 – M24,N,Total quantity of the chemical reported as transferred off site for recycling using the code “M24: Metals Recovery.”,"Part II, Section 6.2A","22,7"
+91,M26,6.2 – M26,N,Total quantity of the chemical reported as transferred off site for recycling using the code “M26: Other Reuse or Recovery.”,"Part II, Section 6.2A","22,7"
+92,M28,6.2 – M28,N,Total quantity of the chemical reported as transferred off site for recycling using the code “M28: Acid Regeneration.”,"Part II, Section 6.2A","22,7"
+93,M93,6.2 – M93,N,Total quantity of the chemical reported as transferred off site to recycling using the code “M93: Transfer to Waste Broker - Recycling.”,"Part II, Section 6.2A","22,7"
+94,OFF_SITE_RECYCLED_TOTAL,OFF-SITE RECYCLED TOTAL,N,Total quantity of the toxic chemical reported as transferred to off-site locations for recycling.,"Part II, Section 6.2","22,7"
+95,M56,6.2 – M56,N,Total quantity of the chemical reported as transferred off site to energy recovery using the code “M56: Energy Recovery.”,"Part II, Section 6.2A","22,7"
+96,M92,6.2 – M92,N,Total quantity of the chemical reported as transferred off site to energy recovery using the code “M92: Transfer to Waste Broker - Energy Recovery.”,"Part II, Section 6.2A","22,7"
+97,OFF_SITE_ENERGY_RECOVERY_T,OFF-SITE ENERGY RECOVERY TOTAL,N,Total quantity of the toxic chemical reported as transferred to off-site locations for energy recovery. Sum of rows #95 and #96.,"Part II, Section 6.2","22,7"
+98,M40_NON_METAL,6.2 – M40 NON-METAL,N,Total quantity of the non-metal chemical reported as transferred off site for treatment using the code “M40: Solidification/Stabilization.”,"Part II, Section 6.2A","22,7"
+99,M50,6.2 – M50,N,Total quantity of the chemical reported as transferred off site for treatment using the code “M50: Incineration/Thermal Treatment.”,"Part II, Section 6.2A","22,7"
+100,M54,6.2 – M54,N,Total quantity of the chemical reported as transferred off site for treatment using the code “M54: Incineration/Insignificant Fuel Value.”,"Part II, Section 6.2A","22,7"
+101,M61_NON_METAL,6.2 – M61 NON-METAL,N,Total quantity of the chemical reported as transferred off site to treatment using the code M61: “Wastewater Treatment (Excluding POTWs).”,"Part II, Section 6.2A","22,7"
+102,M69,6.2 – M69,N,Total quantity of the chemical reported as transferred off site for treatment using the code “M69: Other Waste Treatment.”,"Part II, Section 6.2A","22,7"
+103,M95,6.2 – M95,N,Total quantity of the chemical reported as transferred off site for treatment using the code “M95: Transfer to Waste Broker - Waste Treatment.”,"Part II, Section 6.2A","22,7"
+104,OFF_SITE_TREATED_TOTAL,OFF-SITE TREATED TOTAL,N,Total quantity of the chemical reported as transferred off site for treatment. The sum of rows #67 + (#98 through #103).,,"22,7"
+105,UNCLASSIFIED,6.2 – UNCLASSIFIED,N,Total quantity of the chemical reported as transfer off-site as unclassified. This includes chemicals reported using code “M91: Transfers to Waste Broker” and other transfers that did not contain a specific transfer code.,,"22,7"
+106,TOTAL_TRANSFER,6.2 – TOTAL TRANSFER,N,"Total quantity of the chemical reported as transferred off site. Sum of rows #88, #94, #97 and #104.",,"22,7"
+107,TOTAL_RELEASES,TOTAL RELEASES,N,The total on- and off-site releases from sections 5 and 6 of the Form R. The value for this field equals On-site Release Total (row #65) + Off-site Release Total (row #88).,,"22,7"
+108,RELEASES,8.1 - RELEASES,N,"Amount of total on- and off-site releases as reported in Section 8, Source Reduction and Recycling Activities / Pollution Prevention. Note: Reported from RY 1987 through 2002.",,"22,7"
+109,ON_SITE_CONTAINED,8.1A – ON-SITE CONTAINED RELEASES,N,"Total quantity of on-site disposal to Class I underground injection wells, RCRA Subtitle C landfills and other landfills.","Part II, Section 8.1A","22,7"
+110,ON_SITE_OTHER,8.1B – ON-SITE OTHER RELEASES,N,Other on-site disposal or release amounts not covered in section 8.1A of the reporting form.,"Part II, Section 8.1B","22,7"
+111,OFF_SITE_CONTAIN,8.1C – OFF-SITE CONTAINED RELEASES,N,"Total quantity of off-site disposal to Class I underground injection wells, RCRA Subtitle C landfills and other landfills.","Part II, Section 8.1C","22,7"
+112,OFF_SITE_OTHER_R,8.1D – OFF-SITE OTHER RELEASES,N,Other off-site disposal or release amounts not covered in Section 8.1 of the reporting form.,"Part II, Section 8.1D","22,7"
+113,ENERGY_RECOVER_ON,8.2 – ENERGY RECOVERY ON SITE,N,The total quantity of the toxic chemical burned on site for energy recovery.,"Part II, Section 8.2","22,7"
+114,ENERGY_RECOVER_OF,8.3 – ENERGY RECOVERY OFF SITE,N,The total quantity of the toxic chemical sent off site to be burned for energy recovery.,"Part II, Section 8.3","22,7"
+115,RECYCLING_ON_SITE,8.4 – RECYCLING ON SITE,N,The total quantity of the toxic chemical recycled on site at the facility.,"Part II, Section 8.4","22,7"
+116,RECYCLING_OFF_SIT,8.5 – RECYCLING OFF SITE,N,The total quantity of the toxic chemical sent off site for recycling.,"Part II, Section 8.5","22,7"
+117,TREATMENT_ON_SITE,8.6 – TREATMENT ON SITE,N,The total quantity of the toxic chemical treated on site at the facility.,"Part II, Section 8.6","22,7"
+118,TREATMENT_OFF_SITE,8.7 – TREATMENT OFF SITE,N,The total quantity of the toxic chemical sent off site for treatment (including transfers to POTWs).,"Part II, Section 8.7","22,7"
+119,PRODUCTION_WSTE_8_1_8_7,PRODUCTION WASTE (8.1 – 8.7),N,The total quantity of production-related waste containing the chemical. This is the sum of the quantities in Section 8.1 through 8.7 of the Form R (rows #109 through #118).,,"22,7"
+120,ONE_TIME_RELEASE,8.8 – ONE-TIME RELEASE,N,The total quantity of the chemical released into the environment or transferred off site due to events not associated with routine production processes.,"Part II, Section 8.8","22,7"
+121,PROD_RATIO_OR_ACTIVITY,PROD_RATIO_OR_ACTIVITY,C,Indicates whether the value reported in Section 8.9 (see row #122) is a production ratio value or an activity index value.,"Part II, Section 8.9",10
+122,PRODUCTION_RATIO,8.9 – PRODUCTION RATIO,N,The ratio of production or activity in the reporting year divided by production or activity in the previous year. Activity index is based on a variable other than production that is the primary influence on the quantity of the reported TRI chemical.,,"9,2"
