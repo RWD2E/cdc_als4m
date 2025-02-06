@@ -5,19 +5,22 @@ pacman::p_load(
   broom
 )
 
-deltat<-30
+deltat<-120
 t_seq<-seq(0,5*365.25,by=deltat)
 tn<-length(t_seq)
 
 ##==== cohort selection ====
-tbl2<-readRDS("./data/tbl1_cov_endpt.rds") %>%
+tbl2<-readRDS(file.path("./data/tbl1_cov_endpt.rds")) %>%
   filter(
     COMPLT_FLAG == 'complete' & 
     CASE_ASSERT == 'confirmed'
   ) 
 
 # exclude post-censor and post-death period
-excld<-readRDS(paste0("./data/als_endpts_endpt_sub_",deltat,".rda")) %>%
+excld<-readRDS(file.path(
+  "./data",paste0("t_",deltat,"d"),
+  paste0("als_endpts_endpt_sub_",deltat,".rda")
+)) %>%
   semi_join(tbl2,by="PATID") %>%
   mutate(val = 1) %>%
   spread(ENDPT_SUB,val) %>%
@@ -34,7 +37,7 @@ tr_ts<-tbl2 %>% select(PATID) %>% unique %>%
          hdout91=sample(c(0,1),nrow(.),replace=T,prob=c(0.9,0.1)),
          cv5=sample(1:5,nrow(.),replace=T,prob=rep(0.2,5)),
          cv10=sample(1:10,nrow(.),replace=T,prob=rep(0.1,10)))
-saveRDS(tr_ts,file="./data/part_idx.rda")
+saveRDS(tr_ts,file=file.path("./data",paste0("t_",deltat,"d"),"part_idx.rda"))
 rm(tr_ts);gc()
 
 ##==== prepare full analytic dataset =====
@@ -56,7 +59,10 @@ dt<-data.frame(
 ) %>%
   # death and censor
   bind_rows(
-    readRDS(paste0("./data/als_endpts_endpt_sub_",deltat,".rda")) %>%
+    readRDS(file.path(
+      "./data",paste0("t_",deltat,"d"),
+      paste0("als_endpts_endpt_sub_",deltat,".rda")
+    )) %>%
       mutate(val = 1) %>%
       rename(var = ENDPT_SUB) %>%
       mutate(var = paste0("TX_",var)) %>%
@@ -64,7 +70,10 @@ dt<-data.frame(
   ) %>%
   # any use of FDA-approved drug or AOT
   bind_rows(
-    readRDS(paste0("./data/als_all_rx_in_fda_aot_",deltat,".rda")) %>%
+    readRDS(file.path(
+      "./data",paste0("t_",deltat,"d"),
+      paste0("als_all_rx_in_fda_aot_",deltat,".rda") 
+    )) %>%
       mutate(val = 1) %>%
       rename(var = FDA_AOT) %>%
       mutate(var = paste0("TX_",var)) %>%
@@ -72,7 +81,10 @@ dt<-data.frame(
   ) %>%
   # any use of PEG, NIV, and wheelchairs
   bind_rows(
-    readRDS(paste0("./data/als_sel_device_device_",deltat,".rda")) %>%
+    readRDS(file.path(
+      "./data",paste0("t_",deltat,"d"),
+      paste0("als_sel_device_device_",deltat,".rda") 
+    )) %>%
       mutate(val = 1) %>%
       rename(var = DEVICE) %>%
       mutate(var = paste0("TX_",var)) %>%
@@ -80,7 +92,10 @@ dt<-data.frame(
   ) %>%
   # providers - individual specialty
   bind_rows(
-    readRDS(paste0("./data/als_px_prvdr_specialty_group_",deltat,".rda")) %>%
+    readRDS(file.path(
+      "./data",paste0("t_",deltat,"d"),
+      paste0("als_px_prvdr_specialty_group_",deltat,".rda") 
+    )) %>%
       mutate(val = 1) %>%
       rename(var = SPECIALTY_GROUP) %>%
       mutate(var = paste0("PRVDR_",var)) %>%
@@ -88,7 +103,10 @@ dt<-data.frame(
   ) %>%
   # providers - specialty care team
   bind_rows(
-    readRDS(paste0("./data/als_px_prvdr_specialty_group_",deltat,".rda")) %>%
+    readRDS(file.path(
+      "./data",paste0("t_",deltat,"d"),
+      paste0("als_px_prvdr_specialty_group_",deltat,".rda")
+    )) %>%
       filter(!SPECIALTY_GROUP %in% c('other','eye','surgery','home-health','icu','palliative')) %>%
       group_by(PATID,T_DAYS) %>%
       summarise(spec_cnt=cnt_spec(SPECIALTY_GROUP),.groups="drop") %>%
@@ -98,14 +116,20 @@ dt<-data.frame(
   ) %>%
   # mdc px code
   bind_rows(
-    readRDS(paste0("./data/als_all_px_ccs_ccs_pxgrpcd_",deltat,".rda")) %>%
+    readRDS(file.path(
+      "./data",paste0("t_",deltat,"d"),
+      paste0("als_all_px_ccs_ccs_pxgrpcd_",deltat,".rda")
+    )) %>%
       filter(CCS_PXGRPCD=='99999') %>%
       mutate(val = 1,var = 'PRVDR_mdc') %>%
       select(PATID,var,val,T_DAYS) %>% unique
   ) %>%
   # attach overall outcomes
   bind_rows(
-    readRDS(paste0("./data/als_endpts_endpt_sub_",deltat,".rda")) %>%
+    readRDS(file.path(
+      "./data",paste0("t_",deltat,"d"),
+      paste0("als_endpts_endpt_sub_",deltat,".rda") 
+    )) %>%
       filter(ENDPT_SUB %in% c("death","censor")) %>%
       mutate(val=1) %>%
       rename(var = ENDPT_SUB) %>%
@@ -157,13 +181,18 @@ dt2<-tbl2 %>% select(PATID) %>% unique %>%
   filter(T_DAYS > 0)
 
 saveRDS(
-  dt2 %>% semi_join(readRDS("./data/part_idx.rda") %>% filter(hdout82 == 0),by="PATID"),
-  file="./data/trainY_82.rda"
+  dt2 %>% 
+    semi_join(
+      readRDS(file.path("./data",paste0("t_",deltat,"d"),"part_idx.rda")) %>% 
+        filter(hdout82 == 0),by="PATID"),
+  file=file.path("./data",paste0("t_",deltat,"d"),"trainY_82.rda")
 );gc()
 
 saveRDS(
-  dt2 %>% semi_join(readRDS("./data/part_idx.rda") %>% filter(hdout82 == 1),by="PATID"),
-  file="./data/testY_82.rda"
+  dt2 %>% semi_join(
+    readRDS(file.path("./data",paste0("t_",deltat,"d"),"part_idx.rda")) %>% 
+      filter(hdout82 == 1),by="PATID"),
+  file=file.path("./data",paste0("t_",deltat,"d"),"testY_82.rda")
 );gc()
 
 
@@ -203,7 +232,10 @@ dt<-data.frame(
   # lagged features
   #-- phecodes
   bind_rows(
-    readRDS(paste0("./data/als_all_phecd_phecd_dxgrpcd_",deltat,".rda")) %>%
+    readRDS(file.path(
+      "./data",paste0("t_",deltat,"d"),
+      paste0("als_all_phecd_phecd_dxgrpcd_",deltat,".rda") 
+    )) %>%
       inner_join(
         tbl2 %>% select(PATID,time_death_censor),
         by="PATID"
@@ -216,7 +248,10 @@ dt<-data.frame(
   ) %>%
   #-- meds
   bind_rows(
-    readRDS(paste0("./data/als_all_rx_in_ingredient_",deltat,".rda")) %>%
+    readRDS(file.path(
+      "./data",paste0("t_",deltat,"d"),
+      paste0("als_all_rx_in_ingredient_",deltat,".rda") 
+    )) %>%
       inner_join(
         tbl2 %>% select(PATID,time_death_censor),
         by="PATID"
@@ -228,21 +263,27 @@ dt<-data.frame(
       select(PATID,var,val,T_DAYS) %>% unique
   ) %>%
   #-- procedures
-  # bind_rows(
-  #   readRDS("./data/als_all_px_ccs_ccs_pxgrpcd_60.rda") %>%
-  #     inner_join(
-  #       tbl2 %>% select(PATID,time_death_censor),
-  #       by="PATID"
-  #     ) %>%
-  #     filter(T_DAYS < time_death_censor) %>%
-  #     mutate(val = 1) %>%
-  #     rename(var = CCS_PXGRPCD) %>%
-  #     mutate(var = paste0("PXCCS_",var)) %>%
-  #     select(PATID,var,val,T_DAYS) %>% unique
-  # ) %>%
+  bind_rows(
+    readRDS(file.path(
+      "./data",paste0("t_",deltat,"d"),
+      paste0("als_all_px_ccs_ccs_pxgrpcd_",deltat,".rda") 
+    )) %>%
+      inner_join(
+        tbl2 %>% select(PATID,time_death_censor),
+        by="PATID"
+      ) %>%
+      filter(T_DAYS < time_death_censor) %>%
+      mutate(val = 1) %>%
+      rename(var = CCS_PXGRPCD) %>%
+      mutate(var = paste0("PXCCS_",var)) %>%
+      select(PATID,var,val,T_DAYS) %>% unique
+  ) %>%
   #-- sdoh
   bind_rows(
-    readRDS(paste0("./data/als_sel_sdoh_obscomm_code_",deltat,".rda")) %>%
+    readRDS(file.path(
+      "./data",paste0("t_",deltat,"d"),
+      paste0("als_sel_sdoh_obscomm_code_",deltat,".rda")
+    )) %>%
       inner_join(
         tbl2 %>% select(PATID,time_death_censor),
         by="PATID"
@@ -255,7 +296,10 @@ dt<-data.frame(
       select(PATID,var,val,T_DAYS) %>% unique
   ) %>%
   bind_rows(
-    readRDS(paste0("./data/als_sel_sdoh_obscomm_code_",deltat,".rda")) %>%
+    readRDS(file.path(
+      "./data",paste0("t_",deltat,"d"),
+      paste0("als_sel_sdoh_obscomm_code_",deltat,".rda")
+    )) %>%
       inner_join(
         tbl2 %>% select(PATID,time_death_censor),
         by="PATID"
@@ -270,7 +314,10 @@ dt<-data.frame(
   ) %>%
   #-- use of riluzole, endarovone, or AOT
   bind_rows(
-    readRDS(paste0("./data/als_all_rx_in_fda_aot_",deltat,".rda")) %>%
+    readRDS(file.path(
+      "./data",paste0("t_",deltat,"d"),
+      paste0("als_all_rx_in_fda_aot_",deltat,".rda")
+    )) %>%
       inner_join(
         tbl2 %>% select(PATID,time_death_censor),
         by="PATID"
@@ -283,7 +330,10 @@ dt<-data.frame(
   ) %>%
   #-- use of NIV, PEG, Wheelchair
   bind_rows(
-    readRDS(paste0("./data/als_sel_device_device_",deltat,".rda")) %>%
+    readRDS(file.path(
+      "./data",paste0("t_",deltat,"d"),
+      paste0("als_sel_device_device_",deltat,".rda")
+    )) %>%
       inner_join(
         tbl2 %>% select(PATID,time_death_censor),
         by="PATID"
@@ -296,7 +346,10 @@ dt<-data.frame(
   ) %>%
   #-- providers - individual specialty
   bind_rows(
-    readRDS(paste0("./data/als_px_prvdr_specialty_group_",deltat,".rda")) %>%
+    readRDS(file.path(
+      "./data",paste0("t_",deltat,"d"),
+      paste0("als_px_prvdr_specialty_group_",deltat,".rda")
+    )) %>%
       inner_join(
         tbl2 %>% select(PATID,time_death_censor),
         by="PATID"
@@ -309,7 +362,10 @@ dt<-data.frame(
   ) %>%
   # providers - specialty care team
   bind_rows(
-    readRDS(paste0("./data/als_px_prvdr_specialty_group_",deltat,".rda")) %>%
+    readRDS(file.path(
+      "./data",paste0("t_",deltat,"d"),
+      paste0("als_px_prvdr_specialty_group_",deltat,".rda")
+    )) %>%
       filter(!SPECIALTY_GROUP %in% c('other','eye','surgery','home-health','icu','palliative')) %>%
       inner_join(
         tbl2 %>% select(PATID,time_death_censor),
@@ -324,7 +380,10 @@ dt<-data.frame(
   ) %>%
   # providers - mdc px code
   bind_rows(
-    readRDS(paste0("./data/als_all_px_ccs_ccs_pxgrpcd_",deltat,".rda")) %>%
+    readRDS(file.path(
+      "./data",paste0("t_",deltat,"d"),
+      paste0("als_all_px_ccs_ccs_pxgrpcd_",deltat,".rda")
+    )) %>%
       inner_join(
         tbl2 %>% select(PATID,time_death_censor),
         by="PATID"
@@ -336,7 +395,10 @@ dt<-data.frame(
   ) %>%
   #-- labs: indicator
   bind_rows(
-    readRDS(paste0("./data/als_sel_obs_obs_name_",deltat,".rda")) %>%
+    readRDS(file.path(
+      "./data",paste0("t_",deltat,"d"),
+      paste0("als_sel_obs_obs_name_",deltat,".rda")
+    )) %>%
       inner_join(
         tbl2 %>% select(PATID,time_death_censor),
         by="PATID"
@@ -349,7 +411,10 @@ dt<-data.frame(
   ) %>%
   #-- labs: numerical
   bind_rows(
-    readRDS(paste0("./data/als_sel_obs_obs_name_",deltat,".rda")) %>%
+    readRDS(file.path(
+      "./data",paste0("t_",deltat,"d"),
+      paste0("als_sel_obs_obs_name_",deltat,".rda")
+    )) %>%
       inner_join(
         tbl2 %>% select(PATID,time_death_censor),
         by="PATID"
@@ -361,7 +426,10 @@ dt<-data.frame(
   ) %>%
   #-- labs: categorical
   bind_rows(
-    readRDS(paste0("./data/als_sel_obs_obs_name_",deltat,".rda")) %>%
+    readRDS(file.path(
+      "./data",paste0("t_",deltat,"d"),
+      paste0("als_sel_obs_obs_name_",deltat,".rda")
+    )) %>%
       inner_join(
         tbl2 %>% select(PATID,time_death_censor),
         by="PATID"
@@ -380,7 +448,10 @@ dt<-data.frame(
   # attach concurrent features
   # - ADI, RUCA, LIS_DUAL, PART_C, PART_D
   bind_rows(
-    readRDS(paste0("./data/als_sel_sdoh_obscomm_code_",deltat,".rda")) %>%
+    readRDS(file.path(
+      "./data",paste0("t_",deltat,"d"),
+      paste0("als_sel_sdoh_obscomm_code_",deltat,".rda") 
+    )) %>%
       inner_join(
         tbl2 %>% select(PATID,time_death_censor),
         by="PATID"
@@ -393,7 +464,10 @@ dt<-data.frame(
       select(PATID,var,val,T_DAYS) %>% unique
   ) %>%
   bind_rows(
-    readRDS(paste0("./data/als_sel_sdoh_obscomm_code_",deltat,".rda")) %>%
+    readRDS(file.path(
+      "./data",paste0("t_",deltat,"d"),
+      paste0("als_sel_sdoh_obscomm_code_",deltat,".rda")
+    )) %>%
       inner_join(
         tbl2 %>% select(PATID,time_death_censor),
         by="PATID"
@@ -479,17 +553,26 @@ var_map2<-var_map %>% filter(val_lev > 1) %>%
       select(-val_sum)
   )
 
-saveRDS(var_map2,file = "./data/var_encoder.rda");gc()
+saveRDS(
+  var_map2,
+  file = file.path("./data",paste0("t_",deltat,"d"),"var_encoder.rda")
+); gc()
 
 dt %<>% select(-var)
 saveRDS(
-  dt %>% semi_join(readRDS("./data/part_idx.rda") %>% filter(hdout82 == 0),by="PATID"),
-  file="./data/trainX_82.rda"
+  dt %>% 
+    semi_join(
+      readRDS(file.path("./data",paste0("t_",deltat,"d"),"part_idx.rda")) %>% 
+        filter(hdout82 == 0),by="PATID"),
+  file=file.path("./data",paste0("t_",deltat,"d"),"trainX_82.rda")
 );gc()
 
 saveRDS(
-  dt %>% semi_join(readRDS("./data/part_idx.rda") %>% filter(hdout82 == 1),by="PATID"),
-  file="./data/testX_82.rda"
+  dt %>% 
+    semi_join(
+      readRDS(file.path("./data",paste0("t_",deltat,"d"),"part_idx.rda")) %>% 
+        filter(hdout82 == 1),by="PATID"),
+  file=file.path("./data",paste0("t_",deltat,"d"),"testX_82.rda")
 );gc()
 
 
