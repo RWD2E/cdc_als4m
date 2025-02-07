@@ -6,23 +6,24 @@
 # Dependency: OMOP CDM
 */
 
-/* stage the ./ref/als_cde.csv reference table, name it REF_ALS_CDE*/
+/* stage the ./ref/als_cde.csv reference table and name it as REF_ALS_CDE*/
 select * from REF_ALS_CDE limit 5;
 
 /* check other dependency table status */
-select distinct vocabulary_id,vocabulary_concept_id 
-from OMOP_CDM.CDM.VOCABULARY;
+set path_to_omop = 'OMOP_CDM.CDM';
+set omop_vocabulary = $path_to_omop || '.VOCABULARY';
+set omop_concept = $path_to_omop || '.CONCEPT';
+set omop_drugexposure = $path_to_omop || '.DRUG_EXPOSURE';
+set omop_person = $path_to_omop || '.PERSON';
 
-select * from OMOP_CDM.CDM.VOCABULARY 
-where vocabulary_name like '%ICD%';
+select * from identifier($omop_vocabulary);
+select * from identifier($omop_concept) limit 5;
+select * from identifier($omop_drugexposure) limit 5;
+select * from identifier($omop_person) limit 5;
 
-select * from OMOP_CDM.CDM.CONCEPT 
-where vocabulary_id like '%ICD%';
-
-select * from OMOP_CDM.CDM.DRUG_EXPOSURE limit 5;
 select * from OMOP_CDM.CDM.CONDITION_OCCURRENCE limit 5;
 select * from OMOP_CDM.CDM.PROCEDURE_OCCURRENCE limit 5;
-select * from OMOP_CDM.CDM.PERSON limit 5;
+select * from OMOP_CDM.CDM. limit 5;
 
 select * from OMOP_CDM.CDM.VISIT_OCCURRENCE limit 5;
 select * from OMOP_CDM.CDM.VISIT_OCCURRENCE where care_site_id is not null limit 5;
@@ -33,18 +34,6 @@ where lower(care_site_name) like '%neuro%';
 select * from OMOP_CDM.CDM.PROVIDER limit 5;
 select * from OMOP_CDM.CDM.PROVIDER where specialty_concept_id is not null limit 5;
 
-/* stage rx mapping tables */
-create or replace table OMOP_CONCEPT as 
-select voc.*, ref.
-from 
-where
-union 
-select voc.*, ref.
-from 
-where
-;
-
-
 
 /*
 apply CDC alg. and identify ALS cases (1 pat/row)
@@ -53,8 +42,41 @@ apply CDC alg. and identify ALS cases (1 pat/row)
 - use of riluzole or endaravone or tofersen
 - covered by CMS when age under 65 yo
 */
-create or replace table ALS_EVENT_LONG as
+create or replace table ALS_EVENT_LONG (
+    PATID varchar(50) NOT NULL,
+    EVENT_TYPE varchar(20),
+    EVENT_DATE date,     
+    AGE_AT_EVENT integer,
+    EVENT_SRC varchar(10)
+);
+insert into ALS_EVENT_LONG
+with dx_cset as (
+      select distinct ref.name, cd.concept_id
+      from identifier($omop_concept) cd
+      join REF_ALS_CDE ref 
+      on cd.concept_code like ref.code || '%' and 
+         upper(ref.codesystem) = upper(cd.vocabulary_id)
+      where ref.codesystem in (
+                  'icd9cm',
+                  'icd10cm'
+            ) and 
+            ref.op = 'descendent-of'
+      union
+      select distinct ref.name, cd.concept_id
+      from identifier($omop_concept) cd
+      join REF_ALS_CDE ref 
+      on cd.concept_code like ref.code || '%' and 
+         upper(ref.codesystem) = upper(cd.vocabulary_id)
+      where ref.codesystem in (
+                  'icd9cm',
+                  'icd10cm'
+            ) and 
+            ref.op = 'exists'
+)
+select a.person
+
 ;
+
 
 create or replace table ALS_CASE_TABLE1 as
 with cte_ord as (

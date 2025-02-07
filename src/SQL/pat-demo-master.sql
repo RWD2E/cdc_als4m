@@ -10,11 +10,11 @@ create or replace table PAT_DEMO_LONG (
     INDEX_DATE date,  
     INDEX_ENC_TYPE varchar(3),
     AGE_AT_INDEX integer, 
-    AGEGRP_AT_INDEX varchar(10),
     SEX varchar(3),
     RACE varchar(6),
     HISPANIC varchar(20),
-    INDEX_SRC varchar(20)
+    INDEX_SRC varchar(20),
+    EHR_IND boolean
 );
 
 /*stored procedure to collect overall GPC cohort*/
@@ -44,6 +44,7 @@ var i;
 for(i=0; i<SITES.length; i++){
     var site = SITES[i].toString();
     var site_cdm = (site === 'CMS') ? 'CMS_PCORNET_CDM' : 'PCORNET_CDM_' + site;
+    var ehr_ind = (site === 'CMS') ? 0 : 1;
     
     // dynamic query
     var sqlstmt_par = `
@@ -54,16 +55,9 @@ for(i=0; i<SITES.length; i++){
                     e.admit_date::date as index_date,
                     e.enc_type as index_enc_type,
                     round(datediff(day,d.birth_date::date,e.admit_date::date)/365.25) AS age_at_index,
-                    d.sex, 
-                    CASE WHEN d.race IN ('05') THEN 'white' 
-                         WHEN d.race IN ('03') THEN 'black'
-                         WHEN d.race IN ('02') THEN 'asian'
-                         WHEN d.race IN ('NI','UN',NULL) THEN 'NI'
-                         ELSE 'ot' END AS race, 
-                    CASE WHEN d.hispanic = 'Y' THEN 'hispanic' 
-                         WHEN d.hispanic = 'N' THEN 'non-hispanic' 
-                         WHEN d.hispanic IN ('NI','UN',NULL) THEN 'NI'
-                         ELSE 'ot' END AS hispanic,
+                    case when d.sex in ('NI','UN','OT') then NULL else d.sex end as sex, 
+                    case when d.race in ('NI','UN','07','OT') then NULL else d.race end as race, 
+                    case when d.hispanic in ('NI','UN','R','OT') then NULL else d.hispanic end as hispanic, 
                     '`+ site +`' as index_src,
                     row_number() over (partition by e.patid order by coalesce(e.admit_date::date,current_date)) rn
                 FROM GROUSE_DB.`+ site_cdm +`.LDS_DEMOGRAPHIC d 
@@ -75,15 +69,11 @@ for(i=0; i<SITES.length; i++){
                     ,cte.index_date
                     ,cte.index_enc_type
                     ,cte.age_at_index
-                    ,case when cte.age_at_index is null then 'unk'
-                          when cte.age_at_index < 19 then 'agegrp1'
-                          when cte.age_at_index >= 19 and cte.age_at_index < 24 then 'agegrp2'
-                          when cte.age_at_index >= 25 and cte.age_at_index < 85 then 'agegrp' || (floor((cte.age_at_index - 25)/5) + 3)
-                          else 'agegrp15' end as agegrp_at_index
                     ,cte.sex
                     ,cte.race
                     ,cte.hispanic
                     ,cte.index_src
+                    ,`+ ehr_ind +` as ehr_ind
                 FROM cte_enc_age cte
                 WHERE cte.rn = 1;
         `;
@@ -106,7 +96,7 @@ $$
 -- call get_pat_demo(
 --     array_construct(
 --      'CMS'
---     ,'MU'
+--     ,'WASHU'
 -- ), True, 'TMP_SP_OUTPUT'
 -- );
 -- select * from TMP_SP_OUTPUT;
@@ -132,23 +122,44 @@ call get_pat_demo(
 ), False, NULL
 );
 
+select index_src, count(distinct patid)
+from PAT_DEMO_LONG
+group by index_src;
+                    
+
+
 create or replace table PAT_TABLE1 as 
 with cte_ord as(
-    select a.*, 
+    select a.* exclude(sex, race, hispanic), 
+           coalesce(a.sex,d.sex) as sex,
+           coalesce(a.race,d.race) as race,
+           coalesce(a.hispanic,d.hispanic) as hispanic,
            max(case when b.chart = 'Y' then 1 else 0 end) over (partition by a.patid) as xwalk_ind,
-           row_number() over (partition by a.patid order by coalesce(a.index_date,current_date)) as rn
+           row_number() over (partition by a.patid order by a.ehr_ind desc, coalesce(a.index_date,current_date)) as rn
     from PAT_DEMO_LONG a
     left join GROUSE_DB.CMS_PCORNET_CDM.LDS_ENROLLMENT b 
     on a.patid = b.patid
+    left join GROUSE_DB.CMS_PCORNET_CDM.LDS_DEMOGRAPHIC d
+    on a.patid = d.patid
 )
 select patid
       ,birth_date
       ,index_date
       ,age_at_index
-      ,agegrp_at_index
+      ,case when age_at_index is null then 'NI'
+            when age_at_index < 19 then 'agegrp1'
+            when age_at_index >= 19 and age_at_index < 24 then 'agegrp2'
+            when age_at_index >= 25 and age_at_index < 85 then 'agegrp' || (floor((age_at_index - 25)/5) + 3)
+            else agegrp15 end as agegrp_at_index
       ,sex
-      ,race
-      ,hispanic
+      ,CASE WHEN race IN ('05') THEN 'white' 
+            WHEN race IN ('03') THEN 'black'
+            WHEN race IN ('02') THEN 'asian'
+            WHEN race IN ('01','04','06','OT') THEN 'other'
+            ELSE 'NI' END AS race, 
+       CASE WHEN hispanic = 'Y' THEN 'hispanic' 
+            WHEN hispanic = 'N' THEN 'non-hispanic' 
+            ELSE 'NI' END AS hispanic,
       ,index_enc_type
       ,index_src
       ,xwalk_ind
