@@ -14,7 +14,7 @@ create or replace table PAT_DEMO_LONG (
     RACE varchar(6),
     HISPANIC varchar(20),
     INDEX_SRC varchar(20),
-    EHR_IND boolean
+    CMS_IND integer
 );
 
 /*stored procedure to collect overall GPC cohort*/
@@ -44,7 +44,7 @@ var i;
 for(i=0; i<SITES.length; i++){
     var site = SITES[i].toString();
     var site_cdm = (site === 'CMS') ? 'CMS_PCORNET_CDM' : 'PCORNET_CDM_' + site;
-    var ehr_ind = (site === 'CMS') ? 0 : 1;
+    var cms_ind = (site === 'CMS') ? 1 : 0;
     
     // dynamic query
     var sqlstmt_par = `
@@ -62,6 +62,7 @@ for(i=0; i<SITES.length; i++){
                     row_number() over (partition by e.patid order by coalesce(e.admit_date::date,current_date)) rn
                 FROM GROUSE_DB.`+ site_cdm +`.LDS_DEMOGRAPHIC d 
                 LEFT JOIN GROUSE_DB.`+ site_cdm +`.LDS_ENCOUNTER e ON d.PATID = e.PATID
+                WHERE d.patid is not null
                 )
                 SELECT DISTINCT
                      cte.patid
@@ -73,7 +74,7 @@ for(i=0; i<SITES.length; i++){
                     ,cte.race
                     ,cte.hispanic
                     ,cte.index_src
-                    ,`+ ehr_ind +` as ehr_ind
+                    ,`+ cms_ind +` as cms_ind
                 FROM cte_enc_age cte
                 WHERE cte.rn = 1;
         `;
@@ -122,20 +123,22 @@ call get_pat_demo(
 ), False, NULL
 );
 
+select * from PAT_DEMO_LONG limit 5;
+
 select index_src, count(distinct patid)
 from PAT_DEMO_LONG
 group by index_src;
-                    
-
+                                       
 
 create or replace table PAT_TABLE1 as 
 with cte_ord as(
-    select a.* exclude(sex, race, hispanic), 
+    select a.* exclude(birth_date, sex, race, hispanic),
+           coalesce(a.birth_date,d.birth_date) as birth_date, 
            coalesce(a.sex,d.sex) as sex,
            coalesce(a.race,d.race) as race,
            coalesce(a.hispanic,d.hispanic) as hispanic,
            max(case when b.chart = 'Y' then 1 else 0 end) over (partition by a.patid) as xwalk_ind,
-           row_number() over (partition by a.patid order by a.ehr_ind desc, coalesce(a.index_date,current_date)) as rn
+           row_number() over (partition by a.patid order by a.cms_ind desc, coalesce(a.index_date,current_date)) as rn
     from PAT_DEMO_LONG a
     left join GROUSE_DB.CMS_PCORNET_CDM.LDS_ENROLLMENT b 
     on a.patid = b.patid
@@ -150,16 +153,16 @@ select patid
             when age_at_index < 19 then 'agegrp1'
             when age_at_index >= 19 and age_at_index < 24 then 'agegrp2'
             when age_at_index >= 25 and age_at_index < 85 then 'agegrp' || (floor((age_at_index - 25)/5) + 3)
-            else agegrp15 end as agegrp_at_index
+            else 'agegrp15' end as agegrp_at_index
       ,sex
       ,CASE WHEN race IN ('05') THEN 'white' 
             WHEN race IN ('03') THEN 'black'
             WHEN race IN ('02') THEN 'asian'
             WHEN race IN ('01','04','06','OT') THEN 'other'
-            ELSE 'NI' END AS race, 
-       CASE WHEN hispanic = 'Y' THEN 'hispanic' 
+            ELSE 'NI' END AS race
+      ,CASE WHEN hispanic = 'Y' THEN 'hispanic' 
             WHEN hispanic = 'N' THEN 'non-hispanic' 
-            ELSE 'NI' END AS hispanic,
+            ELSE 'NI' END AS hispanic
       ,index_enc_type
       ,index_src
       ,xwalk_ind
@@ -168,8 +171,12 @@ where rn = 1
 ;
 
 select count(distinct patid), count(*) from PAT_TABLE1;
--- 43,882,488
+-- 45,300,976
 
 select xwalk_ind, count(distinct patid) 
 from PAT_TABLE1
 group by xwalk_ind;
+
+select race, count(distinct patid) 
+from PAT_TABLE1
+group by race;
