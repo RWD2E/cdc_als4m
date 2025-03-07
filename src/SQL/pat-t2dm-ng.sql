@@ -5,24 +5,7 @@
 # Description: identify all patients who have ever used GLP1 agonist or DPP4 inhibitor
 # Dependency: vs-mmm-cde,vs-t2dm-cde
 */
-create or replace table T2DM_EVENT_LONG (
-    PATID varchar(50) NOT NULL,
-    RXID varchar(200),
-    EVENT_TYPE varchar(10) NOT NULL,
-    AGE_AT_EVENT integer,
-    RX_CLS varchar(5),
-    RX_IN varchar(20),
-    RX_START_DATE date, 
-    RX_END_DATE date, 
-    RX_DOSE varchar(50),
-    RX_DOSE_UNIT varchar(50),
-    RX_AMT integer,
-    RX_SUP integer,
-    RX_REFILL integer,
-    RX_FREQUENCY varchar(5),
-    RAW_RX_CODE varchar(20),
-    RX_SRC varchar(10)
-);
+
 create or replace procedure get_t2dm_event_long(
     SITES array,
     DRY_RUN boolean,
@@ -51,64 +34,66 @@ for(i=0; i<SITES.length; i++){
     var site_cdm = (site === 'CMS') ? 'CMS_PCORNET_CDM' : 'PCORNET_CDM_' + site;
     
     // dynamic query
-    var sqlstmt_par_drx = `
+    var sqlstmt_par_dx = `
         INSERT INTO T2DM_EVENT_LONG
-        SELECT  a.patid,
-                a.dispensingid as RXID,
-                'DRX' AS event_type,
-                round(datediff(day,b.birth_date,a.dispense_date)/365.25) AS age_at_event,
-                d.RX_CLS,
-                d.RX_IN,
-                a.dispense_date AS RX_START_DATE,
-                NULL as RX_END_DATE,
-                a.dispense_dose_disp AS RX_DOSE,
-                coalesce(a.dispense_dose_disp_unit,a.raw_dispense_dose_disp_unit) AS RX_DOSE_UNIT,
-                try_to_number(a.dispense_amt::integer) AS RX_AMT,
-                try_to_number(a.dispense_sup::integer) AS RX_SUP,         
-                0 as RX_REFILL,
-                NULL as RX_FREQUENCY,
-                a.NDC as RAW_RX_CODE,
+        SELECT  distinct
+                a.patid,
+                'DX' AS event_type,
+                a.dx AS event_val,
+                NVL(a.dx_date,a.admit_date) AS event_date,
+                round(datediff(day,b.birth_date,NVL(a.dx_date,a.admit_date))/365.25) AS age_at_event,
                 '`+ site +`'
-        FROM GROUSE_DB.`+ site_cdm +`.LDS_DISPENSING a
-        JOIN NDC_REF d ON a.NDC = d.NDC
-        JOIN GROUSE_DB.`+ site_cdm +`.LDS_DEMOGRAPHIC b ON a.patid = b.patid;
+        FROM GROUSE_DB.`+ site_cdm +`.LDS_DIAGNOSIS a
+        JOIN GROUSE_DB.`+ site_cdm +`.LDS_DEMOGRAPHIC b ON a.patid = b.patid
+        WHERE (
+            a.dx like '250.%0' or a.dx like '250.%2' or 
+            split_part(a.dx,'.',1) in ('E08','E09','E11','E12','E13')
+        )
+        AND 
+        a.patid is not null
         `;
     
-    var sqlstmt_par_prx = `
-       INSERT INTO GLP1_EVENT_LONG
-        SELECT  a.patid,
-                a.prescribingid as RXID,
-                'PRX' AS event_type,
-                round(datediff(day,b.birth_date,coalesce(a.rx_order_date,a.rx_start_date))/365.25) AS age_at_event,
-                p.RX_CLS,
-                p.RX_IN,
-                coalesce(a.rx_order_date,a.rx_start_date) AS RX_START_DATE,
-                coalesce(a.rx_end_date,a.rx_start_date) AS RX_END_DATE,
-                a.rx_dose_ordered AS RX_DOSE,
-                coalesce(a.rx_dose_ordered_unit,a.raw_rx_dose_ordered_unit) AS RX_DOSE_UNIT,
-                coalesce(try_to_number(a.rx_quantity::integer),try_to_number(a.raw_rx_quantity)) AS RX_AMT,
-                try_to_number(a.rx_days_supply::integer) AS RX_SUP,  
-                try_to_number(a.rx_refills::integer) AS RX_REFILL,
-                coalesce(a.rx_frequency,a.raw_rx_frequency) AS RX_FREQUENCY,
-                a.RXNORM_CUI as RAW_RX_CODE,
-                '`+ site +`'
-        FROM GROUSE_DB.`+ site_cdm +`.LDS_PRESCRIBING a
-        JOIN RXCUI_REF p ON a.RXNORM_CUI = p.RXCUI
-        JOIN GROUSE_DB.`+ site_cdm +`.LDS_DEMOGRAPHIC b ON a.patid = b.patid;
+    var sqlstmt_par_lab = `
+       INSERT INTO T2DM_EVENT_LONG
+       SELECT  distinct
+               l.patid,
+               'LAB' AS event_type,
+               to_char(round(l.RESULT_NUM,1)) || l.RESULT_UNIT AS event_val,
+               Coalesce(l.specimen_date,l.lab_order_date,l.result_date) AS event_date,
+               round(datediff(day,b.birth_date,Coalesce(l.specimen_date,l.lab_order_date,l.result_date))/365.25) AS age_at_event,
+               '`+ site +`'
+        FROM GROUSE_DB.`+ site_cdm +`.LDS_LAB_RESULT_CM l
+        JOIN GROUSE_DB.`+ site_cdm +`.LDS_DEMOGRAPHIC b ON l.patid = b.patid
+        WHERE (
+            (
+                UPPER(l.RAW_LAB_NAME) like '%HEMOGLOBIN%A1C%' OR 
+                UPPER(l.RAW_LAB_NAME) like '%A1C%' OR 
+                UPPER(l.RAW_LAB_NAME) like '%HA1C%' OR 
+                UPPER(l.RAW_LAB_NAME) like '%HBA1C%'
+            ) OR (
+                l.LAB_LOINC IN (
+                    '17855-8','4548-4','4549-2','17856-6',
+                    '41995-2','59261-8','62388-4','71875-9','54039-3'
+                )
+            )
+        )
+        AND l.RESULT_NUM > 6.5
+        -- AND UPPER(l.RESULT_UNIT) in ('%','PERCENT')
+        AND l.patid is not null
         `;
 
     if (DRY_RUN) {
         // preview of the generated dynamic SQL scripts - comment it out when perform actual execution
         var log_stmt = snowflake.createStatement({
                         sqlText: `INSERT INTO `+ DRY_RUN_AT +` (qry) values (:1), (:2);`,
-                        binds: [sqlstmt_par_drx,sqlstmt_par_prx]});
+                        binds: [sqlstmt_par_dx,sqlstmt_par_lab]});
         log_stmt.execute(); 
     } else {
         // run dynamic dml query
-        var run_sqlstmt_par_drx = snowflake.createStatement({sqlText: sqlstmt_par_drx}); run_sqlstmt_par_drx.execute();
+        var run_sqlstmt_par_dx = snowflake.createStatement({sqlText: sqlstmt_par_dx}); run_sqlstmt_par_dx.execute();
         
         if(site != 'CMS'){
-            var run_sqlstmt_par_prx = snowflake.createStatement({sqlText: sqlstmt_par_prx}); run_sqlstmt_par_prx.execute();
+            var run_sqlstmt_par_lab = snowflake.createStatement({sqlText: sqlstmt_par_lab}); run_sqlstmt_par_lab.execute();
         }
         var commit_txn = snowflake.createStatement({sqlText: `commit;`}); 
         commit_txn.execute();
@@ -118,7 +103,7 @@ $$
 ;
 
 /*test*/
--- call get_glp1_event_long(
+-- call get_t2dm_event_long(
 --     array_construct(
 --          'CMS'
 --         ,'MU'
@@ -127,9 +112,15 @@ $$
 -- )
 -- ;
 -- select * from TMP_SP_OUTPUT;
-
-truncate T2DM_EVENT_LONG;
-call get_glp1_event_long(
+create or replace table T2DM_EVENT_LONG (
+    PATID varchar(50) NOT NULL,
+    EVENT_TYPE varchar(20),
+    EVENT_VAL varchar(20),
+    EVENT_DATE date,     
+    AGE_AT_EVENT integer,
+    EVENT_SRC varchar(10)
+);
+call get_t2dm_event_long(
     array_construct(
          'CMS'
         ,'ALLINA'
@@ -149,3 +140,49 @@ call get_glp1_event_long(
     FALSE, NULL
 );
 
+select count(*), count(distinct patid) from T2DM_EVENT_LONG;
+
+create or replace table T2DM_TABLE1 as
+with cte_ord as (
+    select patid, 
+           event_type,
+           event_date,
+           age_at_event,
+           event_src,
+           count(distinct event_val) over (partition by patid) as distinct_event_cnt,
+           count(distinct event_date) over (partition by patid) as distinct_date_cnt,
+           listagg(distinct event_type || event_val, '|') within group (order by event_type || event_val) over (partition by patid) as event_str,
+           row_number() over (partition by patid order by event_date) as rn
+    from T2DM_EVENT_LONG
+), cte_dx1 as(
+    select patid,
+           min(event_date) as t2dm1dx_date
+    from T2DM_EVENT_LONG
+    where event_type = 'DX'
+    group by patid
+)
+select a.patid 
+      ,b.birth_date
+      ,b.sex
+      ,b.race 
+      ,b.hispanic
+      ,c.t2dm1dx_date
+      ,a.event_type as index_event
+      ,a.event_date as index_date
+      ,a.age_at_event as age_at_index
+      ,a.event_src as index_src
+      ,a.distinct_event_cnt
+      ,a.distinct_date_cnt
+      ,a.event_str
+from cte_ord a 
+join PAT_TABLE1 b on a.patid = b.patid
+join cte_dx1 c on a.patid = c.patid
+where a.rn = 1 and b.birth_date is not null
+      and a.distinct_date_cnt > 1 
+      and (a.event_str like '%DX%' and a.event_str <> 'DX') -- at least likely, only 1 DX is considered "undetermined"
+;
+
+select count(*), count(distinct patid) from T2DM_TABLE1;
+-- 6,798,758
+
+select * from T2DM_TABLE1 limit 5;

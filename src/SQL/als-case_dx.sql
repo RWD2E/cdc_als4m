@@ -176,7 +176,7 @@ from phecd_fill_na
 ;
 
 select count(distinct patid), count(distinct phecd_dxgrpcd) from ALS_ALL_PHECD;
--- 23370	682
+-- 24269	682
 
 -- map to CCS category
 create or replace table ALS_ALL_DX_CCS as 
@@ -217,4 +217,4 @@ from ccs_fill_na
 
 select count(distinct patid), count(distinct ccs_dxgrpcd) 
 from ALS_ALL_DX_CCS;
--- 23371	532
+-- 24269	532
