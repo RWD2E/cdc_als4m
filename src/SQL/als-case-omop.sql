@@ -101,19 +101,7 @@ with dx_cset as (
                   'rxnorm',
                   'ndc'
             ) and 
-            ref.op = 'descendent-of' and ref.name = 'DiagnosALS'
-      union
-      select distinct ref.name, cd.concept_id
-            -- , cd.concept_name, cd.concept_code
-      from identifier($omop_concept) cd
-      join REF_ALS_CDE ref 
-      on cd.concept_code like ref.code || '%' and 
-         upper(ref.codesystem) = upper(cd.vocabulary_id)
-      where ref.codesystem in (
-                  'rxnorm',
-                  'ndc'
-            ) and 
-            ref.op = 'exists' and ref.name = 'DiagnosALS'
+            ref.op = 'exists' and ref.name in ('riluzole','edaravone','toferson')
 )
 select a.person_id, 
        'DX' as EVENT_TYPE,
