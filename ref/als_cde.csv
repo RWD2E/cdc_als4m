@@ -1624,14 +1624,15 @@ C20071,InvasiveRespiratoryDeviceMV,invasive ventilator or tracheostomy,icd10pcs,
 C20071,InvasiveRespiratoryDeviceMV,invasive ventilator or tracheostomy,icd10pcs,5A09D,in
 C20071,InvasiveRespiratoryDeviceMV,invasive ventilator or tracheostomy,icd10cm,Z93.0,descendent-of
 C020072,NeurologyVisit,visit to neurologist,cmsSpecialty,13,exists
-C020072,NeurologyVisit,visit to neurologist,cmsTaxonomy,2084A2900X,exists
-C020072,NeurologyVisit,visit to neurologist,cmsTaxonomy,2084D0003X,exists
-C020072,NeurologyVisit,visit to neurologist,cmsTaxonomy,2084N0008X,exists
-C020072,NeurologyVisit,visit to neurologist,cmsTaxonomy,2084N0400X,exists
-C020072,NeurologyVisit,visit to neurologist,cmsTaxonomy,2084N0600X,exists
-C020072,NeurologyVisit,visit to neurologist,cmsTaxonomy,2084V0102X,exists
-C020072,NeurologyVisit,visit to neurologist,cmsTaxonomy,111NN0400X,exists
-C020072,NeurologyVisit,visit to neurologist,cmsTaxonomy,2251N0400X,exists
+C020072,NeurologyVisit,visit to neurologist,hcpt,2084A2900X,exists
+C020072,NeurologyVisit,visit to neurologist,hcpt,2084D0003X,exists
+C020072,NeurologyVisit,visit to neurologist,hcpt,2084N0008X,exists
+C020072,NeurologyVisit,visit to neurologist,hcpt,2084N0400X,exists
+C020072,NeurologyVisit,visit to neurologist,hcpt,2084N0600X,exists
+C020072,NeurologyVisit,visit to neurologist,hcpt,2084V0102X,exists
+C020072,NeurologyVisit,visit to neurologist,hcpt,111NN0400X,exists
+C020072,NeurologyVisit,visit to neurologist,hcpt,2251N0400X,exists
+C020072,NeurologyVisit,visit to neurologist,hcpt,2084H0002X,exists
 C020072,NeurologyVisit,visit to neurologist,snomedct,38238005,exists
 C020072,NeurologyVisit,visit to neurologist,pcornet,HOSPITAL_OUTPATIENT_NEUROLOGY_CLINIC,exists
 C020072,NeurologyVisit,visit to neurologist,other,(neuro)+,regex
