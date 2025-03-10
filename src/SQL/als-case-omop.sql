@@ -53,7 +53,7 @@ apply CDC alg. and identify ALS cases
 - use of riluzole or endaravone or tofersen
 - covered by Medicare when age under 65 yo
 */
-create or replace table ALS_EVENT_LONG (
+create or replace table ALS_EVENT_LONG_OMOP (
     PERSON_ID varchar(50) NOT NULL,
     EVENT_TYPE varchar(20),
     EVENT_DATE date,     
@@ -62,7 +62,7 @@ create or replace table ALS_EVENT_LONG (
     EVENT_SRC varchar(50)
 );
 -- diagnoses
-insert into ALS_EVENT_LONG
+insert into ALS_EVENT_LONG_OMOP
 with dx_cset as (
       select distinct ref.name, cd.concept_id
             -- , cd.concept_name, cd.concept_code
@@ -103,7 +103,7 @@ join identifier($omop_person) p on a.person_id = p.person_id
 ;
 
 -- drug
-insert into ALS_EVENT_LONG
+insert into ALS_EVENT_LONG_OMOP
 with rx_cset as (
       select distinct ref.name, cd.concept_id
             -- , cd.concept_name, cd.concept_code
@@ -142,7 +142,7 @@ join identifier($omop_person) p on a.person_id = p.person_id
 ;
 
 -- neurology visits
-insert into ALS_EVENT_LONG
+insert into ALS_EVENT_LONG_OMOP
 with provider_cset as (
       select distinct ref.name, cd.concept_id
             -- , cd.concept_name, cd.concept_code
@@ -181,7 +181,7 @@ join identifier($omop_person) p on a.person_id = p.person_id
 ;
 
 -- medicare eligibility under 65
-insert into ALS_EVENT_LONG
+insert into ALS_EVENT_LONG_OMOP
 with payor_cset as (
       select distinct concept_id, concept_name
       from identifier($omop_concept)
@@ -212,7 +212,7 @@ with grp_by_type as (
              count(distinct event_date) over (partition by person_id) as distinct_date_cnt,
              count(distinct event_date) over (partition by person_id,event_type) as event_distinct_date_cnt,
              row_number() over (partition by person_id order by event_date) as rn
-      from ALS_EVENT_LONG
+      from ALS_EVENT_LONG_OMOP
 ), summ_event_str as (
     select g.*,
            listagg(distinct g.event_type||g.event_distinct_date_cnt,'|') within group (order by g.event_type||g.event_distinct_date_cnt) over (partition by g.person_id) as event_str
@@ -223,7 +223,7 @@ with grp_by_type as (
            age_at_event as age_at_als1dx
     from(
       select a.*, row_number() over (partition by a.person_id order by a.event_date) rn
-      from ALS_EVENT_LONG a
+      from ALS_EVENT_LONG_OMOP a
       where a.event_type = 'DX'
     )
     where rn = 1

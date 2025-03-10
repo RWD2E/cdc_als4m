@@ -191,38 +191,47 @@ call get_als_event_long(
     FALSE, NULL
 );
 
-create or replace table ALS_TABLE1 as
-with cte_ord as (
-    select a.patid, 
-           a.event_type,
-           a.event_date,
-           a.age_at_event,
-           a.event_src,
-           count(distinct a.event_type) over (partition by a.patid) as distinct_event_cnt,
-           count(distinct a.event_date) over (partition by a.patid) as distinct_date_cnt,
-           listagg(distinct a.event_type, '|') within group (order by a.event_type) over (partition by a.patid) as event_str,
+create or replace table ALS_CASE_TABLE1 as
+with grp_by_type as (
+      select patid, 
+             event_type,
+             event_date,
+             age_at_event,
+             event_src,
+             count(distinct event_type) over (partition by patid) as distinct_event_cnt,
+             count(distinct event_date) over (partition by patid) as distinct_date_cnt,
+             count(distinct event_date) over (partition by patid,event_type) as event_distinct_date_cnt,
+
+             row_number() over (partition by patid order by event_date) as rn
+      from ALS_EVENT_LONG
+), summ_event_str as (
+    select g.*,
            max(case when b.chart = 'Y' then 1 else 0 end) over (partition by a.patid) as complt_ind,
            max(case when b.enr_start_date is null then 1 else 0 end) over (partition by a.patid) as ehr_ind,
-           row_number() over (partition by a.patid order by a.event_date) as rn
-    from ALS_EVENT_LONG a
+           listagg(distinct g.event_type||g.event_distinct_date_cnt,'|') within group (order by g.event_type||g.event_distinct_date_cnt) over (partition by g.patid) as event_str
+    from grp_by_type g
     left join GROUSE_DB.CMS_PCORNET_CDM.LDS_ENROLLMENT b 
     on a.patid = b.patid
-), cte_dx1 as(
+), get_als1dx as(
     select patid,
-           min(event_date) as als1dx_date
-    from ALS_EVENT_LONG
-    where event_type = 'DX'
-    group by patid
+           event_date as als1dx_date,
+           age_at_event as age_at_als1dx
+    from(
+      select a.*, row_number() over (partition by a.patid order by a.event_date) rn
+      from ALS_EVENT_LONG a
+      where a.event_type = 'DX'
+    )
+    where rn = 1
 )
 select a.patid 
-      ,b.birth_date
-      ,b.sex
-      ,b.race 
-      ,b.hispanic
+      ,b.birth_datetime
+      ,zg.concept_name as gender
+      ,zr.concept_name as race 
+      ,ze.concept_name as ethnicity
       ,c.als1dx_date
       ,a.event_type as index_event
-      ,case when a.event_type = 'NEUROLOGIST' then c.als1dx_date else a.event_date end as index_date
-      ,case when a.event_type = 'NEUROLOGIST' then round(datediff(day,b.birth_date,c.als1dx_date)/365.25) else a.age_at_event end as age_at_index
+      ,case when a.event_type = 'NEURO' then c.als1dx_date else a.event_date end as index_date
+      ,case when a.event_type = 'NEURO' then c.age_at_als1dx else a.age_at_event end as age_at_index
       ,a.event_src as index_src
       ,a.distinct_event_cnt
       ,a.distinct_date_cnt
@@ -234,13 +243,17 @@ select a.patid
       ,case when a.distinct_event_cnt > 2 then 'confirmed'
             else 'likely'
        end as case_assert 
-from cte_ord a 
-join PAT_TABLE1 b on a.patid = b.patid
-join cte_dx1 c on a.patid = c.patid
-where a.rn = 1 and b.birth_date is not null
+from summ_event_str a 
+join identifier($omop_person) b on a.patid = b.patid
+join identifier($omop_concept) zg on b.gender_concept_id = zg.concept_id
+join identifier($omop_concept) zr on b.race_concept_id = zr.concept_id
+join identifier($omop_concept) ze on b.ethnicity_concept_id = ze.concept_id
+join get_als1dx c on a.patid = c.patid
+where a.rn = 1 and b.birth_datetime is not null
       and a.distinct_date_cnt > 1 
-      and (a.event_str like '%DX%' and a.event_str <> 'DX') -- at least likely, only 1 DX is considered "undetermined"
+      and (a.event_str like '%DX%' and a.event_str <> 'DX1') -- at least likely, only 1 DX is considered "undetermined"
 ;
+
 
 select * from ALS_TABLE1 limit 5;
 
