@@ -6,7 +6,7 @@
 # Dependency: vs-mmm-cde,vs-t2dm-cde
 */
 
-create or replace procedure get_t2dm_event_long(
+create or replace procedure get_dm_event_long(
     SITES array,
     DRY_RUN boolean,
     DRY_RUN_AT string
@@ -35,7 +35,7 @@ for(i=0; i<SITES.length; i++){
     
     // dynamic query
     var sqlstmt_par_dx = `
-        INSERT INTO T2DM_EVENT_LONG
+        INSERT INTO DM_EVENT_LONG
         SELECT  distinct
                 a.patid,
                 'DX' AS event_type,
@@ -46,15 +46,15 @@ for(i=0; i<SITES.length; i++){
         FROM GROUSE_DB.`+ site_cdm +`.LDS_DIAGNOSIS a
         JOIN GROUSE_DB.`+ site_cdm +`.LDS_DEMOGRAPHIC b ON a.patid = b.patid
         WHERE (
-            a.dx like '250.%0' or a.dx like '250.%2' or 
-            split_part(a.dx,'.',1) in ('E08','E09','E11','E12','E13')
+            a.dx like '250%' OR 
+            split_part(a.dx,'.',1) in ('E08','E09','E10','E11','E12','E13')
         )
         AND 
         a.patid is not null
         `;
     
     var sqlstmt_par_lab = `
-       INSERT INTO T2DM_EVENT_LONG
+       INSERT INTO DM_EVENT_LONG
        SELECT  distinct
                l.patid,
                'LAB' AS event_type,
@@ -103,7 +103,7 @@ $$
 ;
 
 /*test*/
--- call get_t2dm_event_long(
+-- call get_dm_event_long(
 --     array_construct(
 --          'CMS'
 --         ,'MU'
@@ -112,7 +112,7 @@ $$
 -- )
 -- ;
 -- select * from TMP_SP_OUTPUT;
-create or replace table T2DM_EVENT_LONG (
+create or replace table DM_EVENT_LONG (
     PATID varchar(50) NOT NULL,
     EVENT_TYPE varchar(20),
     EVENT_VAL varchar(20),
@@ -120,7 +120,7 @@ create or replace table T2DM_EVENT_LONG (
     AGE_AT_EVENT integer,
     EVENT_SRC varchar(10)
 );
-call get_t2dm_event_long(
+call get_dm_event_long(
     array_construct(
          'CMS'
         ,'ALLINA'
@@ -140,9 +140,10 @@ call get_t2dm_event_long(
     FALSE, NULL
 );
 
-select count(*), count(distinct patid) from T2DM_EVENT_LONG;
+select count(*), count(distinct patid) from DM_EVENT_LONG;
+--8272261
 
-create or replace table T2DM_TABLE1 as
+create or replace table DM_TABLE1 as
 with cte_ord as (
     select patid, 
            event_type,
@@ -152,12 +153,13 @@ with cte_ord as (
            count(distinct event_val) over (partition by patid) as distinct_event_cnt,
            count(distinct event_date) over (partition by patid) as distinct_date_cnt,
            listagg(distinct event_type || event_val, '|') within group (order by event_type || event_val) over (partition by patid) as event_str,
+        --    listagg(distinct event_type, '|') within group (order by event_type) over (partition by patid) as event_str,
            row_number() over (partition by patid order by event_date) as rn
-    from T2DM_EVENT_LONG
+    from DM_EVENT_LONG
 ), cte_dx1 as(
     select patid,
-           min(event_date) as t2dm1dx_date
-    from T2DM_EVENT_LONG
+           min(event_date) as dm1dx_date
+    from DM_EVENT_LONG
     where event_type = 'DX'
     group by patid
 )
@@ -166,7 +168,7 @@ select a.patid
       ,b.sex
       ,b.race 
       ,b.hispanic
-      ,c.t2dm1dx_date
+      ,c.dm1dx_date
       ,a.event_type as index_event
       ,a.event_date as index_date
       ,a.age_at_event as age_at_index
@@ -178,11 +180,12 @@ from cte_ord a
 join PAT_TABLE1 b on a.patid = b.patid
 join cte_dx1 c on a.patid = c.patid
 where a.rn = 1 and b.birth_date is not null
-      and a.distinct_date_cnt > 1 
-      and (a.event_str like '%DX%' and a.event_str <> 'DX') -- at least likely, only 1 DX is considered "undetermined"
+      and a.distinct_date_cnt > 2  -- required at least another assertainment event at different time
+      and a.event_str like '%DX%'  -- at least 1 confirmed diagnosis
 ;
+select * from DM_TABLE1 limit 5;
 
-select count(*), count(distinct patid) from T2DM_TABLE1;
--- 6,798,758
+select count(*), count(distinct patid) from DM_TABLE1;
+-- 6,252,886
 
-select * from T2DM_TABLE1 limit 5;
+select * from DM_TABLE1 limit 5;

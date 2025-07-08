@@ -4,18 +4,6 @@
 # File: pat-demo-master.sql
 # Description: create PAT_TABLE1 and generate summary statistics  
 */
-create or replace table PAT_DEMO_LONG (
-    PATID varchar(50) NOT NULL,
-    BIRTH_DATE date,
-    INDEX_DATE date,  
-    INDEX_ENC_TYPE varchar(3),
-    AGE_AT_INDEX integer, 
-    SEX varchar(3),
-    RACE varchar(6),
-    HISPANIC varchar(20),
-    INDEX_SRC varchar(20),
-    CMS_IND integer
-);
 
 /*stored procedure to collect overall GPC cohort*/
 create or replace procedure get_pat_demo(
@@ -59,9 +47,11 @@ for(i=0; i<SITES.length; i++){
                     case when d.race in ('NI','UN','07','OT') then NULL else d.race end as race, 
                     case when d.hispanic in ('NI','UN','R','OT') then NULL else d.hispanic end as hispanic, 
                     '`+ site +`' as index_src,
-                    row_number() over (partition by e.patid order by coalesce(e.admit_date::date,current_date)) rn
+                    max(coalesce(e.discharge_date::date,e.admit_date::date,current_date)) over (partition by e.patid) as censor_date,
+                    max(dth.death_date) over (partition by e.patid) as death_date
                 FROM GROUSE_DB.`+ site_cdm +`.LDS_DEMOGRAPHIC d 
-                LEFT JOIN GROUSE_DB.`+ site_cdm +`.LDS_ENCOUNTER e ON d.PATID = e.PATID
+                JOIN GROUSE_DB.`+ site_cdm +`.LDS_ENCOUNTER e ON d.PATID = e.PATID
+                LEFT JOIN GROUSE_DB.`+ site_cdm +`.LDS_DEATH dth on d.PATID = dth.PATID
                 WHERE d.patid is not null
                 )
                 SELECT DISTINCT
@@ -74,9 +64,11 @@ for(i=0; i<SITES.length; i++){
                     ,cte.race
                     ,cte.hispanic
                     ,cte.index_src
+                    ,coalesce(death_date,censor_date) as censor_date
+                    ,case when death_date is not null then 1 else 0 end as death_ind
                     ,`+ cms_ind +` as cms_ind
                 FROM cte_enc_age cte
-                WHERE cte.rn = 1;
+                ;
         `;
     
     if (DRY_RUN) {
@@ -93,6 +85,21 @@ for(i=0; i<SITES.length; i++){
 $$
 ;
 
+create or replace table PAT_DEMO_LONG (
+    PATID varchar(50) NOT NULL,
+    BIRTH_DATE date,
+    INDEX_DATE date,  
+    INDEX_ENC_TYPE varchar(3),
+    AGE_AT_INDEX integer, 
+    SEX varchar(3),
+    RACE varchar(6),
+    HISPANIC varchar(20),
+    INDEX_SRC varchar(20),
+    CENSOR_DATE date,
+    DEATH_IND integer,
+    CMS_IND integer
+);
+
 /* test */
 -- call get_pat_demo(
 --     array_construct(
@@ -102,8 +109,6 @@ $$
 -- );
 -- select * from TMP_SP_OUTPUT;
 
-
-truncate PAT_DEMO_LONG;
 call get_pat_demo(
     array_construct(
      'CMS'
@@ -132,16 +137,21 @@ group by index_src;
 
 create or replace table PAT_TABLE1 as 
 with cte_ord as (
-    select a.* exclude(birth_date, sex, race, hispanic),
+    select a.*,
+           row_number() over (partition by a.patid order by a.index_date,a.cms_ind desc) as rn
+    from PAT_DEMO_LONG a
+), cte_cmsdemo as(
+    select a.* exclude(birth_date, sex, race, hispanic, censor_date, death_ind),
            coalesce(a.birth_date,d.birth_date) as birth_date, 
            coalesce(a.sex,d.sex) as sex,
            coalesce(a.race,d.race) as race,
            coalesce(a.hispanic,d.hispanic) as hispanic,
-           max(coalesce(a.index_date,current_date)) over (partition by a.patid) as censor_date,
-           row_number() over (partition by a.patid order by a.cms_ind desc, coalesce(a.index_date,current_date)) as rn
-    from PAT_DEMO_LONG a
+           max(a.censor_date) over (partition by a.patid) as censor_date,
+           max(a.death_ind) over (partition by a.patid) as death_ind
+    from cte_ord a
     left join GROUSE_DB.CMS_PCORNET_CDM.LDS_DEMOGRAPHIC d
     on a.patid = d.patid
+    where a.rn = 1
 ), cte_partab as (
     select patid,
            min(enr_start_date) as partab_start_date,
@@ -188,6 +198,7 @@ select a.patid
       ,a.index_src
       ,a.censor_date
       ,year(a.censor_date) as censor_year
+      ,a.death_ind
       ,coalesce(ab.xwalk_ind,0) as xwalk_ind
       ,ab.partab_start_date
       ,ab.partab_end_date
@@ -197,21 +208,23 @@ select a.patid
       ,case when ehr.ehr_start_date is not null then 1 else 0 end as ehr_ind
       ,ehr.ehr_start_date
       ,ehr.ehr_end_date
-from cte_ord a
+from cte_cmsdemo a
 left join cte_partab ab on a.patid = ab.patid
 left join cte_partd d on a.patid = d.patid
 left join cte_ehr ehr on a.patid = ehr.patid
 where a.rn = 1
 ;
 
-select count(distinct patid), count(*) from PAT_TABLE1;
--- 45,300,976
+select * from PAT_TABLE1 limit 5;
 
-select xwalk_ind,  
+select count(distinct patid), count(*) from PAT_TABLE1;
+-- 45,317,135
+
+select xwalk_ind,  count(distinct patid)
 from PAT_TABLE1
 group by xwalk_ind;
--- 1	4,564,120
--- 0	40,736,856
+-- 1	4,545,182
+-- 0	40,771,953
 
 select race, count(distinct patid) 
 from PAT_TABLE1
@@ -227,5 +240,3 @@ from PAT_TABLE1
 group by partd_ind;
 -- 1	15,241,557
 -- 0	30,059,419
-
-select * from 

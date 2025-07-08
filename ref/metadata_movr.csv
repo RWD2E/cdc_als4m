@@ -1,0 +1,221 @@
+TABLE_NAME,COLUMN_NAME,DATA_TYPE,DESCRIPTION
+DEM,CASE_ID,NUMBER,"Case identifier, unique for each case only within the same facility"
+DEM,DOB,TEXT,Date of Birth
+DEM,DOB_P,TEXT,"Precision of date measurements (whether is recorded to the level of a year, month or day)"
+DEM,DOB1,TEXT,Date of Birth GUID
+DEM,DOB1_P,TEXT,"Precision of date measurements (whether is recorded to the level of a year, month or day)"
+DEM,DSTYPE,TEXT,Disease Type
+DEM,EDULVL,TEXT,Education Level - 1
+DEM,EDULVL2,TEXT,Education Level - 3
+DEM,EMPLOY,TEXT,Employment
+DEM,ENROLDT,TEXT,Enrollment Date
+DEM,ENROLDT_P,TEXT,"Precision of enrollment date (whether is recorded to the level of a year, month, or day)"
+DEM,ETHNIC,TEXT,Race
+DEM,ETHNICITY,TEXT,Ethnicity Type
+DEM,ETHNICOSP,TEXT,"Race, Other"
+DEM,FACILITY_DISPLAY_ID,TEXT,Facility identifier
+DEM,FACPATID,TEXT,Facility-Patient ID
+DEM,GENDER,TEXT,Gender Type
+DEM,HAS_MNAME,NUMBER,Has Middlename
+DEM,HLTIN,TEXT,Health Insurance
+DEM,HLTINOSP,TEXT,"Health Insurance, Other"
+DEM,INSCHOOL,TEXT,School currently
+DEM,INSCHYES,TEXT,If in school
+DEM,NONMDAPC,TEXT,PC Outside MDA Clinic
+DEM,PATIENT_DISPLAY_ID,NUMBER,"Patient identifier, unique only within the same facility"
+DEM,SEX,TEXT,Physical Sex at Birth
+DIA,ALSDGNAG,NUMBER,ALS diagnosis age
+DIA,ALSDGNDT,TEXT,ALS diagnosis date
+DIA,ALSDGNDT_P,TEXT,"Precision of ALS diagnosis date (whether recorded to level of year, month, or day)"
+DIA,ALSONSAG,NUMBER,ALS onset age
+DIA,ALSONSDT,TEXT,ALS onset date
+DIA,ALSONSDT_P,TEXT,"Precision of ALS onset date (whether recorded to level of year, month, or day)"
+DIA,BDYPT,TEXT,Body part
+DIA,BDYPTOT,TEXT,Other body part
+DIA,CASE_ID,NUMBER,"Case identifier, unique for each case only within the same facility"
+DIA,DOB,TEXT,Date of Birth
+DIA,DOB_P,TEXT,"Precision of date measurements (whether is recorded to the level of a year, month or day)"
+DIA,DSTYPE,TEXT,Disease Type 
+DIA,ESCORIAL,TEXT,"Probability, based on El Escorial criteria, of having ALS (familial to definite) "
+DIA,FACILITY_DISPLAY_ID,TEXT,Facility identifier
+DIA,FACPATID,TEXT,Facility-Patient ID
+DIA,FAMHST,TEXT,Family history of ALS
+DIA,GENDER,TEXT,Gender Type
+DIA,GENEMUOT,TEXT,Other genetic mutations found
+DIA,GENEMUT,TEXT,Genetic mutations (commonly associated with ALS) found
+DIA,PATIENT_DISPLAY_ID,NUMBER,"Patient identifier, unique only within the same facility"
+DIA,RESPCER,TEXT,Response certainty
+DIA,USNDR,NUMBER,US NDR
+DIS,CASE_ID,NUMBER,"Case identifier, unique for each case only within the same facility"
+DIS,DEATHCAUSE,TEXT,Death Primary Cause
+DIS,DEATHCAUSE2,TEXT,Death Secondary Cause
+DIS,DEATHCAUSEUNK,NUMBER,Death Primary Cause Unknown
+DIS,DEATHDT,TEXT,Death Date
+DIS,DEATHDT_P,TEXT,"Precision of date of date (year, month, or day)"
+DIS,FACILITY_DISPLAY_ID,TEXT,Facility identifier
+DIS,FACPATID,TEXT,Facility-Patient ID
+DIS,ICD10DEATHCAUSE,TEXT,"Death Primary Cause, ICD10"
+DIS,ICD10DEATHCAUSE2,TEXT,Death Secondary Cause ICD10
+DIS,ICD9DEATHCAUSE,TEXT,"Death Primary Cause, ICD9"
+DIS,ICD9DEATHCAUSE2,NUMBER,Death Secondary Cause ICD9
+DIS,OTHSTWTHD,TEXT,"Study Exit Reason, Other"
+DIS,PATDISC,TEXT,Discontinuation cause
+DIS,PATIENT_DISPLAY_ID,NUMBER,"Patient identifier, unique only within the same facility"
+DIS,STUEXDT,TEXT,Study Exit Date
+DIS,STUEXDT_P,TEXT,"Precision of study exit date (year, month, or day)"
+DIS,STWTHD,TEXT,Study Exit Reason
+ENC,ABNML,TEXT,Abnormal neurological conditions 
+ENC,ABNMLOT,TEXT,Other abnormal neurological conditions
+ENC,ADMMTHD,TEXT,Administration method of assessment
+ENC,ALSCBSBS,NUMBER,ALS-CBS Assessment Behavioral Score
+ENC,ALSCBSCS,NUMBER,ALS-CBS Assessment Cognitive Score
+ENC,ALSFRSDT,TEXT,ALSFRS-R Completion date
+ENC,ALSFRSDT_P,TEXT,"Precision of ALSFRS-R completion date (whether recorded to level of year, month, or day)"
+ENC,ALSFRSR,BOOLEAN,If ALSFRS-R Assessment completed
+ENC,ALSFRSTL,NUMBER,Total ALSFRS-R Score
+ENC,AMBLLOSS,BOOLEAN,Ambulatory loss
+ENC,AMBLSDT,TEXT,Ambulatory loss date
+ENC,AMBLSDT_P,TEXT,"Precision of ambulatory loss date (whether recorded to level of year, month, or day)"
+ENC,APPRXFALL,NUMBER,Approximate number of falls
+ENC,APPRXUNKWN,NUMBER,Approximate number of unknown falls
+ENC,ASSTDVC,BOOLEAN,Assistive device current use
+ENC,ASSTDVCCHNGE,TEXT,Assistive device changes since last visit
+ENC,ASSTPLN,TEXT,End of life planning
+ENC,BMI,NUMBER,Body Mass Index
+ENC,CASE_ID,NUMBER,"Case identifier, unique for each case only within the same facility"
+ENC,CLMBSTRS,TEXT,ALSFRS Score for climbing stairs (4=normal)
+ENC,CLMBSTRS_ALSFRSR,TEXT,ALSFRS_R Score for climbing stairs (4=normal)
+ENC,CLNTRLYN,TEXT,Current pariticipation in any other clinical research
+ENC,COGIMP,TEXT,Cognitive Impairment
+ENC,CURMED2,TEXT,Medications used currently
+ENC,CURRAMB,TEXT,Current ambulatory status
+ENC,DISMODTHP,TEXT,Disease modifying therapy
+ENC,DISPROREV,BOOLEAN,Disease progression reversed
+ENC,DOB,TEXT,Date of Birth
+ENC,DOB_P,TEXT,"Precision of date measurements (whether is recorded to the level of a year, month or day)"
+ENC,DRSHYGN,TEXT,ALSFRS Score of dressing and hygiene (4=normal)
+ENC,DSTYPE,TEXT,Disease Type
+ENC,DYSPHAGIA,TEXT,Difficulty swallowing
+ENC,DYSPNEA,TEXT,ALSFRS Score of dyspnea (4=none)
+ENC,ENCNTDT,TEXT,Encounter Date
+ENC,ENCNTDT_P,TEXT,Precision of Encounter Date
+ENC,FACILITY_DISPLAY_ID,TEXT,Facility identifier
+ENC,FACPATID,TEXT,Facility-Patient ID
+ENC,FEEDMTHD,TEXT,Feeding Method
+ENC,FEV1RSLT,NUMBER,FEV1 Result (L/sec)
+ENC,FSTNIV,BOOLEAN,Use of non-invasive ventilation
+ENC,FSTNIVDT,TEXT,First use of non-invasive ventilation date
+ENC,FSTNIVDT_P,TEXT,"Precision of first use of NIV date measurement (whether recorded to level of year, month, or day)"
+ENC,FVCPCTPD,NUMBER,FVC Percent Predicted (%)
+ENC,FVCRSLT,NUMBER,FVC Result (L)
+ENC,GENDER,TEXT,Gender Type
+ENC,GSTRMY,BOOLEAN,Gastrostomy
+ENC,GSTRMYDT,TEXT,Date of gastrostomy
+ENC,GSTRMYDT_P,TEXT,"Precision of gastrostomy date measurement (whether recorded to level of year, month, or day)"
+ENC,GSTRSTMY,TEXT,Gastrostomy (response determines which ALSFRS Score question to answer)
+ENC,HANDWRIT,TEXT,ALSFRS Score of handwriting (4=normal)
+ENC,HEIGHT,NUMBER,Patient Height
+ENC,HEIGHT_U,TEXT,Height units
+ENC,HOSPREV,BOOLEAN,Hospitalization list reviewed
+ENC,HOSPVIS,TEXT,Hospitalization since last visit
+ENC,HT_MSURE,TEXT,Height Measured Method
+ENC,HTMSRD,BOOLEAN,Height Measured
+ENC,MEDCHNGE,TEXT,Medications changes since last visit
+ENC,MEDREV,BOOLEAN,Medication list reviewed
+ENC,MEDVIS,TEXT,Medication since last visit
+ENC,MEPRSLT,NUMBER,MEP Result (cm H2O)
+ENC,METHENC,TEXT,Encounter Method
+ENC,MIPRSLT,NUMBER,MIP Result (cm H2O)
+ENC,MLTCRPL,TEXT,Multidisciplanary care plan
+ENC,MNTLST,BOOLEAN,Mental status
+ENC,MNTSTTST,TEXT,Type of mental status test
+ENC,MNTTSCORE,NUMBER,Mental status test score
+ENC,MNTTSTOT,TEXT,Other mental status test
+ENC,MOBVIS,TEXT,Assistive devices change since last visit
+ENC,MOCASCORE,NUMBER,Montreal Cognitive Assessment Score
+ENC,MVVRSLT,NUMBER,MVV Result (L/min)
+ENC,NONIVVENTYN,TEXT,Non-invasive ventilation use
+ENC,NUTRTHRP,TEXT,Nutritional Supplementation
+ENC,ORTHPNEA,TEXT,ALSFRS Score of orthopnea (4=none)
+ENC,OTHMETHENC,TEXT,"Encounter Method,Other"
+ENC,OTHMSURE,TEXT,"Height Measured Method,Other"
+ENC,PATIENT_DISPLAY_ID,NUMBER,"Patient identifier, unique only within the same facility"
+ENC,PCFRSLT,NUMBER,PCF Result (L/min)
+ENC,PEFRSLT,NUMBER,PEF Result (L/min) 
+ENC,PEFRSLTSC,NUMBER,PEF Result (L/sec)
+ENC,PFTEST,TEXT,Pulmonary function test
+ENC,PFTFEV1,NUMBER,Forced Expiratory Volume in 1 second (FEV1)
+ENC,PFTFVC,NUMBER,Forced Vital Capacity (FVC)
+ENC,PFTMEP,NUMBER,Maximum Expiratory Pressure (MEP)
+ENC,PFTMIP,NUMBER,Maximum Inspiratory Pressure (MIP)
+ENC,PFTMVV,NUMBER,Maximal Volume of Ventilation (MVV)
+ENC,PFTPEF,NUMBER,PEF Peak Expiratory Flow
+ENC,PFTSNIP,NUMBER,Sniff Nasal Inspiratory Pressure (SNIP)
+ENC,PFTSVC,NUMBER,Slow Vital Capacity (sVC)
+ENC,PFTTSTDT,TEXT,Pulmonary Function Test Date
+ENC,PFTTSTDT_P,TEXT,Precision of Pulmonary Function Test Date
+ENC,PRVCLNTR,TEXT,Previous participation in other clinical research
+ENC,PTSN,TEXT,Visit Seen by
+ENC,PTSOT,TEXT,"Pulmonary Testing, Other"
+ENC,PULMDVC,BOOLEAN,Pulmonary device current use
+ENC,PULMDVCCHNGE,TEXT,Pulmonary device changes since last visit
+ENC,PULREV,BOOLEAN,Pulmonary Device list reviewed
+ENC,PULVIS,TEXT,Pulmonary devices change since last visit
+ENC,REFROTH,TEXT,"Patient Referred to, Other"
+ENC,RESPINSF,TEXT,ALSFRS Score for respiratory insufficiency (4=none)
+ENC,RFRTO,TEXT,Patient Referred to
+ENC,RSPNDBY,TEXT,Responses provided by whom
+ENC,SLVATN,TEXT,ALSFRS Score for salivation (4=normal)
+ENC,SNBYOTH,TEXT,"Visit Seen by, Other"
+ENC,SNIPRSLT,NUMBER,SNIP Result (cm H2O)
+ENC,SPCHLOSS,BOOLEAN,Loss of speech
+ENC,SPCHLSDT,TEXT,Date of speech loss
+ENC,SPCHLSDT_P,TEXT,"Precision of speech loss date measurement (whether recorded to level of year, month, or day)"
+ENC,SPEECH,TEXT,ALSFRS Score for speech (4=normal)
+ENC,SUPFLT,NUMBER,Supine FVC Result (L/min)
+ENC,SUPFPD,NUMBER,Supine FVC Percent Predicted (%)
+ENC,SUPFVC,NUMBER,Supine FVC Supine Forced Vital Capacity
+ENC,SVCPCTPD,NUMBER,sVC Percent Predicted (%)
+ENC,SVCRSLT,NUMBER,sVC Result (L) 
+ENC,SWALLOW,TEXT,ALSFRS Score for swallowing (4=normal)
+ENC,SYMPTHRPY,TEXT,Symptom therapy
+ENC,SYMRESINS,TEXT,Symptom resolution intervention
+ENC,TRACH,BOOLEAN,Tracheostomy
+ENC,TRACHDT,TEXT,Tracheostomy Date
+ENC,TRACHDT_P,TEXT,Precision of Tracheostomy Date
+ENC,TRACHVENTYN,TEXT,Tracheostomy with invasive ventilation use
+ENC,TRTRESSUPP,TEXT,Respiratory support discussed
+ENC,TURNBED,TEXT,ALSFRS Score for turning in bed (4=normal)
+ENC,UNASISPCF,NUMBER,PCF Unassisted Peak Cough Flow
+ENC,WALKING,TEXT,ALSFRS Score for walking (4=normal)
+ENC,WGSTRTY,TEXT,ALSFRS Score for handling food with gastrostomy (4=normal)
+ENC,WGT,NUMBER,Patient Weight
+ENC,WGT_U,TEXT,Weight units
+ENC,WOGSTRTY,TEXT,ALSFRS Score for handling food without gastrostomy (4=normal)
+ENC,WTMSRD,BOOLEAN,Weight Measured
+LOG,CASE_ID,NUMBER,"Case identifier, unique for each case only within the same facility"
+LOG,DOB,TEXT,Date of Birth
+LOG,DOB_P,TEXT,"Precision of date measurements (whether is recorded to the level of a year, month or day)"
+LOG,DSTYPE,TEXT,Disease Type
+LOG,FACILITY_DISPLAY_ID,NUMBER,Facility identifier
+LOG,FACPATID,TEXT,Facility-Patient ID
+LOG,FEEDTUBPL,BOOLEAN,Feeding Tube Placement
+LOG,GENDER,TEXT,Gender Type
+LOG,HERNREPR,BOOLEAN,Hernia Repair Surgery
+LOG,ICDPLAC1,BOOLEAN,ICD Placement
+LOG,OTHSURG,BOOLEAN,"Surgery, Other"
+LOG,PATIENT_DISPLAY_ID,NUMBER,"Patient identifier, unique only within the same facility"
+LOG,RVWDT,TEXT,Last review Date
+LOG,RVWDT_P,TEXT,"Precision of last review date measurement (year, month, or day)"
+LOG,RVWDT2,TEXT,Last review Date
+LOG,RVWDT2_P,TEXT,"Precision of last review date measurement (year, month, or day)"
+LOG,RVWDT3,TEXT,Last review Date
+LOG,RVWDT3_P,TEXT,"Precision of last review date measurement (year, month, or day)"
+LOG,RVWDT6,TEXT,Last review Date
+LOG,RVWDT6_P,TEXT,"Precision of last review date measurement (year, month, or day)"
+LOG,RVWDT9,TEXT,Last review Date
+LOG,RVWDT9_P,TEXT,"Precision of last review date measurement (year, month, or day)"
+LOG,SCAPFIXTN,BOOLEAN,Scapular Fixation Surgery
+LOG,SCLIOSIS,BOOLEAN,Scoliosis Surgery
+LOG,TENDRELSURG,BOOLEAN,Tendon Release Surgery
+LOG,TRACH,BOOLEAN,Tracheostomy

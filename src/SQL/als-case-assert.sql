@@ -95,13 +95,13 @@ for(i=0; i<SITES.length; i++){
        INSERT INTO ALS_EVENT_LONG
         SELECT  distinct
                 a.patid,
-                'NEUROLOGIST' AS event_type,
+                'NEURO' AS event_type,
                 a.px_date AS event_date,
                 round(datediff(day,b.birth_date,a.px_date)/365.25) AS age_at_event,
                 '`+ site +`'
         FROM GROUSE_DB.`+ site_cdm +`.LDS_PROCEDURES a
         JOIN GROUSE_DB.`+ site_cdm +`.LDS_PROVIDER p ON a.PROVIDERID = p.PROVIDERID
-        JOIN REF_ALS_CDE ref ON p.provider_specialty_primary = ref.code and ref.codesystem = 'cmsTaxonomy'
+        JOIN REF_ALS_CDE ref ON p.provider_specialty_primary = ref.code and ref.codesystem = 'hcpt'
         JOIN GROUSE_DB.`+ site_cdm +`.LDS_DEMOGRAPHIC b ON a.patid = b.patid
         WHERE a.PX in (
             '99201','99202','99203','99204','99205',
@@ -201,18 +201,19 @@ with grp_by_type as (
              count(distinct event_type) over (partition by patid) as distinct_event_cnt,
              count(distinct event_date) over (partition by patid) as distinct_date_cnt,
              count(distinct event_date) over (partition by patid,event_type) as event_distinct_date_cnt,
-
              row_number() over (partition by patid order by event_date) as rn
       from ALS_EVENT_LONG
-), summ_event_str as (
+)
+, summ_event_str as (
     select g.*,
-           max(case when b.chart = 'Y' then 1 else 0 end) over (partition by a.patid) as complt_ind,
-           max(case when b.enr_start_date is null then 1 else 0 end) over (partition by a.patid) as ehr_ind,
+           max(case when b.chart = 'Y' then 1 else 0 end) over (partition by g.patid) as complt_ind,
+           max(case when b.enr_start_date is null then 1 else 0 end) over (partition by g.patid) as ehr_ind,
            listagg(distinct g.event_type||g.event_distinct_date_cnt,'|') within group (order by g.event_type||g.event_distinct_date_cnt) over (partition by g.patid) as event_str
     from grp_by_type g
     left join GROUSE_DB.CMS_PCORNET_CDM.LDS_ENROLLMENT b 
-    on a.patid = b.patid
-), get_als1dx as(
+    on g.patid = b.patid
+)
+, get_als1dx as(
     select patid,
            event_date as als1dx_date,
            age_at_event as age_at_als1dx
@@ -223,11 +224,12 @@ with grp_by_type as (
     )
     where rn = 1
 )
-select a.patid 
-      ,b.birth_datetime
-      ,zg.concept_name as gender
-      ,zr.concept_name as race 
-      ,ze.concept_name as ethnicity
+select distinct 
+       a.patid 
+      ,b.birth_date
+      ,b.sex
+      ,b.race 
+      ,b.hispanic
       ,c.als1dx_date
       ,a.event_type as index_event
       ,case when a.event_type = 'NEURO' then c.als1dx_date else a.event_date end as index_date
@@ -240,53 +242,58 @@ select a.patid
             when a.complt_ind = 0 and a.ehr_ind = 1 then 'enr_only'
             else 'cms_only'
        end as complt_flag
-      ,case when a.distinct_event_cnt > 2 then 'confirmed'
+      ,case when a.distinct_event_cnt > 2 or a.distinct_date_cnt > 2 then 'confirmed'
             else 'likely'
        end as case_assert 
+      ,regexp_replace(a.event_str,'[0-9]+','') as cphety
 from summ_event_str a 
-join identifier($omop_person) b on a.patid = b.patid
-join identifier($omop_concept) zg on b.gender_concept_id = zg.concept_id
-join identifier($omop_concept) zr on b.race_concept_id = zr.concept_id
-join identifier($omop_concept) ze on b.ethnicity_concept_id = ze.concept_id
+join pat_table1 b on a.patid = b.patid
 join get_als1dx c on a.patid = c.patid
-where a.rn = 1 and b.birth_datetime is not null
+where a.rn = 1 and b.birth_date is not null
       and a.distinct_date_cnt > 1 
       and (a.event_str like '%DX%' and a.event_str <> 'DX1') -- at least likely, only 1 DX is considered "undetermined"
 ;
 
+select * from ALS_CASE_TABLE1 limit 15;
 
-select * from ALS_TABLE1 limit 5;
-
-select count(distinct patid), count(*) from ALS_TABLE1;
--- 24443
+select count(distinct patid), count(*) from ALS_CASE_TABLE1;
+-- 28678
 
 select case_assert, count(distinct patid) 
-from ALS_TABLE1
+from ALS_CASE_TABLE1
 group by case_assert
 ;
--- confirmed	11798
--- likely	12645
+-- confirmed	25997
+-- likely	2681
 
-select race, count(distinct patid) 
-from ALS_TABLE1
-group by race
-;
--- NI	2070
--- black	1358
--- asian	267
--- white	20551
--- other	197
 
 select case_assert, complt_flag, count(distinct patid) 
-from ALS_TABLE1
+from ALS_CASE_TABLE1
 group by case_assert, complt_flag
 order by case_assert, complt_flag
 ;
 
--- confirmed	cms_only	4068
--- confirmed	complete	5510
--- confirmed	enr_only	1717
--- likely	cms_only	6261
--- likely	complete	4159
--- likely	enr_only	1793
+-- confirmed	cms_only	10921
+-- confirmed	complete	9788
+-- confirmed	enr_only	5325
+-- likely	cms_only	1160
+-- likely	complete	652
+-- likely	enr_only	872
 
+select event_str, count(distinct patid) 
+from ALS_CASE_TABLE1
+group by event_str
+;
+
+/* apply 1-year washup period to identify potential ALS incidences*/
+create or replace table ALS_INC_CASE_TABLE1 as 
+select a.*
+from ALS_CASE_TABLE1 a
+join PAT_TABLE1 p
+on a.patid = p.patid
+where datediff('day',p.index_date,a.als1dx_date) > 365
+;
+
+select count(distinct patid), count(*) 
+from ALS_INC_CASE_TABLE1;
+-- 14731

@@ -1,0 +1,204 @@
+TABLE_NAME,COLUMN_NAME,DATA_TYPE,DESCRIPTION
+ADVERSEEVENTS,SUBJECT_ID,NUMBER,"primary key, arbitrary subject identifiers"
+ADVERSEEVENTS,SEVERITY,TEXT,severity of symptom
+ADVERSEEVENTS,SOC_ABBREVIATION,TEXT,System Organ Class abbreviation
+ADVERSEEVENTS,END_DATE_DELTA,NUMBER,time in days until end of adverse event
+ADVERSEEVENTS,OUTCOME,TEXT,"outcome (resolved, ongoing, etc)"
+ADVERSEEVENTS,SYSTEM_ORGAN_CLASS,TEXT,System Organ Class
+ADVERSEEVENTS,SOC_CODE,NUMBER,System Organ Class code
+ADVERSEEVENTS,HIGH_LEVEL_GROUP_TERM,TEXT,high level group term
+ADVERSEEVENTS,START_DATE_DELTA,NUMBER,time in days until start day of the adverse event
+ADVERSEEVENTS,HIGH_LEVEL_TERM,TEXT,high level term 
+ADVERSEEVENTS,PREFERRED_TERM,TEXT,preferred term for the adverse event
+ADVERSEEVENTS,LOWEST_LEVEL_TERM,TEXT,the recorded adverse event
+ALSFRS,SUBJECT_ID,NUMBER,"primary key, arbitrary subject identifiers"
+ALSFRS,ALSFRS_RESPONDED_BY,TEXT,ALS functional rating score responded by
+ALSFRS,ALSFRS_TOTAL,NUMBER,total sum of ALSFRS scores
+ALSFRS,ALSFRS_R_TOTAL,NUMBER,total sum of ALSFRS-R (revised assessment) scores
+ALSFRS,ALSFRS_DELTA,NUMBER,time between patient's first screening and each assessment of ALSFRS
+ALSFRS,MODE_OF_ADMINISTRATION,TEXT,mode of administration
+ALSFRS,Q1_SPEECH,NUMBER,"functional rating of speech (0=no function, 4=normal function)"
+ALSFRS,Q2_SALIVATION,NUMBER,functional rating of salivation
+ALSFRS,Q3_SWALLOWING,NUMBER,functional rating of swallowing
+ALSFRS,Q4_HANDWRITING,NUMBER,functional rating of handwriting
+ALSFRS,Q5A_CUTTING_WITHOUT_GASTROSTOMY,NUMBER,functional rating of cutting food without gastrostomy
+ALSFRS,Q5B_CUTTING_WITH_GASTROSTOMY,NUMBER,functional rating of cutting food with gastrostomy
+ALSFRS,Q6_DRESSING_AND_HYGIENE,NUMBER,functional rating of dressing and hygiene
+ALSFRS,Q7_TURNING_IN_BED,NUMBER,functional rating of turning in bed
+ALSFRS,Q8_WALKING,NUMBER,functional rating of walking
+ALSFRS,Q9_CLIMBING_STAIRS,NUMBER,functional rating of climbing stairs
+ALSFRS,Q10_RESPIRATORY,NUMBER,functional rating of breathing
+ALSFRS,R_1_DYSPNEA,NUMBER,rating of shortness of breath (4=none)
+ALSFRS,R_2_ORTHOPNEA,NUMBER,rating of shortness of breath lying down (4=none)
+ALSFRS,R_3_RESPIRATORY_INSUFFICIENCY,NUMBER,rating of respiratory insufficiency (4=none)
+ALSHISTORY,LOCATION,TEXT,body part where symptom manifested
+ALSHISTORY,DIAGNOSIS_DELTA,NUMBER,time between clinical diagnosis and the first time the patient was tested in a trial
+ALSHISTORY,SITE_OF_ONSET_OTHER_SPECIFY,TEXT,onset site besides limb or bulbar specified
+ALSHISTORY,SITE_OF_ONSET_LIMB_AND_BULBAR,TEXT,if onset in both limb and bulbar site 
+ALSHISTORY,SITE_OF_ONSET_BULBAR,NUMBER,if bulbar onset
+ALSHISTORY,SITE_OF_ONSET,TEXT,site of onset
+ALSHISTORY,LOCATION_OTHER_SPECIFY,TEXT,other specified body part of symptom
+ALSHISTORY,SUBJECT_ID,NUMBER,"primary key, arbitrary subject identifiers"
+ALSHISTORY,SITE_OF_ONSET_LIMB,NUMBER,if site of onset in limb
+ALSHISTORY,SUBJECT_ALS_HISTORY_DELTA,NUMBER,time between trial onset and ALS history assessment
+ALSHISTORY,SITE_OF_ONSET_OTHER,TEXT,if other site of onset
+ALSHISTORY,DISEASE_DURATION,TEXT,duration of disease
+ALSHISTORY,SYMPTOM,TEXT,symptom
+ALSHISTORY,ONSET_DELTA,NUMBER,time between trial onset and ALS onset
+ALSHISTORY,SYMPTOM_OTHER_SPECIFY,TEXT,other symptom specified
+ALSHISTORY,SITE_OF_ONSET_SPINE,TEXT,if onset in spine
+CONMEDS,FREQUENCY,TEXT,frequency
+CONMEDS,STOP_DELTA,NUMBER,time until stop of medication
+CONMEDS,START_DELTA,NUMBER,time until start of medication
+CONMEDS,ROUTE,TEXT,route of medication
+CONMEDS,SUBJECT_ID,NUMBER,"primary key, arbitrary subject identifiers"
+CONMEDS,UNIT,TEXT,dose units
+CONMEDS,MEDICATION_CODED,TEXT,name of medication coded
+CONMEDS,DOSE,TEXT,dose
+DEATHDATA,DEATH_DAYS,NUMBER,number of days lived from trial onset until death
+DEATHDATA,SUBJECT_ID,NUMBER,"primary key, arbitrary subject identifiers"
+DEATHDATA,SUBJECT_DIED,BOOLEAN,if subject died
+DEMOGRAPHICS,RACE_ASIAN,NUMBER,"1 if Asian, 0 otherwise"
+DEMOGRAPHICS,DEMOGRAPHICS_DELTA,NUMBER,time in days from trial onset to collection of demographics information
+DEMOGRAPHICS,DATE_OF_BIRTH,NUMBER,date of birth
+DEMOGRAPHICS,RACE_OTHER,NUMBER,"1 if other race, 0 otherwise"
+DEMOGRAPHICS,AGE,NUMBER,age
+DEMOGRAPHICS,RACE_OTHER_SPECIFY,TEXT,other race specified
+DEMOGRAPHICS,SEX,TEXT,"sex assigned at birth (male, female)"
+DEMOGRAPHICS,RACE_CAUCASIAN,NUMBER,"1 if Caucasian, 0 otherwise"
+DEMOGRAPHICS,RACE_BLACK_AFRICAN_AMERICAN,NUMBER,"1 if African American, 0 otherwise"
+DEMOGRAPHICS,ETHNICITY,TEXT,ethnicity
+DEMOGRAPHICS,RACE_UNKNOWN,NUMBER,if unknown race
+DEMOGRAPHICS,SUBJECT_ID,NUMBER,"primary key, arbitrary subject identifiers"
+DEMOGRAPHICS,RACE_AMERIC_INDIAN_ALASKA_NATIVE,NUMBER,if American Indian or Alaska native race
+DEMOGRAPHICS,RACE_HAWAIIAN_PACIFIC_ISLANDER,NUMBER,if Hawaiian or Pacific Islander race
+ELESCORIAL,EL_ESCORIAL,TEXT,El Escorial criteria-based probability of ALS diagnosis
+ELESCORIAL,DELTA_DAYS,NUMBER,days between trial onset and screening visit
+ELESCORIAL,SUBJECT_ID,NUMBER,"primary key, arbitrary subject identifiers"
+FAMILYHISTORY,FAMILY_HX_OF_NEURO_DISEASE,TEXT,family history of neurological diseases
+FAMILYHISTORY,NEPHEW,NUMBER,if nephew has/had neurological disease
+FAMILYHISTORY,UNCLE_PATERNAL,NUMBER,if paternal uncle has/had neurological disease
+FAMILYHISTORY,NIECE,NUMBER,if niece has/had neurological disease
+FAMILYHISTORY,COUSIN,NUMBER,if a cousin has/had neurological disease
+FAMILYHISTORY,NEPHEW_MATERNAL,TEXT,if maternal nephew has/had neurological disease
+FAMILYHISTORY,GRANDFATHER_PATERNAL_,NUMBER,if paternal grandfather has/had neurological disease
+FAMILYHISTORY,VOLUNTEER,TEXT,if subject's family history was volunteered
+FAMILYHISTORY,SON,NUMBER,if son has/had neurological disease
+FAMILYHISTORY,FAMILY_HISTORY_DELTA,NUMBER,time from trial onset to when family history was collected
+FAMILYHISTORY,MOTHER,NUMBER,if mother has/had neurological disease
+FAMILYHISTORY,FAMILY_HX_OF_ALS_MUTATION_OTHER,TEXT,other family history of ALS mutation
+FAMILYHISTORY,UNCLE,NUMBER,if uncle has/had neurological disease
+FAMILYHISTORY,SISTER,NUMBER,if sister has/had neurological disease
+FAMILYHISTORY,NEUROLOGICAL_DISEASE,TEXT,patient's history of neurological diseases
+FAMILYHISTORY,NEUROLOGICAL_DISEASE_OTHER,TEXT,patient's other non-listed neurological diseases
+FAMILYHISTORY,FAMILY_HX_OF_ALS_MUTATION,TEXT,family history of ALS mutation
+FAMILYHISTORY,AUNT_MATERNAL,NUMBER,if maternal aunt has/had neurological disease
+FAMILYHISTORY,COUSIN_PATERNAL,TEXT,if paternal cousin has/had neurological disease
+FAMILYHISTORY,COUSIN_MATERNAL,TEXT,if maternal cousin has/had neurological disease
+FAMILYHISTORY,NEPHEW_PATERNAL,TEXT,if paternal nephew has/had neurological disease
+FAMILYHISTORY,AUNT_PATERNAL,NUMBER,if paternal aunt has/had neurological disease
+FAMILYHISTORY,GRANDFATHER_MATERNAL_,NUMBER,if maternal grandfather has/had neurological disease
+FAMILYHISTORY,NIECE_PATERNAL,TEXT,if paternal niece has/had neurological disease
+FAMILYHISTORY,DAUGHTER,NUMBER,if daughter has/had neurological disease
+FAMILYHISTORY,BROTHER,NUMBER,if brother has/had neurological disease
+FAMILYHISTORY,OTHER,TEXT,if other relative has/had neurological disease
+FAMILYHISTORY,NIECE_MATERNAL,TEXT,if maternal niece has/had neurological disease
+FAMILYHISTORY,FATHER,NUMBER,if father has/had neurological disease
+FAMILYHISTORY,SIBLING,TEXT,if sibling has/had neurological disease
+FAMILYHISTORY,GRANDMOTHER_PATERNAL,NUMBER,if paternal grandmother has/had neurological disease
+FAMILYHISTORY,GRANDFATHER,NUMBER,if grandfather has/had neurological disease
+FAMILYHISTORY,UNCLE_MATERNAL,NUMBER,if maternal uncle has/had neurological disease
+FAMILYHISTORY,GRANDMOTHER_MATERNAL,NUMBER,if maternal grandmother has/had neurological disease
+FAMILYHISTORY,FAMILY_HX_OF_NEURO_DISEASE_OTHER,TEXT,other family history of neurological diseases
+FAMILYHISTORY,OTHER_SPECIFY,TEXT,other family member
+FAMILYHISTORY,GRANDMOTHER,NUMBER,if grandmother has/had neurological disease
+FAMILYHISTORY,SUBJECT_ID,NUMBER,"primary key, arbitrary subject identifiers"
+FAMILYHISTORY,AUNT,NUMBER,if aunt has/had neurological disease
+FVC,FORCED_VITAL_CAPACITY_UNITS,TEXT,forced vital capacity units 
+FVC,SUBJECT_LITERS_TRIAL_1,NUMBER,subject's FVC value (liters) trial 1
+FVC,PCT_OF_NORMAL_TRIAL_3,NUMBER,"percentage of normal lung function, trial 3 (subject liters/subject normal)"
+FVC,SUBJECT_LITERS_TRIAL_3,NUMBER,subject's FVC value (liters) trial 1
+FVC,SUBJECT_ID,NUMBER,"primary key, arbitrary subject identifiers"
+FVC,FORCED_VITAL_CAPACITY_DELTA,NUMBER,time of test from the start of the trial
+FVC,SUBJECT_LITERS_TRIAL_2,NUMBER,subject's FVC value (liters) trial 1
+FVC,PCT_OF_NORMAL_TRIAL_1,NUMBER,"percentage of normal lung function, trial 1 (subject liters/subject normal)"
+FVC,SUBJECT_NORMAL,NUMBER,"expected FVC for a non-ALS patient matched by gender, age and height"
+FVC,PCT_OF_NORMAL_TRIAL_2,NUMBER,"percentage of normal lung function, trial 2 (subject liters/subject normal)"
+HANDGRIPSTRENGTH,TEST_RESULT,NUMBER,test result
+HANDGRIPSTRENGTH,TEST_UNIT,TEXT,test unit
+HANDGRIPSTRENGTH,DOMINANTHAND,TEXT,dominant hand
+HANDGRIPSTRENGTH,TEST_NAME,TEXT,test name
+HANDGRIPSTRENGTH,MS_DELTA,NUMBER,time to muscle strength test since trial start
+HANDGRIPSTRENGTH,SUBJECT_ID,NUMBER,"primary key, arbitrary subject identifiers"
+HANDGRIPSTRENGTH,TEST_SETTING,NUMBER,test setting
+HANDGRIPSTRENGTH,TEST_CATEGORY,TEXT,test category
+HANDGRIPSTRENGTH,TEST_TRIAL,NUMBER,test trial number
+HANDGRIPSTRENGTH,TEST_LOCATION,TEXT,body part location for the test
+HANDGRIPSTRENGTH,TEST_LATERALITY,TEXT,test laterality (right or left)
+LABS,TEST_UNIT,TEXT,test unit
+LABS,SUBJECT_ID,NUMBER,"primary key, arbitrary subject identifiers"
+LABS,TEST_RESULT,TEXT,test result
+LABS,LABORATORY_DELTA,NUMBER,time to lab test since trial start
+LABS,TEST_NAME,TEXT,lab test name
+MUSCLESTRENGTH,TEST_RESULT,NUMBER,test result
+MUSCLESTRENGTH,TEST_TRIAL,NUMBER,test trial number
+MUSCLESTRENGTH,TEST_BREAK,BOOLEAN,if subject took a break during the test
+MUSCLESTRENGTH,TEST_UNIT,TEXT,test units
+MUSCLESTRENGTH,TEST_NAME,TEXT,test name
+MUSCLESTRENGTH,MS_DELTA,NUMBER,time to muscle strength test since trial start
+MUSCLESTRENGTH,TEST_LOCATION,TEXT,body part location for the test
+MUSCLESTRENGTH,TEST_LATERALITY,TEXT,test laterality (left or right)
+MUSCLESTRENGTH,SUBJECT_ID,NUMBER,"primary key, arbitrary subject identifiers"
+MUSCLESTRENGTH,TEST_CATEGORY,TEXT,test category
+RILUZOLE,SUBJECT_ID,NUMBER,"primary key, arbitrary subject identifiers"
+RILUZOLE,RILUZOLE_USE_DELTA,NUMBER,time to use of Riluzole since trial start
+RILUZOLE,SUBJECT_USED_RILUZOLE,BOOLEAN,if subject used Riluzole
+SVC,SUBJECT_NORMAL,NUMBER,"expected SVC for a non-ALS patient matched by gender, age and height"
+SVC,PCT_OF_NORMAL_TRIAL_2,NUMBER,"percentage of normal lung function, trial 2 (subject liters/subject normal)"
+SVC,SUBJECT_ID,NUMBER,"primary key, arbitrary subject identifiers"
+SVC,PCT_OF_NORMAL_TRIAL_1,NUMBER,"percentage of normal lung function, trial 1 (subject liters/subject normal)"
+SVC,SUBJECT_LITERS_TRIAL_2,NUMBER,subject's slow vital capacity value (liters) in trial 2
+SVC,SUBJECT_LITERS_TRIAL_1,NUMBER,subject's slow vital capacity value (liters) in trial 1
+SVC,SUBJECT_LITERS_TRIAL_3,NUMBER,subject's slow vital capacity value (liters) in trial 3
+SVC,SLOW_VITAL_CAPACITY_UNITS,TEXT,slow vital capacity units
+SVC,SLOW_VITAL_CAPACITY_DELTA,NUMBER,time to SVC assessment since trial start
+SVC,PCT_OF_NORMAL_TRIAL_3,NUMBER,"percentage of normal lung function, trial 3 (subject liters/subject normal)"
+TREATMENT,TREATMENT_GROUP_DELTA,NUMBER,time duration between patient's first assessment and when treatment was first given
+TREATMENT,STUDY_ARM,TEXT,subject's treatment group
+TREATMENT,SUBJECT_ID,NUMBER,"primary key, arbitrary subject identifiers"
+VITALSIGNS,BASELINE_STANDING_BP_SYSTOLIC,NUMBER,baseline standing systolic blood pressure
+VITALSIGNS,ENDPOINT_SUPINE_PULSE,NUMBER,endpoint supine pulse
+VITALSIGNS,SUBJECT_ID,NUMBER,"primary key, arbitrary subject identifiers"
+VITALSIGNS,TEMPERATURE,NUMBER,body temperature
+VITALSIGNS,SUPINE_BP_SYSTOLIC,NUMBER,supine systolic blood pressure
+VITALSIGNS,BASELINE_SUPINE_BP_SYSTOLIC,NUMBER,baseline supine systolic blood pressure
+VITALSIGNS,BASELINE_STANDING_PULSE,NUMBER,baseline standing pulse
+VITALSIGNS,ENDPOINT_STANDING_BP_SYSTOLIC,NUMBER,endpoint standing systolic blood pressure
+VITALSIGNS,VITAL_SIGNS_DELTA,NUMBER,time to vital signs assessment since time zero
+VITALSIGNS,STANDING_BP_DIASTOLIC,NUMBER,standing diastolic blood pressure
+VITALSIGNS,BASELINE_SUPINE_PULSE,NUMBER,baseline supine pulse
+VITALSIGNS,SUPINE_BP_DIASTOLIC,NUMBER,supine diastolic blood pressure
+VITALSIGNS,BASELINE_SUPINE_BP_DIASTOLIC,NUMBER,baseline supine diastolic blood pressure
+VITALSIGNS,HEIGHT_UNITS,TEXT,units for height
+VITALSIGNS,BASELINE_WEIGHT,NUMBER,baseline weight
+VITALSIGNS,HEIGHT,NUMBER,patient height
+VITALSIGNS,ENDPOINT_SUPINE_BP_DIASTOLIC,NUMBER,endpoint supine diastolic blood pressure
+VITALSIGNS,WEIGHT,NUMBER,patient weight
+VITALSIGNS,ENDPOINT_STANDING_PULSE,NUMBER,endpoint standing pulse
+VITALSIGNS,TEMPERATURE_UNITS,TEXT,body temperature units
+VITALSIGNS,BLOOD_PRESSURE_DIASTOLIC_UNITS,TEXT,diastolic blood pressure units
+VITALSIGNS,PULSE,NUMBER,pulse
+VITALSIGNS,BASELINE_STANDING_BP_DIASTOLIC,NUMBER,baseline standing diastolic blood pressure
+VITALSIGNS,ENDPOINT_WEIGHT,NUMBER,endpoint weight
+VITALSIGNS,SUPINE_PULSE,NUMBER,supine pulse
+VITALSIGNS,RESPIRATORY_RATE,NUMBER,respiratory rate
+VITALSIGNS,RESPIRATORY_RATE_UNITS,TEXT,respiratory rate units
+VITALSIGNS,ENDPOINT_SUPINE_BP_SYSTOLIC,NUMBER,endpoint supine systolic blood pressure
+VITALSIGNS,BLOOD_PRESSURE_DIASTOLIC,NUMBER,diastolic blood pressure
+VITALSIGNS,STANDING_BP_SYSTOLIC,NUMBER,systolic blood pressure while standing
+VITALSIGNS,ENDPOINT_STANDING_BP_DIASTOLIC,NUMBER,endpoint standing diastolic blood pressure
+VITALSIGNS,STANDING_PULSE,NUMBER,pulse when standing
+VITALSIGNS,BLOOD_PRESSURE_SYSTOLIC_UNITS,TEXT,units of systolic blood pressure
+VITALSIGNS,BLOOD_PRESSURE_SYSTOLIC,NUMBER,systolic blood pressure
+VITALSIGNS,PULSE_UNITS,TEXT,units for pulse
+VITALSIGNS,WEIGHT_UNITS,TEXT,units for weight

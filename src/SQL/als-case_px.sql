@@ -2,6 +2,10 @@
 # Copyright (c) 2021-2025 University of Missouri                   
 # Author: Xing Song, xsm7f@umsystem.edu                            
 # File: als-case_px.sql
+# Dependency: 
+# - ALS_CASE_TABLE1
+# - NPPES_NPI_REGISTRY.NPPES_FEB.NPI_TAXONOMY
+# - CDM: PROCEDURES, PROVIDER
 */
 -- select * from NPPES_NPI_REGISTRY.NPPES_FEB.NPI_TAXONOMY
 -- where PROVIDER_TAXONOMY_CODE = '2084N0400X';
@@ -54,7 +58,8 @@ for(i=0; i<SITES.length; i++){
                      ,d.ADMIT_DATE
                      ,d.ENC_TYPE
                      ,p.PROVIDER_NPI
-                     ,t.provider_type as PROVIDER_SPECIALTY
+                     ,p.PROVIDER_SPECIALTY_PRIMARY
+                     ,coalesce(p.PROVIDER_SPECIALTY_PRIMARY, t.provider_type) as PROVIDER_SPECIALTY
                      ,case when d.PX in ('99201','99202','99203','99204','99205',
                                          '99206','99207','99208','99209','99210',
                                          '99211','99212','99213','99214','99215') then 1 
@@ -107,12 +112,13 @@ create or replace table ALS_ALL_PX (
     ADMIT_DATE date,
     ENC_TYPE varchar(20),
     PROVIDER_NPI varchar(11),
+    PROVIDER_SPECIALTY_PRIMARY varchar(100),
     PROVIDER_SPECIALTY varchar(2000),
     OFFICE_FLAG number,
     PX_SRC varchar(20)
 );
 call get_px_long(
-       'ALS_TABLE1',
+       'ALS_CASE_TABLE1',
        array_construct(
          'CMS'
         ,'ALLINA'

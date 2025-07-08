@@ -2,13 +2,20 @@
 # Copyright (c) 2021-2025 University of Missouri                   
 # Author: Xing Song, xsm7f@umsystem.edu                            
 # File: als-case_rwep.sql
-# Dependency: ALS_ALL_DX, ALS_ALL_PX, ALS_ALL_OBS
+# Dependency: 
+# - ALS_CASE_TABLE1
+# - ALS_ALL_DX, 
+# - ALS_ALL_PX, 
+# - ALS_ALL_OBS
+# - ALS_ENDPT_REF
 # 
 # Milestones were defined as symptom onset (functional involvement by weakness, wasting,
 # spasticity, dysarthria or dysphagia of one central nervous system region defined as bulbar, upper limb, lower limb or diaphragmatic),
 # diagnosis, functional involvement of a second region, functional involvement of a third region, needing gastrostomy and
 # non-invasive ventilation.
 */
+
+select * from als_endpt_ref;
 
 create or replace procedure get_rwep_long(
     REF_COHORT string,
@@ -137,7 +144,7 @@ create or replace table ALS_ENDPT_LONG(
 );
 
 call get_rwep_long(
-       'ALS_TABLE1',
+       'ALS_CASE_TABLE1',
        array_construct(
          'CMS'
         ,'ALLINA'
@@ -157,7 +164,6 @@ call get_rwep_long(
     FALSE, NULL
 );
 
-select * from als_endpt_ref;
 INSERT INTO ALS_ENDPT_LONG(patid,first_obs_date,first_obs_since_index,last_obs_date,last_obs_since_index,ENDPT_TYPE,ENDPT_SRC,ENDPT,ENDPT_SUB)
 select a.PATID
       ,min(coalesce(dx_date,admit_date)) as FIRST_OBS_DATE

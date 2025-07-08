@@ -2,6 +2,10 @@
 # Copyright (c) 2021-2025 University of Missouri                   
 # Author: Xing Song, xsm7f@umsystem.edu                            
 # File: als-case_obs.sql
+# Dependency: 
+# - ALS_CASE_TABLE1
+# - ONTOLOGY.LOINC.LOINC_V2_17
+# - CDM: LAB_RESULT_CM, PROVIDER
 */
 create or replace procedure get_obs_long(
     REF_COHORT string,
@@ -206,7 +210,7 @@ create or replace table ALS_ALL_OBS (
 );
 
 call get_obs_long(
-       'ALS_TABLE1',
+       'ALS_CASE_TABLE1',
        array_construct(
        --   'CMS'
          'ALLINA'
@@ -229,7 +233,7 @@ call get_obs_long(
 select * from ALS_ALL_OBS limit 5;
 
 select count(distinct patid), count(*) from ALS_ALL_OBS;
--- 11623	5979774
+-- 14636	7110525
 
 select obs_name, obs_code, count(distinct patid)
 from als_all_obs

@@ -2,10 +2,11 @@
 # Copyright (c) 2021-2025 University of Missouri                   
 # Author: Xing Song, xsm7f@umsystem.edu                            
 # File: als-case_dx.sql
-# Dependency: ALS_TABLE1
+# Dependency: 
+# - ALS_CASE_TABLE1
+# - NPPES_NPI_REGISTRY.NPPES_FEB.NPI_TAXONOMY
+# - CDM: DIAGNOSIS, PROVIDER
 */
--- select * from NPPES_NPI_REGISTRY.NPPES_FEB.NPI_TAXONOMY
--- where PROVIDER_TAXONOMY_CODE = '2084N0400X';
 
 create or replace table NPI_TAXONOMY_DEDUP as
 select PROVIDER_TAXONOMY_CODE, 
@@ -56,7 +57,8 @@ for(i=0; i<SITES.length; i++){
                      ,d.ADMIT_DATE
                      ,d.ENC_TYPE
                      ,p.PROVIDER_NPI
-                     ,t.provider_type as PROVIDER_SPECIALTY
+                     ,p.PROVIDER_SPECIALTY_PRIMARY
+                     ,coalesce(p.PROVIDER_SPECIALTY_PRIMARY, t.provider_type) as PROVIDER_SPECIALTY
                      ,'`+ site +`' DX_SRC
               from `+ REF_COHORT +` a
               join GROUSE_DB.`+ site_cdm +`.LDS_DIAGNOSIS d 
@@ -84,7 +86,7 @@ $$
 
 /* test */
 -- call get_dx_long(
---        'ALS_TABLE1',
+--        'ALS_CASE_TABLE1',
 --        array_construct(
 --               'CMS'
 --              ,'MU'
@@ -105,11 +107,12 @@ create or replace table ALS_ALL_DX (
     ADMIT_DATE date,
     ENC_TYPE varchar(20),
     PROVIDER_NPI varchar(11),
+    PROVIDER_SPECIALTY_PRIMARY varchar(100),
     PROVIDER_SPECIALTY varchar(2000),
     DX_SRC varchar(20)
 );
 call get_dx_long(
-       'ALS_TABLE1',
+       'ALS_CASE_TABLE1',
        array_construct(
          'CMS'
         ,'ALLINA'
@@ -129,7 +132,7 @@ call get_dx_long(
     FALSE, NULL
 );
 
-select * from ALS_ALL_DX limit 5;
+select * from ALS_ALL_DX where DX_SRC <> 'CMS' limit 5;
 
 select PROVIDER_SPECIALTY, count(distinct patid)
 from als_all_dx

@@ -41,3 +41,6 @@ vignettes/*.pdf
 # Private folders
 *data/*
 *private/*
+
+# Private files (e.g, config)
+*config*

@@ -13,18 +13,27 @@ create or replace temporary table RXCUI_REF as
 select distinct 
        split_part(SUBCLS,' ',1) as RX_CLS,
        ING as RX_IN,
-       RXCUI
+       to_char(RXCUI) as RXCUI
 from Z_GLP1_DPP4_RXN_NDC
 ;
 
 create or replace temporary table NDC_REF as 
-select distinct 
-       split_part(SUBCLS,' ',1) as RX_CLS,
-       ING as RX_IN,
-       NDC
-from Z_GLP1_DPP4_RXN_NDC
+select distinct * 
+from (
+    select distinct 
+        split_part(SUBCLS,' ',1) as RX_CLS,
+        ING as RX_IN,
+        NDC11,
+        NDC10
+    from Z_GLP1_DPP4_RXN_NDC
+    where coalesce(NDC11,NDC10) is not null
+)
+unpivot (
+    NDC for NDC_TY in (NDC11, NDC10)
+)
 where NDC is not null
 ;
+
 
 create or replace procedure get_glp1_event_long(
     SITES array,
@@ -124,7 +133,7 @@ $$
 -- call get_glp1_event_long(
 --     array_construct(
 --          'CMS'
---         ,'MU'
+--         ,'ALLINA'
 --     ),
 --     TRUE,'TMP_SP_OUTPUT'
 -- )
@@ -172,20 +181,20 @@ select * from GLP1_EVENT_LONG limit 5;
 
 select count(distinct patid), count(distinct rxid), count(*)
 from GLP1_EVENT_LONG;
--- 1,599,720
+-- 1606792
 
 select RX_CLS, count(distinct patid), count(distinct rxid), count(*)
 from GLP1_EVENT_LONG
 group by RX_CLS;
--- DPP4	956,501
--- GLP1	845,376
+-- DPP4	957359
+-- GLP1	850536
 
 select RX_CLS, count(distinct patid), count(distinct rxid), count(*)
 from GLP1_EVENT_LONG
 where RX_START_DATE between '2011-01-01' and '2020-12-31'
 group by RX_CLS;
--- DPP4	896992	15582858	15635810
--- GLP1	531084	9065378	9094768
+-- DPP4	896983
+-- GLP1	525080
 
 select RX_SRC, count(distinct patid), count(distinct rxid), count(*)
 from GLP1_EVENT_LONG
@@ -233,7 +242,7 @@ select * from GLP1_DPP4_TABLE1 limit 5;
 select count(distinct patid), count(*), sum(GLP1_IND), sum(DPP4_IND),sum(GLP1_IND*DPP4_IND)
 from GLP1_DPP4_TABLE1
 ;
---1611240	1611240	857080	957368	203208
+-- 1606792	1606792	850536	957359	201103
 
 create or replace table ALS_GLP1 as 
 with als_glp1 as (
@@ -244,7 +253,7 @@ with als_glp1 as (
            datediff('day',b.als1dx_date, a.RX_START_DATE) as DAYS_GLP1_TO_ALS1,
            row_number() over (partition by a.patid order by a.RX_START_DATE) as rn
     from GLP1_EVENT_LONG a
-    join ALS_TABLE1 b
+    join ALS_CASE_TABLE1 b
     on a.patid = b.patid
 )
 select a.PATID, 
@@ -255,7 +264,7 @@ select a.PATID,
        case when b.DAYS_GLP1_TO_ALS1 < 0 then 'bef'
             else 'aft'
        end as GLP1_TIME_GRP
-from ALS_TABLE1 a 
+from ALS_CASE_TABLE1 a 
 join als_glp1 b
 on a.patid = b.patid 
 where b.rn = 1
@@ -266,14 +275,13 @@ select * from ALS_GLP1 limit 5;
 select count(distinct patid) 
 from ALS_GLP1
 ;
--- 850
+-- 991
 
 select count(distinct patid) 
 from ALS_GLP1
-where DAYS_GLP1_TO_ALS > 0
+where DAYS_GLP1_TO_ALS1 > 0
 ;
--- 317 
--- 533
+-- 350
 
 select * from ALS_ENDPTS limit 5;
 create or replace table ALS_GLP1_TRT_CTRL as 
@@ -363,7 +371,8 @@ with dth_censor as (
     where lower(ingredient) like '%metform%'
     group by patid
 )
-select a.*,
+select distinct 
+       a.*,
        g.RX_CLS,
        g.RX_IN,
        g.RX_START_DATE,
@@ -396,8 +405,8 @@ select a.*,
        c.DAYS_ALS1_TO_DEATH,
        coalesce(c.DAYS_ALS1_TO_CENSOR,c.DAYS_ALS1_TO_DEATH) as DAYS_ALS1_TO_END,
        case when DAYS_ALS1_TO_DEATH is not null then 1 else 0 end as STATUS
-from ALS_TABLE1 a 
-join T2DM_TABLE1 dm 
+from ALS_CASE_TABLE1 a 
+join DM_TABLE1 dm 
 on a.patid = dm.patid
 left join ALS_GLP1 g
 on a.patid = g.patid
@@ -422,10 +431,14 @@ on a.patid = c.patid
 where a.index_date between '2011-01-01' and '2020-12-31'
 ;
 
-select * from ALS_GLP1_TRT_CTRL limit 5;
+select * from ALS_GLP1_TRT_CTRL 
+where RX_START_YEAR = 2011 and RX_CLS = 'GLP1'
+order by patid
+-- limit 5
+;
 
 select count(distinct patid) from ALS_GLP1_TRT_CTRL;
--- 1116
+-- 1128
 
 select RX_START_YEAR, count(distinct patid) as denom_N
 from ALS_GLP1_TRT_CTRL
