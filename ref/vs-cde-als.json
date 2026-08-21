@@ -1,0 +1,3748 @@
+[
+    {
+        "id": "C20000",
+        "name": "alsfrsr",
+        "description": "presence of a record of amyotrophic lateral sclerosis functional rating scale - revised [ALSFRS-R]",
+        "topic": "finding",
+        "purpose": "functional markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "boolean",
+            "valueRange": {
+                "0": "absence",
+                "1": "presence"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "82954-9",
+                            "display": "Amyotrophic lateral sclerosis functional rating scale - revised [ALSFRS-R]"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20001",
+        "name": "alsfrsrQ1Speech",
+        "description": "revised ALS functional rating scale - speech",
+        "topic": "finding",
+        "purpose": "functional markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "ordinal",
+            "valueRange": {
+                "0": "Loss of useful speech",
+                "1": "Speech combined with nonvocal communication",
+                "2": "Intelligible with repeating",
+                "3": "Detectable speech disturbance",
+                "4": "Normal speech processes",
+                "low": {
+                    "value": 3,
+                    "unit": "",
+                    "incld": 1
+                }
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "82940-8",
+                            "display": "Speech [ALSFRS-R]"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20002",
+        "name": "alsfrsrQ2Salivation",
+        "description": "revised ALS functional rating scale - salivation",
+        "topic": "finding",
+        "purpose": "functional markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "ordinal",
+            "valueRange": {
+                "0": "Marked drooling, requires constant tissue or handkerchief",
+                "1": "Marked excess of saliva with some drooling",
+                "2": "Moderately excessive saliva; may have minimal drooling",
+                "3": "Slight but definite excess of saliva in mouth; may have nighttime drooling",
+                "4": "Normal",
+                "low": {
+                    "value": 3,
+                    "unit": "",
+                    "incld": 1
+                }
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "82941-6",
+                            "display": "Salivation [ALSFRS-R]"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20003",
+        "name": "alsfrsrQ3Swallowing",
+        "description": "revised ALS functional rating scale - swallowing",
+        "topic": "finding",
+        "purpose": "functional markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "ordinal",
+            "valueRange": {
+                "0": "NPO (exclusively parenteral or enteral feeding)",
+                "1": "Needs supplemental tube feeding",
+                "2": "Dietary consistency changes",
+                "3": "Early eating problems - occasional choking",
+                "4": "Normal eating habits",
+                "low": {
+                    "value": 3,
+                    "unit": "",
+                    "incld": 1
+                }
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "82942-4",
+                            "display": "Swallowing [ALSFRS-R]"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20004",
+        "name": "alsfrsrQ4Handwriting",
+        "description": "revised ALS functional rating scale - handwriting",
+        "topic": "finding",
+        "purpose": "functional markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "ordinal",
+            "valueRange": {
+                "0": "Unable to grip pen",
+                "1": "Able to grip pen but unable to write",
+                "2": "Not all words are legible",
+                "3": "Slow or sloppy, all words are legible",
+                "4": "Normal",
+                "low": {
+                    "value": 3,
+                    "unit": "",
+                    "incld": 1
+                }
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "82943-2",
+                            "display": "Handwriting [ALSFRS-R]"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20005",
+        "name": "alsfrsrQ5CuttingWo",
+        "description": "revised ALS functional rating scale - cutting food and handling utensils (patients without gastronomy)",
+        "topic": "finding",
+        "purpose": "functional markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "ordinal",
+            "valueRange": {
+                "0": "Needs to be fed",
+                "1": "Food must be cut by someone, but can still feed slowly",
+                "2": "Can cut most foods, although clumsy and slow; some help needed",
+                "3": "Somewhat slow and clumsy, but no help needed",
+                "4": "Normal",
+                "low": {
+                    "value": 3,
+                    "unit": "",
+                    "incld": 1
+                }
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "82944-0",
+                            "display": "Cutting food and handling utensils (patients without gastrostomy) [ALSFRS-R]"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20006",
+        "name": "alsfrsrQ5CuttingW",
+        "description": "revised ALS functional rating scale - cutting food and handling utensils (patients with gastronomy)",
+        "topic": "finding",
+        "purpose": "functional markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "ordinal",
+            "valueRange": {
+                "0": "Unable to perform any aspect of task",
+                "1": "Provides minimal assistance to caregiver",
+                "2": "Some help needed with closures and fasteners",
+                "3": "Clumsy but able to perform all manipulations independently",
+                "4": "Normal",
+                "low": {
+                    "value": 3,
+                    "unit": "",
+                    "incld": 1
+                }
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "82945-7",
+                            "display": "Cutting food and handling utensils (patients with gastrostomy) [ALSFRS-R]"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20007",
+        "name": "alsfrsrQ6Dressing",
+        "description": "revised ALS functional rating scale - dressing and hygiene",
+        "topic": "finding",
+        "purpose": "functional markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "ordinal",
+            "valueRange": {
+                "0": "Total dependence",
+                "1": "Needs attendant for self-care",
+                "2": "Intermittent assistance or substitute methods",
+                "3": "Independent and complete self-care with effort or decreased efficiency",
+                "4": "Normal function",
+                "low": {
+                    "value": 3,
+                    "unit": "",
+                    "incld": 1
+                }
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "82946-5",
+                            "display": "Dressing and hygiene [ALSFRS-R]"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20008",
+        "name": "alsfrsrQ7Turning",
+        "description": "revised ALS functional rating scale - turning in bed and adjusting bed clothes",
+        "topic": "finding",
+        "purpose": "functional markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "ordinal",
+            "valueRange": {
+                "0": "Helpless",
+                "1": "Can initiate, but not turn or adjust sheets alone",
+                "2": "Can turn alone or adjust sheets, but with great difficulty",
+                "3": "Somewhat slow and clumsy, but no help needed",
+                "4": "Normal",
+                "low": {
+                    "value": 3,
+                    "unit": "",
+                    "incld": 1
+                }
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "82947-3",
+                            "display": "Turning in bed and adjusting bed clothes [ALSFRS-R]"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20009",
+        "name": "alsfrsrQ8Walking",
+        "description": "revised ALS functional rating scale - walking",
+        "topic": "finding",
+        "purpose": "functional markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "ordinal",
+            "valueRange": {
+                "0": "No purposeful leg movement",
+                "1": "Nonambulatory functional movement",
+                "2": "Walks with assistance",
+                "3": "Early ambulation difficulties",
+                "4": "Normal",
+                "low": {
+                    "value": 3,
+                    "unit": "",
+                    "incld": 1
+                }
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "82948-1",
+                            "display": "Walking [ALSFRS-R]"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20010",
+        "name": "alsfrsrQ9Climbing",
+        "description": "revised ALS functional rating scale - climbing stairs",
+        "topic": "finding",
+        "purpose": "functional markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "ordinal",
+            "valueRange": {
+                "0": "No purposeful leg movement",
+                "1": "Nonambulatory functional movement",
+                "2": "Walks with assistance",
+                "3": "Early ambulation difficulties",
+                "4": "Normal",
+                "low": {
+                    "value": 3,
+                    "unit": "",
+                    "incld": 1
+                }
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "82948-1",
+                            "display": "Walking [ALSFRS-R]"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20011",
+        "name": "alsfrsrQ10Dyspnea",
+        "description": "revised ALS functional rating scale - dyspnea",
+        "topic": "finding",
+        "purpose": "functional markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "ordinal",
+            "valueRange": {
+                "0": "Significant difficulty, considering using mechanical respiratory support",
+                "1": "Occurs at rest, difficulty breathing when either sitting or lying",
+                "2": "Occurs with one or more of the following: eating, bathing, dressing (ADL)",
+                "3": "Occurs when walking",
+                "4": "None",
+                "low": {
+                    "value": 3,
+                    "unit": "",
+                    "incld": 1
+                }
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "82950-7",
+                            "display": "Dyspnea [ALSFRS-R]"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20012",
+        "name": "alsfrsrQ10Dyspnea",
+        "description": "revised ALS functional rating scale - dyspnea",
+        "topic": "finding",
+        "purpose": "functional markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "ordinal",
+            "valueRange": {
+                "0": "Significant difficulty, considering using mechanical respiratory support",
+                "1": "Occurs at rest, difficulty breathing when either sitting or lying",
+                "2": "Occurs with one or more of the following: eating, bathing, dressing (ADL)",
+                "3": "Occurs when walking",
+                "4": "None",
+                "low": {
+                    "value": 3,
+                    "unit": "",
+                    "incld": 1
+                }
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "82950-7",
+                            "display": "Dyspnea [ALSFRS-R]"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20013",
+        "name": "alsfrsrQ11Orthopnea",
+        "description": "revised ALS functional rating scale - orthopnea",
+        "topic": "finding",
+        "purpose": "functional markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "ordinal",
+            "valueRange": {
+                "0": "Unable to sleep",
+                "1": "Can only sleep sitting up",
+                "2": "Needs extra pillows in order to sleep (more than two)",
+                "3": "Some difficulty sleeping at night due to shortness of breath, does not routinely use more than two pillows",
+                "4": "None",
+                "low": {
+                    "value": 3,
+                    "unit": "",
+                    "incld": 1
+                }
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "82951-5",
+                            "display": "Orthopnea [ALSFRS-R]"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20014",
+        "name": "alsfrsrQ12Respiratory",
+        "description": "revised ALS functional rating scale - respiratory insufficiency",
+        "topic": "finding",
+        "purpose": "functional markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "ordinal",
+            "valueRange": {
+                "0": "Invasive mechanical ventilation by intubation or tracheostomy",
+                "1": "Continuous use of BiPAP during the night and day",
+                "2": "Continuous use of BiPAP during the night",
+                "3": "Intermittent use of BiPAP",
+                "4": "None",
+                "low": {
+                    "value": 3,
+                    "unit": "",
+                    "incld": 1
+                }
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "82952-3",
+                            "display": "Respiratory insufficiency [ALSFRS-R]"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20015",
+        "name": "alsfrsrRespType",
+        "description": "revised ALS functional rating scale - respondent type",
+        "topic": "finding",
+        "purpose": "functional markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "nominal",
+            "valueRange": {
+                "S": "self",
+                "G": "guardian"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "83129-7",
+                            "display": "Respondent type"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20016",
+        "name": "alsfrsrTotal",
+        "description": "revised ALS functional rating scale - total score",
+        "topic": "finding",
+        "purpose": "functional markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "discrete",
+            "valueRange": {
+                "min": 0,
+                "max": 48,
+                "low": {
+                    "value": 30,
+                    "unit": "",
+                    "incld": 0
+                }
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "82953-1",
+                            "display": "Total score [ALSFRS-R]"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C10172",
+        "name": "ForcedVitalCapacityResltVal",
+        "description": "Value of the Forced Vital Capacity (FVC), in liters, as the maximum volume of air that can be exhaled as rapidly, forcefully, and completely as possible from the point of maximal inhalation",
+        "topic": "finding",
+        "purpose": "physiological markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "integer",
+            "valueRange": {
+                "min": 0,
+                "max": 10,
+                "low": {
+                    "value": 5,
+                    "unit": "",
+                    "incld": 1
+                }
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "19868-9",
+                            "display": "forced vital capacity [volume] measured by spirometry"
+                        },
+                        {
+                            "code": "19870-5",
+                            "display": "forced vital capacity [volume] general"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C10177",
+        "name": "SlowVitalCapPcntPredctdNormVal",
+        "description": "percentage of the predicted normal value of Slow Vital Capacity (sVC) to grade the severity of the abnormality",
+        "topic": "finding",
+        "purpose": "physiological markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "integer",
+            "valueRange": {
+                "min": 0,
+                "max": 10,
+                "low": {
+                    "value": 5,
+                    "unit": "",
+                    "incld": 1
+                }
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "19866-3",
+                            "display": "vital capacity [volume] measured by spirometry"
+                        },
+                        {
+                            "code": "19867-1",
+                            "display": "vital capacity [volume] general"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20017",
+        "name": "fvcPercent",
+        "description": "forced vital capacity (percent of predicted normal value)",
+        "topic": "finding",
+        "purpose": "physiological markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "integer",
+            "valueRange": {
+                "min": 0,
+                "max": 150,
+                "low": {
+                    "value": 90,
+                    "unit": "%",
+                    "incld": 1
+                }
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "19872-1",
+                            "display": "FVC measured/predicted"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20018",
+        "name": "svcPercent",
+        "description": "slow vital capacity (percent of predicted normal value)",
+        "topic": "finding",
+        "purpose": "physiological markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "integer",
+            "valueRange": {
+                "min": 0,
+                "max": 150,
+                "low": {
+                    "value": 90,
+                    "unit": "%",
+                    "incld": 1
+                }
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "19872-1",
+                            "display": "FVC measured/predicted"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C10974",
+        "name": "ManualMuscleTestScore",
+        "description": "",
+        "topic": "finding",
+        "purpose": "functional markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "nominal",
+            "valueRange": {
+                "LA46-8": "Other",
+                "LA25264-5": "Decreased muscle strength",
+                "LA25085-4": "Within Defined Limits"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "80322-1",
+                            "display": "Muscle strength"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20019",
+        "name": "ManualMuscleTestScoreSABDLeft",
+        "description": "Manual Muscle Testing (MMT) for left shoulder abduction",
+        "topic": "finding",
+        "purpose": "functional markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "ordinal",
+            "valueRange": {
+                "0": "No movement",
+                "1": "A flicker of movement is seen or felt in the muscle",
+                "2": "Muscle moves the joint when gravity is eliminated",
+                "3-": "Muscle moves the joint against gravity, but not through full mechanical range of motion",
+                "3": "Muscle cannot hold the joint against resistance, but moves the joint fully against gravity",
+                "3+": "Muscle moves the joint fully against gravity and is capable of transient resistance, but collapses abruptly",
+                "4-": "Same as grade 4, but muscle holds the joint only again minimal resistance",
+                "4": "Muscle holds the joint against a combination of gravity and moderate resistance",
+                "4+": "Same as grade 4, but muscle holds the joint against moderate to maximal resistance",
+                "5-": "Barely detectable weakness",
+                "5": "Normal Strength"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "80322-1",
+                            "display": "Muscle strength"
+                        },
+                        {
+                            "code": "41299-9",
+                            "display": "Shoulder - left Abduction Active Range of Motion Quantitative"
+                        },
+                        {
+                            "code": "41300-5",
+                            "display": "Shoulder - left Abduction Passive Range of Motion Quantitative"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20020",
+        "name": "ManualMuscleTestScoreSABDRight",
+        "description": "Manual Muscle Testing (MMT) for right shoulder abduction",
+        "topic": "finding",
+        "purpose": "functional markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "ordinal",
+            "valueRange": {
+                "0": "No movement",
+                "1": "A flicker of movement is seen or felt in the muscle",
+                "2": "Muscle moves the joint when gravity is eliminated",
+                "3-": "Muscle moves the joint against gravity, but not through full mechanical range of motion",
+                "3": "Muscle cannot hold the joint against resistance, but moves the joint fully against gravity",
+                "3+": "Muscle moves the joint fully against gravity and is capable of transient resistance, but collapses abruptly",
+                "4-": "Same as grade 4, but muscle holds the joint only again minimal resistance",
+                "4": "Muscle holds the joint against a combination of gravity and moderate resistance",
+                "4+": "Same as grade 4, but muscle holds the joint against moderate to maximal resistance",
+                "5-": "Barely detectable weakness",
+                "5": "Normal Strength"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "80322-1",
+                            "display": "Muscle strength"
+                        },
+                        {
+                            "code": "41311-2",
+                            "display": "Shoulder - right Abduction Active Range of Motion Quantitative"
+                        },
+                        {
+                            "code": "41300-5",
+                            "display": "Shoulder - left Abduction Passive Range of Motion Quantitative"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20021",
+        "name": "ManualMuscleTestScoreSFLeft",
+        "description": "Manual Muscle Testing (MMT) for left shoulder flexion",
+        "topic": "finding",
+        "purpose": "functional markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "ordinal",
+            "valueRange": {
+                "0": "No movement",
+                "1": "A flicker of movement is seen or felt in the muscle",
+                "2": "Muscle moves the joint when gravity is eliminated",
+                "3-": "Muscle moves the joint against gravity, but not through full mechanical range of motion",
+                "3": "Muscle cannot hold the joint against resistance, but moves the joint fully against gravity",
+                "3+": "Muscle moves the joint fully against gravity and is capable of transient resistance, but collapses abruptly",
+                "4-": "Same as grade 4, but muscle holds the joint only again minimal resistance",
+                "4": "Muscle holds the joint against a combination of gravity and moderate resistance",
+                "4+": "Same as grade 4, but muscle holds the joint against moderate to maximal resistance",
+                "5-": "Barely detectable weakness",
+                "5": "Normal Strength"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "80322-1",
+                            "display": "Muscle strength"
+                        },
+                        {
+                            "code": "41295-7",
+                            "display": "Shoulder - left Flexion Active Range of Motion Quantitative"
+                        },
+                        {
+                            "code": "41296-5",
+                            "display": "Shoulder - left Flexion Passive Range of Motion Quantitative"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20022",
+        "name": "ManualMuscleTestScoreSFRight",
+        "description": "Manual Muscle Testing (MMT) for right shoulder flexion",
+        "topic": "finding",
+        "purpose": "functional markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "ordinal",
+            "valueRange": {
+                "0": "No movement",
+                "1": "A flicker of movement is seen or felt in the muscle",
+                "2": "Muscle moves the joint when gravity is eliminated",
+                "3-": "Muscle moves the joint against gravity, but not through full mechanical range of motion",
+                "3": "Muscle cannot hold the joint against resistance, but moves the joint fully against gravity",
+                "3+": "Muscle moves the joint fully against gravity and is capable of transient resistance, but collapses abruptly",
+                "4-": "Same as grade 4, but muscle holds the joint only again minimal resistance",
+                "4": "Muscle holds the joint against a combination of gravity and moderate resistance",
+                "4+": "Same as grade 4, but muscle holds the joint against moderate to maximal resistance",
+                "5-": "Barely detectable weakness",
+                "5": "Normal Strength"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "80322-1",
+                            "display": "Muscle strength"
+                        },
+                        {
+                            "code": "41307-0",
+                            "display": "Shoulder - right Flexion Active Range of Motion Quantitative"
+                        },
+                        {
+                            "code": "41308-8",
+                            "display": "Shoulder - right Flexion Passive Range of Motion Quantitative"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20023",
+        "name": "ManualMuscleTestScoreEFLeft",
+        "description": "Manual Muscle Testing (MMT) for left elbow flexion",
+        "topic": "finding",
+        "purpose": "functional markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "ordinal",
+            "valueRange": {
+                "0": "No movement",
+                "1": "A flicker of movement is seen or felt in the muscle",
+                "2": "Muscle moves the joint when gravity is eliminated",
+                "3-": "Muscle moves the joint against gravity, but not through full mechanical range of motion",
+                "3": "Muscle cannot hold the joint against resistance, but moves the joint fully against gravity",
+                "3+": "Muscle moves the joint fully against gravity and is capable of transient resistance, but collapses abruptly",
+                "4-": "Same as grade 4, but muscle holds the joint only again minimal resistance",
+                "4": "Muscle holds the joint against a combination of gravity and moderate resistance",
+                "4+": "Same as grade 4, but muscle holds the joint against moderate to maximal resistance",
+                "5-": "Barely detectable weakness",
+                "5": "Normal Strength"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "80322-1",
+                            "display": "Muscle strength"
+                        },
+                        {
+                            "code": "41351-8",
+                            "display": "Elbow - left Flexion Active Range of Motion Quantitative"
+                        },
+                        {
+                            "code": "41352-6",
+                            "display": "Elbow - left Flexion Passive Range of Motion Quantitative"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20024",
+        "name": "ManualMuscleTestScoreEELeft",
+        "description": "Manual Muscle Testing (MMT) for left elbow extension",
+        "topic": "finding",
+        "purpose": "functional markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "ordinal",
+            "valueRange": {
+                "0": "No movement",
+                "1": "A flicker of movement is seen or felt in the muscle",
+                "2": "Muscle moves the joint when gravity is eliminated",
+                "3-": "Muscle moves the joint against gravity, but not through full mechanical range of motion",
+                "3": "Muscle cannot hold the joint against resistance, but moves the joint fully against gravity",
+                "3+": "Muscle moves the joint fully against gravity and is capable of transient resistance, but collapses abruptly",
+                "4-": "Same as grade 4, but muscle holds the joint only again minimal resistance",
+                "4": "Muscle holds the joint against a combination of gravity and moderate resistance",
+                "4+": "Same as grade 4, but muscle holds the joint against moderate to maximal resistance",
+                "5-": "Barely detectable weakness",
+                "5": "Normal Strength"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "80322-1",
+                            "display": "Muscle strength"
+                        },
+                        {
+                            "code": "41353-4",
+                            "display": "Elbow - left Extension Active Range of Motion Quantitative"
+                        },
+                        {
+                            "code": "41354-2",
+                            "display": "Elbow - left Extension Passive Range of Motion Quantitative"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20025",
+        "name": "ManualMuscleTestScoreEFRight",
+        "description": "Manual Muscle Testing (MMT) for right elbow flexion",
+        "topic": "finding",
+        "purpose": "functional markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "ordinal",
+            "valueRange": {}
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "80322-1",
+                            "display": "Muscle strength"
+                        },
+                        {
+                            "code": "41355-9",
+                            "display": "Elbow - right Flexion Active Range of Motion Quantitative"
+                        },
+                        {
+                            "code": "41356-7",
+                            "display": "Elbow - right Flexion Passive Range of Motion Quantitative"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20026",
+        "name": "ManualMuscleTestScoreEERight",
+        "description": "Manual Muscle Testing (MMT) for right elbow extension",
+        "topic": "finding",
+        "purpose": "functional markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "ordinal",
+            "valueRange": {
+                "0": "No movement",
+                "1": "A flicker of movement is seen or felt in the muscle",
+                "2": "Muscle moves the joint when gravity is eliminated",
+                "3-": "Muscle moves the joint against gravity, but not through full mechanical range of motion",
+                "3": "Muscle cannot hold the joint against resistance, but moves the joint fully against gravity",
+                "3+": "Muscle moves the joint fully against gravity and is capable of transient resistance, but collapses abruptly",
+                "4-": "Same as grade 4, but muscle holds the joint only again minimal resistance",
+                "4": "Muscle holds the joint against a combination of gravity and moderate resistance",
+                "4+": "Same as grade 4, but muscle holds the joint against moderate to maximal resistance",
+                "5-": "Barely detectable weakness",
+                "5": "Normal Strength"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "80322-1",
+                            "display": "Muscle strength"
+                        },
+                        {
+                            "code": "41357-5",
+                            "display": "Elbow - right Extension Active Range of Motion Quantitative"
+                        },
+                        {
+                            "code": "41358-3",
+                            "display": "Elbow - right Extension Passive Range of Motion Quantitative"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20027",
+        "name": "ManualMuscleTestScoreHFLeft",
+        "description": "Manual Muscle Testing (MMT) for left hip flexion",
+        "topic": "finding",
+        "purpose": "functional markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "ordinal",
+            "valueRange": {
+                "0": "No movement",
+                "1": "A flicker of movement is seen or felt in the muscle",
+                "2": "Muscle moves the joint when gravity is eliminated",
+                "3-": "Muscle moves the joint against gravity, but not through full mechanical range of motion",
+                "3": "Muscle cannot hold the joint against resistance, but moves the joint fully against gravity",
+                "3+": "Muscle moves the joint fully against gravity and is capable of transient resistance, but collapses abruptly",
+                "4-": "Same as grade 4, but muscle holds the joint only again minimal resistance",
+                "4": "Muscle holds the joint against a combination of gravity and moderate resistance",
+                "4+": "Same as grade 4, but muscle holds the joint against moderate to maximal resistance",
+                "5-": "Barely detectable weakness",
+                "5": "Normal Strength"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "80322-1",
+                            "display": "Muscle strength"
+                        },
+                        {
+                            "code": "41319-5",
+                            "display": "Hip - left Flexion Active Range of Motion Quantitative"
+                        },
+                        {
+                            "code": "41320-3",
+                            "display": "Hip - left Flexion Passive Range of Motion Quantitative"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20028",
+        "name": "ManualMuscleTestScoreHELeft",
+        "description": "Manual Muscle Testing (MMT) for left hip extension",
+        "topic": "finding",
+        "purpose": "functional markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "ordinal",
+            "valueRange": {
+                "0": "No movement",
+                "1": "A flicker of movement is seen or felt in the muscle",
+                "2": "Muscle moves the joint when gravity is eliminated",
+                "3-": "Muscle moves the joint against gravity, but not through full mechanical range of motion",
+                "3": "Muscle cannot hold the joint against resistance, but moves the joint fully against gravity",
+                "3+": "Muscle moves the joint fully against gravity and is capable of transient resistance, but collapses abruptly",
+                "4-": "Same as grade 4, but muscle holds the joint only again minimal resistance",
+                "4": "Muscle holds the joint against a combination of gravity and moderate resistance",
+                "4+": "Same as grade 4, but muscle holds the joint against moderate to maximal resistance",
+                "5-": "Barely detectable weakness",
+                "5": "Normal Strength"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "80322-1",
+                            "display": "Muscle strength"
+                        },
+                        {
+                            "code": "41321-1",
+                            "display": "Hip - left Extension Active Range of Motion Quantitative"
+                        },
+                        {
+                            "code": "41322-9",
+                            "display": "Hip - left Extension Passive Range of Motion Quantitative"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20029",
+        "name": "ManualMuscleTestScoreHABDLeft",
+        "description": "Manual Muscle Testing (MMT) for left hip abduction",
+        "topic": "finding",
+        "purpose": "functional markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "ordinal",
+            "valueRange": {
+                "0": "No movement",
+                "1": "A flicker of movement is seen or felt in the muscle",
+                "2": "Muscle moves the joint when gravity is eliminated",
+                "3-": "Muscle moves the joint against gravity, but not through full mechanical range of motion",
+                "3": "Muscle cannot hold the joint against resistance, but moves the joint fully against gravity",
+                "3+": "Muscle moves the joint fully against gravity and is capable of transient resistance, but collapses abruptly",
+                "4-": "Same as grade 4, but muscle holds the joint only again minimal resistance",
+                "4": "Muscle holds the joint against a combination of gravity and moderate resistance",
+                "4+": "Same as grade 4, but muscle holds the joint against moderate to maximal resistance",
+                "5-": "Barely detectable weakness",
+                "5": "Normal Strength"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "80322-1",
+                            "display": "Muscle strength"
+                        },
+                        {
+                            "code": "41323-7",
+                            "display": "Hip - left Abduction Active Range of Motion Quantitative"
+                        },
+                        {
+                            "code": "41324-5",
+                            "display": "Hip - left Abduction Passive Range of Motion Quantitative"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20030",
+        "name": "ManualMuscleTestScoreHADDLeft",
+        "description": "Manual Muscle Testing (MMT) for left hip adduction",
+        "topic": "finding",
+        "purpose": "functional markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "ordinal",
+            "valueRange": {
+                "0": "No movement",
+                "1": "A flicker of movement is seen or felt in the muscle",
+                "2": "Muscle moves the joint when gravity is eliminated",
+                "3-": "Muscle moves the joint against gravity, but not through full mechanical range of motion",
+                "3": "Muscle cannot hold the joint against resistance, but moves the joint fully against gravity",
+                "3+": "Muscle moves the joint fully against gravity and is capable of transient resistance, but collapses abruptly",
+                "4-": "Same as grade 4, but muscle holds the joint only again minimal resistance",
+                "4": "Muscle holds the joint against a combination of gravity and moderate resistance",
+                "4+": "Same as grade 4, but muscle holds the joint against moderate to maximal resistance",
+                "5-": "Barely detectable weakness",
+                "5": "Normal Strength"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "80322-1",
+                            "display": "Muscle strength"
+                        },
+                        {
+                            "code": "41325-2",
+                            "display": "Hip - left Adduction Active Range of Motion Quantitative"
+                        },
+                        {
+                            "code": "41326-0",
+                            "display": "Hip - left Adduction Passive Range of Motion Quantitative"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20031",
+        "name": "ManualMuscleTestScoreHERLeft",
+        "description": "Manual Muscle Testing (MMT) for left hip external rotation",
+        "topic": "finding",
+        "purpose": "functional markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "ordinal",
+            "valueRange": {
+                "0": "No movement",
+                "1": "A flicker of movement is seen or felt in the muscle",
+                "2": "Muscle moves the joint when gravity is eliminated",
+                "3-": "Muscle moves the joint against gravity, but not through full mechanical range of motion",
+                "3": "Muscle cannot hold the joint against resistance, but moves the joint fully against gravity",
+                "3+": "Muscle moves the joint fully against gravity and is capable of transient resistance, but collapses abruptly",
+                "4-": "Same as grade 4, but muscle holds the joint only again minimal resistance",
+                "4": "Muscle holds the joint against a combination of gravity and moderate resistance",
+                "4+": "Same as grade 4, but muscle holds the joint against moderate to maximal resistance",
+                "5-": "Barely detectable weakness",
+                "5": "Normal Strength"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "80322-1",
+                            "display": "Muscle strength"
+                        },
+                        {
+                            "code": "41329-4",
+                            "display": "Hip - left External rotation Active Range of Motion Quantitative"
+                        },
+                        {
+                            "code": "41330-2",
+                            "display": "Hip - left External rotation Passive Range of Motion Quantitative"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20032",
+        "name": "ManualMuscleTestScoreHFRight",
+        "description": "Manual Muscle Testing (MMT) for right hip flexion",
+        "topic": "finding",
+        "purpose": "functional markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "ordinal",
+            "valueRange": {
+                "0": "No movement",
+                "1": "A flicker of movement is seen or felt in the muscle",
+                "2": "Muscle moves the joint when gravity is eliminated",
+                "3-": "Muscle moves the joint against gravity, but not through full mechanical range of motion",
+                "3": "Muscle cannot hold the joint against resistance, but moves the joint fully against gravity",
+                "3+": "Muscle moves the joint fully against gravity and is capable of transient resistance, but collapses abruptly",
+                "4-": "Same as grade 4, but muscle holds the joint only again minimal resistance",
+                "4": "Muscle holds the joint against a combination of gravity and moderate resistance",
+                "4+": "Same as grade 4, but muscle holds the joint against moderate to maximal resistance",
+                "5-": "Barely detectable weakness",
+                "5": "Normal Strength"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "80322-1",
+                            "display": "Muscle strength"
+                        },
+                        {
+                            "code": "41331-0",
+                            "display": "Hip - right Flexion Active Range of Motion Quantitative"
+                        },
+                        {
+                            "code": "41332-8",
+                            "display": "Hip - right Flexion Passive Range of Motion Quantitative"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20033",
+        "name": "ManualMuscleTestScoreHERight",
+        "description": "Manual Muscle Testing (MMT) for right hip extension",
+        "topic": "finding",
+        "purpose": "functional markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "ordinal",
+            "valueRange": {
+                "0": "No movement",
+                "1": "A flicker of movement is seen or felt in the muscle",
+                "2": "Muscle moves the joint when gravity is eliminated",
+                "3-": "Muscle moves the joint against gravity, but not through full mechanical range of motion",
+                "3": "Muscle cannot hold the joint against resistance, but moves the joint fully against gravity",
+                "3+": "Muscle moves the joint fully against gravity and is capable of transient resistance, but collapses abruptly",
+                "4-": "Same as grade 4, but muscle holds the joint only again minimal resistance",
+                "4": "Muscle holds the joint against a combination of gravity and moderate resistance",
+                "4+": "Same as grade 4, but muscle holds the joint against moderate to maximal resistance",
+                "5-": "Barely detectable weakness",
+                "5": "Normal Strength"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "80322-1",
+                            "display": "Muscle strength"
+                        },
+                        {
+                            "code": "41333-6",
+                            "display": "Hip - right Extension Active Range of Motion Quantitative"
+                        },
+                        {
+                            "code": "41334-4",
+                            "display": "Hip - right Extension Passive Range of Motion Quantitative"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20034",
+        "name": "ManualMuscleTestScoreHABDRight",
+        "description": "Manual Muscle Testing (MMT) for right hip abduction",
+        "topic": "finding",
+        "purpose": "functional markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "ordinal",
+            "valueRange": {
+                "0": "No movement",
+                "1": "A flicker of movement is seen or felt in the muscle",
+                "2": "Muscle moves the joint when gravity is eliminated",
+                "3-": "Muscle moves the joint against gravity, but not through full mechanical range of motion",
+                "3": "Muscle cannot hold the joint against resistance, but moves the joint fully against gravity",
+                "3+": "Muscle moves the joint fully against gravity and is capable of transient resistance, but collapses abruptly",
+                "4-": "Same as grade 4, but muscle holds the joint only again minimal resistance",
+                "4": "Muscle holds the joint against a combination of gravity and moderate resistance",
+                "4+": "Same as grade 4, but muscle holds the joint against moderate to maximal resistance",
+                "5-": "Barely detectable weakness",
+                "5": "Normal Strength"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "80322-1",
+                            "display": "Muscle strength"
+                        },
+                        {
+                            "code": "41335-1",
+                            "display": "Hip - right Abduction Active Range of Motion Quantitative"
+                        },
+                        {
+                            "code": "41336-9",
+                            "display": "Hip - right Abduction Passive Range of Motion Quantitative"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20035",
+        "name": "ManualMuscleTestScoreHADDRight",
+        "description": "Manual Muscle Testing (MMT) for right hip adduction",
+        "topic": "finding",
+        "purpose": "functional markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "ordinal",
+            "valueRange": {
+                "0": "No movement",
+                "1": "A flicker of movement is seen or felt in the muscle",
+                "2": "Muscle moves the joint when gravity is eliminated",
+                "3-": "Muscle moves the joint against gravity, but not through full mechanical range of motion",
+                "3": "Muscle cannot hold the joint against resistance, but moves the joint fully against gravity",
+                "3+": "Muscle moves the joint fully against gravity and is capable of transient resistance, but collapses abruptly",
+                "4-": "Same as grade 4, but muscle holds the joint only again minimal resistance",
+                "4": "Muscle holds the joint against a combination of gravity and moderate resistance",
+                "4+": "Same as grade 4, but muscle holds the joint against moderate to maximal resistance",
+                "5-": "Barely detectable weakness",
+                "5": "Normal Strength"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "80322-1",
+                            "display": "Muscle strength"
+                        },
+                        {
+                            "code": "41337-7",
+                            "display": "Hip - right Adduction Active Range of Motion Quantitative"
+                        },
+                        {
+                            "code": "41338-5",
+                            "display": "Hip - right Adduction Passive Range of Motion Quantitative"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20036",
+        "name": "ManualMuscleTestScoreHERRight",
+        "description": "Manual Muscle Testing (MMT) for right hip external rotation",
+        "topic": "finding",
+        "purpose": "functional markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "ordinal",
+            "valueRange": {
+                "0": "No movement",
+                "1": "A flicker of movement is seen or felt in the muscle",
+                "2": "Muscle moves the joint when gravity is eliminated",
+                "3-": "Muscle moves the joint against gravity, but not through full mechanical range of motion",
+                "3": "Muscle cannot hold the joint against resistance, but moves the joint fully against gravity",
+                "3+": "Muscle moves the joint fully against gravity and is capable of transient resistance, but collapses abruptly",
+                "4-": "Same as grade 4, but muscle holds the joint only again minimal resistance",
+                "4": "Muscle holds the joint against a combination of gravity and moderate resistance",
+                "4+": "Same as grade 4, but muscle holds the joint against moderate to maximal resistance",
+                "5-": "Barely detectable weakness",
+                "5": "Normal Strength"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "80322-1",
+                            "display": "Muscle strength"
+                        },
+                        {
+                            "code": "41341-9",
+                            "display": "Hip - right External rotation Active Range of Motion Quantitative"
+                        },
+                        {
+                            "code": "41342-7",
+                            "display": "\tHip - right External rotation Passive Range of Motion Quantitative"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20037",
+        "name": "ManualMuscleTestScoreKFLeft",
+        "description": "Manual Muscle Testing (MMT) for left knee flexion",
+        "topic": "finding",
+        "purpose": "functional markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "ordinal",
+            "valueRange": {
+                "0": "No movement",
+                "1": "A flicker of movement is seen or felt in the muscle",
+                "2": "Muscle moves the joint when gravity is eliminated",
+                "3-": "Muscle moves the joint against gravity, but not through full mechanical range of motion",
+                "3": "Muscle cannot hold the joint against resistance, but moves the joint fully against gravity",
+                "3+": "Muscle moves the joint fully against gravity and is capable of transient resistance, but collapses abruptly",
+                "4-": "Same as grade 4, but muscle holds the joint only again minimal resistance",
+                "4": "Muscle holds the joint against a combination of gravity and moderate resistance",
+                "4+": "Same as grade 4, but muscle holds the joint against moderate to maximal resistance",
+                "5-": "Barely detectable weakness",
+                "5": "Normal Strength"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "80322-1",
+                            "display": "Muscle strength"
+                        },
+                        {
+                            "code": "41343-5",
+                            "display": "Knee - left Flexion Active Range of Motion Quantitative"
+                        },
+                        {
+                            "code": "41344-3",
+                            "display": "Knee - left Flexion Passive Range of Motion Quantitative"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20038",
+        "name": "ManualMuscleTestScoreKELeft",
+        "description": "Manual Muscle Testing (MMT) for left knee extension",
+        "topic": "finding",
+        "purpose": "functional markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "ordinal",
+            "valueRange": {
+                "0": "No movement",
+                "1": "A flicker of movement is seen or felt in the muscle",
+                "2": "Muscle moves the joint when gravity is eliminated",
+                "3-": "Muscle moves the joint against gravity, but not through full mechanical range of motion",
+                "3": "Muscle cannot hold the joint against resistance, but moves the joint fully against gravity",
+                "3+": "Muscle moves the joint fully against gravity and is capable of transient resistance, but collapses abruptly",
+                "4-": "Same as grade 4, but muscle holds the joint only again minimal resistance",
+                "4": "Muscle holds the joint against a combination of gravity and moderate resistance",
+                "4+": "Same as grade 4, but muscle holds the joint against moderate to maximal resistance",
+                "5-": "Barely detectable weakness",
+                "5": "Normal Strength"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "80322-1",
+                            "display": "Muscle strength"
+                        },
+                        {
+                            "code": "41345-0",
+                            "display": "Knee - left Extension Active Range of Motion Quantitative"
+                        },
+                        {
+                            "code": "41346-8",
+                            "display": "Knee - left Extension Passive Range of Motion Quantitative"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20039",
+        "name": "ManualMuscleTestScoreKFRight",
+        "description": "Manual Muscle Testing (MMT) for right knee flexion",
+        "topic": "finding",
+        "purpose": "functional markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "ordinal",
+            "valueRange": {
+                "0": "No movement",
+                "1": "A flicker of movement is seen or felt in the muscle",
+                "2": "Muscle moves the joint when gravity is eliminated",
+                "3-": "Muscle moves the joint against gravity, but not through full mechanical range of motion",
+                "3": "Muscle cannot hold the joint against resistance, but moves the joint fully against gravity",
+                "3+": "Muscle moves the joint fully against gravity and is capable of transient resistance, but collapses abruptly",
+                "4-": "Same as grade 4, but muscle holds the joint only again minimal resistance",
+                "4": "Muscle holds the joint against a combination of gravity and moderate resistance",
+                "4+": "Same as grade 4, but muscle holds the joint against moderate to maximal resistance",
+                "5-": "Barely detectable weakness",
+                "5": "Normal Strength"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "80322-1",
+                            "display": "Muscle strength"
+                        },
+                        {
+                            "code": "41347-6",
+                            "display": "Knee - right Flexion Active Range of Motion Quantitative"
+                        },
+                        {
+                            "code": "41348-4",
+                            "display": "Knee - right Flexion Passive Range of Motion Quantitative"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20040",
+        "name": "ManualMuscleTestScoreKERight",
+        "description": "Manual Muscle Testing (MMT) for right knee extension",
+        "topic": "finding",
+        "purpose": "functional markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "ordinal",
+            "valueRange": {
+                "0": "No movement",
+                "1": "A flicker of movement is seen or felt in the muscle",
+                "2": "Muscle moves the joint when gravity is eliminated",
+                "3-": "Muscle moves the joint against gravity, but not through full mechanical range of motion",
+                "3": "Muscle cannot hold the joint against resistance, but moves the joint fully against gravity",
+                "3+": "Muscle moves the joint fully against gravity and is capable of transient resistance, but collapses abruptly",
+                "4-": "Same as grade 4, but muscle holds the joint only again minimal resistance",
+                "4": "Muscle holds the joint against a combination of gravity and moderate resistance",
+                "4+": "Same as grade 4, but muscle holds the joint against moderate to maximal resistance",
+                "5-": "Barely detectable weakness",
+                "5": "Normal Strength"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "80322-1",
+                            "display": "Muscle strength"
+                        },
+                        {
+                            "code": "41349-2",
+                            "display": "Knee - right Extension Active Range of Motion Quantitative"
+                        },
+                        {
+                            "code": "41350-0",
+                            "display": "Knee - right Extension Passive Range of Motion Quantitative"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20041",
+        "name": "ManualMuscleTestScoreWFLeft",
+        "description": "Manual Muscle Testing (MMT) for left wrist flexion",
+        "topic": "finding",
+        "purpose": "functional markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "ordinal",
+            "valueRange": {
+                "0": "No movement",
+                "1": "A flicker of movement is seen or felt in the muscle",
+                "2": "Muscle moves the joint when gravity is eliminated",
+                "3-": "Muscle moves the joint against gravity, but not through full mechanical range of motion",
+                "3": "Muscle cannot hold the joint against resistance, but moves the joint fully against gravity",
+                "3+": "Muscle moves the joint fully against gravity and is capable of transient resistance, but collapses abruptly",
+                "4-": "Same as grade 4, but muscle holds the joint only again minimal resistance",
+                "4": "Muscle holds the joint against a combination of gravity and moderate resistance",
+                "4+": "Same as grade 4, but muscle holds the joint against moderate to maximal resistance",
+                "5-": "Barely detectable weakness",
+                "5": "Normal Strength"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "80322-1",
+                            "display": "Muscle strength"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20042",
+        "name": "ManualMuscleTestScoreWELeft",
+        "description": "Manual Muscle Testing (MMT) for left wrist extension",
+        "topic": "finding",
+        "purpose": "functional markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "ordinal",
+            "valueRange": {
+                "0": "No movement",
+                "1": "A flicker of movement is seen or felt in the muscle",
+                "2": "Muscle moves the joint when gravity is eliminated",
+                "3-": "Muscle moves the joint against gravity, but not through full mechanical range of motion",
+                "3": "Muscle cannot hold the joint against resistance, but moves the joint fully against gravity",
+                "3+": "Muscle moves the joint fully against gravity and is capable of transient resistance, but collapses abruptly",
+                "4-": "Same as grade 4, but muscle holds the joint only again minimal resistance",
+                "4": "Muscle holds the joint against a combination of gravity and moderate resistance",
+                "4+": "Same as grade 4, but muscle holds the joint against moderate to maximal resistance",
+                "5-": "Barely detectable weakness",
+                "5": "Normal Strength"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "80322-1",
+                            "display": "Muscle strength"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20043",
+        "name": "ManualMuscleTestScoreWFRight",
+        "description": "Manual Muscle Testing (MMT) for right wrist flexion",
+        "topic": "finding",
+        "purpose": "functional markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "ordinal",
+            "valueRange": {
+                "0": "No movement",
+                "1": "A flicker of movement is seen or felt in the muscle",
+                "2": "Muscle moves the joint when gravity is eliminated",
+                "3-": "Muscle moves the joint against gravity, but not through full mechanical range of motion",
+                "3": "Muscle cannot hold the joint against resistance, but moves the joint fully against gravity",
+                "3+": "Muscle moves the joint fully against gravity and is capable of transient resistance, but collapses abruptly",
+                "4-": "Same as grade 4, but muscle holds the joint only again minimal resistance",
+                "4": "Muscle holds the joint against a combination of gravity and moderate resistance",
+                "4+": "Same as grade 4, but muscle holds the joint against moderate to maximal resistance",
+                "5-": "Barely detectable weakness",
+                "5": "Normal Strength"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "80322-1",
+                            "display": "Muscle strength"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20044",
+        "name": "ManualMuscleTestScoreWERight",
+        "description": "Manual Muscle Testing (MMT) for right wrist extension",
+        "topic": "finding",
+        "purpose": "functional markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "ordinal",
+            "valueRange": {
+                "0": "No movement",
+                "1": "A flicker of movement is seen or felt in the muscle",
+                "2": "Muscle moves the joint when gravity is eliminated",
+                "3-": "Muscle moves the joint against gravity, but not through full mechanical range of motion",
+                "3": "Muscle cannot hold the joint against resistance, but moves the joint fully against gravity",
+                "3+": "Muscle moves the joint fully against gravity and is capable of transient resistance, but collapses abruptly",
+                "4-": "Same as grade 4, but muscle holds the joint only again minimal resistance",
+                "4": "Muscle holds the joint against a combination of gravity and moderate resistance",
+                "4+": "Same as grade 4, but muscle holds the joint against moderate to maximal resistance",
+                "5-": "Barely detectable weakness",
+                "5": "Normal Strength"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "80322-1",
+                            "display": "Muscle strength"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20045",
+        "name": "ManualMuscleTestScoreNF",
+        "description": "Manual Muscle Testing (MMT) for neck flexion",
+        "topic": "finding",
+        "purpose": "functional markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "ordinal",
+            "valueRange": {
+                "0": "No movement",
+                "1": "A flicker of movement is seen or felt in the muscle",
+                "2": "Muscle moves the joint when gravity is eliminated",
+                "3-": "Muscle moves the joint against gravity, but not through full mechanical range of motion",
+                "3": "Muscle cannot hold the joint against resistance, but moves the joint fully against gravity",
+                "3+": "Muscle moves the joint fully against gravity and is capable of transient resistance, but collapses abruptly",
+                "4-": "Same as grade 4, but muscle holds the joint only again minimal resistance",
+                "4": "Muscle holds the joint against a combination of gravity and moderate resistance",
+                "4+": "Same as grade 4, but muscle holds the joint against moderate to maximal resistance",
+                "5-": "Barely detectable weakness",
+                "5": "Normal Strength"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "80322-1",
+                            "display": "Muscle strength"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20046",
+        "name": "ManualMuscleTestScoreNE",
+        "description": "Manual Muscle Testing (MMT) for neck extension",
+        "topic": "finding",
+        "purpose": "functional markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "ordinal",
+            "valueRange": {
+                "0": "No movement",
+                "1": "A flicker of movement is seen or felt in the muscle",
+                "2": "Muscle moves the joint when gravity is eliminated",
+                "3-": "Muscle moves the joint against gravity, but not through full mechanical range of motion",
+                "3": "Muscle cannot hold the joint against resistance, but moves the joint fully against gravity",
+                "3+": "Muscle moves the joint fully against gravity and is capable of transient resistance, but collapses abruptly",
+                "4-": "Same as grade 4, but muscle holds the joint only again minimal resistance",
+                "4": "Muscle holds the joint against a combination of gravity and moderate resistance",
+                "4+": "Same as grade 4, but muscle holds the joint against moderate to maximal resistance",
+                "5-": "Barely detectable weakness",
+                "5": "Normal Strength"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "80322-1",
+                            "display": "Muscle strength"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20047",
+        "name": "ManualMuscleTestScoreADLeft",
+        "description": "Manual Muscle Testing (MMT) for left ankle dorsiflexion",
+        "topic": "finding",
+        "purpose": "functional markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "ordinal",
+            "valueRange": {
+                "0": "No movement",
+                "1": "A flicker of movement is seen or felt in the muscle",
+                "2": "Muscle moves the joint when gravity is eliminated",
+                "3-": "Muscle moves the joint against gravity, but not through full mechanical range of motion",
+                "3": "Muscle cannot hold the joint against resistance, but moves the joint fully against gravity",
+                "3+": "Muscle moves the joint fully against gravity and is capable of transient resistance, but collapses abruptly",
+                "4-": "Same as grade 4, but muscle holds the joint only again minimal resistance",
+                "4": "Muscle holds the joint against a combination of gravity and moderate resistance",
+                "4+": "Same as grade 4, but muscle holds the joint against moderate to maximal resistance",
+                "5-": "Barely detectable weakness",
+                "5": "Normal Strength"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "80322-1",
+                            "display": "Muscle strength"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20048",
+        "name": "ManualMuscleTestScoreAPLLeft",
+        "description": "Manual Muscle Testing (MMT) for left ankle plantarflexion",
+        "topic": "finding",
+        "purpose": "functional markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "ordinal",
+            "valueRange": {
+                "0": "No movement",
+                "1": "A flicker of movement is seen or felt in the muscle",
+                "2": "Muscle moves the joint when gravity is eliminated",
+                "3-": "Muscle moves the joint against gravity, but not through full mechanical range of motion",
+                "3": "Muscle cannot hold the joint against resistance, but moves the joint fully against gravity",
+                "3+": "Muscle moves the joint fully against gravity and is capable of transient resistance, but collapses abruptly",
+                "4-": "Same as grade 4, but muscle holds the joint only again minimal resistance",
+                "4": "Muscle holds the joint against a combination of gravity and moderate resistance",
+                "4+": "Same as grade 4, but muscle holds the joint against moderate to maximal resistance",
+                "5-": "Barely detectable weakness",
+                "5": "Normal Strength"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "80322-1",
+                            "display": "Muscle strength"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20049",
+        "name": "ManualMuscleTestScoreADRight",
+        "description": "Manual Muscle Testing (MMT) for right ankle dorsiflexion",
+        "topic": "finding",
+        "purpose": "functional markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "ordinal",
+            "valueRange": {
+                "0": "No movement",
+                "1": "A flicker of movement is seen or felt in the muscle",
+                "2": "Muscle moves the joint when gravity is eliminated",
+                "3-": "Muscle moves the joint against gravity, but not through full mechanical range of motion",
+                "3": "Muscle cannot hold the joint against resistance, but moves the joint fully against gravity",
+                "3+": "Muscle moves the joint fully against gravity and is capable of transient resistance, but collapses abruptly",
+                "4-": "Same as grade 4, but muscle holds the joint only again minimal resistance",
+                "4": "Muscle holds the joint against a combination of gravity and moderate resistance",
+                "4+": "Same as grade 4, but muscle holds the joint against moderate to maximal resistance",
+                "5-": "Barely detectable weakness",
+                "5": "Normal Strength"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "80322-1",
+                            "display": "Muscle strength"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20050",
+        "name": "ManualMuscleTestScoreAPLRight",
+        "description": "Manual Muscle Testing (MMT) for right ankle plantarflexion",
+        "topic": "finding",
+        "purpose": "functional markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "ordinal",
+            "valueRange": {
+                "0": "No movement",
+                "1": "A flicker of movement is seen or felt in the muscle",
+                "2": "Muscle moves the joint when gravity is eliminated",
+                "3-": "Muscle moves the joint against gravity, but not through full mechanical range of motion",
+                "3": "Muscle cannot hold the joint against resistance, but moves the joint fully against gravity",
+                "3+": "Muscle moves the joint fully against gravity and is capable of transient resistance, but collapses abruptly",
+                "4-": "Same as grade 4, but muscle holds the joint only again minimal resistance",
+                "4": "Muscle holds the joint against a combination of gravity and moderate resistance",
+                "4+": "Same as grade 4, but muscle holds the joint against moderate to maximal resistance",
+                "5-": "Barely detectable weakness",
+                "5": "Normal Strength"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "80322-1",
+                            "display": "Muscle strength"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20051",
+        "name": "ManualMuscleTestScoreTHABDLeft",
+        "description": "Manual Muscle Testing (MMT) for left thenar abductor pollicis brevis",
+        "topic": "finding",
+        "purpose": "functional markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "ordinal",
+            "valueRange": {
+                "0": "No movement",
+                "1": "A flicker of movement is seen or felt in the muscle",
+                "2": "Muscle moves the joint when gravity is eliminated",
+                "3-": "Muscle moves the joint against gravity, but not through full mechanical range of motion",
+                "3": "Muscle cannot hold the joint against resistance, but moves the joint fully against gravity",
+                "3+": "Muscle moves the joint fully against gravity and is capable of transient resistance, but collapses abruptly",
+                "4-": "Same as grade 4, but muscle holds the joint only again minimal resistance",
+                "4": "Muscle holds the joint against a combination of gravity and moderate resistance",
+                "4+": "Same as grade 4, but muscle holds the joint against moderate to maximal resistance",
+                "5-": "Barely detectable weakness",
+                "5": "Normal Strength"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "80322-1",
+                            "display": "Muscle strength"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20052",
+        "name": "ManualMuscleTestScoreTHABDRight",
+        "description": "Manual Muscle Testing (MMT) for right thenar abductor pollicis brevis",
+        "topic": "finding",
+        "purpose": "functional markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "ordinal",
+            "valueRange": {
+                "0": "No movement",
+                "1": "A flicker of movement is seen or felt in the muscle",
+                "2": "Muscle moves the joint when gravity is eliminated",
+                "3-": "Muscle moves the joint against gravity, but not through full mechanical range of motion",
+                "3": "Muscle cannot hold the joint against resistance, but moves the joint fully against gravity",
+                "3+": "Muscle moves the joint fully against gravity and is capable of transient resistance, but collapses abruptly",
+                "4-": "Same as grade 4, but muscle holds the joint only again minimal resistance",
+                "4": "Muscle holds the joint against a combination of gravity and moderate resistance",
+                "4+": "Same as grade 4, but muscle holds the joint against moderate to maximal resistance",
+                "5-": "Barely detectable weakness",
+                "5": "Normal Strength"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "80322-1",
+                            "display": "Muscle strength"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20053",
+        "name": "ManualMuscleTestScoreFDMLeft",
+        "description": "Manual Muscle Testing (MMT) for left flexor digiti minimi",
+        "topic": "finding",
+        "purpose": "functional markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "ordinal",
+            "valueRange": {
+                "0": "No movement",
+                "1": "A flicker of movement is seen or felt in the muscle",
+                "2": "Muscle moves the joint when gravity is eliminated",
+                "3-": "Muscle moves the joint against gravity, but not through full mechanical range of motion",
+                "3": "Muscle cannot hold the joint against resistance, but moves the joint fully against gravity",
+                "3+": "Muscle moves the joint fully against gravity and is capable of transient resistance, but collapses abruptly",
+                "4-": "Same as grade 4, but muscle holds the joint only again minimal resistance",
+                "4": "Muscle holds the joint against a combination of gravity and moderate resistance",
+                "4+": "Same as grade 4, but muscle holds the joint against moderate to maximal resistance",
+                "5-": "Barely detectable weakness",
+                "5": "Normal Strength"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "80322-1",
+                            "display": "Muscle strength"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20054",
+        "name": "ManualMuscleTestScoreFDMRight",
+        "description": "Manual Muscle Testing (MMT) for right flexor digiti minimi",
+        "topic": "finding",
+        "purpose": "functional markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "ordinal",
+            "valueRange": {
+                "0": "No movement",
+                "1": "A flicker of movement is seen or felt in the muscle",
+                "2": "Muscle moves the joint when gravity is eliminated",
+                "3-": "Muscle moves the joint against gravity, but not through full mechanical range of motion",
+                "3": "Muscle cannot hold the joint against resistance, but moves the joint fully against gravity",
+                "3+": "Muscle moves the joint fully against gravity and is capable of transient resistance, but collapses abruptly",
+                "4-": "Same as grade 4, but muscle holds the joint only again minimal resistance",
+                "4": "Muscle holds the joint against a combination of gravity and moderate resistance",
+                "4+": "Same as grade 4, but muscle holds the joint against moderate to maximal resistance",
+                "5-": "Barely detectable weakness",
+                "5": "Normal Strength"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "80322-1",
+                            "display": "Muscle strength"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20055",
+        "name": "ManualMuscleTestScoreFDILeft",
+        "description": "Manual Muscle Testing (MMT) for left first dorsal interossei",
+        "topic": "finding",
+        "purpose": "functional markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "ordinal",
+            "valueRange": {
+                "0": "No movement",
+                "1": "A flicker of movement is seen or felt in the muscle",
+                "2": "Muscle moves the joint when gravity is eliminated",
+                "3-": "Muscle moves the joint against gravity, but not through full mechanical range of motion",
+                "3": "Muscle cannot hold the joint against resistance, but moves the joint fully against gravity",
+                "3+": "Muscle moves the joint fully against gravity and is capable of transient resistance, but collapses abruptly",
+                "4-": "Same as grade 4, but muscle holds the joint only again minimal resistance",
+                "4": "Muscle holds the joint against a combination of gravity and moderate resistance",
+                "4+": "Same as grade 4, but muscle holds the joint against moderate to maximal resistance",
+                "5-": "Barely detectable weakness",
+                "5": "Normal Strength"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "80322-1",
+                            "display": "Muscle strength"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20056",
+        "name": "ManualMuscleTestScoreFDIRight",
+        "description": "Manual Muscle Testing (MMT) for right first dorsal interossei",
+        "topic": "finding",
+        "purpose": "functional markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "ordinal",
+            "valueRange": {
+                "0": "No movement",
+                "1": "A flicker of movement is seen or felt in the muscle",
+                "2": "Muscle moves the joint when gravity is eliminated",
+                "3-": "Muscle moves the joint against gravity, but not through full mechanical range of motion",
+                "3": "Muscle cannot hold the joint against resistance, but moves the joint fully against gravity",
+                "3+": "Muscle moves the joint fully against gravity and is capable of transient resistance, but collapses abruptly",
+                "4-": "Same as grade 4, but muscle holds the joint only again minimal resistance",
+                "4": "Muscle holds the joint against a combination of gravity and moderate resistance",
+                "4+": "Same as grade 4, but muscle holds the joint against moderate to maximal resistance",
+                "5-": "Barely detectable weakness",
+                "5": "Normal Strength"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "80322-1",
+                            "display": "Muscle strength"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20057",
+        "name": "ALS",
+        "description": "diagnosis of amyotrophic lateral sclerosis",
+        "topic": "event",
+        "purpose": "neurologic",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "boolean",
+            "valueRange": {
+                "0": "absence",
+                "1": "presence"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "icd9cm",
+                    "filter": [
+                        {
+                            "property": "codePrecision",
+                            "op": "descendent-of",
+                            "value": [
+                                "335.20"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "system": "icd10cm",
+                    "filter": [
+                        {
+                            "property": "codePrecision",
+                            "op": "descendent-of",
+                            "value": [
+                                "G12.21"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "system": "snomed",
+                    "concept": [
+                        {
+                            "code": "86044005",
+                            "display": "Amyotrophic lateral sclerosis"
+                        },
+                        {
+                            "code": "718555006",
+                            "display": "Juvenile amyotrophic lateral sclerosis"
+                        },
+                        {
+                            "code": "1201863001",
+                            "display": "Amyotrophic lateral sclerosis type 1"
+                        },
+                        {
+                            "code": "1201947005",
+                            "display": "Juvenile amyotrophic lateral sclerosis type 2"
+                        },
+                        {
+                            "code": "1201950008",
+                            "display": "Amyotrophic lateral sclerosis type 3"
+                        },
+                        {
+                            "code": "784341001",
+                            "display": "Amyotrophic lateral sclerosis type 4"
+                        },
+                        {
+                            "code": "1201961000",
+                            "display": "Juvenile amyotrophic lateral sclerosis type 5"
+                        },
+                        {
+                            "code": "1204334005",
+                            "display": "Amyotrophic lateral sclerosis type 6"
+                        },
+                        {
+                            "code": "1204349002",
+                            "display": "Amyotrophic lateral sclerosis type 7"
+                        },
+                        {
+                            "code": "1204350002",
+                            "display": "Amyotrophic lateral sclerosis type 8"
+                        },
+                        {
+                            "code": "1204351003",
+                            "display": "Amyotrophic lateral sclerosis type 9"
+                        },
+                        {
+                            "code": "1208412003",
+                            "display": "Amyotrophic lateral sclerosis type 10"
+                        },
+                        {
+                            "code": "230258005",
+                            "display": "Amyotrophic lateral sclerosis with dementia"
+                        },
+                        {
+                            "code": "1259122001",
+                            "display": "Amyotrophic lateral sclerosis with parkinsonism"
+                        },
+                        {
+                            "code": "722987009",
+                            "display": "Amyotrophic lateral sclerosis plus syndrome"
+                        },
+                        {
+                            "code": "1259126003",
+                            "display": "Amyotrophic lateral sclerosis with autonomic dysfunction"
+                        },
+                        {
+                            "code": "1259127007",
+                            "display": "Amyotrophic lateral sclerosis with cerebellar dysfunction"
+                        },
+                        {
+                            "code": "1259124000",
+                            "display": "Amyotrophic lateral sclerosis with frontotemporal dementia"
+                        },
+                        {
+                            "code": "1259129005",
+                            "display": "Amyotrophic lateral sclerosis with spinocerebellar ataxia"
+                        },
+                        {
+                            "code": "838276009",
+                            "display": "Amyotrophic lateral sclerosis, parkinsonism, dementia complex"
+                        },
+                        {
+                            "code": "1259125004",
+                            "display": "Amyotrophic lateral sclerosis with multiple system atrophy"
+                        },
+                        {
+                            "code": "1197523001",
+                            "display": "Autosomal dominant amyotrophic lateral sclerosis type 1"
+                        },
+                        {
+                            "code": "1197524007",
+                            "display": "Autosomal recessive amyotrophic lateral sclerosis type 1"
+                        },
+                        {
+                            "code": "1259123006",
+                            "display": "Amyotrophic lateral sclerosis, parkinsonism, dementia complex of Kii Peninsula"
+                        },
+                        {
+                            "code": "1259121008",
+                            "display": "Amyotrophic lateral sclerosis, parkinsonism, dementia complex of West New Guinea"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20058",
+        "name": "SxSpeech",
+        "description": "speech disorder or deficit",
+        "topic": "event",
+        "purpose": "general signs/symptoms",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "boolean",
+            "valueRange": {
+                "0": "absence",
+                "1": "presence"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "icd9cm",
+                    "filter": [
+                        {
+                            "property": "codePrecision",
+                            "op": "descendent-of",
+                            "value": [
+                                "315.39",
+                                "438.1",
+                                "784.3",
+                                "784.4",
+                                "784.5"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "system": "icd10cm",
+                    "filter": [
+                        {
+                            "property": "codePrecision",
+                            "op": "descendent-of",
+                            "value": [
+                                "F80.0",
+                                "F80.89",
+                                "R47",
+                                "R49",
+                                "I69.92"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20059",
+        "name": "SxSwallowing",
+        "description": "swallowing disturbance, pain in throat, dysphasia",
+        "topic": "event",
+        "purpose": "general signs/symptoms",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "boolean",
+            "valueRange": {
+                "0": "absence",
+                "1": "presence"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "icd9cm",
+                    "filter": [
+                        {
+                            "property": "codePrecision",
+                            "op": "descendent-of",
+                            "value": [
+                                "787.2",
+                                "438.82",
+                                "527.7",
+                                "527.8",
+                                "784.1"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "system": "icd10cm",
+                    "filter": [
+                        {
+                            "property": "codePrecision",
+                            "op": "descendent-of",
+                            "value": [
+                                "R13",
+                                "I69.99",
+                                "K11",
+                                "R68.2",
+                                "R07.0"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20060",
+        "name": "SxMuscleWeakness",
+        "description": "muscle weakness, disuse, atrophy, or ligament disorder",
+        "topic": "event",
+        "purpose": "general signs/symptomsa",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "boolean",
+            "valueRange": {
+                "0": "absence",
+                "1": "presence"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "icd9cm",
+                    "filter": [
+                        {
+                            "property": "codePrecision",
+                            "op": "descendent-of",
+                            "value": [
+                                "335.21",
+                                "728.87",
+                                "728.2"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "system": "icd10cm",
+                    "filter": [
+                        {
+                            "property": "codePrecision",
+                            "op": "descendent-of",
+                            "value": [
+                                "M60",
+                                "M61",
+                                "M62",
+                                "M63",
+                                "M24.2",
+                                "M35.7",
+                                "M71"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20061",
+        "name": "SxMuscleMovement",
+        "description": "involuntary muscle movement (cramping, spasm, switching, fasciculation, myopathy)",
+        "topic": "event",
+        "purpose": "general signs/symptoms",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "boolean",
+            "valueRange": {
+                "0": "absence",
+                "1": "presence"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "icd9cm",
+                    "filter": [
+                        {
+                            "property": "codePrecision",
+                            "op": "descendent-of",
+                            "value": [
+                                "729.82",
+                                "728.85",
+                                "781.0",
+                                "359"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "system": "icd10cm",
+                    "filter": [
+                        {
+                            "property": "codePrecision",
+                            "op": "descendent-of",
+                            "value": [
+                                "M62.4",
+                                "M62.83",
+                                "R25",
+                                "G72",
+                                "G73.7"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20062",
+        "name": "SxPainJointLimb",
+        "description": "pain in joint or pain in limb",
+        "topic": "event",
+        "purpose": "general signs/symptomsa",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "boolean",
+            "valueRange": {
+                "0": "absence",
+                "1": "presence"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "icd9cm",
+                    "filter": [
+                        {
+                            "property": "codePrecision",
+                            "op": "descendent-of",
+                            "value": [
+                                "719.4",
+                                "729.5"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "system": "icd10cm",
+                    "filter": [
+                        {
+                            "property": "codePrecision",
+                            "op": "descendent-of",
+                            "value": [
+                                "M25.5",
+                                "M79.6"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20063",
+        "name": "SxWalking",
+        "description": "difficulty walking or gait abnormality",
+        "topic": "event",
+        "purpose": "general signs/symptoms",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "boolean",
+            "valueRange": {
+                "0": "absence",
+                "1": "presence"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "icd9cm",
+                    "filter": [
+                        {
+                            "property": "codePrecision",
+                            "op": "descendent-of",
+                            "value": [
+                                "719.7",
+                                "781.2",
+                                "781.3"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "system": "icd10cm",
+                    "filter": [
+                        {
+                            "property": "codePrecision",
+                            "op": "descendent-of",
+                            "value": [
+                                "R26",
+                                "R27"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20064",
+        "name": "MobilityDeviceWalkerCane",
+        "description": "mobility device - walker or cane",
+        "topic": "diagnostics/intervention",
+        "purpose": "devices",
+        "relatedArtifact": {
+            "class": "supplemental",
+            "valueType": "boolean",
+            "valueRange": {
+                "0": "absence",
+                "1": "presence"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "hpc",
+                    "filter": [
+                        {
+                            "property": "codeList",
+                            "op": "exists",
+                            "value": [
+                                "E0100",
+                                "E0105",
+                                "E0130",
+                                "E0135",
+                                "E0140",
+                                "E0141",
+                                "E0143",
+                                "E0144",
+                                "E0147",
+                                "E0148",
+                                "E0149",
+                                "E0153",
+                                "E0154",
+                                "E0155",
+                                "E0156",
+                                "E0157",
+                                "E0158",
+                                "E0159"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20065",
+        "name": "MobilityDeviceHygiene",
+        "description": "mobility devices for maintaining hygiene (commodes, bedpands, urinals, shower assistive device)",
+        "topic": "diagnostics/intervention",
+        "purpose": "devices",
+        "relatedArtifact": {
+            "class": "supplemental",
+            "valueType": "boolean",
+            "valueRange": {
+                "0": "absence",
+                "1": "presence"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "hpc",
+                    "filter": [
+                        {
+                            "property": "codeRange",
+                            "op": "in",
+                            "value": [
+                                "E0163-E0175",
+                                "E0240-E0249",
+                                "E0275-E0276",
+                                "E0325-E0326"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20066",
+        "name": "MobilityDeviceTransfer",
+        "description": "lifts and support systems and safety devices",
+        "topic": "diagnostics/intervention",
+        "purpose": "devices",
+        "relatedArtifact": {
+            "class": "supplemental",
+            "valueType": "boolean",
+            "valueRange": {
+                "0": "absence",
+                "1": "presence"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "hpc",
+                    "filter": [
+                        {
+                            "property": "codeRange",
+                            "op": "in",
+                            "value": [
+                                "E0621-E0642",
+                                "E0700-E0711"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20067",
+        "name": "MobilityDeviceWheelchair",
+        "description": "manual or power wheelchairs and transport chairs",
+        "topic": "diagnostics/intervention",
+        "purpose": "devices",
+        "relatedArtifact": {
+            "class": "supplemental",
+            "valueType": "boolean",
+            "valueRange": {
+                "0": "absence",
+                "1": "presence"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "hpc",
+                    "filter": [
+                        {
+                            "property": "codeRange",
+                            "op": "in",
+                            "value": [
+                                "E0950-E1298",
+                                "E2201-E2298",
+                                "E2601-E2633",
+                                "K0813-K0899"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20068",
+        "name": "AssistiveDeviceCommunication",
+        "description": "AAC and other speech-language pathology related devices",
+        "topic": "diagnostics/intervention",
+        "purpose": "devices",
+        "relatedArtifact": {
+            "class": "supplemental",
+            "valueType": "boolean",
+            "valueRange": {
+                "0": "absence",
+                "1": "presence"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "hpc",
+                    "filter": [
+                        {
+                            "property": "codeRange",
+                            "op": "in",
+                            "value": [
+                                "E1902-E1902",
+                                "E2500-E2599"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "system": "cpt",
+                    "filter": [
+                        {
+                            "property": "codeRange",
+                            "op": "in",
+                            "value": [
+                                "92605-92609"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "system": "icd10pcs",
+                    "filter": [
+                        {
+                            "property": "codePrecision",
+                            "op": "descendent-of",
+                            "value": [
+                                "F06Z0",
+                                "F06Z1",
+                                "F06Z3",
+                                "F06Z6",
+                                "F06Z8",
+                                "F06Z9"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20069",
+        "name": "EnteralFeedingEquipment",
+        "description": "enteral feeding supplies and equipment or gastrostomy",
+        "topic": "diagnostics/intervention",
+        "purpose": "devices",
+        "relatedArtifact": {
+            "class": "supplemental",
+            "valueType": "boolean",
+            "valueRange": {
+                "0": "absence",
+                "1": "presence"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "hpc",
+                    "filter": [
+                        {
+                            "property": "codeRange",
+                            "op": "in",
+                            "value": [
+                                "B4034-B4088"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "system": "cpt",
+                    "filter": [
+                        {
+                            "property": "codeRange",
+                            "op": "in",
+                            "value": [
+                                "43500-43999"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "system": "icd9proc",
+                    "filter": [
+                        {
+                            "property": "codeList",
+                            "op": "exists",
+                            "value": [
+                                "43.11",
+                                "97.01",
+                                "97.02",
+                                "97.03"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "system": "icd10pcs",
+                    "filter": [
+                        {
+                            "property": "codePrecision",
+                            "op": "descendent-of",
+                            "value": [
+                                "0DH6",
+                                "0DW60UZ"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "system": "icd10cm",
+                    "filter": [
+                        {
+                            "property": "codePrecision",
+                            "op": "descendent-of",
+                            "value": [
+                                "Z93.1"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20070",
+        "name": "RespiratoryDeviceNIV",
+        "description": "non-invasive ventilator or BiPAP ",
+        "topic": "diagnostics/intervention",
+        "purpose": "devices",
+        "relatedArtifact": {
+            "class": "exploratory",
+            "valueType": "boolean",
+            "valueRange": {
+                "0": "absence",
+                "1": "presence"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "hpc",
+                    "filter": [
+                        {
+                            "property": "codeRange",
+                            "op": "in",
+                            "value": [
+                                "E0424-E0464",
+                                "E0466-E0493",
+                                "A7000-A7049"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "system": "cpt",
+                    "filter": [
+                        {
+                            "property": "codeRange",
+                            "op": "in",
+                            "value": [
+                                "94002-94005",
+                                "94660-94660"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "system": "icd9proc",
+                    "filter": [
+                        {
+                            "property": "codeList",
+                            "op": "exists",
+                            "value": [
+                                "93.90"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "system": "icd10pcs",
+                    "filter": [
+                        {
+                            "property": "codePrecision",
+                            "op": "descendent-of",
+                            "value": [
+                                "5A093",
+                                "5A094",
+                                "5A095"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "system": "icd10cm",
+                    "filter": [
+                        {
+                            "property": "codePrecision",
+                            "op": "descendent-of",
+                            "value": [
+                                "Z99.0",
+                                "Z99.1"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C20071",
+        "name": "RespiratoryDeviceMV",
+        "description": "invasive ventilator or tracheostomy",
+        "topic": "diagnostics/intervention",
+        "purpose": "devices",
+        "relatedArtifact": {
+            "class": "supplemental",
+            "valueType": "boolean",
+            "valueRange": {
+                "0": "absence",
+                "1": "presence"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "cpt",
+                    "filter": [
+                        {
+                            "property": "codeRange",
+                            "op": "in",
+                            "value": [
+                                "31600-31614"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "system": "hpc",
+                    "filter": [
+                        {
+                            "property": "codeList",
+                            "op": "exists",
+                            "value": [
+                                "E0465"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "system": "icd9proc",
+                    "filter": [
+                        {
+                            "property": "codePrecision",
+                            "op": "descendent-of",
+                            "value": [
+                                "94.7"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "system": "icd10pcs",
+                    "filter": [
+                        {
+                            "property": "codePrecision",
+                            "op": "descendent-of",
+                            "value": [
+                                "5A09B",
+                                "5A09C",
+                                "5A09D"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "system": "icd10cm",
+                    "filter": [
+                        {
+                            "property": "codePrecision",
+                            "op": "descendent-of",
+                            "value": [
+                                "Z93.0"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C020072",
+        "name": "NeurologyVisit",
+        "description": "visit to neurologist",
+        "topic": "diagnostics/intervention",
+        "purpose": "care setting",
+        "relatedArtifact": {
+            "class": "recommended",
+            "valueType": "boolean",
+            "valueRange": {
+                "0": "absence",
+                "1": "presence"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "cms",
+                    "concept": [
+                        {
+                            "code": "13",
+                            "display": "neurology"
+                        }
+                    ]
+                },
+                {
+                    "system": "nucc",
+                    "concept": [
+                        {
+                            "code": "2084N0008X",
+                            "display": "Neuromuscular Medicine"
+                        },
+                        {
+                            "code": "2084A2900X",
+                            "display": "Neurocritical Care"
+                        },
+                        {
+                            "code": "2084D0003X",
+                            "display": "Diagnostic Neuroimaging"
+                        },
+                        {
+                            "code": "2084N0400X",
+                            "display": "Neurology"
+                        },
+                        {
+                            "code": "2084N0600X",
+                            "display": "Clinical Neurophysiology"
+                        },
+                        {
+                            "code": "2084V0102X",
+                            "display": "Vascular Neurology"
+                        },
+                        {
+                            "code": "111NN0400X",
+                            "display": "Chiropractor Neurology"
+                        },
+                        {
+                            "code": "2251N0400X",
+                            "display": "Physical Therapist Neurology"
+                        }
+                    ]
+                },
+                {
+                    "system": "snomedct",
+                    "concept": [
+                        {
+                            "code": "38238005",
+                            "display": "Hospital-based outpatient neurology clinic"
+                        }
+                    ]
+                },
+                {
+                    "system": "pcornet",
+                    "concept": [
+                        {
+                            "code": "HOSPITAL_OUTPATIENT_NEUROLOGY_CLINIC",
+                            "display": "Hospital-based outpatient neurology clinic"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C020073",
+        "name": "riluzole",
+        "description": "prescription or dispensing of riluzole",
+        "topic": "diagnostics/intervention",
+        "purpose": "concomitant medications",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "boolean",
+            "valueRange": {
+                "0": "absence",
+                "1": "presence"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "rxnorm",
+                    "filter": [
+                        {
+                            "property": "codeList",
+                            "op": "exists",
+                            "value": [
+                                "35623",
+                                "152915",
+                                "2059266",
+                                "2267572",
+                                "2059262",
+                                "2267568",
+                                "565105",
+                                "2059263",
+                                "2269644",
+                                "368026",
+                                "1184724",
+                                "1184725",
+                                "2059264",
+                                "2059265",
+                                "2267570",
+                                "2269645",
+                                "199206",
+                                "2058147",
+                                "2265862",
+                                "2058144",
+                                "317486",
+                                "2058146",
+                                "2269642",
+                                "373787",
+                                "1165471",
+                                "1165472",
+                                "2058145",
+                                "2269641"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "system": "ndc",
+                    "filter": [
+                        {
+                            "property": "codeList",
+                            "op": "exists",
+                            "value": [
+                                "24987070060",
+                                "70515070060",
+                                "70726030301",
+                                "70726030302",
+                                "10094035060",
+                                "70510220101",
+                                "70510220102",
+                                "00115300013",
+                                "00378414591",
+                                "42291077560",
+                                "60505328506",
+                                "62756053818",
+                                "62756053883",
+                                "62756053886",
+                                "62756053888",
+                                "64980019106",
+                                "67877028605",
+                                "67877028610",
+                                "67877028614",
+                                "67877028660",
+                                "67877028690",
+                                "68084090895",
+                                "68462038110",
+                                "68462038160",
+                                "69076020044",
+                                "69076020060"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C020074",
+        "name": "edaravone",
+        "description": "prescription and dispensing of edaravone",
+        "topic": "diagnostics/intervention",
+        "purpose": "concomitant medications",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "boolean",
+            "valueRange": {
+                "0": "absence",
+                "1": "presence"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "rxnorm",
+                    "filter": [
+                        {
+                            "property": "codeList",
+                            "op": "exists",
+                            "value": [
+                                "1921877",
+                                "1924317",
+                                "2602122",
+                                "1921883",
+                                "2602118",
+                                "1921884",
+                                "2602121",
+                                "1921885",
+                                "2602119",
+                                "2602120",
+                                "1924316",
+                                "2602117",
+                                "1921878",
+                                "2602113",
+                                "1921880",
+                                "2602116",
+                                "1921879",
+                                "2602114",
+                                "2602115"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "system": "ndc",
+                    "filter": [
+                        {
+                            "property": "codeList",
+                            "op": "exists",
+                            "value": [
+                                "70510217101",
+                                "70510217102",
+                                "70510232101",
+                                "70510232102",
+                                "70510232201",
+                                "70510232301",
+                                "70510232401"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C020075",
+        "name": "tofersen",
+        "description": "prescription and dispensing of tofersen",
+        "topic": "diagnostics/intervention",
+        "purpose": "concomitant medications",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "boolean",
+            "valueRange": {
+                "0": "absence",
+                "1": "presence"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "rxnorm",
+                    "filter": [
+                        {
+                            "property": "codeList",
+                            "op": "exists",
+                            "value": [
+                                "2634995",
+                                "2635005",
+                                "2635002",
+                                "2635004",
+                                "2635003",
+                                "2634999",
+                                "2634996",
+                                "2634998",
+                                "2634997"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "system": "ndc",
+                    "filter": [
+                        {
+                            "property": "codeList",
+                            "op": "exists",
+                            "value": [
+                                "64406010901"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C020076",
+        "name": "PBP",
+        "description": "diagnosis of progressive bulbar palsy",
+        "topic": "event",
+        "purpose": "neurologic",
+        "relatedArtifact": {
+            "class": "recommended",
+            "valueType": "nominal",
+            "valueRange": {
+                "0": "absence",
+                "1": "presence"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "icd10cm",
+                    "filter": [
+                        {
+                            "property": "codePrecision",
+                            "op": "descendent-of",
+                            "value": [
+                                "G12.22"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "system": "icd9cm",
+                    "filter": [
+                        {
+                            "property": "codePrecision",
+                            "op": "descendent-of",
+                            "value": [
+                                "335.22"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C020077",
+        "name": "PLS",
+        "description": "diagnosis of primary lateral sclerosis",
+        "topic": "event",
+        "purpose": "neurologic",
+        "relatedArtifact": {
+            "class": "recommended",
+            "valueType": "boolean",
+            "valueRange": {
+                "0": "absence",
+                "1": "presence"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "icd9cm",
+                    "filter": [
+                        {
+                            "property": "codePrecision",
+                            "op": "descendent-of",
+                            "value": [
+                                "335.24"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "system": "icd10cm",
+                    "filter": [
+                        {
+                            "property": "codePrecision",
+                            "op": "descendent-of",
+                            "value": [
+                                "G12.23"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C020078",
+        "name": "SMA",
+        "description": "diagnosis of spinal muscular atrophy",
+        "topic": "event",
+        "purpose": "neurologic",
+        "relatedArtifact": {
+            "class": "recommended",
+            "valueType": "boolean",
+            "valueRange": {
+                "0": "absence",
+                "1": "presence"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "icd10cm",
+                    "filter": [
+                        {
+                            "property": "codePrecision",
+                            "op": "descendent-of",
+                            "value": [
+                                "G12.25",
+                                "G12.0",
+                                "G12.1"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "system": "icd9cm",
+                    "filter": [
+                        {
+                            "property": "codePrecision",
+                            "op": "descendent-of",
+                            "value": [
+                                "335.0",
+                                "335.1"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C020079",
+        "name": "PBA",
+        "description": "diagnosis of pseudobulbar affect/palsy",
+        "topic": "event",
+        "purpose": "neurologic",
+        "relatedArtifact": {
+            "class": "recommended",
+            "valueType": "boolean",
+            "valueRange": {
+                "0": "absence",
+                "1": "presence"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "icd9cm",
+                    "filter": [
+                        {
+                            "property": "codePrecision",
+                            "op": "descendent-of",
+                            "value": [
+                                "335.23"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "system": "icd10cm",
+                    "filter": [
+                        {
+                            "property": "codePrecision",
+                            "op": "descendent-of",
+                            "value": [
+                                "F48.2"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C020080",
+        "name": "FTD",
+        "description": "diagnosis of frontotemporal dementia",
+        "topic": "event",
+        "purpose": "neurologic",
+        "relatedArtifact": {
+            "class": "recommended",
+            "valueType": "boolean",
+            "valueRange": {
+                "0": "absence",
+                "1": "presence"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "icd9cm",
+                    "filter": [
+                        {
+                            "property": "codePrecision",
+                            "op": "descendent-of",
+                            "value": [
+                                "331.1"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "system": "icd10cm",
+                    "filter": [
+                        {
+                            "property": "codePrecision",
+                            "op": "descendent-of",
+                            "value": [
+                                "G31.0"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+]

@@ -1,7 +1,4 @@
 /*
-# Copyright (c) 2021-2025 University of Missouri                   
-# Author: Xing Song, xsm7f@umsystem.edu                            
-# File: pat-glp1.sql
 # Description: identify all patients who have ever used GLP1 agonist or DPP4 inhibitor
 # Dependency: 
 # - Z_GLP1_DPP4_RXN_NDC: staged from rxnorm and ndc ref file 
@@ -33,7 +30,6 @@ unpivot (
 )
 where NDC is not null
 ;
-
 
 create or replace procedure get_glp1_event_long(
     SITES array,
@@ -202,6 +198,7 @@ where RX_CLS = 'GLP1'
 group by RX_SRC
 order by count(distinct patid) desc;
 
+/* EHR + CMS */
 create or replace table GLP1_DPP4_TABLE1 as 
 with cte_either as (
     select patid, 
@@ -244,6 +241,91 @@ from GLP1_DPP4_TABLE1
 ;
 -- 1606792	1606792	850536	957359	201103
 
+/*  */
+create or replace table GLP1_DPP4_TABLE1_EHR as 
+with cte_either as (
+    select patid, 
+           min(RX_START_DATE) as RX_START_DATE,
+           max(RX_END_DATE) as RX_END_DATE
+    from GLP1_EVENT_LONG
+    where RX_SRC <> 'CMS'
+    group by patid
+), cte_glp1 as (
+    select patid, 
+           min(RX_START_DATE) as RX_START_DATE,
+           max(RX_END_DATE) as RX_END_DATE
+    from GLP1_EVENT_LONG
+    where RX_CLS = 'GLP1' and RX_SRC <> 'CMS'
+    group by patid
+), cte_dpp4 as (
+    select patid, 
+           min(RX_START_DATE) as RX_START_DATE,
+           max(RX_END_DATE) as RX_END_DATE
+    from GLP1_EVENT_LONG
+    where RX_CLS = 'DPP4' and RX_SRC <> 'CMS'
+    group by patid
+)
+select a.patid, 
+       a.rx_start_date,
+       a.rx_end_date,
+       case when b.rx_start_date is not null then 1 else 0 end as GLP1_IND,
+       b.rx_start_date as GLP1_START_DATE, 
+       b.rx_end_date as GLP1_END_DATE, 
+       case when d.rx_start_date is not null then 1 else 0 end as DPP4_IND,
+       d.rx_start_date as DPP4_START_DATE, 
+       d.rx_end_date as DPP4_END_DATE
+from cte_either a 
+left join cte_glp1 b on a.patid = b.patid
+left join cte_dpp4 d on a.patid = d.patid
+;
+select count(distinct patid), count(*), sum(GLP1_IND), sum(DPP4_IND),sum(GLP1_IND*DPP4_IND)
+from GLP1_DPP4_TABLE1_EHR
+;
+-- 671822	671822	492597	256029	76804
+
+/* CMS only */
+create or replace table GLP1_DPP4_TABLE1_CMS as 
+with cte_either as (
+    select patid, 
+           min(RX_START_DATE) as RX_START_DATE,
+           max(RX_END_DATE) as RX_END_DATE
+    from GLP1_EVENT_LONG
+    where RX_SRC = 'CMS'
+    group by patid
+), cte_glp1 as (
+    select patid, 
+           min(RX_START_DATE) as RX_START_DATE,
+           max(RX_END_DATE) as RX_END_DATE
+    from GLP1_EVENT_LONG
+    where RX_CLS = 'GLP1' and RX_SRC = 'CMS'
+    group by patid
+), cte_dpp4 as (
+    select patid, 
+           min(RX_START_DATE) as RX_START_DATE,
+           max(RX_END_DATE) as RX_END_DATE
+    from GLP1_EVENT_LONG
+    where RX_CLS = 'DPP4' and RX_SRC = 'CMS'
+    group by patid
+)
+select a.patid, 
+       a.rx_start_date,
+       a.rx_end_date,
+       case when b.rx_start_date is not null then 1 else 0 end as GLP1_IND,
+       b.rx_start_date as GLP1_START_DATE, 
+       b.rx_end_date as GLP1_END_DATE, 
+       case when d.rx_start_date is not null then 1 else 0 end as DPP4_IND,
+       d.rx_start_date as DPP4_START_DATE, 
+       d.rx_end_date as DPP4_END_DATE
+from cte_either a 
+left join cte_glp1 b on a.patid = b.patid
+left join cte_dpp4 d on a.patid = d.patid
+;
+select count(distinct patid), count(*), sum(GLP1_IND), sum(DPP4_IND),sum(GLP1_IND*DPP4_IND)
+from GLP1_DPP4_TABLE1_CMS
+;
+--1043867	1043867	404192	769720	130045
+
+/* cohort study */
 create or replace table ALS_GLP1 as 
 with als_glp1 as (
     select a.patid, 

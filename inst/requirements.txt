@@ -1,0 +1,21 @@
+###### Requirements with Version Specifiers ######
+cffi > 1.10.1
+pyarrow < 19.0.0
+
+###### Requirements without Version Specifiers ######
+snowflake-snowpark-python
+snowflake-connector-python
+pandas
+boto3
+openpyxl
+# matplotlib
+# parse
+# smart_open
+# pathlib
+# fsspec
+# s3fs
+# psutil
+# fastparquet
+# pyreadstat
+# unicodecsv
+# sas7bdat

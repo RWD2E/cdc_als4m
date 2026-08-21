@@ -1,0 +1,9 @@
+cffi>1.10.1
+pyarrow<19.0.0
+snowflake-snowpark-python
+snowflake-connector-python
+pandas
+boto3
+matplotlib
+openpyxl
+python-dotenv

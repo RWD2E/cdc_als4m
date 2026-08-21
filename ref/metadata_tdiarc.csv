@@ -1,0 +1,443 @@
+TABLE_NAME,COLUMN_NAME,DATA_TYPE,DESCRIPTION
+ACTIVITY_SLOPE_DATA,ACTIVITY_SLOPE_DATA_ACTIVITY_SLOPE_LA,FLOAT,"Calculated Slope of the Left Ankle activity recorded for a participant during exercises, per day"
+ACTIVITY_SLOPE_DATA,ACTIVITY_SLOPE_DATA_ACTIVITY_SLOPE_LW,FLOAT,"Calculated Slope of the Left Wrist activity recorded for a participant during exercises, per day"
+ACTIVITY_SLOPE_DATA,ACTIVITY_SLOPE_DATA_ACTIVITY_SLOPE_RA,FLOAT,"Calculated Slope of the Right Ankle activity recorded for a participant during exercises, per day"
+ACTIVITY_SLOPE_DATA,ACTIVITY_SLOPE_DATA_ACTIVITY_SLOPE_RW,FLOAT,"Calculated Slope of the Right Wrist activity recorded for a participant during exercises, per day"
+ACTIVITY_SLOPE_DATA,ACTIVITY_SLOPE_DATA_ACTIVITY_SLOPE_RWLW,FLOAT,"Calculated Slope of the Right Wrist and Left Wrist activity recorded for a participant during exercises, per day"
+ACTIVITY_SLOPE_DATA,ACTIVITY_SLOPE_DATA_ACTIVITY_SLOPE_TOTAL,FLOAT,"Calculated Total Slope of all activity recorded for a participant during exercises, per day"
+ACTIVITY_SLOPE_DATA,ACTIVITY_SLOPE_DATA_PARTICIPANT_ID,INT,Every participant's Subject ID within the ARC Program. 
+ACTIVITY_TOTALS_DATA,ACTIVITY_TOTALS_DATA_AVG_ACTUAL_LA,FLOAT,Average score of the Left Ankle activity recorded for a participant during exercises for a given week.
+ACTIVITY_TOTALS_DATA,ACTIVITY_TOTALS_DATA_AVG_ACTUAL_LW,FLOAT,Average score of the Left Wrist activity recorded for a participant during exercises for a given week. 
+ACTIVITY_TOTALS_DATA,ACTIVITY_TOTALS_DATA_AVG_ACTUAL_RA,FLOAT,Average score of the Right Ankle activity recorded for a participant during exercises for a given week. 
+ACTIVITY_TOTALS_DATA,ACTIVITY_TOTALS_DATA_AVG_ACTUAL_RW,FLOAT,Average score of the Right Wrist activity recorded for a participant during exercises for a given week. 
+ACTIVITY_TOTALS_DATA,ACTIVITY_TOTALS_DATA_AVG_ACTUAL_RWLW,FLOAT,Average score of the Right Wrist and Left Wrist activity recorded for a participant during exercises for a given week. 
+ACTIVITY_TOTALS_DATA,ACTIVITY_TOTALS_DATA_AVG_ACTUAL_TOTAL,FLOAT,Average Total score of all activity recorded for a participant during exercises for a given week. 
+ACTIVITY_TOTALS_DATA,ACTIVITY_TOTALS_DATA_AVG_NORMALIZED_LA,FLOAT,Uses Avg Actual La and normalizes to Avg Actual Lw.
+ACTIVITY_TOTALS_DATA,ACTIVITY_TOTALS_DATA_AVG_NORMALIZED_LW,FLOAT,Uses Avg Actual Lw and normalizes to Avg Actual Lw.
+ACTIVITY_TOTALS_DATA,ACTIVITY_TOTALS_DATA_AVG_NORMALIZED_RA,FLOAT,Uses Avg Actual Ra and normalizes to Avg Actual Lw.
+ACTIVITY_TOTALS_DATA,ACTIVITY_TOTALS_DATA_AVG_NORMALIZED_RW,FLOAT,Uses Avg Actual Rw and normalizes to Avg Actual Lw.
+ACTIVITY_TOTALS_DATA,ACTIVITY_TOTALS_DATA_AVG_NORMALIZED_RWLW,FLOAT,Uses Avg Actual Rwlw and normalizes to Avg Actual Lw.
+ACTIVITY_TOTALS_DATA,ACTIVITY_TOTALS_DATA_AVG_NORMALIZED_TOTAL,FLOAT,Uses Avg Actual Total and normalizes to Avg Actual Lw.
+ACTIVITY_TOTALS_DATA,ACTIVITY_TOTALS_DATA_DAYS_SINCE_SIGN_UP,INT,Days since sign up. 
+ACTIVITY_TOTALS_DATA,ACTIVITY_TOTALS_DATA_ENTRY_DATE,VARCHAR,The middle date during the week the exercises were completed. Time values will always be midnight. 
+ACTIVITY_TOTALS_DATA,ACTIVITY_TOTALS_DATA_ENTRY_MONTH,DATE,The month-year during the week the exercises were completed. Time values will always be midnight. 
+ACTIVITY_TOTALS_DATA,ACTIVITY_TOTALS_DATA_ENTRY_QUARTER,DATE,The quarter-year during the week the exercises were completed. 
+ACTIVITY_TOTALS_DATA,ACTIVITY_TOTALS_DATA_ENTRY_RAW,DATE,The full middle date + time during the week the exercises were completed. Time values will always be midnight. 
+ACTIVITY_TOTALS_DATA,ACTIVITY_TOTALS_DATA_ENTRY_TIME,VARCHAR,The time of the middle date during the week the exercises were completed. Time values will always be midnight. 
+ACTIVITY_TOTALS_DATA,ACTIVITY_TOTALS_DATA_ENTRY_WEEK,VARCHAR,The beginning (Monday) date of the week the exercises were completed. 
+ACTIVITY_TOTALS_DATA,ACTIVITY_TOTALS_DATA_ENTRY_YEAR,VARCHAR,The year the exercises were completed. 
+ACTIVITY_TOTALS_DATA,ACTIVITY_TOTALS_DATA_PARTICIPANT_ID,VARCHAR,Every participant's Subject ID within the ARC Program. 
+ACTIVITY_TOTALS_DATA,ACTIVITY_TOTALS_DATA_STDDEV_LA,FLOAT,Standard deviation of Avg Actual La
+ACTIVITY_TOTALS_DATA,ACTIVITY_TOTALS_DATA_STDDEV_LW,FLOAT,Standard deviation of Avg Actual Lw
+ACTIVITY_TOTALS_DATA,ACTIVITY_TOTALS_DATA_STDDEV_RA,FLOAT,Standard deviation of Avg Actual Ra
+ACTIVITY_TOTALS_DATA,ACTIVITY_TOTALS_DATA_STDDEV_RW,FLOAT,Standard deviation of Avg Actual Rw
+ACTIVITY_TOTALS_DATA,ACTIVITY_TOTALS_DATA_STDDEV_RWLW,FLOAT,Standard deviation of Avg Actual Rwlw
+ACTIVITY_TOTALS_DATA,ACTIVITY_TOTALS_DATA_STDDEV_TOTAL,FLOAT,Standard deviation of Avg Actual Total
+ACTIVITY_TOTALS_DATA,ACTIVITY_TOTALS_DATA_TOTAL_LA,FLOAT,Total Sum of Participant's Avg Actual La. 
+ACTIVITY_TOTALS_DATA,ACTIVITY_TOTALS_DATA_TOTAL_LW,FLOAT,Total Sum of Participant's Avg Actual Lw.  
+ACTIVITY_TOTALS_DATA,ACTIVITY_TOTALS_DATA_TOTAL_RA,FLOAT,Total Sum of Participant's Avg Actual Ra.  
+ACTIVITY_TOTALS_DATA,ACTIVITY_TOTALS_DATA_TOTAL_RW,FLOAT,Total Sum of Participant's Avg Actual Rw. 
+ACTIVITY_TOTALS_DATA,ACTIVITY_TOTALS_DATA_TOTAL_RWLW,FLOAT,Total Sum of Participant's Avg Actual Rwlw.  
+ACTIVITY_TOTALS_DATA,ACTIVITY_TOTALS_DATA_TOTAL_TOTAL,FLOAT,Total Sum of Participant's Avg Actual Total.  
+ALS_ASSOCIATED_GENE_DATA,ALS_ASSOCIATED_GENE_DATA_1000_GP3_AF,FLOAT,Allele Frequency as determined by the 1000 Genomes project.
+ALS_ASSOCIATED_GENE_DATA,ALS_ASSOCIATED_GENE_DATA_AAALT,,Chromosome Number of Gene. From dbNSFP
+ALS_ASSOCIATED_GENE_DATA,ALS_ASSOCIATED_GENE_DATA_AAPOS,,"Amino Acid Alternative, as a result of the mutation. From dbNSFP"
+ALS_ASSOCIATED_GENE_DATA,ALS_ASSOCIATED_GENE_DATA_AAREF,,Amino Acid position. From dbNSFP
+ALS_ASSOCIATED_GENE_DATA,ALS_ASSOCIATED_GENE_DATA_ALSOD_CATEGORY,,"Amino Acid Reference, the original amino acid. From dbNSFP"
+ALS_ASSOCIATED_GENE_DATA,ALS_ASSOCIATED_GENE_DATA_CHR,,ALS Online Database categorization (strength of evidence linking gene to ALS)
+ALS_ASSOCIATED_GENE_DATA,ALS_ASSOCIATED_GENE_DATA_CLINVAR_CLNSIG,,"Clinical Significance, if any, of the given mutation, as sourced from ClinVar."
+ALS_ASSOCIATED_GENE_DATA,ALS_ASSOCIATED_GENE_DATA_CLINVAR_ID,FLOAT,ClinVar ID for the mutation
+ALS_ASSOCIATED_GENE_DATA,ALS_ASSOCIATED_GENE_DATA_CLINVAR_TRAIT,,"Possible condition associted with mutation, as sourced from ClinVar."
+ALS_ASSOCIATED_GENE_DATA,ALS_ASSOCIATED_GENE_DATA_DNA_ALT,,DNA Alternative base as a result of mutation. From dbNSFP. 
+ALS_ASSOCIATED_GENE_DATA,ALS_ASSOCIATED_GENE_DATA_DNA_REF,,DNA Reference base. From dbNSFP. 
+ALS_ASSOCIATED_GENE_DATA,ALS_ASSOCIATED_GENE_DATA_ENSEMBL_GENEID,,Ensembl Gene ID
+ALS_ASSOCIATED_GENE_DATA,ALS_ASSOCIATED_GENE_DATA_ENSEMBL_PROTEINID,,Ensembl Protein ID
+ALS_ASSOCIATED_GENE_DATA,ALS_ASSOCIATED_GENE_DATA_ENSEMBL_TRANSCRIPTID,,Ensebml Transcript ID
+ALS_ASSOCIATED_GENE_DATA,ALS_ASSOCIATED_GENE_DATA_FILTER,,"Indicates which filters have failed (semicolon-separated), PASS or MISSING. Variant Call Format (VCF) documentation: https://samtools.github.io/hts-specs/VCFv4.2.pdf"
+ALS_ASSOCIATED_GENE_DATA,ALS_ASSOCIATED_GENE_DATA_GENE_NAME_ISOLATED,,"Gene name, isolated. "
+ALS_ASSOCIATED_GENE_DATA,ALS_ASSOCIATED_GENE_DATA_GENOTYPE_1,FLOAT,"Presence of mutation in Allele 1, along with variant possibilty. (E.g., 0/1 means no mutation in allele 1 and first variant possibilty in allele 2.) From participant VCF."
+ALS_ASSOCIATED_GENE_DATA,ALS_ASSOCIATED_GENE_DATA_GENOTYPE_2,FLOAT,"Presence of mutation in Allele 2, along with variant possibilty. (E.g., 0/1 means no mutation in allele 1 and first variant possibilty in allele 2.) From participant VCF."
+ALS_ASSOCIATED_GENE_DATA,ALS_ASSOCIATED_GENE_DATA_HGVSC_SNP_EFF,,HGVS coding variant presentation from snpEff
+ALS_ASSOCIATED_GENE_DATA,ALS_ASSOCIATED_GENE_DATA_HGVSC_VEP,,HGVS coding variant presentation from Vep
+ALS_ASSOCIATED_GENE_DATA,ALS_ASSOCIATED_GENE_DATA_HGVSP_SNP_EFF,,HGVS protein variant presentation from snpEff
+ALS_ASSOCIATED_GENE_DATA,ALS_ASSOCIATED_GENE_DATA_HGVSP_VEP,,HGVS protein variant presentation from VEP
+ALS_ASSOCIATED_GENE_DATA,ALS_ASSOCIATED_GENE_DATA_PARTICIPANT_ID,,Every participant's Subject ID within the ARC Program. 
+ALS_ASSOCIATED_GENE_DATA,ALS_ASSOCIATED_GENE_DATA_PARTICIPANT_REFERENCE_BASE,,DNA Reference base from participant sequencing data. 
+ALS_ASSOCIATED_GENE_DATA,ALS_ASSOCIATED_GENE_DATA_POLYPHEN2_HDIV_PRED,,"Polyphen2 prediction based on HumDiv, ""D"" (""probably damaging"",HDIV score in [0.957,1] or rankscore in [0.55859,0.91137]), ""P"" (""possibly damaging"", HDIV score in [0.454,0.956] or rankscore in [0.37043,0.55681]) and ""B"" (""benign"", 
+HDIV score in [0,0.452] or rankscore in [0.03061,0.36974]). Score cutoff for binary 
+classification is 0.5 for HDIV score or 0.38028 for rankscore, i.e. the prediction is 
+neutral if the HDIV score is smaller than 0.5 (rankscore is smaller than 0.38028), 
+and ""deleterious"" if the HDIV score is larger than 0.5 (rankscore is larger than 
+0.38028). Multiple entries are separated by "";"", corresponding to Uniprot_acc."
+ALS_ASSOCIATED_GENE_DATA,ALS_ASSOCIATED_GENE_DATA_POLYPHEN2_HDIV_RANKSCORE,,Polyphen2 HDIV scores were first ranked among all HDIV scores
+ALS_ASSOCIATED_GENE_DATA,ALS_ASSOCIATED_GENE_DATA_POLYPHEN2_HDIV_SCORE,,"Polyphen2 score based on HumDiv, i.e. hdiv_prob."
+ALS_ASSOCIATED_GENE_DATA,ALS_ASSOCIATED_GENE_DATA_POLYPHEN2_HVAR_PRED,,"Polyphen2 prediction based on HumVar, ""D"" (""probably damaging"",	
+	HVAR score in [0.909,1] or rankscore in [0.65694,0.97581]), ""P"" (""possibly damaging"", 
+	HVAR in [0.447,0.908] or rankscore in [0.47121,0.65622]) and ""B"" (""benign"", HVAR 
+	score in [0,0.446] or rankscore in [0.01493,0.47076]). Score cutoff for binary 
+	classification is 0.5 for HVAR score or 0.48762 for rankscore, i.e. the prediction 
+	is ""neutral"" if the HVAR score is smaller than 0.5 (rankscore is smaller than 
+	0.48762), and ""deleterious"" if the HVAR score is larger than 0.5 (rankscore is larger 
+	than 0.48762). Multiple entries are separated by "";"", corresponding to Uniprot_acc."
+ALS_ASSOCIATED_GENE_DATA,ALS_ASSOCIATED_GENE_DATA_POLYPHEN2_HVAR_RANKSCORE,,Polyphen2 HVAR scores were first ranked among all HVAR scores
+ALS_ASSOCIATED_GENE_DATA,ALS_ASSOCIATED_GENE_DATA_POLYPHEN2_HVAR_SCORE,,"Polyphen2 score based on HumVar, i.e. hvar_prob."
+ALS_ASSOCIATED_GENE_DATA,ALS_ASSOCIATED_GENE_DATA_POS_1_BASED,,Physical position on the chromosome as to hg38 (1-based coordinate).
+ALS_ASSOCIATED_GENE_DATA,ALS_ASSOCIATED_GENE_DATA_PT_ALLELE_1_ALT,,DNA Alternative base for Allele 1 found in participant sequencing.
+ALS_ASSOCIATED_GENE_DATA,ALS_ASSOCIATED_GENE_DATA_PT_ALLELE_2_ALT,,DNA Alternative base for Allele 2 found in participant sequencing. 
+ALS_ASSOCIATED_GENE_DATA,ALS_ASSOCIATED_GENE_DATA_QUALITY,,"phred-scaled quality score for the assertion made in ALT. In other words, it's: 10log_10 prob(call in ALT is wrong). Quality score that is on a log scale. 100 means 1 in 10^10 chance of error. Variant Call Format (VCF) documentation: https://samtools.github.io/hts-specs/VCFv4.2.pdf"
+ALS_ASSOCIATED_GENE_DATA,ALS_ASSOCIATED_GENE_DATA_RSID_FROM_DBSNP,,rsID from dbNSFP/dbSNP. 
+ALS_ASSOCIATED_GENE_DATA,ALS_ASSOCIATED_GENE_DATA_RSID_FROM_PT_DATA,,rsID from participant genomic data. 
+ALS_ASSOCIATED_GENE_DATA,ALS_ASSOCIATED_GENE_DATA_SAMPLE_ID,,Sample ID used by the Broad Institute
+ALS_ASSOCIATED_GENE_DATA,ALS_ASSOCIATED_GENE_DATA_SIFT_CONVERTED_RANKSCORE,,"SIFTori scores were first converted to SIFTnew=1-SIFTori, then ranked among all SIFTnew scores in dbNSFP. The rankscore is the ratio of the rank the SIFTnew score over the total number of SIFTnew scores in dbNSFP. 	If there are multiple scores, only the most damaging (largest) rankscore is presented. The rankscores range from 0.00964 to 0.91255.	"
+ALS_ASSOCIATED_GENE_DATA,ALS_ASSOCIATED_GENE_DATA_SIFT_PRED,,"If SIFTori is smaller than 0.05 (rankscore>0.39575) the corresponding nsSNV is predicted as ""D(amaging)""; otherwise it is predicted as ""T(olerated)"". Multiple predictions separated by "";"""
+ALS_ASSOCIATED_GENE_DATA,ALS_ASSOCIATED_GENE_DATA_SIFT_SCORE,,"SIFT4G_score: SIFT 4G score (SIFT4G). Scores range from 0 to 1. The smaller the score the more likely the SNP has damaging effect. Multiple scores separated by "","", corresponding to Ensembl_transcriptid"
+ALS_ASSOCIATED_GENE_DATA,ALS_ASSOCIATED_GENE_DATA_UNIPROT_ACC,,UniProt accession number
+ALS_ASSOCIATED_GENE_DATA,ALS_ASSOCIATED_GENE_DATA_VEP_CANONICAL,,Canonical transcript used in Ensembl.
+ALS_FRS_DATA,ALSFRS_DATA_ALSFRS_ENTRY_DATE,,Date timestamp for when the als frs scores were recorded.
+ALS_FRS_DATA,ALSFRS_DATA_ALSFRS_ENTRY_DAY_OF_WEEK,,Day of week when the als frs scores were recorded.
+ALS_FRS_DATA,ALSFRS_DATA_ALSFRS_ENTRY_MONTH,,Month when the als frs scores were recorded.
+ALS_FRS_DATA,ALSFRS_DATA_ALSFRS_ENTRY_QUARTER,,Quarter when the als frs scores were recorded.
+ALS_FRS_DATA,ALSFRS_DATA_ALSFRS_ENTRY_RAW,,Full date + timestamp for when the als frs scores were recorded.
+ALS_FRS_DATA,ALSFRS_DATA_ALSFRS_ENTRY_TIME,,Timestamp for when the als frs scores were recorded.
+ALS_FRS_DATA,ALSFRS_DATA_ALSFRS_ENTRY_WEEK,,Beginning (Monday) date of the week for when the als frs scores were recorded.
+ALS_FRS_DATA,ALSFRS_DATA_ALSFRS_ENTRY_YEAR,,Year when the als frs scores were recorded.
+ALS_FRS_DATA,ALSFRS_DATA_DAYS_SINCE_ONSET,,Days since onset of participant's symptoms
+ALS_FRS_DATA,ALSFRS_DATA_DAYS_SINCE_SIGN_UP,,Days since sign up for ARC 
+ALS_FRS_DATA,ALSFRS_DATA_FRS_CLIMBING_STAIRS,,Single Als Frs score for a participant climbing stairs.
+ALS_FRS_DATA,ALSFRS_DATA_FRS_CUTTING_FOOD,,Single Als Frs score for a participant cutting food
+ALS_FRS_DATA,ALSFRS_DATA_FRS_DRESSING_HYGIENE,,Single Als Frs score for a participant's ability to dress and keep up with hygiene
+ALS_FRS_DATA,ALSFRS_DATA_FRS_DYSPNEA,,Single Als Frs score for a participant's difficulty breathing standing or sitting
+ALS_FRS_DATA,ALSFRS_DATA_FRS_HANDWRITING,,Single Als Frs score for a participant's ability to write
+ALS_FRS_DATA,ALSFRS_DATA_FRS_ORTHOPNEA,,Single Als Frs score for a participant's difficulty breathing laying down
+ALS_FRS_DATA,ALSFRS_DATA_FRS_RESPIRATORY_INSUFFICIENCY,,Single Als Frs score for a participant's overall difficulty breathing
+ALS_FRS_DATA,ALSFRS_DATA_FRS_SALIVATION,,Single Als Frs score for a participant's difficulty salivating
+ALS_FRS_DATA,ALSFRS_DATA_FRS_SPEECH,,Single Als Frs score for a participant's ability to talk
+ALS_FRS_DATA,ALSFRS_DATA_FRS_SWALLOWING,,Single Als Frs score for a participant's ability to swalllow
+ALS_FRS_DATA,ALSFRS_DATA_FRS_TURNING_IN_BED,,Single Als Frs score for a participant's ability to turn in bed
+ALS_FRS_DATA,ALSFRS_DATA_FRS_WALKING,,Single Als Frs score for a participant's ability to walk
+ALS_FRS_DATA,ALSFRS_DATA_PARTICIPANT_FORM_ID,,ID for the Form with ALSFRS-R Scores submitted
+ALS_FRS_DATA,ALSFRS_DATA_PARTICIPANT_ID,,Every participant's Subject ID within the ARC Program. 
+ALS_FRS_DATA,ALSFRS_DATA_TOTAL_SCORE,,Total als frs score for a given ALSFRS-R entry
+ALS_FRS_DATA,ALSFRS_DATA_YEAR_SINCE_SIGNUP,,"At time of ALSFRS-R completion, years passed since sign up"
+ALS_FRS_SLOPE_DATA,ALSFRS_SLOPE_DATA_ALS_FRS_SLOPE_PER_MONTH,,"The calculated slope of a partial participant's frs scores, excludes speech, swallowing, salivation, per day. "
+ALS_FRS_SLOPE_DATA,ALSFRS_SLOPE_DATA_CLIMBING_STAIRS,,The calculated slope of a total participant's frs scores per month
+ALS_FRS_SLOPE_DATA,ALSFRS_SLOPE_DATA_CUTTING_FOOD,,Calculated slope for Als Frs scores for a participant climbing stairs per day
+ALS_FRS_SLOPE_DATA,ALSFRS_SLOPE_DATA_DRESSING_HYGIENE,,Calculated slope for Als Frs scores for a participant cutting food per day
+ALS_FRS_SLOPE_DATA,ALSFRS_SLOPE_DATA_DYSPNEA,,Calculated slope for Als Frs scores for a participant's ability to dress and keep up with hygiene per day
+ALS_FRS_SLOPE_DATA,ALSFRS_SLOPE_DATA_HANDWRITING,,Calculated alope for Als Frs scores for a participant's difficulty breathing standing or sitting per day
+ALS_FRS_SLOPE_DATA,ALSFRS_SLOPE_DATA_ORTHOPNEA,,"Calculated slope for Als Frs scores for a participant's ability to write, per day"
+ALS_FRS_SLOPE_DATA,ALSFRS_SLOPE_DATA_PARTIAL_TOTAL_NO_SSS,,"Calculated slope for Als Frs scores for a participant's difficulty breathing laying down, per day"
+ALS_FRS_SLOPE_DATA,ALSFRS_SLOPE_DATA_PARTICIPANT_ID,,Every participant's Subject ID within the ARC Program. 
+ALS_FRS_SLOPE_DATA,ALSFRS_SLOPE_DATA_PROGRESSION_RATE_LABEL,,The progression rate category of a participant. Calculated by dividing ARC cohort into thirds by their ALSFRS-R slopes. Only determined for participants with 3+ ALSFRS-R entries. 
+ALS_FRS_SLOPE_DATA,ALSFRS_SLOPE_DATA_RESPIRATORY_INSUFFICIENCY,,Calculated slope for Als Frs scores for a participant's respiratory insufficiency per day
+ALS_FRS_SLOPE_DATA,ALSFRS_SLOPE_DATA_SALIVATION,,"Calculated slope for Als Frs scores for a participant's difficulty salivation, per day"
+ALS_FRS_SLOPE_DATA,ALSFRS_SLOPE_DATA_SPEECH,,"Calculated slope for Als Frs scores for a participant's ability to talk, per day"
+ALS_FRS_SLOPE_DATA,ALSFRS_SLOPE_DATA_SWALLOWING,,"Calculated slope for Als Frs scores for a participant's ability to swallow, per day"
+ALS_FRS_SLOPE_DATA,ALSFRS_SLOPE_DATA_TOTAL_SCORE,,"The calculated slope of a total participant's frs scores, per day."
+ALS_FRS_SLOPE_DATA,ALSFRS_SLOPE_DATA_TURNING_IN_BED,,"Calculated slope for Als Frs scores for a participant's ability to turn in bed, per day"
+ALS_FRS_SLOPE_DATA,ALSFRS_SLOPE_DATA_WALKING,,"Calculated slope for Als Frs scores for a participant's ability to walk, per day"
+BLOOD_DRAW_DATA,BLOOD_DRAW_DATA_ALBUMIN_G_DL,,Albumin/Globulin Ratio from Complete Metabolic Panel. 
+BLOOD_DRAW_DATA,BLOOD_DRAW_DATA_ALKALINE_PHOSPHATASE_U_L,,Measure from CMP on serum sample. Quest Diagnostics.
+BLOOD_DRAW_DATA,BLOOD_DRAW_DATA_APPOINTMENT_DATE,,Measure from CMP on serum sample. Quest Diagnostics.
+BLOOD_DRAW_DATA,BLOOD_DRAW_DATA_APPOINTMENT_MONTH,,Appointment Date. 
+BLOOD_DRAW_DATA,BLOOD_DRAW_DATA_APPOINTMENT_QUARTER,,Appointment Date Month. 
+BLOOD_DRAW_DATA,BLOOD_DRAW_DATA_APPOINTMENT_RAW,,Appointment Date Quarter. 
+BLOOD_DRAW_DATA,BLOOD_DRAW_DATA_APPOINTMENT_TIME,,Appointment Full Date + Time. 
+BLOOD_DRAW_DATA,BLOOD_DRAW_DATA_APPOINTMENT_WEEK,,Appointment Date Time. 
+BLOOD_DRAW_DATA,BLOOD_DRAW_DATA_APPOINTMENT_YEAR,,Appointment Date Week. 
+BLOOD_DRAW_DATA,BLOOD_DRAW_DATA_A_G_RATIO,,Appointment Date Year. 
+BLOOD_DRAW_DATA,BLOOD_DRAW_DATA_BASOPHILS,,Measure from CBC on whole blood sample. Quest Diagnostics.
+BLOOD_DRAW_DATA,BLOOD_DRAW_DATA_BASOPHILS_ABS_10_3_MM3,,Measure from CBC on whole blood sample. Quest Diagnostics.
+BLOOD_DRAW_DATA,BLOOD_DRAW_DATA_BILIRUBIN_TOTAL_MG_DL,,Measure from CMP on serum sample. Quest Diagnostics.
+BLOOD_DRAW_DATA,BLOOD_DRAW_DATA_BUN_CREATININE_RATIO,,Measure from CMP on Serum Sample. Quest Diagnostics. 
+BLOOD_DRAW_DATA,BLOOD_DRAW_DATA_BUN_MG_DL,,Measure from CMP on Serum Sample. Quest Diagnostics. 
+BLOOD_DRAW_DATA,BLOOD_DRAW_DATA_CALCIUM_MG_DL,,Measure from CMP on serum sample. Quest Diagnostics.
+BLOOD_DRAW_DATA,BLOOD_DRAW_DATA_CHLORIDE_MMOL_L,,Measure from CMP on serum sample. Quest Diagnostics.
+BLOOD_DRAW_DATA,BLOOD_DRAW_DATA_CO2_MMOL_L,,Measure from CMP on Serum Sample. Quest Diagnostics.
+BLOOD_DRAW_DATA,BLOOD_DRAW_DATA_COMPLETION_STATUS,,"Completion status of blood draw. (Pass, Fail but Proceed, Fail). Fail but proceed indicates one aspect of the collection was incomplete or abnormal."
+BLOOD_DRAW_DATA,BLOOD_DRAW_DATA_CREATININE_MG_DL,,Measure from CMP on Serum Sample. Quest Diagnostics. 
+BLOOD_DRAW_DATA,BLOOD_DRAW_DATA_DAYS_SINCE_ONSET,,Days since onset of participant's symptoms
+BLOOD_DRAW_DATA,BLOOD_DRAW_DATA_DAYS_SINCE_SIGN_UP,,Days since sign up in ARC
+BLOOD_DRAW_DATA,BLOOD_DRAW_DATA_EGFR_ML_MIN_1_3_SQ_M,,Measure from CMP on Serum Sample. Quest Diagnostics. 
+BLOOD_DRAW_DATA,BLOOD_DRAW_DATA_EOSINOPHILS,,Measure from CBC on whole blood sample. Quest Diagnostics.
+BLOOD_DRAW_DATA,BLOOD_DRAW_DATA_EOSINOPHILS_ABS_10_3_MM3,,Measure from CBC on whole blood sample. Quest Diagnostics.
+BLOOD_DRAW_DATA,BLOOD_DRAW_DATA_EVENT_ID,,back end ID of the appointment 
+BLOOD_DRAW_DATA,BLOOD_DRAW_DATA_GLOBULIN_G_DL,,Measure from CMP on serum sample. Quest Diagnostics.
+BLOOD_DRAW_DATA,BLOOD_DRAW_DATA_GLUCOSE_MG_DL,,Measure from CMP on serum sample. Quest Diagnostics.
+BLOOD_DRAW_DATA,BLOOD_DRAW_DATA_HEMATOCRIT,,Measure from CBC on whole blood sample. Quest Diagnostics.
+BLOOD_DRAW_DATA,BLOOD_DRAW_DATA_HEMOGLOBIN,,Measure from CBC on whole blood sample. Quest Diagnostics.
+BLOOD_DRAW_DATA,BLOOD_DRAW_DATA_IMM_GRANS,,Measure from CBC on whole blood sample. Boston Clin Labs
+BLOOD_DRAW_DATA,BLOOD_DRAW_DATA_IMM_GRANS_ABS_10_3_MM3,,Measure from CBC on whole blood sample. Boston Clin Labs
+BLOOD_DRAW_DATA,BLOOD_DRAW_DATA_LYMPHOCYTES,,Measure from CBC on whole blood sample. Quest Diagnostics.
+BLOOD_DRAW_DATA,BLOOD_DRAW_DATA_LYMPHOCYTES_ABS_10_3_MM3,,Measure from CBC on whole blood sample. Quest Diagnostics.
+BLOOD_DRAW_DATA,BLOOD_DRAW_DATA_MCHC,,Measure from CBC on whole blood sample. Quest Diagnostics.
+BLOOD_DRAW_DATA,BLOOD_DRAW_DATA_MCH_PG,,Measure from CBC on whole blood sample. Quest Diagnostics.
+BLOOD_DRAW_DATA,BLOOD_DRAW_DATA_MCV_FL,,Measure from CBC on whole blood sample. Quest Diagnostics.
+BLOOD_DRAW_DATA,BLOOD_DRAW_DATA_MEAN_PLATELET_VOLUME_FL,,Measure from CBC on whole blood sample. Quest Diagnostics.
+BLOOD_DRAW_DATA,BLOOD_DRAW_DATA_MONOCYTES,,Measure from CBC on whole blood sample. Quest Diagnostics.
+BLOOD_DRAW_DATA,BLOOD_DRAW_DATA_MONOCYTES_ABS_10_3_MM3,,Measure from CBC on whole blood sample. Quest Diagnostics.
+BLOOD_DRAW_DATA,BLOOD_DRAW_DATA_NEUTROPHILS,,Measure from CBC on whole blood sample. Quest Diagnostics.
+BLOOD_DRAW_DATA,BLOOD_DRAW_DATA_NEUTROPHILS_ABS_10_3_MM3,,Measure from CBC on whole blood sample. Quest Diagnostics.
+BLOOD_DRAW_DATA,BLOOD_DRAW_DATA_NUCLEATED_RBC_100_WBC,,Measure from CBC on whole blood sample. Quest Diagnostics.
+BLOOD_DRAW_DATA,BLOOD_DRAW_DATA_NUCLEATED_RBC_ABS_10_3_MM3,,Measure from CBC on whole blood sample. Quest Diagnostics.
+BLOOD_DRAW_DATA,BLOOD_DRAW_DATA_PARTICIPANT_ID,,Every participant's Subject ID within the ARC Program. 
+BLOOD_DRAW_DATA,BLOOD_DRAW_DATA_PLATELET_COUNT_10_3_MM3,,Measure from CBC on whole blood sample. Quest Diagnostics.
+BLOOD_DRAW_DATA,BLOOD_DRAW_DATA_POTASSIUM_MMOL_L,,Measure from CMP on serum sample. Quest Diagnostics.
+BLOOD_DRAW_DATA,BLOOD_DRAW_DATA_RDW,,Measure from CBC on whole blood sample. Quest Diagnostics.
+BLOOD_DRAW_DATA,BLOOD_DRAW_DATA_RED_BLOOD_CELL_COUNT_10_6_MM3,,Measure from CBC on whole blood sample. Quest Diagnostics.
+BLOOD_DRAW_DATA,BLOOD_DRAW_DATA_SGOT_AST_U_L,,Measure from CMP on Serum Sample. Quest Diagnostics. 
+BLOOD_DRAW_DATA,BLOOD_DRAW_DATA_SGPT_AST_U_L,,Measure from CMP on Serum Sample. Quest Diagnostics.
+BLOOD_DRAW_DATA,BLOOD_DRAW_DATA_SODIUM_MMOL_L,,Measure from CMP on serum sample. Quest Diagnostics.
+BLOOD_DRAW_DATA,BLOOD_DRAW_DATA_TOTAL_PROTEIN_G_DL,,Measure from CMP on serum sample. Quest Diagnostics.
+BLOOD_DRAW_DATA,BLOOD_DRAW_DATA_WHITE_BLOOD_CELL_COUNT_10_3_MM3,,Measure from CBC on whole blood sample. Quest Diagnostics.
+CLINICAL_TRIAL_DATA,CLINICAL_TRIAL_PARTICIPATION_DATE_REPORTED_DATE,,Date when participant submitted trial information to the program
+CLINICAL_TRIAL_DATA,CLINICAL_TRIAL_PARTICIPATION_DATE_REPORTED_MONTH,,Month when participant submitted trial information to the program
+CLINICAL_TRIAL_DATA,CLINICAL_TRIAL_PARTICIPATION_DATE_REPORTED_QUARTER,,Quarter when participant submitted trial information to the program
+CLINICAL_TRIAL_DATA,CLINICAL_TRIAL_PARTICIPATION_DATE_REPORTED_RAW,,Full date + time when participant submitted trial information to the program
+CLINICAL_TRIAL_DATA,CLINICAL_TRIAL_PARTICIPATION_DATE_REPORTED_TIME,,Time when participant submitted trial information to the program
+CLINICAL_TRIAL_DATA,CLINICAL_TRIAL_PARTICIPATION_DATE_REPORTED_WEEK,,Beginning (Monday) date of week when participant submitted trial information to the program
+CLINICAL_TRIAL_DATA,CLINICAL_TRIAL_PARTICIPATION_DATE_REPORTED_YEAR,,Year when participant submitted trial information to the program
+CLINICAL_TRIAL_DATA,CLINICAL_TRIAL_PARTICIPATION_NCT_NUMBER,,ID of the Clinical Trial
+CLINICAL_TRIAL_DATA,CLINICAL_TRIAL_PARTICIPATION_PARTICIPANT_ID,,Every participant's Subject ID within the ARC Program. 
+CLINICAL_TRIAL_DATA,CLINICAL_TRIAL_PARTICIPATION_TRIAL_JOINED_DATE_DATE,,Date when participant began participating in the trial
+CLINICAL_TRIAL_DATA,CLINICAL_TRIAL_PARTICIPATION_TRIAL_JOINED_DATE_MONTH,,Month when participant began participating in the trial
+CLINICAL_TRIAL_DATA,CLINICAL_TRIAL_PARTICIPATION_TRIAL_JOINED_DATE_QUARTER,,Quarter when participant began participating in the trial
+CLINICAL_TRIAL_DATA,CLINICAL_TRIAL_PARTICIPATION_TRIAL_JOINED_DATE_RAW,,Full date + time when participant began participating in the trial
+CLINICAL_TRIAL_DATA,CLINICAL_TRIAL_PARTICIPATION_TRIAL_JOINED_DATE_TIME,,Time when participant began participating in the trial
+CLINICAL_TRIAL_DATA,CLINICAL_TRIAL_PARTICIPATION_TRIAL_JOINED_DATE_WEEK,,Beginning (Monday) date of week when participant began participating in the trial
+CLINICAL_TRIAL_DATA,CLINICAL_TRIAL_PARTICIPATION_TRIAL_JOINED_DATE_YEAR,,Year when participant began participating in the trial
+CLINICAL_TRIAL_DATA,CLINICAL_TRIAL_PARTICIPATION_TRIAL_LINK,,Link to the Clinical Trial
+CLINICAL_TRIAL_DATA,CLINICAL_TRIAL_PARTICIPATION_TRIAL_NAME,,Name of the clinical trial participated in
+CLINICAL_TRIAL_DATA,CLINICAL_TRIAL_PARTICIPATION_TRIAL_STOPPED_DATE_DATE,,Time when participant stopped participating in the trial
+CLINICAL_TRIAL_DATA,CLINICAL_TRIAL_PARTICIPATION_TRIAL_STOPPED_DATE_MONTH,,Month when participant stopped participating in the trial
+CLINICAL_TRIAL_DATA,CLINICAL_TRIAL_PARTICIPATION_TRIAL_STOPPED_DATE_QUARTER,,Quarter when participant stopped participating in the trial
+CLINICAL_TRIAL_DATA,CLINICAL_TRIAL_PARTICIPATION_TRIAL_STOPPED_DATE_RAW,,Full date + time when participant stopped participating in the trial
+CLINICAL_TRIAL_DATA,CLINICAL_TRIAL_PARTICIPATION_TRIAL_STOPPED_DATE_TIME,,Time when participant stopped participating in the trial
+CLINICAL_TRIAL_DATA,CLINICAL_TRIAL_PARTICIPATION_TRIAL_STOPPED_DATE_WEEK,,Beginning (Monday) date of week when participant stopped participating in the trial
+CLINICAL_TRIAL_DATA,CLINICAL_TRIAL_PARTICIPATION_TRIAL_STOPPED_DATE_YEAR,,Year when participant stopped participating in the trial
+DRUG_ASSIGNMENT_DATA,DRUG_ASSIGNMENT_DATA_ACTIVE_INGREDIENT,,Active ingredient(s) of the drug. 
+DRUG_ASSIGNMENT_DATA,DRUG_ASSIGNMENT_DATA_CUSTOM_DOSAGE,,Custom dosage provided by participant if their dosage regimen was not offered. 
+DRUG_ASSIGNMENT_DATA,DRUG_ASSIGNMENT_DATA_CUSTOM_FORM,,Custom form of drug used by participant if their drug form was not offered. 
+DRUG_ASSIGNMENT_DATA,DRUG_ASSIGNMENT_DATA_DOSAGE_ID,,Internal ID for the dosage regimen for a given drug.
+DRUG_ASSIGNMENT_DATA,DRUG_ASSIGNMENT_DATA_DRUG_DOSAGE,,Dosage regimen for given drug. 
+DRUG_ASSIGNMENT_DATA,DRUG_ASSIGNMENT_DATA_DRUG_FORM,,Physical form for given drug.
+DRUG_ASSIGNMENT_DATA,DRUG_ASSIGNMENT_DATA_DRUG_ID,,"For internal use, ID for a given drug."
+DRUG_ASSIGNMENT_DATA,DRUG_ASSIGNMENT_DATA_DRUG_NAME,,Name of the drug taken by participant
+DRUG_ASSIGNMENT_DATA,DRUG_ASSIGNMENT_DATA_END_DATE_DATE,,Date when participant reports stopping drug regimen  
+DRUG_ASSIGNMENT_DATA,DRUG_ASSIGNMENT_DATA_END_DATE_MONTH,,Month when participant reports stopping drug regimen  
+DRUG_ASSIGNMENT_DATA,DRUG_ASSIGNMENT_DATA_END_DATE_QUARTER,,Quarter when participant reports stopping drug regimen  
+DRUG_ASSIGNMENT_DATA,DRUG_ASSIGNMENT_DATA_END_DATE_RAW,,Full date + time when participant reports stopping drug regimen  
+DRUG_ASSIGNMENT_DATA,DRUG_ASSIGNMENT_DATA_END_DATE_TIME,,Time when participant reports stopping drug regimen  
+DRUG_ASSIGNMENT_DATA,DRUG_ASSIGNMENT_DATA_END_DATE_WEEK,,Beginning (Monday) date of the week when participant reports stopping drug regimen  
+DRUG_ASSIGNMENT_DATA,DRUG_ASSIGNMENT_DATA_END_DATE_YEAR,,Year when participant reports stopping drug regimen  
+DRUG_ASSIGNMENT_DATA,DRUG_ASSIGNMENT_DATA_ENTRY_DATE_DATE,,Date timestamp when data was inputed
+DRUG_ASSIGNMENT_DATA,DRUG_ASSIGNMENT_DATA_ENTRY_DATE_MONTH,,Month when data was inputed
+DRUG_ASSIGNMENT_DATA,DRUG_ASSIGNMENT_DATA_ENTRY_DATE_QUARTER,,Quarter when data was inputed
+DRUG_ASSIGNMENT_DATA,DRUG_ASSIGNMENT_DATA_ENTRY_DATE_RAW,,Full date + time when data was inputed
+DRUG_ASSIGNMENT_DATA,DRUG_ASSIGNMENT_DATA_ENTRY_DATE_TIME,,Time when data was inputed
+DRUG_ASSIGNMENT_DATA,DRUG_ASSIGNMENT_DATA_ENTRY_DATE_WEEK,,Beginning (Monday) date of the week when data was inputed
+DRUG_ASSIGNMENT_DATA,DRUG_ASSIGNMENT_DATA_ENTRY_DATE_YEAR,,Year when data was inputed
+DRUG_ASSIGNMENT_DATA,DRUG_ASSIGNMENT_DATA_PARTICIPANT_ID,,Every participant's Subject ID within the ARC Program. 
+DRUG_ASSIGNMENT_DATA,DRUG_ASSIGNMENT_DATA_START_DATE_DATE,,Date when participant reports starts drug regimen
+DRUG_ASSIGNMENT_DATA,DRUG_ASSIGNMENT_DATA_START_DATE_MONTH,,Month when participant reports starts drug regimen
+DRUG_ASSIGNMENT_DATA,DRUG_ASSIGNMENT_DATA_START_DATE_QUARTER,,Quarter when participant reports starts drug regimen
+DRUG_ASSIGNMENT_DATA,DRUG_ASSIGNMENT_DATA_START_DATE_RAW,,Full date + time when participant reports starts drug regimen
+DRUG_ASSIGNMENT_DATA,DRUG_ASSIGNMENT_DATA_START_DATE_TIME,,Time when participant reports starts drug regimen
+DRUG_ASSIGNMENT_DATA,DRUG_ASSIGNMENT_DATA_START_DATE_WEEK,,Beginning (Monday) date of the week when participant reports starts drug regimen
+DRUG_ASSIGNMENT_DATA,DRUG_ASSIGNMENT_DATA_START_DATE_YEAR,,Year when participant reports starts drug regimen
+GENOMIC_SILVER_LAYER_PART,PARTICIPANT_VARIANT_DATA_FILTER,,"Indicates which filters have failed (semicolon-separated), PASS or MISSING. Variant Call Format (VCF) documentation: https://samtools.github.io/hts-specs/VCFv4.2.pdf"
+GENOMIC_SILVER_LAYER_PART,PARTICIPANT_VARIANT_DATA_GENOTYPE_1,,"Presence of mutation in Allele 1, along with variant possibilty. (E.g., 0/1 means no mutation in allele 1 and first variant possibilty in allele 2.) From participant VCF."
+GENOMIC_SILVER_LAYER_PART,PARTICIPANT_VARIANT_DATA_GENOTYPE_2,,"Presence of mutation in Allele 2, along with variant possibilty. (E.g., 0/1 means no mutation in allele 1 and first variant possibilty in allele 2.) From participant VCF."
+GENOMIC_SILVER_LAYER_PART,PARTICIPANT_VARIANT_DATA_PARTICIPANT_ID,,Every participant's Subject ID within the ARC Program. 
+GENOMIC_SILVER_LAYER_PART,PARTICIPANT_VARIANT_DATA_PT_ALLELE_1_ALT,,DNA Alternative base for Allele 1 found in participant sequencing.
+GENOMIC_SILVER_LAYER_PART,PARTICIPANT_VARIANT_DATA_PT_ALLELE_2_ALT,,DNA Alternative base for Allele 2 found in participant sequencing. 
+GENOMIC_SILVER_LAYER_PART,PARTICIPANT_VARIANT_DATA_PT_REFERENCE_BASE,,DNA Reference base from participant sequencing data. 
+GENOMIC_SILVER_LAYER_PART,PARTICIPANT_VARIANT_DATA_QUALITY,,"phred-scaled quality score for the assertion made in ALT. In other words, it's: 10log_10 prob(call in ALT is wrong). Quality score that is on a log scale. 100 means 1 in 10^10 chance of error. Variant Call Format (VCF) documentation: https://samtools.github.io/hts-specs/VCFv4.2.pdf"
+GENOMIC_SILVER_LAYER_PART,PARTICIPANT_VARIANT_DATA_RSID_FROM_PT_DATA,,Sample ID used by the Broad Institute
+GENOMIC_SILVER_LAYER_PART,PARTICIPANT_VARIANT_DATA_SAMPLE_ID,,rsID from participant genomic data. 
+STRANALYSIS,STR_ANALYSIS_ALLELE_1_MAX_CONFIDENCE_INTERVAL,,ExpansionHunters upper conficence interval for Allele 1
+STRANALYSIS,STR_ANALYSIS_ALLELE_1_MIN_CONFIDENCE_INTERVAL,,ExpansionHunters lower conficence interval for Allele 1
+STRANALYSIS,STR_ANALYSIS_ALLELE_1_REPEAT_COUNT,,Repeat count for the longer allele
+STRANALYSIS,STR_ANALYSIS_ALLELE_1_REPEAT_STATUS,,"Normal, Intermediate, Pathogenic, or No Conditions met (this occurs when repeat count falls in an undefined range from the STRipy database)"
+STRANALYSIS,STR_ANALYSIS_ALLELE_2_MAX_CONFIDENCE_INTERVAL,,ExpansionHunters upper conficence interval for Allele 2
+STRANALYSIS,STR_ANALYSIS_ALLELE_2_MIN_CONFIDENCE_INTERVAL,,ExpansionHunters lower conficence interval for Allele 2
+STRANALYSIS,STR_ANALYSIS_ALLELE_2_REPEAT_COUNT,,Repeat count for the longer allele
+STRANALYSIS,STR_ANALYSIS_ALLELE_2_REPEAT_STATUS,,"Normal, Intermediate, Pathogenic, or No Conditions met (this occurs when repeat count falls in an undefined range from the STRipy database)"
+STRANALYSIS,STR_ANALYSIS_COVERAGE,,"Value based on how many reads were mapped to the expansion loci, partially mapped reads (flanking) give partial values"
+STRANALYSIS,STR_ANALYSIS_DISEASE,,Disease associated with particular expansion
+STRANALYSIS,STR_ANALYSIS_INTERMEDIATE,,Repeat range that might be pathogenic
+STRANALYSIS,STR_ANALYSIS_LOCATION,,"Defines if the expansion is in a coding, intronic, or 3',5' UTR"
+STRANALYSIS,STR_ANALYSIS_NORMAL,,Repeat range considered normal
+STRANALYSIS,STR_ANALYSIS_NOTES,,"Flags participant IDs that had to be manually renamed (SM-9J498 = 1, SM9J49F = 2, ALSSP133 = 3)"
+STRANALYSIS,STR_ANALYSIS_PARTICIPANT_ID,,Every participant's Subject ID within the ARC Program. 
+STRANALYSIS,STR_ANALYSIS_PATHOGENIC,,Repeat range that is pathogenic
+STRANALYSIS,STR_ANALYSIS_REFERENCE_REGION_HG19,,Human genome build hg19 coordinates
+STRANALYSIS,STR_ANALYSIS_REFERENCE_REGION_HG38,,Human genome build hg38 coordinates
+STRANALYSIS,STR_ANALYSIS_REPEAT_TYPE,,"Repeat structure (standard, imperfect, replaced)"
+STRANALYSIS,STR_ANALYSIS_REPEAT_UNIT,,Nucleotide motif that is repeated
+STRANALYSIS,STR_ANALYSIS_STRIPY_URL,,"Gene included in ExpansionHunter analysis. Several genes have multiple loci analysed (e.g. CNBP, CNBP_CA, CNBP_CAGA)"
+STRANALYSIS,STR_ANALYSIS_STR_GENE,,"URL for the STRipy database, curated by the creators of ExpansionHunter. Repeat count cut-offs were taken from the STRipy database"
+SUBJECT_DATA_RRV_2,PARTICIPANT_DATA_AGE_AT_DEATH,,Age of participant at death
+SUBJECT_DATA_RRV_2,PARTICIPANT_DATA_AGE_AT_SIGN_UP,,Age of participant at sign up for the ARC study
+SUBJECT_DATA_RRV_2,PARTICIPANT_DATA_BIRTH_DATE_YEAR,,Birth year of the participant 
+SUBJECT_DATA_RRV_2,PARTICIPANT_DATA_C9ORF72_STATUS_SELF_REPORTED_YES_NO,,Participant reported status of carrying a C9orf72 Mutation
+SUBJECT_DATA_RRV_2,PARTICIPANT_DATA_C9ORF72_STATUS_TDI_REPORTED,,ALSTDI reported status of carrying a C9orf72 Mutation
+SUBJECT_DATA_RRV_2,PARTICIPANT_DATA_COUNTRY,,The country in which the participant lives
+SUBJECT_DATA_RRV_2,PARTICIPANT_DATA_CURRENT_AGE,,The current age of the participant
+SUBJECT_DATA_RRV_2,PARTICIPANT_DATA_DAYS_SINCE_SIGNUP,,Days since the participant signed up for the ARC program
+SUBJECT_DATA_RRV_2,PARTICIPANT_DATA_DECEASED_DATE_YEAR,,Years since the participant signed up for the ARC program
+SUBJECT_DATA_RRV_2,PARTICIPANT_DATA_DECEASED_YES_NO,,Whether or not the participant is deceased
+SUBJECT_DATA_RRV_2,PARTICIPANT_DATA_DIAGNOSIS,,Death year of the participant
+SUBJECT_DATA_RRV_2,PARTICIPANT_DATA_DRUG_ID,,"The diagnosis status of the participant: Definitive, Probable, Possible, Suspected, Healthy"
+SUBJECT_DATA_RRV_2,PARTICIPANT_DATA_ETHNICITY,,"For internal use, ID for a given drug."
+SUBJECT_DATA_RRV_2,PARTICIPANT_DATA_FAMILY_WITH_ALS,,The ethnicity of the participant
+SUBJECT_DATA_RRV_2,PARTICIPANT_DATA_FORMAL_DIAGNOSIS_DATE_DATE,,"Whether or not the participant has family members with ALS, past or present"
+SUBJECT_DATA_RRV_2,PARTICIPANT_DATA_FORMAL_DIAGNOSIS_DATE_MONTH,,The date when the participant received their formal diagnosis. 
+SUBJECT_DATA_RRV_2,PARTICIPANT_DATA_FORMAL_DIAGNOSIS_DATE_QUARTER,,The month when the participant received their formal diagnosis. 
+SUBJECT_DATA_RRV_2,PARTICIPANT_DATA_FORMAL_DIAGNOSIS_DATE_RAW,,The quarter when the participant received their formal diagnosis. 
+SUBJECT_DATA_RRV_2,PARTICIPANT_DATA_FORMAL_DIAGNOSIS_DATE_YEAR,,The full date + time when the participant received their formal diagnosis. 
+SUBJECT_DATA_RRV_2,PARTICIPANT_DATA_HAS_3_OR_MORE_DATA_POINTS_YES_NO,,The year when the participant received their formal diagnosis. 
+SUBJECT_DATA_RRV_2,PARTICIPANT_DATA_HAS_GENOMIC_DATA_YES_NO,,Whether or not the participant has 3 or more data points for any one task.
+SUBJECT_DATA_RRV_2,PARTICIPANT_DATA_ONSET_AGE,,Whether or not the participant has genomic data available
+SUBJECT_DATA_RRV_2,PARTICIPANT_DATA_ONSET_DATE_DATE,,The participant's onset age for ALS
+SUBJECT_DATA_RRV_2,PARTICIPANT_DATA_ONSET_DATE_DAY_OF_WEEK,,The date of a participant's onset of ALS
+SUBJECT_DATA_RRV_2,PARTICIPANT_DATA_ONSET_DATE_MONTH,,The day of week of a participant's onset of ALS
+SUBJECT_DATA_RRV_2,PARTICIPANT_DATA_ONSET_DATE_QUARTER,,The month of a participant's onset of ALS
+SUBJECT_DATA_RRV_2,PARTICIPANT_DATA_ONSET_DATE_RAW,,The quarter of a participant's onset of ALS
+SUBJECT_DATA_RRV_2,PARTICIPANT_DATA_ONSET_DATE_TIME,,The full date + time of a participant's onset of ALS
+SUBJECT_DATA_RRV_2,PARTICIPANT_DATA_ONSET_DATE_WEEK,,The time of a participant's onset of ALS
+SUBJECT_DATA_RRV_2,PARTICIPANT_DATA_ONSET_DATE_YEAR,,The beginning (Monday) date of the week of a participant's onset of ALS
+SUBJECT_DATA_RRV_2,PARTICIPANT_DATA_ONSET_SITE,,The year of a participant's onset of ALS
+SUBJECT_DATA_RRV_2,PARTICIPANT_DATA_ONSET_SITE_UNNESTED,,The area of the body where the onset of ALS occurred for the participant (in list form)
+SUBJECT_DATA_RRV_2,PARTICIPANT_DATA_PARTICIPANT_ID,,The area of the body where the onset of ALS occurred for the participant (unnested)
+SUBJECT_DATA_RRV_2,PARTICIPANT_DATA_PARTICIPANT_TYPE,,Every participant's Subject ID within the ARC Program. 
+SUBJECT_DATA_RRV_2,PARTICIPANT_DATA_POSSIBLE_DIAGNOSIS_DATE_DATE,,"The identified participant Type given their diagnosis: ALS Patient, Healthy Volunteer, Reversal, or Asymptomatic Carrier"
+SUBJECT_DATA_RRV_2,PARTICIPANT_DATA_POSSIBLE_DIAGNOSIS_DATE_MONTH,,The date when the participant received their possible diagnosis. 
+SUBJECT_DATA_RRV_2,PARTICIPANT_DATA_POSSIBLE_DIAGNOSIS_DATE_QUARTER,,The month when the participant received their possible diagnosis. 
+SUBJECT_DATA_RRV_2,PARTICIPANT_DATA_POSSIBLE_DIAGNOSIS_DATE_RAW,,The quarter when the participant received their possible diagnosis. 
+SUBJECT_DATA_RRV_2,PARTICIPANT_DATA_POSSIBLE_DIAGNOSIS_DATE_YEAR,,The full date + time when the participant received their possible diagnosis. 
+SUBJECT_DATA_RRV_2,PARTICIPANT_DATA_REGION,,The year when the participant received their possible diagnosis. 
+SUBJECT_DATA_RRV_2,PARTICIPANT_DATA_SEX,,The region where the participant lives
+SUBJECT_DATA_RRV_2,PARTICIPANT_DATA_SIGN_UP_DATE_DATE,,The participant's Sex 
+SUBJECT_DATA_RRV_2,PARTICIPANT_DATA_SIGN_UP_DATE_DAY_OF_WEEK,,The date of when the participant signed up for the ARC program 
+SUBJECT_DATA_RRV_2,PARTICIPANT_DATA_SIGN_UP_DATE_MONTH,,The day of week when the participant signed up for the ARC program 
+SUBJECT_DATA_RRV_2,PARTICIPANT_DATA_SIGN_UP_DATE_QUARTER,,The month of when the participant signed up for the ARC program 
+SUBJECT_DATA_RRV_2,PARTICIPANT_DATA_SIGN_UP_DATE_RAW,,The quarter of when the participant signed up for the ARC program 
+SUBJECT_DATA_RRV_2,PARTICIPANT_DATA_SIGN_UP_DATE_TIME,,The full date + time of when the participant signed up for the ARC program 
+SUBJECT_DATA_RRV_2,PARTICIPANT_DATA_SIGN_UP_DATE_WEEK,,The time of when the participant signed up for the ARC program 
+SUBJECT_DATA_RRV_2,PARTICIPANT_DATA_SIGN_UP_DATE_YEAR,,The beginning (Monday) date of the week of when the participant signed up for the ARC program 
+SUBJECT_DATA_RRV_2,PARTICIPANT_DATA_TOTAL_ALSFRS,,The year of when the participant signed up for the ARC program 
+SUBJECT_DATA_RRV_2,PARTICIPANT_DATA_TOTAL_BLOOD_DRAW,,Total amount of Als Frs forms completed for a participant 
+SUBJECT_DATA_RRV_2,PARTICIPANT_DATA_TOTAL_TRACKER,,Total amount of blood draws for a participant
+SUBJECT_DATA_RRV_2,PARTICIPANT_DATA_TOTAL_VOICE_RECORDING,,Total amount of tracker exercises a participant has done
+SUBJECT_DATA_RRV_2,PARTICIPANT_DATA_YEARS_SINCE_SIGNUP,,Total amount of voice recordings a person has done
+SUBJECT_PROTOCOL_STATUS_DATA,PARTICIPANT_PROTOCOL_STATUS_DATA_PARTICIPANT_ID,,Every participant's Subject ID within the ARC Program. 
+SUBJECT_PROTOCOL_STATUS_DATA,PARTICIPANT_PROTOCOL_STATUS_DATA_PARTICIPANT_STATUS_NAME,,"Status of participant's ability to sign up. Qualified, pending, not qualified"
+SUBJECT_PROTOCOL_STATUS_DATA,PARTICIPANT_PROTOCOL_STATUS_DATA_PROTOCOL_CREATED_DATE,,Date when Protocol was created
+SUBJECT_PROTOCOL_STATUS_DATA,PARTICIPANT_PROTOCOL_STATUS_DATA_PROTOCOL_CREATED_MONTH,,Month when Protocol was created
+SUBJECT_PROTOCOL_STATUS_DATA,PARTICIPANT_PROTOCOL_STATUS_DATA_PROTOCOL_CREATED_QUARTER,,Quarter when Protocol was created
+SUBJECT_PROTOCOL_STATUS_DATA,PARTICIPANT_PROTOCOL_STATUS_DATA_PROTOCOL_CREATED_RAW,,Full date + time when Protocol was created
+SUBJECT_PROTOCOL_STATUS_DATA,PARTICIPANT_PROTOCOL_STATUS_DATA_PROTOCOL_CREATED_TIME,,Time when Protocol was created
+SUBJECT_PROTOCOL_STATUS_DATA,PARTICIPANT_PROTOCOL_STATUS_DATA_PROTOCOL_CREATED_WEEK,,Beginning (Monday) date of week when Protocol was created
+SUBJECT_PROTOCOL_STATUS_DATA,PARTICIPANT_PROTOCOL_STATUS_DATA_PROTOCOL_CREATED_YEAR,,Year when Protocol was created
+SUBJECT_PROTOCOL_STATUS_DATA,PARTICIPANT_PROTOCOL_STATUS_DATA_PROTOCOL_NAME,,Name of protocol participant is enrolled into. Translation or Proteomics
+SUBJECT_TRACKER_DATA,PARTICIPANT_TRACKER_DATA_ASSIGNED_DATE,,Date when trackers were assigned to a participant
+SUBJECT_TRACKER_DATA,PARTICIPANT_TRACKER_DATA_ASSIGNED_MONTH,,Month when trackers were assigned to a participant
+SUBJECT_TRACKER_DATA,PARTICIPANT_TRACKER_DATA_ASSIGNED_QUARTER,,Quarter when trackers were assigned to a participant
+SUBJECT_TRACKER_DATA,PARTICIPANT_TRACKER_DATA_ASSIGNED_RAW,,Full date + time when trackers were assigned to a participant
+SUBJECT_TRACKER_DATA,PARTICIPANT_TRACKER_DATA_ASSIGNED_TIME,,Time when trackers were assigned to a participant
+SUBJECT_TRACKER_DATA,PARTICIPANT_TRACKER_DATA_ASSIGNED_WEEK,,Beginning (Monday) date of week when trackers were assigned to a participant
+SUBJECT_TRACKER_DATA,PARTICIPANT_TRACKER_DATA_ASSIGNED_YEAR,,Year when trackers were assigned to a participant
+SUBJECT_TRACKER_DATA,PARTICIPANT_TRACKER_DATA_DATE_GIVEN_DATE,,Date when trackers were received by the participant
+SUBJECT_TRACKER_DATA,PARTICIPANT_TRACKER_DATA_DATE_GIVEN_MONTH,,Month when trackers were received by the participant
+SUBJECT_TRACKER_DATA,PARTICIPANT_TRACKER_DATA_DATE_GIVEN_QUARTER,,Quarter when trackers were received by the participant
+SUBJECT_TRACKER_DATA,PARTICIPANT_TRACKER_DATA_DATE_GIVEN_RAW,,Full date + time when trackers were received by the participant
+SUBJECT_TRACKER_DATA,PARTICIPANT_TRACKER_DATA_DATE_GIVEN_TIME,,Time when trackers were received by the participant
+SUBJECT_TRACKER_DATA,PARTICIPANT_TRACKER_DATA_DATE_GIVEN_WEEK,,Beginning (Monday) date of week when trackers were received by the participant
+SUBJECT_TRACKER_DATA,PARTICIPANT_TRACKER_DATA_DATE_GIVEN_YEAR,,Year when trackers were received by the participant
+SUBJECT_TRACKER_DATA,PARTICIPANT_TRACKER_DATA_DATE_RETURN_DATE,,Date when trackers were returned to TDI
+SUBJECT_TRACKER_DATA,PARTICIPANT_TRACKER_DATA_DATE_RETURN_MONTH,,Month when trackers were returned to TDI
+SUBJECT_TRACKER_DATA,PARTICIPANT_TRACKER_DATA_DATE_RETURN_QUARTER,,Quarter when trackers were returned to TDI
+SUBJECT_TRACKER_DATA,PARTICIPANT_TRACKER_DATA_DATE_RETURN_RAW,,Full date + time when trackers were returned to TDI
+SUBJECT_TRACKER_DATA,PARTICIPANT_TRACKER_DATA_DATE_RETURN_TIME,,Time when trackers were returned to TDI
+SUBJECT_TRACKER_DATA,PARTICIPANT_TRACKER_DATA_DATE_RETURN_WEEK,,Beginning (Monday) date of week when trackers were returned to TDI
+SUBJECT_TRACKER_DATA,PARTICIPANT_TRACKER_DATA_DATE_RETURN_YEAR,,Year when trackers were returned to TDI
+SUBJECT_TRACKER_DATA,PARTICIPANT_TRACKER_DATA_ISOLATIONS,,"Tracker's exercise isolation details. Contains subject form ID, start timestamp, limb assignment, end timestamp"
+SUBJECT_TRACKER_DATA,PARTICIPANT_TRACKER_DATA_LIMB_ASSIGNMENT,,The limb that the tracker was assigned to
+SUBJECT_TRACKER_DATA,PARTICIPANT_TRACKER_DATA_PARTICIPANT_ID,,Every participant's Subject ID within the ARC Program. 
+SUBJECT_TRACKER_DATA,PARTICIPANT_TRACKER_DATA_PARTICIPANT_TRACKER_ID,,Unique ID assigned to a participant/tracker/date combination
+SUBJECT_TRACKER_DATA,PARTICIPANT_TRACKER_DATA_TRACKER_ID,,Internal ID of the Tracker assigned
+SUBJECT_TRACKER_DATA,PARTICIPANT_TRACKER_DATA_TRACKER_SERIAL_NUMBER,,Serial number of the tracker assigned
+SUPPLEMENT_ASSIGNMENT_DATA,SUPPLEMENT_ASSIGNMENT_DATA_CUSTOM_SERVING_SIZE,,Custom Serving size of supplement as reported by participant
+SUPPLEMENT_ASSIGNMENT_DATA,SUPPLEMENT_ASSIGNMENT_DATA_CUSTOM_SERVING_SIZE_UNIT,,Custom Serving size unit (physical form) of supplement as reported by participant 
+SUPPLEMENT_ASSIGNMENT_DATA,SUPPLEMENT_ASSIGNMENT_DATA_END_DATE_DATE,,Participant's reported end date for use of a given supplement 
+SUPPLEMENT_ASSIGNMENT_DATA,SUPPLEMENT_ASSIGNMENT_DATA_END_DATE_MONTH,,Participant's reported end month for use of a given supplement 
+SUPPLEMENT_ASSIGNMENT_DATA,SUPPLEMENT_ASSIGNMENT_DATA_END_DATE_QUARTER,,Participant's reported end date quarter for use of a given supplement 
+SUPPLEMENT_ASSIGNMENT_DATA,SUPPLEMENT_ASSIGNMENT_DATA_END_DATE_RAW,,Participant's reported full end date + time for use of a given supplement 
+SUPPLEMENT_ASSIGNMENT_DATA,SUPPLEMENT_ASSIGNMENT_DATA_END_DATE_TIME,,Participant's reported end time for use of a given supplement 
+SUPPLEMENT_ASSIGNMENT_DATA,SUPPLEMENT_ASSIGNMENT_DATA_END_DATE_WEEK,,Participant's reported end week (uses Monday date) for use of a given supplement 
+SUPPLEMENT_ASSIGNMENT_DATA,SUPPLEMENT_ASSIGNMENT_DATA_END_DATE_YEAR,,Participant's reported end year for use of a given supplement 
+SUPPLEMENT_ASSIGNMENT_DATA,SUPPLEMENT_ASSIGNMENT_DATA_PARTICIPANT_ID,,Every participant's Subject ID within the ARC Program. 
+SUPPLEMENT_ASSIGNMENT_DATA,SUPPLEMENT_ASSIGNMENT_DATA_SERVING_SIZE,,"Entered by TDI, Serving size of a given supplement. "
+SUPPLEMENT_ASSIGNMENT_DATA,SUPPLEMENT_ASSIGNMENT_DATA_SERVING_SIZE_UNIT,,"Entered by TDI, Serving size of a given supplement. "
+SUPPLEMENT_ASSIGNMENT_DATA,SUPPLEMENT_ASSIGNMENT_DATA_START_DATE_DATE,,Participant's reported start date for use of a given supplement 
+SUPPLEMENT_ASSIGNMENT_DATA,SUPPLEMENT_ASSIGNMENT_DATA_START_DATE_MONTH,,Participant's reported start month for use of a given supplement 
+SUPPLEMENT_ASSIGNMENT_DATA,SUPPLEMENT_ASSIGNMENT_DATA_START_DATE_QUARTER,,Participant's reported start quarter for use of a given supplement 
+SUPPLEMENT_ASSIGNMENT_DATA,SUPPLEMENT_ASSIGNMENT_DATA_START_DATE_RAW,,Participant's reported full start date + time for use of a given supplement 
+SUPPLEMENT_ASSIGNMENT_DATA,SUPPLEMENT_ASSIGNMENT_DATA_START_DATE_TIME,,Participant's reported start time for use of a given supplement 
+SUPPLEMENT_ASSIGNMENT_DATA,SUPPLEMENT_ASSIGNMENT_DATA_START_DATE_WEEK,,Participant's reported start week (uses Monday date) for use of a given supplement 
+SUPPLEMENT_ASSIGNMENT_DATA,SUPPLEMENT_ASSIGNMENT_DATA_START_DATE_YEAR,,Participant's reported start year for use of a given supplement 
+SUPPLEMENT_ASSIGNMENT_DATA,SUPPLEMENT_ASSIGNMENT_DATA_SUPPLEMENT_ASSIGNMENT_FREQUENCY,,Frequency per day of taking given supplement.
+SUPPLEMENT_ASSIGNMENT_DATA,SUPPLEMENT_ASSIGNMENT_DATA_SUPPLEMENT_BRAND_NAME,,Supplement brand name
+SUPPLEMENT_ASSIGNMENT_DATA,SUPPLEMENT_ASSIGNMENT_DATA_SUPPLEMENT_ID,,"For internal use, ID of a given supplement."
+SUPPLEMENT_ASSIGNMENT_DATA,SUPPLEMENT_ASSIGNMENT_DATA_SUPPLEMENT_NET_CONTENTS,,Physical form of the supplement
+SUPPLEMENT_ASSIGNMENT_DATA,SUPPLEMENT_ASSIGNMENT_DATA_SUPPLEMENT_NET_CONTENT_UNIT,,Total amount of supplement unit in a given container
+SUPPLEMENT_ASSIGNMENT_DATA,SUPPLEMENT_ASSIGNMENT_DATA_SUPPLEMENT_PRODUCT_NAME,,Supplement generic name
+SURVEY_DATA,SURVEY_DATA_ANSWER_ID,,Number ID of the specific answer submission
+SURVEY_DATA,SURVEY_DATA_ANSWER_VALUE,,Participant's response to the given survey question
+SURVEY_DATA,SURVEY_DATA_DATE_SUBMITTED_DATE,,The date when the answers to the survey were submitted
+SURVEY_DATA,SURVEY_DATA_DATE_SUBMITTED_MONTH,,The month when the answers to the survey were submitted
+SURVEY_DATA,SURVEY_DATA_DATE_SUBMITTED_QUARTER,,The quarter when the answers to the survey were submitted
+SURVEY_DATA,SURVEY_DATA_DATE_SUBMITTED_RAW,,The full date + time when the answers to the survey were submitted
+SURVEY_DATA,SURVEY_DATA_DATE_SUBMITTED_TIME,,The time when the answers to the survey were submitted
+SURVEY_DATA,SURVEY_DATA_DATE_SUBMITTED_WEEK,,The beginning (Monday) date of week when the answers to the survey were submitted
+SURVEY_DATA,SURVEY_DATA_DATE_SUBMITTED_YEAR,,The year when the answers to the survey were submitted
+SURVEY_DATA,SURVEY_DATA_PARENT_QUESTION_TITLE,,"If there is a subquestion is tied to another question, i.e. if it is a reoccuring question or relies on the context of previous question, this field will provide the title of the connected question"
+SURVEY_DATA,SURVEY_DATA_PARTICIPANT_ID,,Every participant's Subject ID within the ARC Program. 
+SURVEY_DATA,SURVEY_DATA_QUESTION_ID,,Number ID of the Survey question
+SURVEY_DATA,SURVEY_DATA_QUESTION_TITLE,,The survey question provided
+SURVEY_DATA,SURVEY_DATA_RESPONSE_ID,,Number ID of the survey submission
+SURVEY_DATA,SURVEY_DATA_RESPONSE_ROUTE,,"If the survey parent question has multiple fields to respond to , i.e. click yes or no on the following you've experienced: Allergies, asthma,etc., the answer pipe will show you which part of the question the given answer value is responding to. Numbers values and 'nan' can be ignored. "
+SURVEY_DATA,SURVEY_DATA_SURVEY_TITLE,,The title of the given survery
+TRACKER_EXERCISE_ISOLATIONS,TRACKER_EXERCISE_ISOLATIONS_END_TIME_DATE,,Date when the participant finished completeing the tracker exercises
+TRACKER_EXERCISE_ISOLATIONS,TRACKER_EXERCISE_ISOLATIONS_END_TIME_MONTH,,Month when the participant finished completeing the tracker exercises
+TRACKER_EXERCISE_ISOLATIONS,TRACKER_EXERCISE_ISOLATIONS_END_TIME_QUARTER,,Quarter when the participant finished completeing the tracker exercises
+TRACKER_EXERCISE_ISOLATIONS,TRACKER_EXERCISE_ISOLATIONS_END_TIME_RAW,,Full date + time when the participant finished completeing the tracker exercises
+TRACKER_EXERCISE_ISOLATIONS,TRACKER_EXERCISE_ISOLATIONS_END_TIME_TIME,,Time when the participant finished completeing the tracker exercises
+TRACKER_EXERCISE_ISOLATIONS,TRACKER_EXERCISE_ISOLATIONS_END_TIME_WEEK,,Beginning (Monday) date of week when the participant finished completeing the tracker exercises
+TRACKER_EXERCISE_ISOLATIONS,TRACKER_EXERCISE_ISOLATIONS_END_TIME_YEAR,,Year when the participant finished completeing the tracker exercises
+TRACKER_EXERCISE_ISOLATIONS,TRACKER_EXERCISE_ISOLATIONS_START_TIME_DATE,,Date when the participant began doing the tracker exercises
+TRACKER_EXERCISE_ISOLATIONS,TRACKER_EXERCISE_ISOLATIONS_START_TIME_MONTH,,Month when the participant began doing the tracker exercises
+TRACKER_EXERCISE_ISOLATIONS,TRACKER_EXERCISE_ISOLATIONS_START_TIME_QUARTER,,Quarter when the participant began doing the tracker exercises
+TRACKER_EXERCISE_ISOLATIONS,TRACKER_EXERCISE_ISOLATIONS_START_TIME_RAW,,Full date + time when the participant began doing the tracker exercises
+TRACKER_EXERCISE_ISOLATIONS,TRACKER_EXERCISE_ISOLATIONS_START_TIME_TIME,,Time when the participant began doing the tracker exercises
+TRACKER_EXERCISE_ISOLATIONS,TRACKER_EXERCISE_ISOLATIONS_START_TIME_WEEK,,Beginning (Monday) date of week when the participant began doing the tracker exercises
+TRACKER_EXERCISE_ISOLATIONS,TRACKER_EXERCISE_ISOLATIONS_START_TIME_YEAR,,Year when the participant began doing the tracker exercises
+TRACKER_EXERCISE_ISOLATIONS,TRACKER_EXERCISE_ISOLATIONS_SUBJECT_TRACKER_ID,,ID given to participant/tracker pairing.
+VOICE_RECORDING_DATA,VOICE_RECORDING_DATA_DATE_COMPLETED_DATE,,Date when voice recording was done
+VOICE_RECORDING_DATA,VOICE_RECORDING_DATA_DATE_COMPLETED_MONTH,,Month when voice recording was done
+VOICE_RECORDING_DATA,VOICE_RECORDING_DATA_DATE_COMPLETED_QUARTER,,Quarter when voice recording was done
+VOICE_RECORDING_DATA,VOICE_RECORDING_DATA_DATE_COMPLETED_RAW,,Full date + time when voice recording was done
+VOICE_RECORDING_DATA,VOICE_RECORDING_DATA_DATE_COMPLETED_TIME,,Time when voice recording was done
+VOICE_RECORDING_DATA,VOICE_RECORDING_DATA_DATE_COMPLETED_WEEK,,Beginning (Monday) date of week when voice recording was done
+VOICE_RECORDING_DATA,VOICE_RECORDING_DATA_DATE_COMPLETED_YEAR,,Year when voice recording was done
+VOICE_RECORDING_DATA,VOICE_RECORDING_DATA_DAYS_SINCE_ONSET_FROM_RECORDING,,Days since onset from voice recording completion date. 
+VOICE_RECORDING_DATA,VOICE_RECORDING_DATA_DAYS_SINCE_SIGN_UP_FROM_RECORDING,,Days since signup from voice recording completion date. 
+VOICE_RECORDING_DATA,VOICE_RECORDING_DATA_FILE_MP3,,the file name of the mp3 recording of the specific voice recording
+VOICE_RECORDING_DATA,VOICE_RECORDING_DATA_FILE_WAV,,the file name of the wav recording of the specific voice recording
+VOICE_RECORDING_DATA,VOICE_RECORDING_DATA_PARTICIPANT_ID,,Every participant's Subject ID within the ARC Program. 
+VOICE_RECORDING_DATA,VOICE_RECORDING_DATA_RECORDING_ID,,Internal ID of the recording
+VOICE_RECORDING_DATA,VOICE_RECORDING_DATA_SCORE,,"Score generated by predictive machine learning model. Score is based on ""I owe you a yo-yo today"" phrases only."
+VOICE_RECORDING_DATA__PHRASES,VOICE_RECORDING_DATA_PHRASES_PHRASE_ID,INT,Internal ID for a phrase given during voice recording
+VOICE_RECORDING_DATA__PHRASES,VOICE_RECORDING_DATA_PHRASES_PHRASE_TEXT,VARCHAR,Text of one phrase assigned to a voice recording session
+VOICE_RECORDING_DATA__PHRASES,VOICE_RECORDING_DATA_PHRASES_RECORDING_PHRASE_ORDER,FLOAT,Where the phrase appeared in a given voice recording session.

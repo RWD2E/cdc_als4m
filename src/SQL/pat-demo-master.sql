@@ -1,7 +1,4 @@
 /*
-# Copyright (c) 2021-2025 University of Missouri                   
-# Author: Xing Song, xsm7f@umsystem.edu                            
-# File: pat-demo-master.sql
 # Description: create PAT_TABLE1 and generate summary statistics  
 */
 
@@ -174,6 +171,10 @@ with cte_ord as (
     from PAT_DEMO_LONG
     where cms_ind = 0
     group by patid
+), cte_partc as (
+    select distinct patid, 1 as PARTC_IND
+    from GROUSE_DB.CMS_PCORNET_CDM.LDS_ENROLLMENT
+    where raw_basis = 'C'
 )
 select a.patid
       ,a.birth_date
@@ -208,10 +209,12 @@ select a.patid
       ,case when ehr.ehr_start_date is not null then 1 else 0 end as ehr_ind
       ,ehr.ehr_start_date
       ,ehr.ehr_end_date
+      ,coalesce(ma.PARTC_IND,0) as PARTC_IND
 from cte_cmsdemo a
 left join cte_partab ab on a.patid = ab.patid
 left join cte_partd d on a.patid = d.patid
 left join cte_ehr ehr on a.patid = ehr.patid
+left join cte_partc ma on a.patid = ma.patid
 where a.rn = 1
 ;
 

@@ -143,6 +143,129 @@ call get_dm_event_long(
 select count(*), count(distinct patid) from DM_EVENT_LONG;
 --8272261
 
+select * from DM_EVENT_LONG limit 5;
+select * from GROUSE_DB.CMS_PCORNET_CDM.DEID_ENROLLMENT where raw_basis like '%C%' limit 5;
+
+select distinct event_type from DM_EVENT_LONG;
+
+/* EHR + CMS */
+create or replace table dm1_klompas as 
+with t2dm_cnt as (
+    select patid, count(distinct cd_date) as t2dm_cnt
+    from dm_long
+    where phe_type = 'T2DM'
+    group by patid
+), t1dm_cnt as (
+    select patid, count(distinct cd_date) as t1dm_cnt
+    from dm_long
+    where phe_type = 'T1DM'
+    group by patid
+), non_insulin_excld_met as (
+    select distinct patid, 0 as INSULIN_IND
+    from dm_long
+    where phe_type in (
+        'SU','AGI','GLP1','DPP4','MEG','AML','SGLT2','COMBO','TZD'
+    )
+), comp_phe as (
+    select  a.patid, 
+            a.t1dm_cnt,
+            b.t2dm_cnt,
+            (a.t1dm_cnt/(a.t1dm_cnt+b.t2dm_cnt)) as t1dm_rt,
+            coalesce(c.INSULIN_IND,1) as NOPO_IND
+        from t1dm_cnt a 
+        left join t2dm_cnt b on a.patid = b.patid
+        left join non_insulin_excld_met c on a.patid = c.patid
+)
+select a.*, 
+       case when a.t1dm_rt > 0.5 and a.NOPO_IND = 1 then 1 
+            else 0 
+       end as t1dm_ind
+from comp_phe a 
+; 
+
+select count(distinct patid), count(*), sum(t1dm_ind)
+from dm1_klompas
+;
+
+
+create or replace table dm1_klompas_EHR as 
+with t2dm_cnt as (
+    select patid, count(distinct cd_date) as t2dm_cnt
+    from dm_long
+    where phe_type = 'T2DM' and site <> 'CMS'
+    group by patid
+), t1dm_cnt as (
+    select patid, count(distinct cd_date) as t1dm_cnt
+    from dm_long
+    where phe_type = 'T1DM' and site <> 'CMS'
+    group by patid
+), non_insulin_excld_met as (
+    select distinct patid, 0 as INSULIN_IND
+    from dm_long
+    where phe_type in (
+        'SU','AGI','GLP1','DPP4','MEG','AML','SGLT2','COMBO','TZD'
+    ) and site <> 'CMS'
+), comp_phe as (
+    select  a.patid, 
+            a.t1dm_cnt,
+            b.t2dm_cnt,
+            (a.t1dm_cnt/(a.t1dm_cnt+b.t2dm_cnt)) as t1dm_rt,
+            coalesce(c.INSULIN_IND,1) as NOPO_IND
+        from t1dm_cnt a 
+        left join t2dm_cnt b on a.patid = b.patid
+        left join non_insulin_excld_met c on a.patid = c.patid
+)
+select a.*, 
+       case when a.t1dm_rt > 0.5 and a.NOPO_IND = 1 then 1 
+            else 0 
+       end as t1dm_ind
+from comp_phe a 
+; 
+
+select count(distinct patid), count(*), sum(t1dm_ind)
+from dm1_klompas_ehr
+;
+-- 253248	57588
+
+create or replace table dm1_klompas_CMS as 
+with t2dm_cnt as (
+    select patid, count(distinct cd_date) as t2dm_cnt
+    from dm_long
+    where phe_type = 'T2DM' and site = 'CMS'
+    group by patid
+), t1dm_cnt as (
+    select patid, count(distinct cd_date) as t1dm_cnt
+    from dm_long
+    where phe_type = 'T1DM' and site = 'CMS'
+    group by patid
+), non_insulin_excld_met as (
+    select distinct patid, 0 as INSULIN_IND
+    from dm_long
+    where phe_type in (
+        'SU','AGI','GLP1','DPP4','MEG','AML','SGLT2','COMBO','TZD'
+    ) and site = 'CMS'
+), comp_phe as (
+    select  a.patid, 
+            a.t1dm_cnt,
+            b.t2dm_cnt,
+            (a.t1dm_cnt/(a.t1dm_cnt+b.t2dm_cnt)) as t1dm_rt,
+            coalesce(c.INSULIN_IND,1) as NOPO_IND
+        from t1dm_cnt a 
+        left join t2dm_cnt b on a.patid = b.patid
+        left join non_insulin_excld_met c on a.patid = c.patid
+)
+select a.*, 
+       case when a.t1dm_rt > 0.5 and a.NOPO_IND = 1 then 1 
+            else 0 
+       end as t1dm_ind
+from comp_phe a 
+; 
+
+select count(distinct patid), count(*), sum(t1dm_ind)
+from dm1_klompas_cms
+;
+-- 1243814	1243814	106515
+
 create or replace table DM_TABLE1 as
 with cte_ord as (
     select patid, 
@@ -176,9 +299,11 @@ select a.patid
       ,a.distinct_event_cnt
       ,a.distinct_date_cnt
       ,a.event_str
+      ,coalesce(t1.T1DM_IND,0) as T1DM_IND
 from cte_ord a 
 join PAT_TABLE1 b on a.patid = b.patid
 join cte_dx1 c on a.patid = c.patid
+left join dm1_klompas t1 on a.patid = t1.patid
 where a.rn = 1 and b.birth_date is not null
       and a.distinct_date_cnt > 2  -- required at least another assertainment event at different time
       and a.event_str like '%DX%'  -- at least 1 confirmed diagnosis
@@ -188,4 +313,116 @@ select * from DM_TABLE1 limit 5;
 select count(*), count(distinct patid) from DM_TABLE1;
 -- 6,252,886
 
-select * from DM_TABLE1 limit 5;
+select T1DM_IND, count(*), count(distinct patid) from DM_TABLE1
+group by T1DM_IND;
+-- 1	96567
+-- 0	6156319
+
+
+
+/* EHR data */
+create or replace table DM_TABLE1_EHR as
+with cte_ord as (
+    select patid, 
+           event_type,
+           event_date,
+           age_at_event,
+           event_src,
+           count(distinct event_val) over (partition by patid) as distinct_event_cnt,
+           count(distinct event_date) over (partition by patid) as distinct_date_cnt,
+           listagg(distinct event_type || event_val, '|') within group (order by event_type || event_val) over (partition by patid) as event_str,
+        --    listagg(distinct event_type, '|') within group (order by event_type) over (partition by patid) as event_str,
+           row_number() over (partition by patid order by event_date) as rn
+    from DM_EVENT_LONG
+    where event_src <> 'CMS'
+), cte_dx1 as(
+    select patid,
+           min(event_date) as dm1dx_date
+    from DM_EVENT_LONG 
+    where event_type = 'DX' and event_src <> 'CMS'
+    group by patid
+)
+select a.patid 
+      ,b.birth_date
+      ,b.sex
+      ,b.race 
+      ,b.hispanic
+      ,c.dm1dx_date
+      ,a.event_type as index_event
+      ,a.event_date as index_date
+      ,a.age_at_event as age_at_index
+      ,a.event_src as index_src
+      ,a.distinct_event_cnt
+      ,a.distinct_date_cnt
+      ,a.event_str
+      ,coalesce(t1.T1DM_IND,0) as T1DM_IND
+from cte_ord a 
+join PAT_TABLE1 b on a.patid = b.patid
+join cte_dx1 c on a.patid = c.patid
+left join dm1_klompas_EHR t1 on a.patid = t1.patid
+where a.rn = 1 and b.birth_date is not null
+      and a.distinct_date_cnt > 2  -- required at least another assertainment event at different time
+      and a.event_str like '%DX%'  -- at least 1 confirmed diagnosis
+;
+
+select count(*), count(distinct patid) from DM_TABLE1_EHR;
+-- 1,399,897
+
+select T1DM_IND, count(*), count(distinct patid) from DM_TABLE1_EHR
+group by T1DM_IND;
+-- 1	47559
+-- 0	1352338
+
+/* CMS data */
+create or replace table DM_TABLE1_CMS as
+with cte_ord as (
+    select patid, 
+           event_type,
+           event_date,
+           age_at_event,
+           event_src,
+           count(distinct event_val) over (partition by patid) as distinct_event_cnt,
+           count(distinct event_date) over (partition by patid) as distinct_date_cnt,
+           listagg(distinct event_type || event_val, '|') within group (order by event_type || event_val) over (partition by patid) as event_str,
+        --    listagg(distinct event_type, '|') within group (order by event_type) over (partition by patid) as event_str,
+           row_number() over (partition by patid order by event_date) as rn
+    from DM_EVENT_LONG
+    where event_src = 'CMS'
+), cte_dx1 as(
+    select patid,
+           min(event_date) as dm1dx_date
+    from DM_EVENT_LONG 
+    where event_type = 'DX' and event_src = 'CMS'
+    group by patid
+)
+select a.patid 
+      ,b.birth_date
+      ,b.sex
+      ,b.race 
+      ,b.hispanic
+      ,c.dm1dx_date
+      ,a.event_type as index_event
+      ,a.event_date as index_date
+      ,a.age_at_event as age_at_index
+      ,a.event_src as index_src
+      ,a.distinct_event_cnt
+      ,a.distinct_date_cnt
+      ,a.event_str
+      ,coalesce(t1.T1DM_IND,0) as T1DM_IND
+from cte_ord a 
+join PAT_TABLE1 b on a.patid = b.patid
+join cte_dx1 c on a.patid = c.patid
+left join dm1_klompas_CMS t1 on a.patid = t1.patid
+where a.rn = 1 and b.birth_date is not null
+      and a.distinct_date_cnt > 2  -- required at least another 2 assertainment events at different time
+      and a.event_str like '%DX%'  -- at least 1 confirmed diagnosis
+;
+
+select count(*), count(distinct patid) from DM_TABLE1_CMS;
+-- 5,375,608
+
+select T1DM_IND, count(*), count(distinct patid) from DM_TABLE1_CMS
+group by T1DM_IND;
+-- 1	57053
+-- 0	5318555
+
