@@ -14,10 +14,64 @@ pacman::p_load(
 # make db connection
 sf_conn <- DBI::dbConnect(
   drv = odbc::odbc(),
-  dsn = Sys.getenv("ODBC_DSN_NAME"),
-  uid = Sys.getenv("SNOWFLAKE_USER"),
-  pwd = Sys.getenv("SNOWFLAKE_PWD")
+  dsn = "snowflake-id",
+  uid = "xsm7f@umsystem.edu",
+  pwd = ""
 )
+
+ccw<-tbl(sf_conn,sql("select * from ALS_MDT_CCW")) %>% collect()
+saveRDS(ccw,file="./data/als_mdt_ccw.rda")
+
+
+#==== Collect summaries ====
+dat<-tbl(sf_conn,sql("select * from ALS_DM_ANNUAL_RATES_ALL")) %>% collect()
+saveRDS(dat,file="./data/dmals_annual.rda")
+
+dat<-tbl(sf_conn,sql("select * from ALS_DM_ANNUAL_RATES_T1DM")) %>% collect()
+saveRDS(dat,file="./data/t1dmals_annual.rda")
+
+dat<-tbl(sf_conn,sql("select * from ALS_DM_ANNUAL_RATES_T2DM")) %>% collect()
+saveRDS(dat,file="./data/t2dmals_annual.rda")
+
+#==== collect Table 1 ====
+dat<-tbl(sf_conn,sql("select * from als_base")) %>% collect()
+saveRDS(dat,file="./data/als_case.rda")
+
+dat<-tbl(sf_conn,sql("select * from als_base_ehr")) %>% collect()
+saveRDS(dat,file="./data/als_case_ehr.rda")
+
+dat<-tbl(sf_conn,sql("select * from als_base_cms")) %>% collect()
+saveRDS(dat,file="./data/als_case_cms.rda")
+
+dat<-tbl(sf_conn,sql("select * from dm_als_base")) %>% collect()
+saveRDS(dat,file="./data/dm_als_case.rda")
+
+dat<-tbl(sf_conn,sql("select * from dm_als_base_ehr")) %>% collect()
+saveRDS(dat,file="./data/dm_als_case_ehr.rda")
+
+dat<-tbl(sf_conn,sql("select * from dm_base")) %>% collect()
+saveRDS(dat,file="./data/dm_als_case_cms.rda")
+
+dat<-tbl(sf_conn,sql("select * from dm_base_cms")) %>% collect()
+saveRDS(dat,file="./data/dm_als_case_cms.rda")
+
+dat<-tbl(sf_conn,sql("select * from dm_base")) %>% collect()
+saveRDS(dat,file="./data/dm_case.rda")
+
+dat<-tbl(sf_conn,sql("select * from dm_base_ehr")) %>% collect()
+saveRDS(dat,file="./data/dm_case_ehr.rda")
+
+#==== ALS, NonALS, Case-Control ====
+dat<-tbl(sf_conn,
+         sql("
+             select a.*, 'ALS' as PT_GRP from SX_ALS_GPC.ALS_TBL1 a
+             union 
+             select b.*, 'NonALS' from SX_ALS_GPC.NONALS_TBL1 b
+             union 
+             select c.*, 'MatchedNonALS' from SX_ALS_GPC.NONALS_MATCHED_TBL1 c
+             ")) %>% 
+  collect()
+saveRDS(dat,file="./data/als_case_ctrl.rds")
 
 #==== ALS cohort snapshot ====
 # collect table1 (demographic, primary outcome)

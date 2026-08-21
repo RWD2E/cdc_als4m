@@ -1,0 +1,432 @@
+---
+title: "ALS DM GLP1RA"
+author: "Xing Song"
+format: 
+  html:
+    self-contained: true
+editor: visual
+execute: 
+  echo: false
+  message: false
+  warning: false
+---
+
+```{r}
+#| label: load-pkg
+
+# rm(list=ls())
+pacman::p_load(
+  tidyverse,
+  magrittr,
+  stringr,
+  broom,
+  cowplot,
+  ggrepel,
+  kableExtra,
+  gtsummary,
+  devtools,
+  tableone,
+  pROC,
+  MASS,
+  nnet,
+  ordinal
+)
+source_url("https://raw.githubusercontent.com/sxinger/utils/master/analysis_util.R")
+source_url("https://raw.githubusercontent.com/sxinger/utils/master/plot_util.R")
+
+path_to_data<-"C:/repos/cdc_als4m/data"
+path_to_res<-"C:/repos/cdc_als4m/res"
+```
+
+```{r}
+#| label: load_data
+
+cnt<-readRDS(file.path(path_to_data,"dm_als_cnt.rda")) %>%
+  pivot_wider(
+    names_from = PAT_CNT_TYPE,
+    values_from = PAT_CNT
+  ) 
+
+dm<-readRDS(file.path(path_to_data,"dm_case.rda"))
+als<-readRDS(file.path(path_to_data,"als_case.rda"))
+als_dm<-readRDS(file.path(path_to_data,"dm_als_case.rda"))
+
+dm_ehr<-readRDS(file.path(path_to_data,"dm_case_ehr.rda"))
+als_ehr<-readRDS(file.path(path_to_data,"als_case_ehr.rda"))
+als_dm_ehr<-readRDS(file.path(path_to_data,"dm_als_case_ehr.rda"))
+```
+
+```{r}
+vars_bin<-c(
+    "SEX_F",
+    "SURV1YR",
+    "SURV3YR",
+    "SURV5YR"
+)
+
+vars_nom<-c(
+  "SEX",
+  "RACE",
+  "HISPANIC"
+)
+
+vars_ord<-c(
+)
+
+vars_cont<-c(
+  "AGE_AT_INDEX"
+)
+
+vars_cnt<-c(
+)
+
+vars<-c(
+  vars_bin,
+  vars_nom,
+  vars_ord,
+  vars_cont,
+  vars_cnt
+)
+
+facvars<-c(
+  vars_bin,
+  vars_nom,
+  vars_ord
+)
+
+tbl1<-CreateTableOne(
+  data = als,
+  vars = vars,
+  factorVars = facvars
+)
+kable(
+  print(tbl1, printToggle = FALSE), 
+  caption = "Table 1: Overall Cohort Characteristics (ALS,MIX)"
+)
+
+tbl2<-CreateTableOne(
+  data = als_ehr,
+  vars = vars,
+  factorVars = facvars
+)
+kable(
+  print(tbl2, printToggle = FALSE), 
+  caption = "Table 2: Overall Cohort Characteristics (ALS,EHR)"
+)
+
+tbl3<-CreateTableOne(
+  data = als_dm,
+  vars = vars,
+  factorVars = facvars
+)
+kable(
+  print(tbl3, printToggle = FALSE), 
+  caption = "Table 3: Overall Cohort Characteristics (ALS&DM,MIX)"
+)
+
+tbl4<-CreateTableOne(
+  data = als_dm_ehr,
+  vars = vars,
+  factorVars = facvars
+)
+kable(
+  print(tbl4, printToggle = FALSE), 
+  caption = "Table 4: Overall Cohort Characteristics (ALS&DM,EHR)"
+)
+
+tbl5<-CreateTableOne(
+  data = dm,
+  vars = vars,
+  factorVars = facvars
+)
+kable(
+  print(tbl5, printToggle = FALSE), 
+  caption = "Table 5: Overall Cohort Characteristics (DM,MIX)"
+)
+
+tbl6<-CreateTableOne(
+  data = dm_ehr,
+  vars = vars,
+  factorVars = facvars
+)
+kable(
+  print(tbl6, printToggle = FALSE), 
+  caption = "Table 6: Overall Cohort Characteristics (DM,EHR)"
+)
+
+```
+
+```{r}
+#| label: dm_prev
+#| warning: false
+
+
+z<-1.96
+prev_100<-data.frame(
+  CALYR=as.numeric(),
+  DATA_SRC=as.character(),
+  D=as.numeric(),
+  N=as.numeric(),
+  PREV_TYPE = as.character()
+) %>%
+  bind_rows(cnt %>% dplyr::select(CALYR,DATA_SRC,DM,ALL) %>% rename(D=DM,N=ALL) %>% mutate(PREV_TYPE = "DM")) %>%
+  # bind_rows(cnt %>% dplyr::select(CALYR,DATA_SRC,T2DM,ALL) %>% rename(D=T2DM,N=ALL) %>% mutate(PREV_TYPE = "T2DM")) %>%
+  # bind_rows(cnt %>% dplyr::select(CALYR,DATA_SRC,T1DM,ALL) %>% rename(D=T1DM,N=ALL) %>% mutate(PREV_TYPE = "T1DM")) %>%
+  bind_rows(cnt %>% dplyr::select(CALYR,DATA_SRC,ALS_DM,ALS) %>% rename(D=ALS_DM,N=ALS) %>% mutate(PREV_TYPE = "DMinALS")) %>%
+  # bind_rows(cnt %>% dplyr::select(CALYR,DATA_SRC,ALS_T2DM,ALS) %>% rename(D=ALS_T2DM,N=ALS) %>% mutate(PREV_TYPE = "T2DMinALS")) %>%
+  # bind_rows(cnt %>% dplyr::select(CALYR,DATA_SRC,ALS_T1DM,ALS) %>% rename(D=ALS_T1DM,N=ALS) %>% mutate(PREV_TYPE = "T1DMinALS")) %>%
+  mutate(
+    p = D/N,
+    lb = (p+z^2/(2*N)-sqrt((p*(1-p)/N)+z^2/(4*N)))/(1+z^2/N),
+    ub = (p+z^2/(2*N)+sqrt((p*(1-p)/N)+z^2/(4*N)))/(1+z^2/N),
+  )
+
+ggplot(
+  prev_100 %>% filter(CALYR < 9999 & DATA_SRC %in% c("EHR","MIX")) %>% 
+    mutate(p_rs=p*100,lb_rs=lb*100,ub_rs=ub*100,p_rs_label=round(p_rs,1)),
+  aes(x=CALYR,y=p_rs,color=PREV_TYPE)
+) +
+  geom_point() + 
+  geom_line() +
+  geom_errorbar(aes(ymin=lb_rs,ymax=ub_rs),width=0.5)+
+  # geom_label_repel(aes(label=p_rs_label)) + 
+  facet_wrap(~DATA_SRC,ncol=3,scale="free")+
+  labs(
+    x = "Year",
+    y = "DM prevalance (%)",
+  ) + 
+  scale_x_continuous(
+    breaks = seq(2011, 2020, 1),
+    labels = seq(2011, 2020, 1)
+  ) +
+  theme(
+    text = element_text(size = 12,face="bold")
+  )
+
+ggsave(file.path(path_to_res,"dm_prev.pdf"),width = 10, height = 4)
+```
+
+```{r}
+#| label: als_prev
+#| warning: false
+
+
+alpha<-0.05
+prev_100K<-data.frame(
+  CALYR=as.numeric(),
+  DATA_SRC=as.character(),
+  D=as.numeric(),
+  N=as.numeric(),
+  PREV_TYPE = as.character()
+) %>%
+  bind_rows(cnt %>% dplyr::select(CALYR,DATA_SRC,ALS,ALL) %>% rename(D=ALS,N=ALL) %>% mutate(PREV_TYPE = "ALS")) %>%
+  bind_rows(cnt %>% dplyr::select(CALYR,DATA_SRC,ALS_DM,DM) %>% rename(D=ALS_DM,N=DM) %>% mutate(PREV_TYPE = "ALSinDM")) %>%
+  # bind_rows(cnt %>% dplyr::select(CALYR,DATA_SRC,ALS_T2DM,T2DM) %>% rename(D=ALS_T2DM,N=T2DM) %>% mutate(PREV_TYPE = "ALSinT2DM")) %>%
+  # bind_rows(cnt %>% dplyr::select(CALYR,DATA_SRC,ALS_T1DM,T1DM) %>% rename(D=ALS_T1DM,N=T1DM) %>% mutate(PREV_TYPE = "ALSinT1DM")) %>%
+  mutate(
+    p = D/N,
+    lb = qbeta(alpha/2, shape1 = D, shape2 = N-D + 1),
+    ub = qbeta(1 - alpha/2, D + 1, N - D)
+  )
+
+ggplot(
+  prev_100K %>% filter(CALYR < 9999 & DATA_SRC %in% c("EHR","MIX")) %>% 
+    mutate(p_rs=p*100000,lb_rs=lb*100000,ub_rs=ub*100000),
+  aes(x=CALYR,y=p_rs,color=PREV_TYPE)
+) +
+  geom_point() + 
+  geom_line() +
+  geom_errorbar(aes(ymin=lb_rs,ymax=ub_rs),width=0.5)+
+  facet_wrap(~DATA_SRC,ncol=3,scale="free")+
+  labs(
+    x = "Year",
+    y = "ALS prevelance (per 100,000)",
+  ) + 
+  scale_x_continuous(
+    breaks = seq(2011, 2020, 1),
+    labels = seq(2011, 2020, 1)
+  ) +
+  theme(
+    text = element_text(size = 12,face="bold")
+  )
+
+ggsave(file.path(path_to_res,"als_prev.pdf"),width = 10, height = 4)
+
+```
+
+```{r}
+#| label: als_inc
+#| warning: false
+
+alpha<-0.05
+inc_100K<-data.frame(
+  CALYR=as.numeric(),
+  DATA_SRC=as.character(),
+  D=as.numeric(),
+  N=as.numeric(),
+  PREV_TYPE = as.character()
+) %>%
+  bind_rows(cnt %>% dplyr::select(CALYR,DATA_SRC,newALS_DM,ALL) %>% rename(D=newALS_DM,N=ALL) %>% mutate(PREV_TYPE = "IncALS")) %>%
+  bind_rows(cnt %>% dplyr::select(CALYR,DATA_SRC,newALS_DM,DM) %>% rename(D=newALS_DM,N=DM) %>% mutate(PREV_TYPE = "IncALSinDM")) %>%
+  # bind_rows(cnt %>% dplyr::select(CALYR,DATA_SRC,newALS_T2DM,T2DM) %>% rename(D=newALS_T2DM,N=T2DM) %>% mutate(PREV_TYPE = "IncALSinT2DM")) %>%
+  # bind_rows(cnt %>% dplyr::select(CALYR,DATA_SRC,newALS_T1DM,T1DM) %>% rename(D=newALS_T1DM,N=T1DM) %>% mutate(PREV_TYPE = "IncALSinT1DM")) %>%
+  mutate(
+    p = D/N,
+    lb = 1/N*qpois(alpha/2,D),
+    ub = 1/N*qpois(1-alpha/2,D+1)
+  )
+
+ggplot(
+  inc_100K %>% filter(CALYR < 9999 & DATA_SRC %in% c("EHR","MIX")) %>% 
+    mutate(p_rs=p*100000,lb_rs=lb*100000,ub_rs=ub*100000),
+  aes(x=CALYR,y=p_rs,color=PREV_TYPE)
+) +
+  geom_point() + 
+  geom_line() +
+  geom_errorbar(aes(ymin=lb_rs,ymax=ub_rs),width=0.5)+
+  facet_wrap(~DATA_SRC,ncol=3,scale="free")+
+  labs(
+    x = "Year",
+    y = "ALS incidence (per 100,000)",
+  ) + 
+  scale_x_continuous(
+    breaks = seq(2011, 2020, 1),
+    labels = seq(2011, 2020, 1)
+  ) +
+  theme(
+    text = element_text(size = 12,face="bold")
+  )
+
+ggsave(file.path(path_to_res,"als_inc.pdf"),width = 10, height = 4)
+
+```
+
+```{r}
+#| label: glp1dpp4_prev
+#| warning: false
+
+z<-1.96
+glp1dpp4_100<-data.frame(
+  CALYR=as.numeric(),
+  DATA_SRC=as.character(),
+  D=as.numeric(),
+  N=as.numeric(),
+  PREV_TYPE = as.character(),
+  RX_TYPE = as.character()
+) %>%
+  bind_rows(cnt %>% dplyr::select(CALYR,DATA_SRC,DM_GLP1,DM) %>% rename(D=DM_GLP1,N=DM) %>% mutate(PREV_TYPE = "GLP1RAinDM",RX_TYPE = 'GLP1RA')) %>%
+  bind_rows(cnt %>% dplyr::select(CALYR,DATA_SRC,DM_DPP4,DM) %>% rename(D=DM_DPP4,N=DM) %>% mutate(PREV_TYPE = "DPP4inDM",RX_TYPE = 'DPP4')) %>%
+  bind_rows(cnt %>% dplyr::select(CALYR,DATA_SRC,DM_ALS_GLP1,ALS_DM) %>% rename(D=DM_ALS_GLP1,N=ALS_DM) %>% mutate(PREV_TYPE = "GLP1RAinALSDM",RX_TYPE = 'GLP1RA')) %>%
+  bind_rows(cnt %>% dplyr::select(CALYR,DATA_SRC,DM_ALS_DPP4,ALS_DM) %>% rename(D=DM_ALS_DPP4,N=ALS_DM) %>% mutate(PREV_TYPE = "DPP4inALSDM",RX_TYPE = 'DPP4')) %>%
+mutate(
+    p = D/N,
+    lb = (p+z^2/(2*N)-sqrt((p*(1-p)/N)+z^2/(4*N)))/(1+z^2/N),
+    ub = (p+z^2/(2*N)+sqrt((p*(1-p)/N)+z^2/(4*N)))/(1+z^2/N),
+  )
+
+ggplot(
+  glp1dpp4_100 %>% filter(CALYR < 9999 & DATA_SRC %in% c("EHR","MIX")) %>% 
+    mutate(p_rs=p*100,lb_rs=lb*100,ub_rs=ub*100),
+  aes(x=CALYR,y=p_rs,color=PREV_TYPE)
+) +
+  geom_point() + 
+  geom_line() +
+  geom_errorbar(aes(ymin=lb_rs,ymax=ub_rs),width=0.5)+
+  facet_wrap(~DATA_SRC+RX_TYPE,ncol=4)+
+  labs(
+    x = "Year",
+    y = "GLP1RA or DPP4 Use Prevelance (%)",
+  ) + 
+  scale_x_continuous(
+    breaks = seq(2011, 2020, 1),
+    labels = seq(2011, 2020, 1)
+  ) +
+  theme(
+    text = element_text(size = 12,face="bold")
+  )
+
+ggsave(file.path(path_to_res,"glpdpp4_prev.pdf"),width = 16, height = 5)
+
+```
+
+```{r}
+#| label: glp1dpp4_als
+#| warning: false
+
+glp1dpp4_als_cor<-data.frame(
+  CALYR=as.numeric(),
+  DATA_SRC=as.character(),
+  D=as.numeric(),
+  N=as.numeric(),
+  PREV_TYPE = as.character(),
+  CASE_TYPE = as.character(),
+  p=as.numeric(),
+  p_norm=as.numeric()
+) %>%
+  bind_rows(cnt %>% dplyr::select(CALYR,DATA_SRC,DM_ALS_GLP1,ALS_DM) %>% rename(D=DM_ALS_GLP1,N=ALS_DM) %>% mutate(PREV_TYPE = "GLP1RAinALSDM",CASE_TYPE = 'GLP1RA',p=D/N,p_norm=D/N*100)) %>%
+  bind_rows(cnt %>% dplyr::select(CALYR,DATA_SRC,newALS_DM,DM) %>% rename(D=newALS_DM,N=DM) %>% mutate(PREV_TYPE = "IncALSinDM",CASE_TYPE = 'IncALS',p=D/N,p_norm=D/N*10000)) %>%
+   bind_rows(cnt %>% dplyr::select(CALYR,DATA_SRC,ALS_DM,DM) %>% rename(D=ALS_DM,N=DM) %>% mutate(PREV_TYPE = "ALSinDM",CASE_TYPE = 'PrevALS',p=D/N,p_norm=D/N*10000))
+
+
+ggplot(
+  glp1dpp4_als_cor %>% filter(CALYR < 9999 & DATA_SRC %in% c("EHR","MIX")),
+  aes(x=CALYR,y=p_norm,color=CASE_TYPE)
+) +
+  geom_point() + 
+  geom_line() +
+  # geom_errorbar(aes(ymin=lb_rs,ymax=ub_rs),width=0.5)+
+  facet_wrap(~DATA_SRC,ncol=2)+
+  labs(
+    x = "Year",
+    y = "GLP1RA or DPP4 Use Prevelance (%) \n or ALS Incidence or ALS Prevalence (X 10,000)",
+  ) + 
+  scale_x_continuous(
+    breaks = seq(2011, 2020, 1),
+    labels = seq(2011, 2020, 1)
+  ) +
+  theme(
+    text = element_text(size = 12,face="bold")
+  )
+
+ggsave(file.path(path_to_res,"glpdpp4_als.pdf"),width = 10, height = 4)
+
+cor_ehr<-glp1dpp4_als_cor %>%
+  filter(DATA_SRC == 'EHR' & CALYR != 9999) %>%
+  dplyr::select(
+    CALYR,CASE_TYPE,p_norm
+  ) %>%
+  pivot_wider(
+    names_from = CASE_TYPE,
+    values_from = p_norm
+  ) %>%
+  mutate(
+    t = CALYR-2010
+  )
+
+x_trend <- loess(cor_ehr$GLP1RA ~ cor_ehr$t, span = 0.2)$fitted
+y_trend <- loess(cor_ehr$IncALS ~ cor_ehr$t, span = 0.2)$fitted
+
+r <- cor(x_trend, y_trend)
+n <- length(x_trend)
+z <- atanh(r)
+se <- 1 / sqrt(n - 3)
+z_ci <- z + c(-1, 1) * qnorm(0.975) * se
+r_ci <- tanh(z_ci)
+r
+r_ci
+
+
+
+x_trend <- loess(cor_ehr$GLP1RA ~ cor_ehr$t, span = 0.2)$fitted
+z_trend <- loess(cor_ehr$PrevALS ~ cor_ehr$t, span = 0.2)$fitted
+r <- cor(x_trend, z_trend)
+n <- length(x_trend)
+z <- atanh(r)
+se <- 1 / sqrt(n - 3)
+z_ci <- z + c(-1, 1) * qnorm(0.975) * se
+r_ci <- tanh(z_ci)
+r
+r_ci
+
+
+```

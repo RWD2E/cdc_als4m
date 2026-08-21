@@ -6,8 +6,52 @@ pacman::p_load(
   survival,
   survminer,
   devtools,
-  kableExtra
+  kableExtra,
+  gtsummary,
+  tableone
 )
+vars<-c(
+  'AGE_AT_INDEX',
+  'SEX',
+  'RACE',
+  'HISPANIC',
+  'ENR_DURATION',
+  'BASELINE_COC',
+  'BMI',
+  'HT',
+  'WT'
+) 
+facvars<-c(
+  'SEX',
+  'RACE',
+  'HISPANIC'
+)
+dat<-readRDS("./data/als_case_ctrl.rds")
+tbl1a<-CreateTableOne(
+  data = dat %>% 
+    filter(PT_GRP %in% c("ALS","NonALS")),
+  vars = vars,
+  factorVars = facvars,
+  strata = "PT_GRP"
+)
+kable(
+  print(tbl1a, printToggle = FALSE), 
+  caption = "Table 1a: Cohort Characteristics of ALS vs. NON-ALS"
+)
+
+tbl1b<-CreateTableOne(
+  data = dat %>% 
+    filter(PT_GRP %in% c("ALS","MatchedNonALS")),
+  vars = vars,
+  factorVars = facvars,
+  strata = "PT_GRP"
+)
+kable(
+  print(tbl1b, printToggle = FALSE), 
+  caption = "Table 1b: Cohort Characteristics of ALS vs. Matched NON-ALS"
+)
+
+
 
 # install.packages("webshot2")
 # webshot::install_phantomjs() # needed for save_kabel()
