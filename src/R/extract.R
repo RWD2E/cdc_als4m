@@ -33,6 +33,15 @@ saveRDS(dat,file="./data/t1dmals_annual.rda")
 dat<-tbl(sf_conn,sql("select * from ALS_DM_ANNUAL_RATES_T2DM")) %>% collect()
 saveRDS(dat,file="./data/t2dmals_annual.rda")
 
+dat<-tbl(sf_conn,sql("select * from ALS_DM_MED_SNAPSHOT_PREVALENCE_ALL")) %>% collect()
+saveRDS(dat,file="./data/dmals_med_annual.rda")
+
+dat<-tbl(sf_conn,sql("select * from ALS_DM_MED_SNAPSHOT_PREVALENCE_T1DM")) %>% collect()
+saveRDS(dat,file="./data/t1dmals_med_annual.rda")
+
+dat<-tbl(sf_conn,sql("select * from ALS_DM_MED_SNAPSHOT_PREVALENCE_T2DM")) %>% collect()
+saveRDS(dat,file="./data/t2dmals_med_annual.rda")
+
 #==== collect Table 1 ====
 dat<-tbl(sf_conn,sql("select * from als_base")) %>% collect()
 saveRDS(dat,file="./data/als_case.rda")
