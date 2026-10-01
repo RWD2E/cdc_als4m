@@ -844,11 +844,12 @@ plot_als_dm_annual_rates <- function(
   )
 }
 
+
 plot_med_prevalence <- function(
     data,
     meds,
-    ty = c("all","t1dm","t2dm"),
-    estimates = c("crude","adjusted"),
+    ty = c("all", "t1dm", "t2dm"),
+    estimates = c("crude", "adjusted"),
     show_counts = TRUE,
     reference_curve = NULL,    # NULL or "als"
     bar_alpha = 0.20,
@@ -862,10 +863,22 @@ plot_med_prevalence <- function(
   # 1. Standardize and validate inputs
   # ============================================================
   
+  ty <- match.arg(ty)
+  
   meds <- unique(toupper(meds))
   
   if (length(meds) == 0) {
     stop("At least one medication must be specified in `meds`.")
+  }
+  
+  estimates <- unique(tolower(estimates))
+  
+  if (length(estimates) == 0 ||
+      any(!estimates %in% c("crude", "adjusted"))) {
+    stop(
+      "`estimates` must contain one or both of: ",
+      "\"crude\", \"adjusted\"."
+    )
   }
   
   if (!is.null(reference_curve)) {
@@ -874,7 +887,6 @@ plot_med_prevalence <- function(
     
     if (length(reference_curve) != 1 ||
         reference_curve != "als") {
-      
       stop(
         "`reference_curve` must be either NULL or \"als\"."
       )
@@ -883,43 +895,58 @@ plot_med_prevalence <- function(
   
   
   # ============================================================
-  # 2. Crude vs adjusted prefix
+  # 2. Create estimate-prefix mapping
   # ============================================================
   
-  estimates <- 
-  prefix <- if (adjusted) "ADJ_" else "CRUDE_"
+  estimate_prefix <- c(
+    crude = "CRUDE_",
+    adjusted = "ADJ_"
+  )
+  
+  selected_prefixes <- estimate_prefix[estimates]
   
   
   # ============================================================
   # 3. Medication prevalence columns
   # ============================================================
   
-  prev_cols <- paste0(
-    prefix,
-    "MED_", meds, "_PREVALENCE_IN_",toupper(ty),"_PCT"
-  )
-  
-  lcl_cols <- paste0(
-    prefix,
-    "MED_", meds, "_PREVALENCE_IN_",toupper(ty),"_PCT_LCL"
-  )
-  
-  ucl_cols <- paste0(
-    prefix,
-    "MED_", meds, "_PREVALENCE_IN_",toupper(ty),"_PCT_UCL"
+  required_med_cols <- unlist(
+    lapply(
+      estimates,
+      function(est) {
+        
+        prefix <- estimate_prefix[[est]]
+        
+        c(
+          paste0(
+            prefix,
+            "MED_", meds,
+            "_PREVALENCE_IN_", toupper(ty), "_PCT"
+          ),
+          paste0(
+            prefix,
+            "MED_", meds,
+            "_PREVALENCE_IN_", toupper(ty), "_PCT_LCL"
+          ),
+          paste0(
+            prefix,
+            "MED_", meds,
+            "_PREVALENCE_IN_", toupper(ty), "_PCT_UCL"
+          )
+        )
+      }
+    )
   )
   
   
   # ============================================================
-  # 4. Validate medication and denominator columns
+  # 4. Validate required columns
   # ============================================================
   
   required_cols <- c(
     "YEAR",
-    paste0("DENOM_",toupper(ty),"_CASES"),
-    prev_cols,
-    lcl_cols,
-    ucl_cols
+    paste0("DENOM_", toupper(ty), "_CASES"),
+    required_med_cols
   )
   
   missing_cols <- setdiff(
@@ -928,7 +955,6 @@ plot_med_prevalence <- function(
   )
   
   if (length(missing_cols) > 0) {
-    
     stop(
       "Missing required columns:\n",
       paste(
@@ -938,102 +964,139 @@ plot_med_prevalence <- function(
     )
   }
   
+  
   # ============================================================
   # 5. Medication prevalence data -> long format
   # ============================================================
   
   plot_data <- lapply(
-    meds,
-    function(med) {
+    estimates,
+    function(est) {
       
-      data.frame(
-        YEAR = data$YEAR,
-        MEDICATION = med,
-        
-        PREVALENCE = data[[
-          paste0(
-            prefix,
-            "MED_",
-            med,
-            "_PREVALENCE_IN_",toupper(ty),"_PCT"
+      prefix <- estimate_prefix[[est]]
+      
+      lapply(
+        meds,
+        function(med) {
+          
+          data.frame(
+            YEAR = data$YEAR,
+            MEDICATION = med,
+            ESTIMATE = est,
+            
+            PREVALENCE = data[[
+              paste0(
+                prefix,
+                "MED_", med,
+                "_PREVALENCE_IN_",
+                toupper(ty),
+                "_PCT"
+              )
+            ]],
+            
+            LCL = data[[
+              paste0(
+                prefix,
+                "MED_", med,
+                "_PREVALENCE_IN_",
+                toupper(ty),
+                "_PCT_LCL"
+              )
+            ]],
+            
+            UCL = data[[
+              paste0(
+                prefix,
+                "MED_", med,
+                "_PREVALENCE_IN_",
+                toupper(ty),
+                "_PCT_UCL"
+              )
+            ]]
           )
-        ]],
-        
-        LCL = data[[
-          paste0(
-            prefix,
-            "MED_",
-            med,
-            "_PREVALENCE_IN_",toupper(ty),"_PCT_LCL"
-          )
-        ]],
-        
-        UCL = data[[
-          paste0(
-            prefix,
-            "MED_",
-            med,
-            "_PREVALENCE_IN_",toupper(ty),"_PCT_UCL"
-          )
-        ]]
-      )
+        }
+      ) %>%
+        bind_rows()
     }
   ) %>%
     bind_rows() %>%
     arrange(
       YEAR,
-      MEDICATION
+      MEDICATION,
+      ESTIMATE
     )
   
   
-  # Preserve order supplied by user
+  # Preserve medication order supplied by user
   plot_data$MEDICATION <- factor(
     plot_data$MEDICATION,
     levels = meds
   )
   
+  plot_data$ESTIMATE <- factor(
+    plot_data$ESTIMATE,
+    levels = c("crude", "adjusted"),
+    labels = c("Crude", "Adjusted")
+  )
+  
   
   # ============================================================
-  # 6. DM denominator counts
+  # 6. Denominator counts
   # ============================================================
   
   count_data <- data.frame(
     YEAR = data$YEAR,
-    COUNT = data[[paste0("DENOM_",toupper(ty),"_CASES")]]
+    COUNT = data[[
+      paste0(
+        "DENOM_",
+        toupper(ty),
+        "_CASES"
+      )
+    ]]
   ) %>%
     arrange(YEAR)
   
   
   # ============================================================
-  # 7. Optional ALS prevalence among DM reference curve
+  # 7. Optional ALS prevalence reference curve
+  #    Supports both crude and adjusted estimates
   # ============================================================
   
   reference_data <- NULL
   
   if (!is.null(reference_curve)) {
     
-    als_cols <- c(
-      paste0(
-        prefix,
-        "ALS_PREVALENCE_IN_DM"
-      ),
-      paste0(
-        prefix,
-        "ALS_PREVALENCE_IN_DM_LCL"
-      ),
-      paste0(
-        prefix,
-        "ALS_PREVALENCE_IN_DM_UCL"
+    required_als_cols <- unlist(
+      lapply(
+        estimates,
+        function(est) {
+          
+          prefix <- estimate_prefix[[est]]
+          
+          c(
+            paste0(
+              prefix,
+              "ALS_PREVALENCE_IN_DM"
+            ),
+            paste0(
+              prefix,
+              "ALS_PREVALENCE_IN_DM_LCL"
+            ),
+            paste0(
+              prefix,
+              "ALS_PREVALENCE_IN_DM_UCL"
+            )
+          )
+        }
       )
     )
     
     missing_als_cols <- setdiff(
-      als_cols,
+      required_als_cols,
       names(data)
     )
     
     if (length(missing_als_cols) > 0) {
-      
       stop(
         "Missing ALS prevalence-among-DM columns:\n",
         paste(
@@ -1044,29 +1107,45 @@ plot_med_prevalence <- function(
     }
     
     
-    reference_data <- data.frame(
-      YEAR = data$YEAR,
-      
-      PREVALENCE = data[[
-        paste0(
-          prefix,
-          "ALS_PREVALENCE_IN_DM"
+    reference_data <- lapply(
+      estimates,
+      function(est) {
+        
+        prefix <- estimate_prefix[[est]]
+        
+        data.frame(
+          YEAR = data$YEAR,
+          ESTIMATE = est,
+          
+          PREVALENCE = data[[
+            paste0(
+              prefix,
+              "ALS_PREVALENCE_IN_DM"
+            )
+          ]],
+          
+          LCL = data[[
+            paste0(
+              prefix,
+              "ALS_PREVALENCE_IN_DM_LCL"
+            )
+          ]],
+          
+          UCL = data[[
+            paste0(
+              prefix,
+              "ALS_PREVALENCE_IN_DM_UCL"
+            )
+          ]]
         )
-      ]],
-      
-      LCL = data[[
-        paste0(
-          prefix,
-          "ALS_PREVALENCE_IN_DM_LCL"
-        )
-      ]],
-      
-      UCL = data[[
-        paste0(
-          prefix,
-          "ALS_PREVALENCE_IN_DM_UCL"
-        )
-      ]]
+      }
+    ) %>%
+      bind_rows()
+    
+    reference_data$ESTIMATE <- factor(
+      reference_data$ESTIMATE,
+      levels = c("crude", "adjusted"),
+      labels = c("Crude", "Adjusted")
     )
   }
   
@@ -1081,7 +1160,6 @@ plot_med_prevalence <- function(
   )
   
   if (!is.null(reference_data)) {
-    
     max_prev <- max(
       max_prev,
       max(
@@ -1091,10 +1169,8 @@ plot_med_prevalence <- function(
     )
   }
   
-  
   if (!is.finite(max_prev) ||
       max_prev <= 0) {
-    
     stop(
       "Prevalence values are missing or invalid."
     )
@@ -1102,7 +1178,7 @@ plot_med_prevalence <- function(
   
   
   # ============================================================
-  # 9. Scale DM denominator counts onto primary axis
+  # 9. Scale denominator counts onto primary axis
   # ============================================================
   
   if (show_counts) {
@@ -1114,9 +1190,8 @@ plot_med_prevalence <- function(
     
     if (!is.finite(max_count) ||
         max_count <= 0) {
-      
       stop(
-        "DM_PREVALENT_CASES is missing or invalid."
+        "Denominator count is missing or invalid."
       )
     }
     
@@ -1132,7 +1207,7 @@ plot_med_prevalence <- function(
   
   
   # ============================================================
-  # 11. DM denominator bars
+  # 11. Denominator bars
   # ============================================================
   
   if (show_counts) {
@@ -1163,15 +1238,22 @@ plot_med_prevalence <- function(
         ymin = LCL,
         ymax = UCL,
         fill = MEDICATION,
-        group = MEDICATION
+        group = interaction(
+          MEDICATION,
+          ESTIMATE
+        )
       ),
       alpha = ribbon_alpha,
-      color = "grey"
+      color = NA
     )
   
   
   # ============================================================
-  # 13. Medication prevalence lines
+  # 13. Medication prevalence curves
+  #
+  # Color    = medication
+  # Linetype = crude vs adjusted
+  # Shape    = crude vs adjusted
   # ============================================================
   
   p <- p +
@@ -1181,7 +1263,11 @@ plot_med_prevalence <- function(
         x = YEAR,
         y = PREVALENCE,
         color = MEDICATION,
-        group = MEDICATION
+        linetype = ESTIMATE,
+        group = interaction(
+          MEDICATION,
+          ESTIMATE
+        )
       ),
       linewidth = line_width
     ) +
@@ -1191,14 +1277,19 @@ plot_med_prevalence <- function(
       aes(
         x = YEAR,
         y = PREVALENCE,
-        color = MEDICATION
+        color = MEDICATION,
+        shape = ESTIMATE,
+        group = interaction(
+          MEDICATION,
+          ESTIMATE
+        )
       ),
       size = point_size
     )
   
   
   # ============================================================
-  # 14. Optional ALS prevalence among DM reference
+  # 14. Optional ALS prevalence reference curves
   # ============================================================
   
   if (!is.null(reference_data)) {
@@ -1210,38 +1301,72 @@ plot_med_prevalence <- function(
         aes(
           x = YEAR,
           ymin = LCL,
-          ymax = UCL
+          ymax = UCL,
+          group = ESTIMATE
         ),
         inherit.aes = FALSE,
         fill = "grey30",
-        alpha = 0.08
+        alpha = 0.06
       )
     
-    # ALS reference line
+    # ALS crude/adjusted reference curves
     p <- p +
       geom_line(
         data = reference_data,
         aes(
           x = YEAR,
-          y = PREVALENCE
+          y = PREVALENCE,
+          linetype = ESTIMATE,
+          group = ESTIMATE
         ),
         inherit.aes = FALSE,
         color = "grey15",
-        linetype = "dashed",
         linewidth = reference_line_width
       )
   }
   
   
   # ============================================================
-  # 15. Y axes
+  # 15. Estimate appearance
   # ============================================================
   
-  prevalence_label <- if (adjusted) {
+  p <- p +
+    scale_linetype_manual(
+      name = "Estimate",
+      values = c(
+        "Crude" = "solid",
+        "Adjusted" = "dashed"
+      )
+    ) +
+    
+    scale_shape_manual(
+      name = "Estimate",
+      values = c(
+        "Crude" = 16,
+        "Adjusted" = 17
+      )
+    )
+  
+  
+  # ============================================================
+  # 16. Y axes
+  # ============================================================
+  
+  prevalence_label <- if (length(estimates) == 2) {
+    "Prescription Prevalence"
+  } else if (estimates == "adjusted") {
     "Adjusted Prescription Prevalence"
   } else {
     "Crude Prescription Prevalence"
   }
+  
+  
+  type_label <- switch(
+    ty,
+    all = "eligible patients",
+    t1dm = "patients with T1DM",
+    t2dm = "patients with T2DM"
+  )
   
   
   if (show_counts) {
@@ -1257,7 +1382,10 @@ plot_med_prevalence <- function(
         
         sec.axis = sec_axis(
           ~ . * scale_factor,
-          name = "Number of observed patients with DM",
+          name = paste0(
+            "Number of observed ",
+            type_label
+          ),
           labels = comma
         ),
         
@@ -1285,7 +1413,7 @@ plot_med_prevalence <- function(
   
   
   # ============================================================
-  # 16. X axis
+  # 17. X axis
   # ============================================================
   
   p <- p +
@@ -1297,45 +1425,55 @@ plot_med_prevalence <- function(
   
   
   # ============================================================
-  # 17. Caption
+  # 18. Caption
   # ============================================================
   
   caption_parts <- c(
-    "Solid lines = medication prevalence",
+    if (length(estimates) == 2) {
+      "solid lines = crude; dashed lines = adjusted"
+    },
     "shaded areas = 95% CI"
   )
   
   if (show_counts) {
-    
     caption_parts <- c(
       caption_parts,
-      "bars = annual DM denominator population"
+      "bars = annual denominator population"
     )
   }
   
   if (!is.null(reference_data)) {
-    
     caption_parts <- c(
       caption_parts,
-      "dashed line = ALS prevalence among patients with DM"
+      "grey lines = ALS prevalence among patients with DM"
     )
   }
   
   
   # ============================================================
-  # 18. Labels
+  # 19. Labels
   # ============================================================
+  
+  subtitle_text <- if (length(estimates) == 2) {
+    "Crude and adjusted prevalence with 95% confidence intervals"
+  } else if (estimates == "adjusted") {
+    "Adjusted prevalence with 95% confidence intervals"
+  } else {
+    "Crude prevalence with 95% confidence intervals"
+  }
+  
   
   p <- p +
     labs(
-      title = "Annual Medication Use Prevalence Among Patients With DM",
-      
-      subtitle = paste0(
-        if (adjusted) "Adjusted" else "Crude",
-        " prevalence with 95% confidence intervals"
+      title = paste0(
+        "Annual Medication Use Prevalence Among ",
+        tools::toTitleCase(type_label)
       ),
       
+      subtitle = subtitle_text,
+      
       x = "Year",
+      
       color = "Medication",
       fill = "Medication",
       
@@ -1347,7 +1485,7 @@ plot_med_prevalence <- function(
   
   
   # ============================================================
-  # 19. Theme
+  # 20. Theme
   # ============================================================
   
   p <- p +
@@ -1392,4 +1530,318 @@ plot_med_prevalence <- function(
   
   
   return(p)
+}
+
+
+plot_demo_profile<-function(
+  df,
+  ncol = 1
+){
+  #------------------------------------------------------------
+  # selective unpivot
+  #------------------------------------------------------------
+  
+  plot_df <- bind_rows(
+    
+    # Age: retain original units (years)
+    df %>%
+      transmute(
+        YEAR,
+        COHORT,
+        measure = "Age",
+        value = AVG_AGE,
+        sd = SD_AGE,
+        ymin = AVG_AGE - 1.96*SD_AGE/sqrt(N),
+        ymax = AVG_AGE + 1.96*SD_AGE/sqrt(N),
+        value_label = sprintf("%.1f (%.1f)", AVG_AGE, SD_AGE)
+      ),
+    
+    # Male proportion: convert to %
+    df %>%
+      transmute(
+        YEAR,
+        COHORT,
+        measure = "Male",
+        value = 100 * MALE_PROP,
+        sd = 100 * SD_MALE_PROP,
+        ymin = pmax(0, 100 * (MALE_PROP - 1.96*SD_MALE_PROP/sqrt(N))),
+        ymax = pmin(100, 100 * (MALE_PROP + 1.96*SD_MALE_PROP/sqrt(N))),
+        value_label = sprintf(
+          "%.1f%% (%.1f%%)",
+          100 * MALE_PROP,
+          100 * SD_MALE_PROP
+        )
+      ),
+    
+    # Non-white proportion: convert to %
+    df %>%
+      transmute(
+        YEAR,
+        COHORT,
+        measure = "Non-white",
+        value = 100 * NON_WHITE_PROP,
+        sd = 100 * SD_NON_WHITE_PROP,
+        ymin = pmax(0, 100 * (NON_WHITE_PROP - 1.96*SD_NON_WHITE_PROP/sqrt(N))),
+        ymax = pmin(100, 100 * (NON_WHITE_PROP + 1.96*SD_NON_WHITE_PROP/sqrt(N))),
+        value_label = sprintf(
+          "%.1f%% (%.1f%%)",
+          100 * NON_WHITE_PROP,
+          100 * SD_NON_WHITE_PROP
+        )
+      )
+  ) %>%
+    mutate(
+      measure = factor(
+        measure,
+        levels = c("Age", "Male", "Non-white")
+      )
+    )
+  
+  
+  #------------------------------------------------------------
+  # get first and last observations for each cohort / measure
+  #------------------------------------------------------------
+  
+  label_start <- plot_df %>%
+    group_by(COHORT, measure) %>%
+    slice_min(YEAR, n = 1, with_ties = FALSE) %>%
+    ungroup()
+  
+  label_end <- plot_df %>%
+    group_by(COHORT, measure) %>%
+    slice_max(YEAR, n = 1, with_ties = FALSE) %>%
+    ungroup()
+  
+  
+  #------------------------------------------------------------
+  # publication-friendly color palette
+  # Okabe-Ito colors; expand/change if you have >4 cohorts
+  #------------------------------------------------------------
+  
+  cohort_levels <- unique(plot_df$COHORT)
+  
+  cohort_colors <- c(
+    "#0072B2", # blue
+    "#D55E00", # vermillion
+    "#009E73", # green
+    "#CC79A7", # reddish purple
+    "#E69F00", # orange
+    "#56B4E9", # sky blue
+    "#000000"  # black
+  )
+  
+  names(cohort_colors) <- cohort_levels
+  
+  cohort_colors <- cohort_colors[cohort_levels]
+  
+  
+  #------------------------------------------------------------
+  # publication-ready figure
+  #------------------------------------------------------------
+  
+  p <- ggplot(
+    plot_df,
+    aes(
+      x = YEAR,
+      y = value,
+      color = COHORT,
+      group = COHORT
+    )
+  ) +
+    
+    # ± MOE at each point
+    geom_errorbar(
+      aes(ymin = ymin, ymax = ymax),
+      width = 0.10,
+      linewidth = 0.45,
+      alpha = 0.40
+    ) +
+    
+    # Temporal trajectory
+    geom_line(
+      linewidth = 0.95,
+      alpha = 0.95
+    ) +
+    
+    # Observed value
+    geom_point(
+      size = 2.2
+    ) +
+    
+  #----------------------------------------------------------
+  # Beginning-year annotation: value (SD)
+  #----------------------------------------------------------
+  
+  geom_label_repel(
+    data = label_start,
+    aes(label = value_label),
+    nudge_x = -0.35,
+    direction = "y",
+    hjust = 1,
+    size = 3.0,
+    fill = "white",
+    alpha = 1,
+    label.size = 0.2,
+    label.r = unit(0.12, "lines"),
+    label.padding = unit(0.15, "lines"),
+    box.padding = 0.35,
+    point.padding = 0.25,
+    min.segment.length = 0,
+    segment.size = 0.30,
+    segment.alpha = 0.45,
+    seed = 123,
+    max.overlaps = Inf,
+    show.legend = FALSE
+  ) + 
+    
+  #----------------------------------------------------------
+  # End-year annotation:
+  # Cohort + value (SD), directly labeling each trajectory
+  #----------------------------------------------------------
+  
+  geom_label_repel(
+    data = label_end,
+    aes(label = value_label),
+    nudge_x = 0.35,
+    direction = "y",
+    hjust = 0,
+    size = 3.0,
+    fill = "white",
+    alpha = 1,
+    label.size = 0.2,
+    label.r = unit(0.12, "lines"),
+    label.padding = unit(0.15, "lines"),
+    box.padding = 0.35,
+    point.padding = 0.25,
+    min.segment.length = 0,
+    segment.size = 0.30,
+    segment.alpha = 0.45,
+    seed = 456,
+    max.overlaps = Inf,
+    show.legend = FALSE
+  ) + 
+    
+  #----------------------------------------------------------
+  # Separate panels with meaningful labels
+  #----------------------------------------------------------
+  
+  facet_wrap(
+    ~ measure,
+    ncol = ncol,
+    scales = "free_y",
+    labeller = as_labeller(
+      c(
+        "Age" = "Age, years",
+        "Male" = "Male, %",
+        "Non-white" = "Non-white, %"
+      )
+    )
+  ) +
+    
+  #----------------------------------------------------------
+  # X axis
+  # Extra space accommodates first/end annotations
+  #----------------------------------------------------------
+  
+  scale_x_continuous(
+    breaks = sort(unique(plot_df$YEAR)),
+    expand = expansion(mult = c(0.13, 0.25))
+  ) +
+    
+    # Colorblind-friendly palette
+    scale_color_manual(
+      values = cohort_colors
+    ) +
+    
+  #----------------------------------------------------------
+  # Labels
+  #----------------------------------------------------------
+  
+  labs(
+    x = "Calendar year",
+    y = NULL,
+    color = "COHORT",
+    caption = paste0(
+      "Points represent annual estimates; error bars indicate ±1 SD. ",
+      "Annotations show estimate (SD) at the first and last observed years. ",
+      "Cohorts are labeled directly at the right endpoint."
+    )
+  ) +
+    
+    # Allow endpoint annotations outside plotting region
+    coord_cartesian(
+      clip = "off"
+    ) +
+    
+    #----------------------------------------------------------
+  # Publication styling
+  #----------------------------------------------------------
+  
+  theme_classic(base_size = 11) +
+    
+    theme(
+      
+      # Remove legend because cohorts are directly labeled
+      legend.position = "bottom",
+      legend.title = element_text(face = "bold"),
+      legend.text = element_text(size = 9),
+      legend.key.width = unit(1.4, "lines"),
+      
+      # Facet labels
+      strip.background = element_blank(),
+      strip.placement = "outside",
+      
+      strip.text.y.left = element_text(
+        angle = 0,
+        face = "bold",
+        hjust = 1,
+        size = 10.5,
+        margin = margin(r = 8)
+      ),
+      
+      # Axis formatting
+      axis.title.x = element_text(
+        face = "bold",
+        size = 10.5,
+        margin = margin(t = 8)
+      ),
+      
+      axis.text.x = element_text(
+        size = 9,
+        angle = 45,
+        hjust = 1,
+        vjust = 1
+      ),
+      
+      axis.text.y = element_text(
+        size = 9,
+      ),
+      
+      axis.ticks = element_line(
+        linewidth = 0.35
+      ),
+      
+      axis.line = element_line(
+        linewidth = 0.45
+      ),
+      
+      # Panel spacing
+      panel.spacing.y = unit(1.15, "lines"),
+      
+      # Caption
+      plot.caption = element_text(
+        hjust = 0,
+        size = 8.5,
+        lineheight = 1.15,
+        margin = margin(t = 10)
+      ),
+      
+      # Extra room for left/right annotations
+      plot.margin = margin(
+        t = 10,
+        r = 10,
+        b = 10,
+        l = 10
+      )
+    )
 }

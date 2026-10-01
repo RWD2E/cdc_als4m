@@ -19,8 +19,9 @@ sf_conn <- DBI::dbConnect(
   pwd = ""
 )
 
-ccw<-tbl(sf_conn,sql("select * from ALS_MDT_CCW")) %>% collect()
-saveRDS(ccw,file="./data/als_mdt_ccw.rda")
+#==== Collect summaries ====
+dat<-tbl(sf_conn,sql("select * from ALS_DM_ANNUAL_PREV_COHORT_PROFILE_T2DM")) %>% collect()
+saveRDS(dat,file="./data/t2dmals_demo_profile.rda")
 
 
 #==== Collect summaries ====
@@ -69,6 +70,12 @@ saveRDS(dat,file="./data/dm_case.rda")
 
 dat<-tbl(sf_conn,sql("select * from dm_base_ehr")) %>% collect()
 saveRDS(dat,file="./data/dm_case_ehr.rda")
+
+
+#==== ALS, NonALS, Case-Control ====
+ccw<-tbl(sf_conn,sql("select * from ALS_MDT_CCW")) %>% collect()
+saveRDS(ccw,file="./data/als_mdt_ccw.rda")
+
 
 #==== ALS, NonALS, Case-Control ====
 dat<-tbl(sf_conn,
