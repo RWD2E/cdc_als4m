@@ -488,7 +488,11 @@ class QueryFromJson:
 
         return(cdtype_encoder)
         
-    def gen_qry_ref(self):     
+    def gen_qry_ref(self, use_value_range=True, value_range_side="both"):     
+        value_range_side = value_range_side.lower()
+        if value_range_side not in ("both", "high", "low"):
+            raise ValueError("value_range_side must be one of: 'both', 'high', 'low'")
+
         # load json valueset file
         if self.url.startswith(("http://", "https://")):
             # Remote URL
@@ -515,18 +519,22 @@ class QueryFromJson:
                     
                     # value range
                     qry_val = " "
-                    if x["relatedArtifact"]["valueType"]=="continuous" and self.val_field != "":
-                        if "high" in x["relatedArtifact"]["valueRange"]:
+                    if use_value_range and x["relatedArtifact"]["valueType"]=="continuous" and self.val_field != "":
+                        range_clauses = []
+                        if value_range_side in ("both", "high") and "high" in x["relatedArtifact"]["valueRange"]:
                             incld_dict = {0:">", 1:">="}
                             high_val = x["relatedArtifact"]["valueRange"]["high"]["value"]
                             incld_ind = x["relatedArtifact"]["valueRange"]["high"]["incld"]
-                            qry_val += " and " + self.val_field + incld_dict[incld_ind] + str(high_val)
+                            range_clauses.append(self.val_field + incld_dict[incld_ind] + str(high_val))
 
-                        if "low" in x["relatedArtifact"]["valueRange"]:
+                        if value_range_side in ("both", "low") and "low" in x["relatedArtifact"]["valueRange"]:
                             incld_dict = {0:"<", 1:"<="}
                             low_val = x["relatedArtifact"]["valueRange"]["low"]["value"]
                             incld_ind = x["relatedArtifact"]["valueRange"]["low"]["incld"]
-                            qry_val += " and " + self.val_field + incld_dict[incld_ind] + str(low_val)
+                            range_clauses.append(self.val_field + incld_dict[incld_ind] + str(low_val))
+
+                        if len(range_clauses) > 0:
+                            qry_val += " and " + " and ".join(range_clauses)
 
                     # codes
                     qryxy_orlst = []
@@ -570,9 +578,9 @@ class QueryFromJson:
 
         return qry_out 
     
-    def gen_qry(self):
+    def gen_qry(self, use_value_range=True, value_range_side="both"):
         selqry_lst = []
-        qry_dict = self.gen_qry_ref()
+        qry_dict = self.gen_qry_ref(use_value_range=use_value_range, value_range_side=value_range_side)
         for k,v in qry_dict.items():
             if len(self.sel_keys) == 0 or k in self.sel_keys:
                 nondate_fields = self.other_fields + [self.cd_field]+([self.cdtype_field] if self.cdtype_field else ["'"+self.cd_field+"'"])

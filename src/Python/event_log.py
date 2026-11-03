@@ -12,6 +12,7 @@ from snowflake.snowpark.types import (
     DoubleType,
 )
 
+logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
@@ -50,6 +51,7 @@ def _table_exists(session: Session, table_name: str) -> bool:
 KD_LOG_SCHEMA = StructType([
     StructField("PATID", StringType()),
     StructField("ENCOUNTERID", StringType()),
+    StructField("PROVIDERID", StringType()),
     StructField("CD", StringType()),
     StructField("CD_TYPE", StringType()),
     StructField("CD_DATE", DateType()),
@@ -84,6 +86,39 @@ def _create_log_tbl_kvd(session: Session, log_tbl: str) -> None:
         .save_as_table(log_tbl)
     )
 
+PRVDR_LOG_SCHEMA = StructType([
+    StructField("PROVIDERID", StringType()),
+    StructField("PROVIDER_SPECIALTY_PRIMARY", StringType()),
+    StructField("PROVIDER_NPI", DoubleType()),
+    StructField("DESCRIPTIVE", StringType()),
+    StructField("GROUPING", StringType()),
+    StructField("MDT_DOMAIN", StringType()),
+    StructField("SITE", StringType()),
+])
+
+def _create_log_tbl_prvdr(session: Session, log_tbl: str) -> None:
+     (
+        session.create_dataframe([], schema=PRVDR_LOG_SCHEMA)
+        .write.mode("overwrite")
+        .save_as_table(log_tbl)
+    )
+
+
+ENC_LOG_SCHEMA = StructType([
+    StructField("PATID", StringType()),
+    StructField("ENCOUNTERID", StringType()),
+    StructField("ENC_TYPE", StringType()),
+    StructField("ADMIT_DATE", DateType()),
+    StructField("DISCHARGE_DATE", StringType()),
+    StructField("SITE", StringType()),
+])
+
+def _create_log_tbl_enc(session: Session, log_tbl: str) -> None:
+     (
+        session.create_dataframe([], schema=ENC_LOG_SCHEMA)
+        .write.mode("overwrite")
+        .save_as_table(log_tbl)
+    )
 
 def _set_site_schema(site: str) -> str:
     if site == 'CMS':
@@ -100,7 +135,7 @@ def _build_dm_dxrx(session: Session, site: str):
         cdtype_field = 'DX_TYPE',
         date_fields = ["DX_DATE",'ADMIT_DATE'],
         srctbl_name = f"{_set_site_schema(site)}.LDS_DIAGNOSIS",
-        other_fields=["PATID","ENCOUNTERID"],
+        other_fields=["PATID","ENCOUNTERID","PROVIDERID"],
         sel_keys = ['T2DM','T1DM'],
         sel_domain = "dx"
     )
@@ -110,7 +145,7 @@ def _build_dm_dxrx(session: Session, site: str):
         cd_field = 'RXNORM_CUI',
         date_fields = ["RX_START_DATE",'RX_ORDER_DATE'],
         srctbl_name = f"{_set_site_schema(site)}.LDS_PRESCRIBING",
-        other_fields=["PATID","ENCOUNTERID"],
+        other_fields=["PATID","ENCOUNTERID","RX_PROVIDERID"],
         sel_keys = ['SU','AGI','GLP1RA','DPP4','MEG','AML','INS','SGLT2','COMBO','BIGU','TZD'],
         sel_domain = "rx"
     )
@@ -120,7 +155,7 @@ def _build_dm_dxrx(session: Session, site: str):
         cd_field = 'RXNORM_CUI',
         date_fields = ["EXT_PAT_START_DATE",'EXT_RECORD_DATE'],
         srctbl_name = f"{_set_site_schema(site)}.LDS_EXTERNAL_MEDS",
-        other_fields=["PATID","NULL AS ENCOUNTERID"],
+        other_fields=["PATID","NULL AS ENCOUNTERID", "NULL AS PROVIDERID"],
         sel_keys = ['SU','AGI','GLP1RA','DPP4','MEG','AML','INS','SGLT2','COMBO','BIGU','TZD'],
         sel_domain = "rx"
     )
@@ -130,7 +165,7 @@ def _build_dm_dxrx(session: Session, site: str):
         cd_field = 'NDC',
         date_fields = ['DISPENSE_DATE'],
         srctbl_name = f"{_set_site_schema(site)}.LDS_DISPENSING",
-        other_fields=["PATID","DISPENSINGID"],
+        other_fields=["PATID","DISPENSINGID", "NULL AS PROVIDERID"],
         sel_keys = ['SU','AGI','GLP1RA','DPP4','MEG','AML','INS','SGLT2','COMBO','BIGU','TZD'],
         sel_domain = "rx"
     )
@@ -201,7 +236,7 @@ def _build_dm_lab(session: Session, site: str):
 
     if _table_exists(session, f"{_set_site_schema(site)}.LDS_LAB_RESULT_CM"):
         dm_lab_df = dm_lab_df.union_all(
-            session.sql(vs_dm_lab.gen_qry())
+            session.sql(vs_dm_lab.gen_qry(use_value_range=False))
             .with_column("SITE", lit(site))
         )
     else:
@@ -221,8 +256,22 @@ def _build_als_dxrxpx(session: Session, site: str):
         cdtype_field = 'DX_TYPE',
         date_fields = ["DX_DATE",'ADMIT_DATE'],
         srctbl_name = f"{_set_site_schema(site)}.LDS_DIAGNOSIS",
-        other_fields=["PATID","ENCOUNTERID"],
-        sel_keys = ['ALS','SxSpeech','SxSwallowing','SxMuscleWeakness','SxMuscleMovement','SxPainJointLimb','SxWalking','PBP','PLS','FTD','SMA','PBA'],
+        other_fields=["PATID","ENCOUNTERID","PROVIDERID"],
+        sel_keys = [
+            'ALS',
+            'SxSpeech',
+            'SxSwallowing',
+            'SxMuscleWeakness',
+            'SxMuscleMovement',
+            'SxPainJointLimb',
+            'SxWalking',
+            'PBP',
+            'PLS',
+            'FTD',
+            'SMA',
+            'PBA',
+            "PalliativeCare",
+        ],
         sel_domain = "dx"
     )
     vs_als_px = QueryFromJson(
@@ -232,8 +281,26 @@ def _build_als_dxrxpx(session: Session, site: str):
         cdtype_field= 'PX_TYPE',
         date_fields = ["PX_DATE",'ADMIT_DATE'],
         srctbl_name = f"{_set_site_schema(site)}.LDS_PROCEDURES",
-        other_fields=["PATID","ENCOUNTERID"],
-        sel_keys = ["MobilityDeviceWheelchair","AssistiveDeviceCommunication","EnteralFeedingEquipment","RespiratoryDeviceNIV","RespiratoryDeviceMV"],
+        other_fields=["PATID","ENCOUNTERID","PROVIDERID"],
+        sel_keys = [
+            "MobilityDeviceWheelchair",
+            "AssistiveDeviceCommunication",
+            "EnteralFeedingEquipment",
+            "RespiratoryDeviceNIV",
+            "RespiratoryDeviceMV",
+            "OccupationalTherapy",
+            "PhysicalTherapy",
+            "FunctionalCare",
+            "DietitianCare",
+            "PsychologicalCare",
+            "SpeechLanguageCare",
+            "EMG",
+            "MRI",
+            "CSF",
+            "GeneticTesting",
+            "PulmonaryFunctionTesting",
+            "MuscleStrengthTesting"
+        ],
         sel_domain = "px"
     )
     vs_als_prx = QueryFromJson(
@@ -242,7 +309,7 @@ def _build_als_dxrxpx(session: Session, site: str):
         cd_field = 'RXNORM_CUI',
         date_fields = ["RX_START_DATE",'RX_ORDER_DATE'],
         srctbl_name = f"{_set_site_schema(site)}.LDS_PRESCRIBING",
-        other_fields=["PATID","ENCOUNTERID"],
+        other_fields=["PATID","ENCOUNTERID","RX_PROVIDERID"],
         sel_keys = ["riluzole","edaravone","tofersen"],
         sel_domain = "rx"
     )
@@ -252,7 +319,7 @@ def _build_als_dxrxpx(session: Session, site: str):
         cd_field = 'RXNORM_CUI',
         date_fields = ["EXT_PAT_START_DATE",'EXT_RECORD_DATE'],
         srctbl_name = f"{_set_site_schema(site)}.LDS_EXTERNAL_MEDS",
-        other_fields=["PATID","NULL AS ENCOUNTERID"],
+        other_fields=["PATID","NULL AS ENCOUNTERID", "NULL AS PROVIDERID"],
         sel_keys = ["riluzole","edaravone","tofersen"],
         sel_domain = "rx"
     )
@@ -262,7 +329,7 @@ def _build_als_dxrxpx(session: Session, site: str):
         cd_field = 'NDC',
         date_fields = ['DISPENSE_DATE'],
         srctbl_name = f"{_set_site_schema(site)}.LDS_DISPENSING",
-        other_fields=["PATID","DISPENSINGID"],
+        other_fields=["PATID","DISPENSINGID", "NULL AS PROVIDERID"],
         sel_keys = ["riluzole","edaravone","tofersen"],
         sel_domain = "rx"
     )
@@ -313,7 +380,62 @@ def _build_als_dxrxpx(session: Session, site: str):
             site,
         )
 
+    if _table_exists(session, f"{_set_site_schema(site)}.LDS_PROCEDURES"):
+        als_dxrxpx_df = als_dxrxpx_df.union_all(
+            session.sql(vs_als_px.gen_qry())
+            .with_column("SITE", lit(site))
+        )
+    else:
+        logger.warning(
+            "Skipping LDS_PROCEDURES for site %s because the table does not exist.",
+            site,
+        )
+
     return als_dxrxpx_df
+
+def _build_prvdr(session: Session, site: str):
+    if not _table_exists(session, f"{_set_site_schema(site)}.LDS_PROVIDER"):
+        logger.warning(
+            "Skipping PROVIDER for site %s because the table does not exist.",
+            site,
+        )
+        return session.create_dataframe([], schema=PRVDR_LOG_SCHEMA)
+
+    return session.sql(
+        f"""
+        SELECT DISTINCT
+            p.PROVIDERID,
+            p.PROVIDER_SPECIALTY_PRIMARY,
+            p.PROVIDER_NPI,
+            z.DESCRIPTIVE_TEXT,
+            z.GROUPING,
+            z.MDT_DOMAIN
+        FROM {_set_site_schema(site)}.LDS_PROVIDER p
+        LEFT JOIN GROUSE_DB_DEV_CMS.METADATA.Z_NUCC_TXMY z
+            ON p.PROVIDER_SPECIALTY_PRIMARY = z.CODE
+        """
+    ).with_column("SITE", lit(site))
+
+def _build_enc(session: Session, site: str):
+    if not _table_exists(session, f"{_set_site_schema(site)}.LDS_ENCOUNTER"):
+        logger.warning(
+            "Skipping ENCOUNTER for site %s because the table does not exist.",
+            site,
+        )
+        return session.create_dataframe([], schema=ENC_LOG_SCHEMA)
+
+    return session.sql(
+        f"""
+        SELECT DISTINCT
+            e.PATID,
+            e.ENCOUNTERID,
+            e.ENC_TYPE,
+            e.ADMIT_DATE,
+            e.DISCHARGE_DATE
+        FROM {_set_site_schema(site)}.LDS_ENCOUNTER e
+        WHERE e.ENC_TYPE not in ('NI','UN')
+        """
+    ).with_column("SITE", lit(site))
 
 
 def build_event_logs(
@@ -321,16 +443,22 @@ def build_event_logs(
     site_lst: list[str],
     log_dm_dxrx: str = "DM_DXRX_LONG",
     log_dm_lab: str = "DM_LAB_LONG",
-    log_als_dxrxpx: str = "ALS_DXRXPX_LONG"
+    log_als_dxrxpx: str = "ALS_DXRXPX_LONG",
+    log_prvdr: str = "PRVDR_LONG",
+    log_enc: str = "ENC_LONG",
 ):
     _create_log_tbl_kd(session, log_dm_dxrx)
     _create_log_tbl_kvd(session, log_dm_lab)
     _create_log_tbl_kd(session, log_als_dxrxpx)
+    _create_log_tbl_prvdr(session, log_prvdr)
+    _create_log_tbl_enc(session, log_enc)
 
     for site in site_lst:
         _build_dm_dxrx(session, site).write.mode("append").save_as_table(log_dm_dxrx)
         _build_dm_lab(session, site).write.mode("append").save_as_table(log_dm_lab)
         _build_als_dxrxpx(session, site).write.mode("append").save_as_table(log_als_dxrxpx)
+        _build_prvdr(session, site).write.mode("append").save_as_table(log_prvdr)
+        _build_enc(session, site).write.mode("append").save_as_table(log_enc)
         logger.info(f"✅ Event log data for site {site} appended.")
 
 
@@ -340,6 +468,7 @@ def main():
     session = conn.get_snow_conn(connect_params)
     session.use_database(os.environ["ID_SNOW_DATABASE"])
     session.use_schema("SX_ALS_GPC")
+    session.use_warehouse(os.environ["DEV_SNOW_WAREHOUSE"])
     logger.info(session.sql("SELECT CURRENT_USER(), CURRENT_ROLE(), CURRENT_DATABASE(), CURRENT_WAREHOUSE()").collect())
 
     site_lst = [
@@ -357,7 +486,7 @@ def main():
         "UTSW",
         "UU",
         "WASHU",
-        "CMS"
+        # "CMS"
     ]
 
     build_event_logs(session, site_lst)

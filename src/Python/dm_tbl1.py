@@ -6,6 +6,7 @@ from snowflake.snowpark.functions import (
     count,
     datediff,
     lit,
+    year,
     min as s_min,
     row_number,
     when,
@@ -147,9 +148,98 @@ def _build_dm_pt(phepair, init_dx, t1dm_ind, t1dm_rt, insl_ind):
     )
 
 
+def _build_dx_index_by_type(log_uniq):
+    w_patid = Window.partition_by(col("PATID"))
+
+    t1_idx = (
+        log_uniq
+        .filter(col("PHE_TYPE") == "T1DM")
+        .filter(col("CD_DATE").is_not_null())
+        .with_column("DX1_DATE", s_min(col("CD_DATE")).over(w_patid))
+        .select(col("PATID"), col("DX1_DATE"))
+        .distinct()
+        .with_column("DENOM", lit("T1DM"))
+    )
+
+    t2_idx = (
+        log_uniq
+        .filter(col("PHE_TYPE") == "T2DM")
+        .filter(col("CD_DATE").is_not_null())
+        .with_column("DX1_DATE", s_min(col("CD_DATE")).over(w_patid))
+        .select(col("PATID"), col("DX1_DATE"))
+        .distinct()
+        .with_column("DENOM", lit("T2DM"))
+    )
+
+    dm_idx = (
+        log_uniq
+        .filter(col("PHE_TYPE").isin(["T1DM", "T2DM"]))
+        .filter(col("CD_DATE").is_not_null())
+        .with_column("DX1_DATE", s_min(col("CD_DATE")).over(w_patid))
+        .select(col("PATID"), col("DX1_DATE"))
+        .distinct()
+        .with_column("DENOM", lit("DM"))
+    )
+
+    return t1_idx.union_all(t2_idx).union_all(dm_idx)
+
+
+def _build_enc_years(enc_long):
+    cols_u = {c.upper(): c for c in enc_long.columns}
+    if "PATID" not in cols_u:
+        raise ValueError("ENC_LONG must contain PATID")
+    if "ADMIT_DATE" not in cols_u:
+        raise ValueError("ENC_LONG must contain ADMIT_DATE")
+
+    return (
+        enc_long
+        .filter(col(cols_u["ADMIT_DATE"]).is_not_null())
+        .select(
+            col(cols_u["PATID"]).alias("PATID"),
+            year(col(cols_u["ADMIT_DATE"])).cast("int").alias("YEAR")
+        )
+        .distinct()
+    )
+
+
+def _build_dm_rx_long(log_uniq, enc_long):
+    # Valid same-year encounter evidence must come from ENC_LONG.
+    visits = _build_enc_years(enc_long)
+
+    dx_index = _build_dx_index_by_type(log_uniq)
+
+    eligible = (
+        visits
+        .join(dx_index, ["PATID"], how="inner")
+        .filter(year(col("DX1_DATE")) < col("YEAR"))
+        .select(col("PATID"), col("YEAR"), col("DENOM"))
+        .distinct()
+    )
+
+    rx_by_year = (
+        log_uniq
+        .filter(col("PHE_GRP") == "RX")
+        .filter(col("CD_DATE").is_not_null())
+        .select(
+            col("PATID"),
+            year(col("CD_DATE")).cast("int").alias("YEAR"),
+            col("PHE_TYPE")
+        )
+        .distinct()
+    )
+
+    return (
+        eligible
+        .join(rx_by_year, ["PATID", "YEAR"], how="inner")
+        .select("PATID", "YEAR", "DENOM", "PHE_TYPE")
+        .distinct()
+    )
+
+
 def build_dm_tbl1(session: Session):
     log_dm_dxrx = session.table("DM_DXRX_LONG")
     log_dm_lab = session.table("DM_LAB_LONG")
+    enc_long = session.table("ENC_LONG")
     log_uniq = (
         _build_log_uniq(session, log_dm_dxrx)
             .union_all(_build_log_uniq(session, log_dm_lab))
@@ -179,6 +269,10 @@ def build_dm_tbl1(session: Session):
         )
     )
     final.write.mode("overwrite").save_as_table("DM_CASE")
+
+    dm_rx_long = _build_dm_rx_long(log_uniq, enc_long)
+    dm_rx_long.write.mode("overwrite").save_as_table("DM_RX_LONG")
+    logger.info("✅ DM_RX_LONG table created with {} rows.".format(dm_rx_long.count()))
 
 def main():
     env.load_env()

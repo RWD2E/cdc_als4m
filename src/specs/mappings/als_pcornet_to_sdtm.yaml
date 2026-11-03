@@ -1,0 +1,1578 @@
+specification:
+  rule_id: PCORNET_ALS_NATURAL_HISTORY_TO_SDTM
+  description: >
+    Study-specific transformation specification from PCORnet Common Data Model v7.0
+    into SDTM tabulation datasets for an observational ALS natural-history study.
+    This specification uses SDTMIG v3.4 domain structures and standard SDTM variable
+    names. It does not treat PCORnet tables as direct equivalents of SDTM domains;
+    records are routed according to their scientific role in the protocol.
+  specification_version: "0.1.0"
+  status: DRAFT
+  generated_date: "2026-08-04"
+  cardinality: "many:many"
+  standards:
+    source:
+      name: PCORnet Common Data Model
+      version: "7.0"
+      specification_url: "https://pcornet.org/wp-content/uploads/2025/01/PCORnet-Common-Data-Model-v70-2025_01_23.pdf"
+      parseable_metadata_url: "https://pcornet.org/wp-content/uploads/2025/01/2025_01_23_PCORnet_Common_Data_Model_v7dot0_parseable.xlsx"
+    target:
+      model: SDTM
+      model_version: "2.0"
+      implementation_guide: SDTMIG
+      implementation_guide_version: "3.4"
+      implementation_guide_url: "https://www.cdisc.org/standards/foundational/sdtmig/sdtmig-v3-4"
+      controlled_terminology:
+        package: SDTM
+        release: PIN_BEFORE_PRODUCTION
+        source_url: "https://evs.nci.nih.gov/ftp1/CDISC/SDTM/"
+      define_xml:
+        version: "2.1"
+  study_parameters:
+    STUDYID: ALS-NH-001
+    DOMAIN_PREFIX: null
+    REFERENCE_START_DATE: PROTOCOL_DEFINED
+    REFERENCE_END_DATE: PROTOCOL_DEFINED
+    ALS_DIAGNOSIS_CODESET: ALS_DIAGNOSIS_CODESET.csv
+    ALS_MEDICATION_CODESET: ALS_MEDICATION_CODESET.csv
+    ALS_PROCEDURE_CODESET: ALS_PROCEDURE_CODESET.csv
+    ALSFRSR_CODESET: ALSFRSR_CODESET.csv
+    RESPIRATORY_TEST_CODESET: RESPIRATORY_TEST_CODESET.csv
+    BASELINE_WINDOW: "[-30, 0] days relative to index date"
+    FOLLOWUP_VISIT_WINDOWS:
+      BASELINE: "[-30, 0]"
+      MONTH_3: "[46, 137]"
+      MONTH_6: "[138, 228]"
+      MONTH_9: "[229, 319]"
+      MONTH_12: "[320, 410]"
+    index_date_definition: >
+      Earliest qualifying ALS diagnosis date after the required observable lookback,
+      unless a protocol-adjudicated diagnosis date is available.
+    record_selection_priority:
+      - protocol-adjudicated value
+      - structured specialty-clinic value
+      - nearest value to target day
+      - latest value within an equal-distance tie
+  global_conformance:
+    - rule_id: GC_STUDYID
+      description: Every record must populate STUDYID with the protocol-defined study identifier.
+    - rule_id: GC_DOMAIN
+      description: Every record must populate DOMAIN with the standard two-character SDTM domain code.
+    - rule_id: GC_USUBJID
+      description: >
+        Every subject-level record must populate a study-unique USUBJID derived from STUDYID,
+        DATAMARTID and PATID; source PATID must not be exposed as USUBJID without namespacing.
+    - rule_id: GC_SEQUENCE
+      description: >
+        Every general-observation-class record must populate --SEQ as a positive integer unique
+        within STUDYID, USUBJID and DOMAIN after final sorting.
+    - rule_id: GC_TOPIC
+      description: >
+        Every Interventions, Events or Findings record must populate the domain Topic variable.
+    - rule_id: GC_TIMING
+      description: >
+        Populate the appropriate point, start or end ISO 8601 timing variable; derive study day
+        only when the complete date and reference start date are available. Do not impute dates in SDTM.
+    - rule_id: GC_CONTROLLED_TERMINOLOGY
+      description: >
+        Values bound to CDISC controlled terminology must use the pinned SDTM CT release.
+        Sponsor extensions are permitted only for extensible codelists and must be documented.
+    - rule_id: GC_REQUIRED_EXPECTED
+      description: >
+        Include all Required and Expected variables as physical columns in each standard dataset.
+        Required variables must be populated on every record; Expected variables must be populated
+        when the data exist or the SDTMIG assumptions require them.
+    - rule_id: GC_DATATYPES
+      description: >
+        SDTM character variables are serialized as character values and SDTM numeric variables
+        as numeric values. Dates and datetimes are ISO 8601 character values.
+    - rule_id: GC_NULLS
+      description: >
+        Do not copy PCORnet flavors of null into SDTM submission variables. Represent unavailable
+        values as null and preserve meaningful source-null provenance in operational metadata.
+    - rule_id: GC_TRACEABILITY
+      description: >
+        Preserve DATAMARTID, source table and source primary key in the staging bridge.
+        Do not add non-standard variables directly to standard domains; use SUPPQUAL only when the
+        value is a relevant qualifier of a parent record and no standard variable exists.
+    - rule_id: GC_NO_DUPLICATE_SEMANTICS
+      description: >
+        A clinical fact must be represented in the domain matching its study meaning. The same
+        source diagnosis must not be duplicated across MH, CE and AE unless each record represents
+        a distinct protocol-defined assertion and relationships are documented.
+    - rule_id: GC_DEFINE_XML
+      description: >
+        Generate Define-XML metadata including dataset labels, structures, keys, variable labels,
+        types, lengths, origins, codelists, comments, computational methods and value-level metadata.
+
+models:
+  - model: PCORNET_CDM
+    version: "7.0"
+  - model: ALS_SDTM_STAGING
+    version: "1.0"
+  - model: ALS_SDTM
+    version: "SDTMIG 3.4"
+
+shared_bridges:
+  - {model: ALS_SDTM_STAGING, entity: SUBJECT_COHORT, alias: coh}
+  - {model: ALS_SDTM_STAGING, entity: SUBJECT_TIMELINE, alias: tl}
+  - {model: ALS_SDTM_STAGING, entity: ENCOUNTER_VISIT_ASSIGNMENT, alias: eva}
+  - {model: ALS_SDTM_STAGING, entity: SOURCE_PROVENANCE, alias: prv}
+
+domain_maps:
+
+  - rule_id: PCORNET_DEMOGRAPHIC_TO_DM
+    description: >
+      Create one Demographics record per enrolled ALS subject. DM is a special-purpose domain
+      and must contain exactly one record per subject.
+    cardinality: "1:1"
+    source:
+      - {model: PCORNET_CDM, entity: DEMOGRAPHIC, alias: src}
+      - {model: PCORNET_CDM, entity: DEATH, alias: dth}
+    bridge:
+      - {model: ALS_SDTM_STAGING, entity: SUBJECT_COHORT, alias: coh}
+      - {model: ALS_SDTM_STAGING, entity: SUBJECT_TIMELINE, alias: tl}
+    target:
+      - {model: ALS_SDTM, entity: DM, alias: tgt}
+    target_metadata:
+      domain: DM
+      label: Demographics
+      class: SPECIAL PURPOSE
+      structure: One record per subject
+      keys: [STUDYID, USUBJID]
+      variables:
+        - {name: STUDYID, label: Study Identifier, type: Char, core: Req}
+        - {name: DOMAIN, label: Domain Abbreviation, type: Char, core: Req}
+        - {name: USUBJID, label: Unique Subject Identifier, type: Char, core: Req}
+        - {name: SUBJID, label: Subject Identifier for the Study, type: Char, core: Req}
+        - {name: RFSTDTC, label: Subject Reference Start Date/Time, type: Char, core: Exp}
+        - {name: RFENDTC, label: Subject Reference End Date/Time, type: Char, core: Exp}
+        - {name: RFPENDTC, label: Date/Time of End of Participation, type: Char, core: Exp}
+        - {name: DTHDTC, label: Date/Time of Death, type: Char, core: Exp}
+        - {name: DTHFL, label: Subject Death Flag, type: Char, core: Exp, codelist: NY}
+        - {name: SITEID, label: Study Site Identifier, type: Char, core: Req}
+        - {name: BRTHDTC, label: Date/Time of Birth, type: Char, core: Perm}
+        - {name: AGE, label: Age, type: Num, core: Exp}
+        - {name: AGEU, label: Age Units, type: Char, core: Exp, codelist: AGEU}
+        - {name: SEX, label: Sex, type: Char, core: Req, codelist: SEX}
+        - {name: RACE, label: Race, type: Char, core: Exp, codelist: RACE}
+        - {name: ETHNIC, label: Ethnicity, type: Char, core: Perm, codelist: ETHNIC}
+        - {name: COUNTRY, label: Country, type: Char, core: Req, codelist: COUNTRY}
+        - {name: DMDTC, label: Date/Time of Collection, type: Char, core: Perm}
+        - {name: DMDY, label: Study Day of Collection, type: Num, core: Perm}
+    preserve_columns:
+      - rule_id: PATID2SUBJID
+        description: Map study pseudonym to SUBJID; retain source PATID only in protected staging.
+        sources: [{entity: src, column: PATID}]
+        bridges: [{entity: coh, column: STUDY_SUBJID}]
+        targets: [{entity: tgt, column: SUBJID}]
+    transform_columns:
+      - rule_id: ADD_STUDYID
+        sources: []
+        targets: [{entity: tgt, column: STUDYID}]
+        transform: "'ALS-NH-001'"
+      - rule_id: ADD_DOMAIN
+        sources: []
+        targets: [{entity: tgt, column: DOMAIN}]
+        transform: "'DM'"
+      - rule_id: DERIVE_USUBJID
+        sources: [{entity: src, column: PATID}]
+        bridges:
+          - {entity: coh, column: DATAMARTID}
+          - {entity: coh, column: STUDY_SUBJID}
+        targets: [{entity: tgt, column: USUBJID}]
+        transform: "CONCAT_WS('-', 'ALS-NH-001', coh.DATAMARTID, coh.STUDY_SUBJID)"
+      - rule_id: ADD_SITEID
+        sources: []
+        bridges: [{entity: coh, column: DATAMARTID}]
+        targets: [{entity: tgt, column: SITEID}]
+        transform: "coh.DATAMARTID"
+      - rule_id: BIRTHDATE2BRTHDTC
+        sources: [{entity: src, column: BIRTH_DATE}]
+        targets: [{entity: tgt, column: BRTHDTC}]
+        transform: "TO_ISO8601_DATE({s0})"
+      - rule_id: SEX2SEX
+        sources: [{entity: src, column: SEX}]
+        targets: [{entity: tgt, column: SEX}]
+        valueset_map: {file: PCORNET_SEX_TO_SDTM_SEX.csv, alias: sexct}
+      - rule_id: RACE2RACE
+        sources:
+          - {entity: src, column: RACE}
+          - {entity: src, column: RAW_RACE}
+        targets: [{entity: tgt, column: RACE}]
+        valueset_map: {file: PCORNET_RACE_TO_SDTM_RACE.csv, alias: racect}
+      - rule_id: HISPANIC2ETHNIC
+        sources:
+          - {entity: src, column: HISPANIC}
+          - {entity: src, column: RAW_HISPANIC}
+        targets: [{entity: tgt, column: ETHNIC}]
+        valueset_map: {file: PCORNET_HISPANIC_TO_SDTM_ETHNIC.csv, alias: ethct}
+      - rule_id: DERIVE_AGE
+        sources: [{entity: src, column: BIRTH_DATE}]
+        bridges: [{entity: tl, column: RFSTDTC}]
+        targets:
+          - {entity: tgt, column: AGE}
+          - {entity: tgt, column: AGEU}
+        transform: "FLOOR(DATEDIFF(day, {s0}, tl.RFSTDTC) / 365.25), 'YEARS'"
+      - rule_id: TIMELINE2REFERENCE_DATES
+        sources: []
+        bridges:
+          - {entity: tl, column: RFSTDTC}
+          - {entity: tl, column: RFENDTC}
+          - {entity: tl, column: RFPENDTC}
+        targets:
+          - {entity: tgt, column: RFSTDTC}
+          - {entity: tgt, column: RFENDTC}
+          - {entity: tgt, column: RFPENDTC}
+        transform: "TO_ISO8601_DATE(tl.RFSTDTC), TO_ISO8601_DATE(tl.RFENDTC), TO_ISO8601_DATE(tl.RFPENDTC)"
+      - rule_id: DEATH2DTH
+        sources: [{entity: dth, column: DEATH_DATE}]
+        targets:
+          - {entity: tgt, column: DTHDTC}
+          - {entity: tgt, column: DTHFL}
+        transform: "TO_ISO8601_DATE({s0}), IFF({s0} IS NOT NULL, 'Y', NULL)"
+      - rule_id: ADD_COUNTRY
+        sources: []
+        bridges: [{entity: coh, column: COUNTRY}]
+        targets: [{entity: tgt, column: COUNTRY}]
+        transform: "coh.COUNTRY"
+    conformance_rules:
+      - DM must have exactly one record per USUBJID.
+      - SEX must be populated for every DM record; map unavailable source values to the valid CT value.
+      - COUNTRY must use the pinned SDTM COUNTRY controlled terminology.
+      - AGE and AGEU must be populated together.
+      - DTHFL may be Y only when death is known; DTHDTC may remain null when only death status is known.
+
+  - rule_id: PCORNET_ENCOUNTER_TO_SV
+    description: >
+      Create Subject Visits records only for encounters assigned to protocol-defined natural-history
+      visits. Routine encounters not assigned to a study visit remain source evidence and may map to HO.
+    cardinality: "many:many:1"
+    source:
+      - {model: PCORNET_CDM, entity: ENCOUNTER, alias: src}
+    bridge:
+      - {model: ALS_SDTM_STAGING, entity: ENCOUNTER_VISIT_ASSIGNMENT, alias: eva}
+      - {model: ALS_SDTM_STAGING, entity: SUBJECT_COHORT, alias: coh}
+      - {model: ALS_SDTM_STAGING, entity: SUBJECT_TIMELINE, alias: tl}
+    target:
+      - {model: ALS_SDTM, entity: SV, alias: tgt}
+    target_metadata:
+      domain: SV
+      label: Subject Visits
+      class: SPECIAL PURPOSE
+      structure: One record per subject per actual visit
+      keys: [STUDYID, USUBJID, VISITNUM]
+      variables:
+        - {name: STUDYID, label: Study Identifier, type: Char, core: Req}
+        - {name: DOMAIN, label: Domain Abbreviation, type: Char, core: Req}
+        - {name: USUBJID, label: Unique Subject Identifier, type: Char, core: Req}
+        - {name: VISITNUM, label: Visit Number, type: Num, core: Req}
+        - {name: VISIT, label: Visit Name, type: Char, core: Exp}
+        - {name: VISITDY, label: Planned Study Day of Visit, type: Num, core: Perm}
+        - {name: SVSTDTC, label: Start Date/Time of Visit, type: Char, core: Exp}
+        - {name: SVENDTC, label: End Date/Time of Visit, type: Char, core: Exp}
+        - {name: SVSTDY, label: Study Day of Start of Visit, type: Num, core: Perm}
+        - {name: SVENDY, label: Study Day of End of Visit, type: Num, core: Perm}
+        - {name: SVUPDES, label: Description of Unplanned Visit, type: Char, core: Perm}
+    transform_columns:
+      - rule_id: STANDARD_IDENTIFIERS
+        sources: [{entity: src, column: PATID}]
+        bridges: [{entity: coh, column: DATAMARTID}, {entity: coh, column: STUDY_SUBJID}]
+        targets:
+          - {entity: tgt, column: STUDYID}
+          - {entity: tgt, column: DOMAIN}
+          - {entity: tgt, column: USUBJID}
+        transform: "'ALS-NH-001', 'SV', CONCAT_WS('-', 'ALS-NH-001', coh.DATAMARTID, coh.STUDY_SUBJID)"
+      - rule_id: ASSIGNED_VISIT
+        sources:
+          - {entity: src, column: ADMIT_DATE}
+          - {entity: src, column: DISCHARGE_DATE}
+        bridges:
+          - {entity: eva, column: VISITNUM}
+          - {entity: eva, column: VISIT}
+          - {entity: eva, column: VISITDY}
+        targets:
+          - {entity: tgt, column: VISITNUM}
+          - {entity: tgt, column: VISIT}
+          - {entity: tgt, column: VISITDY}
+          - {entity: tgt, column: SVSTDTC}
+          - {entity: tgt, column: SVENDTC}
+        transform: "eva.VISITNUM, eva.VISIT, eva.VISITDY, TO_ISO8601_DATE({s0}), TO_ISO8601_DATE(COALESCE({s1}, {s0}))"
+      - rule_id: DERIVE_VISIT_STUDY_DAYS
+        sources:
+          - {entity: src, column: ADMIT_DATE}
+          - {entity: src, column: DISCHARGE_DATE}
+        bridges: [{entity: tl, column: RFSTDTC}]
+        targets:
+          - {entity: tgt, column: SVSTDY}
+          - {entity: tgt, column: SVENDY}
+        transform: "SDTM_STUDY_DAY({s0}, tl.RFSTDTC), SDTM_STUDY_DAY(COALESCE({s1},{s0}), tl.RFSTDTC)"
+    source_filter: "eva.SELECTED_FOR_SV = 'Y'"
+    conformance_rules:
+      - Do not create SV records for every EHR encounter.
+      - Combine multiple same-day source encounters into one study visit when required by the protocol.
+      - VISITNUM must be numeric and consistent with the trial visit metadata.
+      - SVSTDTC and SVENDTC describe the actual visit interval, not the target visit date.
+
+  - rule_id: PCORNET_DIAGNOSIS_CONDITION_TO_MH
+    description: >
+      Represent ALS diagnosis, symptom history and relevant pre-existing comorbidities as Medical History.
+      Exclude diagnoses whose study role is adverse event, protocol deviation, healthcare encounter,
+      or eligibility-only evidence.
+    cardinality: "many:many:many"
+    source:
+      - {model: PCORNET_CDM, entity: DIAGNOSIS, alias: dx}
+      - {model: PCORNET_CDM, entity: CONDITION, alias: con}
+    bridge:
+      - {model: ALS_SDTM_STAGING, entity: CLINICAL_CONDITION_ROUTER, alias: ccr}
+      - {model: ALS_SDTM_STAGING, entity: SUBJECT_COHORT, alias: coh}
+      - {model: ALS_SDTM_STAGING, entity: SUBJECT_TIMELINE, alias: tl}
+    target:
+      - {model: ALS_SDTM, entity: MH, alias: tgt}
+    target_metadata:
+      domain: MH
+      label: Medical History
+      class: EVENTS
+      structure: One record per subject per medical-history event
+      keys: [STUDYID, USUBJID, MHSEQ]
+      variables:
+        - {name: STUDYID, label: Study Identifier, type: Char, core: Req}
+        - {name: DOMAIN, label: Domain Abbreviation, type: Char, core: Req}
+        - {name: USUBJID, label: Unique Subject Identifier, type: Char, core: Req}
+        - {name: MHSEQ, label: Sequence Number, type: Num, core: Req}
+        - {name: MHSPID, label: Sponsor-Defined Identifier, type: Char, core: Perm}
+        - {name: MHTERM, label: Reported Term for the Medical History, type: Char, core: Req}
+        - {name: MHMODIFY, label: Modified Reported Term, type: Char, core: Perm}
+        - {name: MHDECOD, label: Dictionary-Derived Term, type: Char, core: Exp}
+        - {name: MHCAT, label: Category for Medical History, type: Char, core: Perm}
+        - {name: MHSCAT, label: Subcategory for Medical History, type: Char, core: Perm}
+        - {name: MHBODSYS, label: Body System or Organ Class, type: Char, core: Perm}
+        - {name: MHSTDTC, label: Start Date/Time of Medical History Event, type: Char, core: Exp}
+        - {name: MHENDTC, label: End Date/Time of Medical History Event, type: Char, core: Exp}
+        - {name: MHSTDY, label: Study Day of Start of Event, type: Num, core: Perm}
+        - {name: MHENDY, label: Study Day of End of Event, type: Num, core: Perm}
+        - {name: MHENRF, label: End Relative to Reference Period, type: Char, core: Perm, codelist: STENRF}
+        - {name: EPOCH, label: Epoch, type: Char, core: Perm, codelist: EPOCH}
+    transform_columns:
+      - rule_id: MH_IDENTIFIERS
+        sources: [{entity: ccr, column: PATID}, {entity: ccr, column: SOURCE_RECORD_ID}]
+        bridges: [{entity: coh, column: DATAMARTID}, {entity: coh, column: STUDY_SUBJID}]
+        targets:
+          - {entity: tgt, column: STUDYID}
+          - {entity: tgt, column: DOMAIN}
+          - {entity: tgt, column: USUBJID}
+          - {entity: tgt, column: MHSPID}
+        transform: "'ALS-NH-001', 'MH', CONCAT_WS('-', 'ALS-NH-001', coh.DATAMARTID, coh.STUDY_SUBJID), CONCAT_WS(':', ccr.SOURCE_TABLE, {s1})"
+      - rule_id: CONDITION_TERM
+        sources:
+          - {entity: ccr, column: RAW_TERM}
+          - {entity: ccr, column: STANDARD_TERM}
+          - {entity: ccr, column: STANDARD_CODE}
+        targets:
+          - {entity: tgt, column: MHTERM}
+          - {entity: tgt, column: MHDECOD}
+        transform: "COALESCE({s0}, {s1}, {s2}), COALESCE({s1}, {s0})"
+      - rule_id: CONDITION_CATEGORY
+        sources: [{entity: ccr, column: CONDITION_ROLE}, {entity: ccr, column: ALS_SUBTYPE}]
+        targets:
+          - {entity: tgt, column: MHCAT}
+          - {entity: tgt, column: MHSCAT}
+        transform: "IFF({s0}='ALS', 'ALS DISEASE HISTORY', 'GENERAL MEDICAL HISTORY'), {s1}"
+      - rule_id: CONDITION_TIMING
+        sources:
+          - {entity: ccr, column: START_DATE}
+          - {entity: ccr, column: END_DATE}
+        bridges: [{entity: tl, column: RFSTDTC}]
+        targets:
+          - {entity: tgt, column: MHSTDTC}
+          - {entity: tgt, column: MHENDTC}
+          - {entity: tgt, column: MHSTDY}
+          - {entity: tgt, column: MHENDY}
+        transform: "TO_ISO8601_DATE({s0}), TO_ISO8601_DATE({s1}), SDTM_STUDY_DAY({s0},tl.RFSTDTC), SDTM_STUDY_DAY({s1},tl.RFSTDTC)"
+    source_filter: "ccr.TARGET_DOMAIN = 'MH'"
+    reconcile:
+      - rule_id: ADD_MHSEQ
+        sources:
+          - {entity: tgt, column: USUBJID}
+          - {entity: tgt, column: MHSTDTC}
+          - {entity: tgt, column: MHTERM}
+          - {entity: tgt, column: MHSPID}
+        targets: [{entity: tgt, column: MHSEQ}]
+        transform: "ROW_NUMBER() OVER (PARTITION BY STUDYID, USUBJID ORDER BY MHSTDTC, MHTERM, MHSPID)"
+    conformance_rules:
+      - MHTERM must represent the reported/source term, not only a billing code.
+      - Use a documented coding dictionary and version for MHDECOD when coding is performed.
+      - Do not infer clinical onset solely from first billing-code occurrence without a protocol-defined derivation.
+      - ALS symptom onset, diagnosis date and phenotype may require separate MH records or Findings About records.
+
+  - rule_id: PCORNET_MEDICATION_TO_CM
+    description: >
+      Map non-study ALS-directed and concomitant medications from PRESCRIBING, DISPENSING and
+      MED_ADMIN to CM. Do not map investigational protocol exposure to CM.
+    cardinality: "many:many:many"
+    source:
+      - {model: PCORNET_CDM, entity: PRESCRIBING, alias: rx}
+      - {model: PCORNET_CDM, entity: DISPENSING, alias: dsp}
+      - {model: PCORNET_CDM, entity: MED_ADMIN, alias: mad}
+    bridge:
+      - {model: ALS_SDTM_STAGING, entity: MEDICATION_EPISODE, alias: mep}
+      - {model: ALS_SDTM_STAGING, entity: SUBJECT_COHORT, alias: coh}
+      - {model: ALS_SDTM_STAGING, entity: SUBJECT_TIMELINE, alias: tl}
+    target:
+      - {model: ALS_SDTM, entity: CM, alias: tgt}
+    target_metadata:
+      domain: CM
+      label: Concomitant and Prior Medications
+      class: INTERVENTIONS
+      structure: One record per subject per medication intervention
+      keys: [STUDYID, USUBJID, CMSEQ]
+      variables:
+        - {name: STUDYID, label: Study Identifier, type: Char, core: Req}
+        - {name: DOMAIN, label: Domain Abbreviation, type: Char, core: Req}
+        - {name: USUBJID, label: Unique Subject Identifier, type: Char, core: Req}
+        - {name: CMSEQ, label: Sequence Number, type: Num, core: Req}
+        - {name: CMSPID, label: Sponsor-Defined Identifier, type: Char, core: Perm}
+        - {name: CMTRT, label: Reported Name of Drug, type: Char, core: Req}
+        - {name: CMMODIFY, label: Modified Reported Name, type: Char, core: Perm}
+        - {name: CMDECOD, label: Standardized Medication Name, type: Char, core: Exp}
+        - {name: CMCAT, label: Category for Medication, type: Char, core: Perm}
+        - {name: CMSCAT, label: Subcategory for Medication, type: Char, core: Perm}
+        - {name: CMDOSE, label: Dose per Administration, type: Num, core: Perm}
+        - {name: CMDOSTXT, label: Dose Description, type: Char, core: Perm}
+        - {name: CMDOSU, label: Dose Units, type: Char, core: Perm, codelist: UNIT}
+        - {name: CMDOSFRM, label: Dose Form, type: Char, core: Perm, codelist: FRM}
+        - {name: CMDOSFRQ, label: Dosing Frequency per Interval, type: Char, core: Perm, codelist: FREQ}
+        - {name: CMROUTE, label: Route of Administration, type: Char, core: Perm, codelist: ROUTE}
+        - {name: CMINDC, label: Indication, type: Char, core: Perm}
+        - {name: CMSTDTC, label: Start Date/Time of Medication, type: Char, core: Exp}
+        - {name: CMENDTC, label: End Date/Time of Medication, type: Char, core: Exp}
+        - {name: CMSTDY, label: Study Day of Start of Medication, type: Num, core: Perm}
+        - {name: CMENDY, label: Study Day of End of Medication, type: Num, core: Perm}
+        - {name: CMENRF, label: End Relative to Reference Period, type: Char, core: Perm, codelist: STENRF}
+        - {name: EPOCH, label: Epoch, type: Char, core: Perm, codelist: EPOCH}
+    transform_columns:
+      - rule_id: CM_IDENTIFIERS
+        sources: [{entity: mep, column: PATID}, {entity: mep, column: MEDICATION_EPISODE_ID}]
+        bridges: [{entity: coh, column: DATAMARTID}, {entity: coh, column: STUDY_SUBJID}]
+        targets:
+          - {entity: tgt, column: STUDYID}
+          - {entity: tgt, column: DOMAIN}
+          - {entity: tgt, column: USUBJID}
+          - {entity: tgt, column: CMSPID}
+        transform: "'ALS-NH-001', 'CM', CONCAT_WS('-', 'ALS-NH-001',coh.DATAMARTID,coh.STUDY_SUBJID), {s1}"
+      - rule_id: MEDICATION_NAME
+        sources:
+          - {entity: mep, column: RAW_DRUG_NAME}
+          - {entity: mep, column: RXNORM_NAME}
+        targets:
+          - {entity: tgt, column: CMTRT}
+          - {entity: tgt, column: CMDECOD}
+        transform: "COALESCE({s0},{s1}), {s1}"
+      - rule_id: MEDICATION_CLASSIFICATION
+        sources:
+          - {entity: mep, column: ALS_DIRECTED_FLAG}
+          - {entity: mep, column: MEDICATION_CLASS}
+        targets:
+          - {entity: tgt, column: CMCAT}
+          - {entity: tgt, column: CMSCAT}
+        transform: "IFF({s0}='Y','ALS-DIRECTED MEDICATION','CONCOMITANT MEDICATION'), {s1}"
+      - rule_id: DOSE_DETAILS
+        sources:
+          - {entity: mep, column: DOSE}
+          - {entity: mep, column: DOSE_TEXT}
+          - {entity: mep, column: DOSE_UNIT}
+          - {entity: mep, column: DOSE_FORM}
+          - {entity: mep, column: FREQUENCY}
+          - {entity: mep, column: ROUTE}
+        targets:
+          - {entity: tgt, column: CMDOSE}
+          - {entity: tgt, column: CMDOSTXT}
+          - {entity: tgt, column: CMDOSU}
+          - {entity: tgt, column: CMDOSFRM}
+          - {entity: tgt, column: CMDOSFRQ}
+          - {entity: tgt, column: CMROUTE}
+        valueset_map: {file: MEDICATION_ATTRIBUTES_TO_SDTM_CT.csv, alias: medct}
+      - rule_id: MEDICATION_TIMING
+        sources:
+          - {entity: mep, column: START_DATE}
+          - {entity: mep, column: END_DATE}
+        bridges: [{entity: tl, column: RFSTDTC}]
+        targets:
+          - {entity: tgt, column: CMSTDTC}
+          - {entity: tgt, column: CMENDTC}
+          - {entity: tgt, column: CMSTDY}
+          - {entity: tgt, column: CMENDY}
+        transform: "TO_ISO8601_DATE({s0}), TO_ISO8601_DATE({s1}), SDTM_STUDY_DAY({s0},tl.RFSTDTC), SDTM_STUDY_DAY({s1},tl.RFSTDTC)"
+    reconcile:
+      - rule_id: ADD_CMSEQ
+        sources:
+          - {entity: tgt, column: USUBJID}
+          - {entity: tgt, column: CMSTDTC}
+          - {entity: tgt, column: CMTRT}
+          - {entity: tgt, column: CMSPID}
+        targets: [{entity: tgt, column: CMSEQ}]
+        transform: "ROW_NUMBER() OVER (PARTITION BY STUDYID,USUBJID ORDER BY CMSTDTC,CMTRT,CMSPID)"
+    conformance_rules:
+      - An order alone does not prove medication administration or adherence.
+      - Consolidate duplicate prescribing, dispensing and administration evidence only under a documented episode algorithm.
+      - CMTRT must preserve the reported/source medication name; CMDECOD may contain the coded standardized name.
+      - Protocol treatment, if present, must be modeled in EC/EX rather than CM.
+
+  - rule_id: PCORNET_PROCEDURES_TO_PR
+    description: >
+      Map clinically performed procedures relevant to ALS natural history, including gastrostomy,
+      tracheostomy, ventilation-related procedures and mobility-device evaluations, to PR.
+    cardinality: "many:many"
+    source:
+      - {model: PCORNET_CDM, entity: PROCEDURES, alias: src}
+    bridge:
+      - {model: ALS_SDTM_STAGING, entity: PROCEDURE_ROUTER, alias: prr}
+      - {model: ALS_SDTM_STAGING, entity: SUBJECT_COHORT, alias: coh}
+      - {model: ALS_SDTM_STAGING, entity: SUBJECT_TIMELINE, alias: tl}
+    target:
+      - {model: ALS_SDTM, entity: PR, alias: tgt}
+    target_metadata:
+      domain: PR
+      label: Procedures
+      class: INTERVENTIONS
+      structure: One record per subject per procedure
+      keys: [STUDYID, USUBJID, PRSEQ]
+      variables:
+        - {name: STUDYID, label: Study Identifier, type: Char, core: Req}
+        - {name: DOMAIN, label: Domain Abbreviation, type: Char, core: Req}
+        - {name: USUBJID, label: Unique Subject Identifier, type: Char, core: Req}
+        - {name: PRSEQ, label: Sequence Number, type: Num, core: Req}
+        - {name: PRSPID, label: Sponsor-Defined Identifier, type: Char, core: Perm}
+        - {name: PRTRT, label: Reported Name of Procedure, type: Char, core: Req}
+        - {name: PRDECOD, label: Standardized Procedure Name, type: Char, core: Exp}
+        - {name: PRCAT, label: Category for Procedure, type: Char, core: Perm}
+        - {name: PRSCAT, label: Subcategory for Procedure, type: Char, core: Perm}
+        - {name: PROCCUR, label: Procedure Occurrence, type: Char, core: Perm, codelist: NY}
+        - {name: PRSTDTC, label: Start Date/Time of Procedure, type: Char, core: Exp}
+        - {name: PRENDTC, label: End Date/Time of Procedure, type: Char, core: Exp}
+        - {name: PRSTDY, label: Study Day of Start of Procedure, type: Num, core: Perm}
+        - {name: PRENDY, label: Study Day of End of Procedure, type: Num, core: Perm}
+        - {name: EPOCH, label: Epoch, type: Char, core: Perm, codelist: EPOCH}
+    transform_columns:
+      - rule_id: PR_IDENTIFIERS
+        sources:
+          - {entity: src, column: PATID}
+          - {entity: src, column: PROCEDURESID}
+        bridges: [{entity: coh, column: DATAMARTID}, {entity: coh, column: STUDY_SUBJID}]
+        targets:
+          - {entity: tgt, column: STUDYID}
+          - {entity: tgt, column: DOMAIN}
+          - {entity: tgt, column: USUBJID}
+          - {entity: tgt, column: PRSPID}
+        transform: "'ALS-NH-001','PR',CONCAT_WS('-', 'ALS-NH-001',coh.DATAMARTID,coh.STUDY_SUBJID),{s1}"
+      - rule_id: PROCEDURE_TERM
+        sources:
+          - {entity: src, column: PX}
+          - {entity: src, column: RAW_PX}
+        bridges:
+          - {entity: prr, column: STANDARD_PROCEDURE_NAME}
+          - {entity: prr, column: PROCEDURE_CATEGORY}
+        targets:
+          - {entity: tgt, column: PRTRT}
+          - {entity: tgt, column: PRDECOD}
+          - {entity: tgt, column: PRCAT}
+          - {entity: tgt, column: PROCCUR}
+        transform: "COALESCE({s1},{s0}),prr.STANDARD_PROCEDURE_NAME,prr.PROCEDURE_CATEGORY,'Y'"
+      - rule_id: PROCEDURE_TIMING
+        sources: [{entity: src, column: PX_DATE}]
+        bridges: [{entity: tl, column: RFSTDTC}]
+        targets:
+          - {entity: tgt, column: PRSTDTC}
+          - {entity: tgt, column: PRSTDY}
+        transform: "TO_ISO8601_DATE({s0}), SDTM_STUDY_DAY({s0},tl.RFSTDTC)"
+    source_filter: "prr.TARGET_DOMAIN = 'PR' AND prr.IN_ALS_STUDY_SCOPE = 'Y'"
+    reconcile:
+      - rule_id: ADD_PRSEQ
+        sources:
+          - {entity: tgt, column: USUBJID}
+          - {entity: tgt, column: PRSTDTC}
+          - {entity: tgt, column: PRTRT}
+          - {entity: tgt, column: PRSPID}
+        targets: [{entity: tgt, column: PRSEQ}]
+        transform: "ROW_NUMBER() OVER (PARTITION BY STUDYID,USUBJID ORDER BY PRSTDTC,PRTRT,PRSPID)"
+
+  - rule_id: PCORNET_ENCOUNTER_TO_HO
+    description: >
+      Map healthcare encounters relevant to natural-history outcomes, such as inpatient admissions,
+      emergency visits and observation stays, to the Healthcare Encounters domain.
+    cardinality: "many:many"
+    source:
+      - {model: PCORNET_CDM, entity: ENCOUNTER, alias: src}
+    bridge:
+      - {model: ALS_SDTM_STAGING, entity: HEALTHCARE_ENCOUNTER_ROUTER, alias: her}
+      - {model: ALS_SDTM_STAGING, entity: SUBJECT_COHORT, alias: coh}
+      - {model: ALS_SDTM_STAGING, entity: SUBJECT_TIMELINE, alias: tl}
+    target:
+      - {model: ALS_SDTM, entity: HO, alias: tgt}
+    target_metadata:
+      domain: HO
+      label: Healthcare Encounters
+      class: EVENTS
+      structure: One record per subject per healthcare encounter
+      keys: [STUDYID, USUBJID, HOSEQ]
+      variables:
+        - {name: STUDYID, label: Study Identifier, type: Char, core: Req}
+        - {name: DOMAIN, label: Domain Abbreviation, type: Char, core: Req}
+        - {name: USUBJID, label: Unique Subject Identifier, type: Char, core: Req}
+        - {name: HOSEQ, label: Sequence Number, type: Num, core: Req}
+        - {name: HOSPID, label: Sponsor-Defined Identifier, type: Char, core: Perm}
+        - {name: HOTERM, label: Reported Term for Healthcare Encounter, type: Char, core: Req}
+        - {name: HODECOD, label: Standardized Healthcare Encounter, type: Char, core: Exp}
+        - {name: HOCAT, label: Category for Healthcare Encounter, type: Char, core: Perm}
+        - {name: HOSCAT, label: Subcategory for Healthcare Encounter, type: Char, core: Perm}
+        - {name: HOSTDTC, label: Start Date/Time of Healthcare Encounter, type: Char, core: Exp}
+        - {name: HOENDTC, label: End Date/Time of Healthcare Encounter, type: Char, core: Exp}
+        - {name: HOSTDY, label: Study Day of Start of Encounter, type: Num, core: Perm}
+        - {name: HOENDY, label: Study Day of End of Encounter, type: Num, core: Perm}
+        - {name: EPOCH, label: Epoch, type: Char, core: Perm, codelist: EPOCH}
+    transform_columns:
+      - rule_id: HO_IDENTIFIERS
+        sources:
+          - {entity: src, column: PATID}
+          - {entity: src, column: ENCOUNTERID}
+        bridges: [{entity: coh, column: DATAMARTID}, {entity: coh, column: STUDY_SUBJID}]
+        targets:
+          - {entity: tgt, column: STUDYID}
+          - {entity: tgt, column: DOMAIN}
+          - {entity: tgt, column: USUBJID}
+          - {entity: tgt, column: HOSPID}
+        transform: "'ALS-NH-001','HO',CONCAT_WS('-', 'ALS-NH-001',coh.DATAMARTID,coh.STUDY_SUBJID),{s1}"
+      - rule_id: ENCOUNTER_TYPE
+        sources:
+          - {entity: src, column: ENC_TYPE}
+          - {entity: src, column: FACILITY_TYPE}
+        bridges:
+          - {entity: her, column: HOTERM}
+          - {entity: her, column: HODECOD}
+          - {entity: her, column: HOCAT}
+        targets:
+          - {entity: tgt, column: HOTERM}
+          - {entity: tgt, column: HODECOD}
+          - {entity: tgt, column: HOCAT}
+        valueset_map: {file: PCORNET_ENCOUNTER_TO_SDTM_HO.csv, alias: hoct}
+      - rule_id: HO_TIMING
+        sources:
+          - {entity: src, column: ADMIT_DATE}
+          - {entity: src, column: DISCHARGE_DATE}
+        bridges: [{entity: tl, column: RFSTDTC}]
+        targets:
+          - {entity: tgt, column: HOSTDTC}
+          - {entity: tgt, column: HOENDTC}
+          - {entity: tgt, column: HOSTDY}
+          - {entity: tgt, column: HOENDY}
+        transform: "TO_ISO8601_DATE({s0}),TO_ISO8601_DATE({s1}),SDTM_STUDY_DAY({s0},tl.RFSTDTC),SDTM_STUDY_DAY({s1},tl.RFSTDTC)"
+    source_filter: "her.IN_ALS_STUDY_SCOPE = 'Y'"
+    reconcile:
+      - rule_id: ADD_HOSEQ
+        sources:
+          - {entity: tgt, column: USUBJID}
+          - {entity: tgt, column: HOSTDTC}
+          - {entity: tgt, column: HOSPID}
+        targets: [{entity: tgt, column: HOSEQ}]
+        transform: "ROW_NUMBER() OVER (PARTITION BY STUDYID,USUBJID ORDER BY HOSTDTC,HOSPID)"
+
+  - rule_id: PCORNET_PRO_TO_QS
+    description: >
+      Map item-level ALSFRS-R and other protocol-specified patient-reported or clinician-rated
+      questionnaires from PRO_CM and normalized OBS_CLIN records to QS.
+    cardinality: "many:many"
+    source:
+      - {model: PCORNET_CDM, entity: PRO_CM, alias: pro}
+      - {model: PCORNET_CDM, entity: OBS_CLIN, alias: obs}
+    bridge:
+      - {model: ALS_SDTM_STAGING, entity: QUESTIONNAIRE_ITEM, alias: qsi}
+      - {model: ALS_SDTM_STAGING, entity: SUBJECT_COHORT, alias: coh}
+      - {model: ALS_SDTM_STAGING, entity: SUBJECT_TIMELINE, alias: tl}
+      - {model: ALS_SDTM_STAGING, entity: ENCOUNTER_VISIT_ASSIGNMENT, alias: eva}
+    target:
+      - {model: ALS_SDTM, entity: QS, alias: tgt}
+    target_metadata:
+      domain: QS
+      label: Questionnaires
+      class: FINDINGS
+      structure: One record per subject per questionnaire item per time point
+      keys: [STUDYID, USUBJID, QSSEQ]
+      variables:
+        - {name: STUDYID, label: Study Identifier, type: Char, core: Req}
+        - {name: DOMAIN, label: Domain Abbreviation, type: Char, core: Req}
+        - {name: USUBJID, label: Unique Subject Identifier, type: Char, core: Req}
+        - {name: QSSEQ, label: Sequence Number, type: Num, core: Req}
+        - {name: QSSPID, label: Sponsor-Defined Identifier, type: Char, core: Perm}
+        - {name: QSTESTCD, label: Questionnaire Short Name, type: Char, core: Req, codelist: QSTESTCD}
+        - {name: QSTEST, label: Questionnaire Name, type: Char, core: Req, codelist: QSTEST}
+        - {name: QSCAT, label: Category for Questionnaire, type: Char, core: Exp}
+        - {name: QSSCAT, label: Subcategory for Questionnaire, type: Char, core: Perm}
+        - {name: QSORRES, label: Result or Finding in Original Units, type: Char, core: Exp}
+        - {name: QSORRESU, label: Original Units, type: Char, core: Perm, codelist: UNIT}
+        - {name: QSSTRESC, label: Character Result in Standard Format, type: Char, core: Exp}
+        - {name: QSSTRESN, label: Numeric Result in Standard Units, type: Num, core: Exp}
+        - {name: QSSTRESU, label: Standard Units, type: Char, core: Perm, codelist: UNIT}
+        - {name: QSSTAT, label: Completion Status, type: Char, core: Perm, codelist: ND}
+        - {name: QSREASND, label: Reason Not Done, type: Char, core: Perm}
+        - {name: QSEVAL, label: Evaluator, type: Char, core: Perm, codelist: EVAL}
+        - {name: VISITNUM, label: Visit Number, type: Num, core: Exp}
+        - {name: VISIT, label: Visit Name, type: Char, core: Perm}
+        - {name: EPOCH, label: Epoch, type: Char, core: Perm, codelist: EPOCH}
+        - {name: QSDTC, label: Date/Time of Finding, type: Char, core: Exp}
+        - {name: QSDY, label: Study Day of Finding, type: Num, core: Perm}
+    transform_columns:
+      - rule_id: QS_IDENTIFIERS
+        sources:
+          - {entity: qsi, column: PATID}
+          - {entity: qsi, column: SOURCE_RECORD_ID}
+        bridges: [{entity: coh, column: DATAMARTID}, {entity: coh, column: STUDY_SUBJID}]
+        targets:
+          - {entity: tgt, column: STUDYID}
+          - {entity: tgt, column: DOMAIN}
+          - {entity: tgt, column: USUBJID}
+          - {entity: tgt, column: QSSPID}
+        transform: "'ALS-NH-001','QS',CONCAT_WS('-', 'ALS-NH-001',coh.DATAMARTID,coh.STUDY_SUBJID),CONCAT_WS(':',qsi.SOURCE_TABLE,{s1})"
+      - rule_id: QUESTIONNAIRE_TEST
+        sources:
+          - {entity: qsi, column: SOURCE_ITEM_CODE}
+          - {entity: qsi, column: SOURCE_ITEM_NAME}
+        bridges:
+          - {entity: qsi, column: QSTESTCD}
+          - {entity: qsi, column: QSTEST}
+          - {entity: qsi, column: QSCAT}
+          - {entity: qsi, column: QSSCAT}
+        targets:
+          - {entity: tgt, column: QSTESTCD}
+          - {entity: tgt, column: QSTEST}
+          - {entity: tgt, column: QSCAT}
+          - {entity: tgt, column: QSSCAT}
+        valueset_map: {file: ALSFRSR_TO_SDTM_QS_CT.csv, alias: qsct}
+      - rule_id: QUESTIONNAIRE_RESULT
+        sources:
+          - {entity: qsi, column: ORIGINAL_RESULT}
+          - {entity: qsi, column: STANDARD_RESULT_CHAR}
+          - {entity: qsi, column: STANDARD_RESULT_NUM}
+          - {entity: qsi, column: RESULT_UNIT}
+        targets:
+          - {entity: tgt, column: QSORRES}
+          - {entity: tgt, column: QSSTRESC}
+          - {entity: tgt, column: QSSTRESN}
+          - {entity: tgt, column: QSORRESU}
+          - {entity: tgt, column: QSSTRESU}
+        transform: "TO_VARCHAR({s0}),TO_VARCHAR(COALESCE({s1},{s2})),{s2},{s3},{s3}"
+      - rule_id: QUESTIONNAIRE_TIMING
+        sources: [{entity: qsi, column: ASSESSMENT_DATE}]
+        bridges:
+          - {entity: tl, column: RFSTDTC}
+          - {entity: eva, column: VISITNUM}
+          - {entity: eva, column: VISIT}
+        targets:
+          - {entity: tgt, column: QSDTC}
+          - {entity: tgt, column: QSDY}
+          - {entity: tgt, column: VISITNUM}
+          - {entity: tgt, column: VISIT}
+        transform: "TO_ISO8601_DATE({s0}),SDTM_STUDY_DAY({s0},tl.RFSTDTC),eva.VISITNUM,eva.VISIT"
+    source_filter: "qsi.INSTRUMENT IN ('ALSFRS-R') OR qsi.PROTOCOL_INCLUDED = 'Y'"
+    reconcile:
+      - rule_id: ADD_QSSEQ
+        sources:
+          - {entity: tgt, column: USUBJID}
+          - {entity: tgt, column: QSDTC}
+          - {entity: tgt, column: QSTESTCD}
+          - {entity: tgt, column: QSSPID}
+        targets: [{entity: tgt, column: QSSEQ}]
+        transform: "ROW_NUMBER() OVER (PARTITION BY STUDYID,USUBJID ORDER BY QSDTC,QSCAT,QSTESTCD,QSSPID)"
+    conformance_rules:
+      - Use the applicable published CDISC QRS terminology for ALSFRS-R when available.
+      - Represent each instrument item and any reported total score as separate records.
+      - Do not derive a total score in SDTM unless the study collects or explicitly derives it; document origin.
+      - QSTESTCD and QSTEST must be a valid paired concept within the pinned terminology package.
+
+  - rule_id: PCORNET_VITAL_TO_VS
+    description: >
+      Convert horizontal PCORnet VITAL records into vertical SDTM VS records for height,
+      weight, BMI, systolic blood pressure, diastolic blood pressure, pulse, respiratory rate
+      and temperature when relevant to the ALS protocol.
+    cardinality: "1:many"
+    source:
+      - {model: PCORNET_CDM, entity: VITAL, alias: src}
+    bridge:
+      - {model: ALS_SDTM_STAGING, entity: VITAL_UNPIVOT, alias: vun}
+      - {model: ALS_SDTM_STAGING, entity: SUBJECT_COHORT, alias: coh}
+      - {model: ALS_SDTM_STAGING, entity: SUBJECT_TIMELINE, alias: tl}
+      - {model: ALS_SDTM_STAGING, entity: ENCOUNTER_VISIT_ASSIGNMENT, alias: eva}
+    target:
+      - {model: ALS_SDTM, entity: VS, alias: tgt}
+    target_metadata:
+      domain: VS
+      label: Vital Signs
+      class: FINDINGS
+      structure: One record per subject per vital-sign test per time point
+      keys: [STUDYID, USUBJID, VSSEQ]
+      variables:
+        - {name: STUDYID, label: Study Identifier, type: Char, core: Req}
+        - {name: DOMAIN, label: Domain Abbreviation, type: Char, core: Req}
+        - {name: USUBJID, label: Unique Subject Identifier, type: Char, core: Req}
+        - {name: VSSEQ, label: Sequence Number, type: Num, core: Req}
+        - {name: VSSPID, label: Sponsor-Defined Identifier, type: Char, core: Perm}
+        - {name: VSTESTCD, label: Vital Signs Test Short Name, type: Char, core: Req, codelist: VSTESTCD}
+        - {name: VSTEST, label: Vital Signs Test Name, type: Char, core: Req, codelist: VSTEST}
+        - {name: VSCAT, label: Category for Vital Signs, type: Char, core: Perm}
+        - {name: VSPOS, label: Position of Subject During Observation, type: Char, core: Perm, codelist: POSITION}
+        - {name: VSORRES, label: Result or Finding in Original Units, type: Char, core: Exp}
+        - {name: VSORRESU, label: Original Units, type: Char, core: Exp, codelist: UNIT}
+        - {name: VSSTRESC, label: Character Result in Standard Format, type: Char, core: Exp}
+        - {name: VSSTRESN, label: Numeric Result in Standard Units, type: Num, core: Exp}
+        - {name: VSSTRESU, label: Standard Units, type: Char, core: Exp, codelist: UNIT}
+        - {name: VSSTAT, label: Completion Status, type: Char, core: Perm, codelist: ND}
+        - {name: VSREASND, label: Reason Not Done, type: Char, core: Perm}
+        - {name: VSMETHOD, label: Method of Test or Examination, type: Char, core: Perm, codelist: METHOD}
+        - {name: VSBLFL, label: Baseline Flag, type: Char, core: Perm, codelist: NY}
+        - {name: VISITNUM, label: Visit Number, type: Num, core: Exp}
+        - {name: VISIT, label: Visit Name, type: Char, core: Perm}
+        - {name: EPOCH, label: Epoch, type: Char, core: Perm, codelist: EPOCH}
+        - {name: VSDTC, label: Date/Time of Measurements, type: Char, core: Exp}
+        - {name: VSDY, label: Study Day of Vital Signs, type: Num, core: Perm}
+    transform_columns:
+      - rule_id: VS_IDENTIFIERS
+        sources:
+          - {entity: vun, column: PATID}
+          - {entity: vun, column: SOURCE_RECORD_ID}
+        bridges: [{entity: coh, column: DATAMARTID}, {entity: coh, column: STUDY_SUBJID}]
+        targets:
+          - {entity: tgt, column: STUDYID}
+          - {entity: tgt, column: DOMAIN}
+          - {entity: tgt, column: USUBJID}
+          - {entity: tgt, column: VSSPID}
+        transform: "'ALS-NH-001','VS',CONCAT_WS('-', 'ALS-NH-001',coh.DATAMARTID,coh.STUDY_SUBJID),{s1}"
+      - rule_id: VITAL_TEST
+        sources: [{entity: vun, column: SOURCE_COLUMN}]
+        targets:
+          - {entity: tgt, column: VSTESTCD}
+          - {entity: tgt, column: VSTEST}
+        valueset_map: {file: PCORNET_VITAL_TO_SDTM_VS_TEST.csv, alias: vsct}
+      - rule_id: VITAL_RESULTS
+        sources:
+          - {entity: vun, column: ORIGINAL_VALUE}
+          - {entity: vun, column: ORIGINAL_UNIT}
+        targets:
+          - {entity: tgt, column: VSORRES}
+          - {entity: tgt, column: VSORRESU}
+          - {entity: tgt, column: VSSTRESC}
+          - {entity: tgt, column: VSSTRESN}
+          - {entity: tgt, column: VSSTRESU}
+        transform: "TO_VARCHAR({s0}),{s1},STANDARD_RESULT_CHAR(vun.SOURCE_COLUMN,{s0},{s1}),STANDARD_RESULT_NUM(vun.SOURCE_COLUMN,{s0},{s1}),STANDARD_UNIT(vun.SOURCE_COLUMN)"
+      - rule_id: BLOOD_PRESSURE_POSITION
+        sources: [{entity: src, column: BP_POSITION}]
+        targets: [{entity: tgt, column: VSPOS}]
+        valueset_map: {file: PCORNET_BP_POSITION_TO_SDTM_POSITION.csv, alias: posct}
+      - rule_id: VITAL_TIMING
+        sources:
+          - {entity: src, column: MEASURE_DATE}
+          - {entity: src, column: MEASURE_TIME}
+        bridges:
+          - {entity: tl, column: RFSTDTC}
+          - {entity: eva, column: VISITNUM}
+          - {entity: eva, column: VISIT}
+        targets:
+          - {entity: tgt, column: VSDTC}
+          - {entity: tgt, column: VSDY}
+          - {entity: tgt, column: VISITNUM}
+          - {entity: tgt, column: VISIT}
+        transform: "TO_ISO8601_DATETIME({s0},{s1}),SDTM_STUDY_DAY({s0},tl.RFSTDTC),eva.VISITNUM,eva.VISIT"
+    reconcile:
+      - rule_id: ADD_VSSEQ
+        sources:
+          - {entity: tgt, column: USUBJID}
+          - {entity: tgt, column: VSDTC}
+          - {entity: tgt, column: VSTESTCD}
+          - {entity: tgt, column: VSSPID}
+        targets: [{entity: tgt, column: VSSEQ}]
+        transform: "ROW_NUMBER() OVER (PARTITION BY STUDYID,USUBJID ORDER BY VSDTC,VSTESTCD,VSSPID)"
+
+  - rule_id: PCORNET_LAB_TO_LB
+    description: >
+      Map general clinical laboratory results to LB after routing specimen-based findings.
+      Genomics, microbiology, immunogenicity and other specialty findings must be routed to
+      their applicable SDTMIG v3.4 domains rather than forced into LB.
+    cardinality: "many:many"
+    source:
+      - {model: PCORNET_CDM, entity: LAB_RESULT_CM, alias: src}
+    bridge:
+      - {model: ALS_SDTM_STAGING, entity: LAB_DOMAIN_ROUTER, alias: ldr}
+      - {model: ALS_SDTM_STAGING, entity: SUBJECT_COHORT, alias: coh}
+      - {model: ALS_SDTM_STAGING, entity: SUBJECT_TIMELINE, alias: tl}
+      - {model: ALS_SDTM_STAGING, entity: ENCOUNTER_VISIT_ASSIGNMENT, alias: eva}
+    target:
+      - {model: ALS_SDTM, entity: LB, alias: tgt}
+    target_metadata:
+      domain: LB
+      label: Laboratory Test Results
+      class: FINDINGS
+      structure: One record per subject per laboratory test per specimen per time point
+      keys: [STUDYID, USUBJID, LBSEQ]
+      variables:
+        - {name: STUDYID, label: Study Identifier, type: Char, core: Req}
+        - {name: DOMAIN, label: Domain Abbreviation, type: Char, core: Req}
+        - {name: USUBJID, label: Unique Subject Identifier, type: Char, core: Req}
+        - {name: LBSEQ, label: Sequence Number, type: Num, core: Req}
+        - {name: LBSPID, label: Sponsor-Defined Identifier, type: Char, core: Perm}
+        - {name: LBTESTCD, label: Lab Test or Examination Short Name, type: Char, core: Req, codelist: LBTESTCD}
+        - {name: LBTEST, label: Lab Test or Examination Name, type: Char, core: Req, codelist: LBTEST}
+        - {name: LBCAT, label: Category for Lab Test, type: Char, core: Perm}
+        - {name: LBSCAT, label: Subcategory for Lab Test, type: Char, core: Perm}
+        - {name: LBORRES, label: Result or Finding in Original Units, type: Char, core: Exp}
+        - {name: LBORRESU, label: Original Units, type: Char, core: Exp, codelist: UNIT}
+        - {name: LBORNRLO, label: Reference Range Lower Limit in Original Units, type: Char, core: Perm}
+        - {name: LBORNRHI, label: Reference Range Upper Limit in Original Units, type: Char, core: Perm}
+        - {name: LBSTRESC, label: Character Result in Standard Format, type: Char, core: Exp}
+        - {name: LBSTRESN, label: Numeric Result in Standard Units, type: Num, core: Exp}
+        - {name: LBSTRESU, label: Standard Units, type: Char, core: Exp, codelist: UNIT}
+        - {name: LBSTNRLO, label: Reference Range Lower Limit Standard Units, type: Num, core: Perm}
+        - {name: LBSTNRHI, label: Reference Range Upper Limit Standard Units, type: Num, core: Perm}
+        - {name: LBNRIND, label: Reference Range Indicator, type: Char, core: Perm, codelist: NRIND}
+        - {name: LBSTAT, label: Completion Status, type: Char, core: Perm, codelist: ND}
+        - {name: LBREASND, label: Reason Test Not Done, type: Char, core: Perm}
+        - {name: LBNAM, label: Vendor Name, type: Char, core: Perm}
+        - {name: LBSPEC, label: Specimen Type, type: Char, core: Exp, codelist: SPECTYPE}
+        - {name: LBMETHOD, label: Method of Test or Examination, type: Char, core: Perm, codelist: METHOD}
+        - {name: LBBLFL, label: Baseline Flag, type: Char, core: Perm, codelist: NY}
+        - {name: VISITNUM, label: Visit Number, type: Num, core: Exp}
+        - {name: VISIT, label: Visit Name, type: Char, core: Perm}
+        - {name: EPOCH, label: Epoch, type: Char, core: Perm, codelist: EPOCH}
+        - {name: LBDTC, label: Date/Time of Specimen Collection, type: Char, core: Exp}
+        - {name: LBDY, label: Study Day of Specimen Collection, type: Num, core: Perm}
+    transform_columns:
+      - rule_id: LB_IDENTIFIERS
+        sources:
+          - {entity: src, column: PATID}
+          - {entity: src, column: LAB_RESULT_CM_ID}
+        bridges: [{entity: coh, column: DATAMARTID}, {entity: coh, column: STUDY_SUBJID}]
+        targets:
+          - {entity: tgt, column: STUDYID}
+          - {entity: tgt, column: DOMAIN}
+          - {entity: tgt, column: USUBJID}
+          - {entity: tgt, column: LBSPID}
+        transform: "'ALS-NH-001','LB',CONCAT_WS('-', 'ALS-NH-001',coh.DATAMARTID,coh.STUDY_SUBJID),{s1}"
+      - rule_id: LAB_TEST
+        sources:
+          - {entity: src, column: LAB_LOINC}
+          - {entity: src, column: LAB_NAME}
+          - {entity: src, column: RAW_LAB_NAME}
+        targets:
+          - {entity: tgt, column: LBTESTCD}
+          - {entity: tgt, column: LBTEST}
+          - {entity: tgt, column: LBCAT}
+          - {entity: tgt, column: LBSCAT}
+        valueset_map: {file: LOINC_TO_SDTM_LB_TEST.csv, alias: lbct}
+      - rule_id: ORIGINAL_LAB_RESULT
+        sources:
+          - {entity: src, column: RAW_RESULT}
+          - {entity: src, column: RESULT_NUM}
+          - {entity: src, column: RESULT_CHAR}
+          - {entity: src, column: RAW_UNIT}
+          - {entity: src, column: RESULT_UNIT}
+        targets:
+          - {entity: tgt, column: LBORRES}
+          - {entity: tgt, column: LBORRESU}
+        transform: "COALESCE({s0},TO_VARCHAR({s1}),{s2}),COALESCE({s3},{s4})"
+      - rule_id: STANDARD_LAB_RESULT
+        sources:
+          - {entity: src, column: RESULT_NUM}
+          - {entity: src, column: RESULT_CHAR}
+          - {entity: src, column: RESULT_UNIT}
+        targets:
+          - {entity: tgt, column: LBSTRESC}
+          - {entity: tgt, column: LBSTRESN}
+          - {entity: tgt, column: LBSTRESU}
+        transform: "STANDARD_LB_RESULT_CHAR(src.LAB_LOINC,{s0},{s1},{s2}),STANDARD_LB_RESULT_NUM(src.LAB_LOINC,{s0},{s2}),STANDARD_LB_UNIT(src.LAB_LOINC)"
+      - rule_id: LAB_REFERENCE_RANGE
+        sources:
+          - {entity: src, column: NORM_RANGE_LOW}
+          - {entity: src, column: NORM_RANGE_HIGH}
+          - {entity: src, column: ABN_IND}
+        targets:
+          - {entity: tgt, column: LBORNRLO}
+          - {entity: tgt, column: LBORNRHI}
+          - {entity: tgt, column: LBNRIND}
+        transform: "TO_VARCHAR({s0}),TO_VARCHAR({s1}),MAP_NORMAL_RANGE_INDICATOR({s2})"
+      - rule_id: LAB_SPECIMEN
+        sources: [{entity: src, column: SPECIMEN_SOURCE}]
+        targets: [{entity: tgt, column: LBSPEC}]
+        valueset_map: {file: PCORNET_SPECIMEN_TO_SDTM_SPEC.csv, alias: spct}
+      - rule_id: LAB_TIMING
+        sources:
+          - {entity: src, column: SPECIMEN_DATE}
+          - {entity: src, column: SPECIMEN_TIME}
+          - {entity: src, column: RESULT_DATE}
+        bridges:
+          - {entity: tl, column: RFSTDTC}
+          - {entity: eva, column: VISITNUM}
+          - {entity: eva, column: VISIT}
+        targets:
+          - {entity: tgt, column: LBDTC}
+          - {entity: tgt, column: LBDY}
+          - {entity: tgt, column: VISITNUM}
+          - {entity: tgt, column: VISIT}
+        transform: "TO_ISO8601_DATETIME(COALESCE({s0},{s2}),{s1}),SDTM_STUDY_DAY(COALESCE({s0},{s2}),tl.RFSTDTC),eva.VISITNUM,eva.VISIT"
+    source_filter: "ldr.TARGET_DOMAIN = 'LB'"
+    reconcile:
+      - rule_id: ADD_LBSEQ
+        sources:
+          - {entity: tgt, column: USUBJID}
+          - {entity: tgt, column: LBDTC}
+          - {entity: tgt, column: LBTESTCD}
+          - {entity: tgt, column: LBSPID}
+        targets: [{entity: tgt, column: LBSEQ}]
+        transform: "ROW_NUMBER() OVER (PARTITION BY STUDYID,USUBJID ORDER BY LBDTC,LBTESTCD,LBSPID)"
+
+  - rule_id: PCORNET_RESPIRATORY_FINDINGS_TO_FT
+    description: >
+      Map protocol-specified objective respiratory performance assessments such as FVC and SVC
+      to FT when represented as named task-based functional tests under the approved study convention.
+      Confirm the final domain decision against applicable CDISC QRS/respiratory guidance before production.
+    cardinality: "many:many"
+    source:
+      - {model: PCORNET_CDM, entity: OBS_CLIN, alias: obs}
+      - {model: PCORNET_CDM, entity: LAB_RESULT_CM, alias: lab}
+    bridge:
+      - {model: ALS_SDTM_STAGING, entity: RESPIRATORY_FINDING, alias: rsp}
+      - {model: ALS_SDTM_STAGING, entity: SUBJECT_COHORT, alias: coh}
+      - {model: ALS_SDTM_STAGING, entity: SUBJECT_TIMELINE, alias: tl}
+      - {model: ALS_SDTM_STAGING, entity: ENCOUNTER_VISIT_ASSIGNMENT, alias: eva}
+    target:
+      - {model: ALS_SDTM, entity: FT, alias: tgt}
+    target_metadata:
+      domain: FT
+      label: Functional Tests
+      class: FINDINGS
+      structure: One record per subject per functional test per time point
+      keys: [STUDYID, USUBJID, FTSEQ]
+      variables:
+        - {name: STUDYID, label: Study Identifier, type: Char, core: Req}
+        - {name: DOMAIN, label: Domain Abbreviation, type: Char, core: Req}
+        - {name: USUBJID, label: Unique Subject Identifier, type: Char, core: Req}
+        - {name: FTSEQ, label: Sequence Number, type: Num, core: Req}
+        - {name: FTSPID, label: Sponsor-Defined Identifier, type: Char, core: Perm}
+        - {name: FTTESTCD, label: Functional Test Short Name, type: Char, core: Req, codelist: FTTESTCD}
+        - {name: FTTEST, label: Functional Test Name, type: Char, core: Req, codelist: FTTEST}
+        - {name: FTCAT, label: Category for Functional Test, type: Char, core: Exp}
+        - {name: FTSCAT, label: Subcategory for Functional Test, type: Char, core: Perm}
+        - {name: FTOBJ, label: Object of the Test, type: Char, core: Perm}
+        - {name: FTEVAL, label: Evaluator, type: Char, core: Perm, codelist: EVAL}
+        - {name: FTMETHOD, label: Method of Test or Examination, type: Char, core: Perm, codelist: METHOD}
+        - {name: FTORRES, label: Result or Finding in Original Units, type: Char, core: Exp}
+        - {name: FTORRESU, label: Original Units, type: Char, core: Perm, codelist: UNIT}
+        - {name: FTSTRESC, label: Character Result in Standard Format, type: Char, core: Exp}
+        - {name: FTSTRESN, label: Numeric Result in Standard Units, type: Num, core: Exp}
+        - {name: FTSTRESU, label: Standard Units, type: Char, core: Perm, codelist: UNIT}
+        - {name: FTSTAT, label: Completion Status, type: Char, core: Perm, codelist: ND}
+        - {name: FTREASND, label: Reason Not Done, type: Char, core: Perm}
+        - {name: VISITNUM, label: Visit Number, type: Num, core: Exp}
+        - {name: VISIT, label: Visit Name, type: Char, core: Perm}
+        - {name: EPOCH, label: Epoch, type: Char, core: Perm, codelist: EPOCH}
+        - {name: FTDTC, label: Date/Time of Test, type: Char, core: Exp}
+        - {name: FTDY, label: Study Day of Test, type: Num, core: Perm}
+    transform_columns:
+      - rule_id: FT_IDENTIFIERS
+        sources:
+          - {entity: rsp, column: PATID}
+          - {entity: rsp, column: SOURCE_RECORD_ID}
+        bridges: [{entity: coh, column: DATAMARTID}, {entity: coh, column: STUDY_SUBJID}]
+        targets:
+          - {entity: tgt, column: STUDYID}
+          - {entity: tgt, column: DOMAIN}
+          - {entity: tgt, column: USUBJID}
+          - {entity: tgt, column: FTSPID}
+        transform: "'ALS-NH-001','FT',CONCAT_WS('-', 'ALS-NH-001',coh.DATAMARTID,coh.STUDY_SUBJID),CONCAT_WS(':',rsp.SOURCE_TABLE,{s1})"
+      - rule_id: RESPIRATORY_TEST
+        sources:
+          - {entity: rsp, column: SOURCE_CODE}
+          - {entity: rsp, column: SOURCE_NAME}
+        targets:
+          - {entity: tgt, column: FTTESTCD}
+          - {entity: tgt, column: FTTEST}
+          - {entity: tgt, column: FTCAT}
+          - {entity: tgt, column: FTSCAT}
+        valueset_map: {file: RESPIRATORY_TEST_TO_SDTM_FT.csv, alias: ftct}
+      - rule_id: RESPIRATORY_RESULTS
+        sources:
+          - {entity: rsp, column: ORIGINAL_RESULT}
+          - {entity: rsp, column: ORIGINAL_UNIT}
+          - {entity: rsp, column: STANDARD_RESULT_NUM}
+          - {entity: rsp, column: STANDARD_UNIT}
+        targets:
+          - {entity: tgt, column: FTORRES}
+          - {entity: tgt, column: FTORRESU}
+          - {entity: tgt, column: FTSTRESC}
+          - {entity: tgt, column: FTSTRESN}
+          - {entity: tgt, column: FTSTRESU}
+        transform: "TO_VARCHAR({s0}),{s1},TO_VARCHAR({s2}),{s2},{s3}"
+      - rule_id: RESPIRATORY_TIMING
+        sources: [{entity: rsp, column: ASSESSMENT_DATE}]
+        bridges:
+          - {entity: tl, column: RFSTDTC}
+          - {entity: eva, column: VISITNUM}
+          - {entity: eva, column: VISIT}
+        targets:
+          - {entity: tgt, column: FTDTC}
+          - {entity: tgt, column: FTDY}
+          - {entity: tgt, column: VISITNUM}
+          - {entity: tgt, column: VISIT}
+        transform: "TO_ISO8601_DATE({s0}),SDTM_STUDY_DAY({s0},tl.RFSTDTC),eva.VISITNUM,eva.VISIT"
+    reconcile:
+      - rule_id: ADD_FTSEQ
+        sources:
+          - {entity: tgt, column: USUBJID}
+          - {entity: tgt, column: FTDTC}
+          - {entity: tgt, column: FTTESTCD}
+          - {entity: tgt, column: FTSPID}
+        targets: [{entity: tgt, column: FTSEQ}]
+        transform: "ROW_NUMBER() OVER (PARTITION BY STUDYID,USUBJID ORDER BY FTDTC,FTTESTCD,FTSPID)"
+
+  - rule_id: PCORNET_DEATH_AND_STUDY_STATUS_TO_DS
+    description: >
+      Represent study participation milestones, completion/discontinuation and death disposition
+      events in DS. Death is also represented in DM through DTHDTC/DTHFL.
+    cardinality: "many:many"
+    source:
+      - {model: PCORNET_CDM, entity: DEATH, alias: dth}
+      - {model: PCORNET_CDM, entity: DEATH_CAUSE, alias: dc}
+    bridge:
+      - {model: ALS_SDTM_STAGING, entity: STUDY_DISPOSITION, alias: sds}
+      - {model: ALS_SDTM_STAGING, entity: SUBJECT_COHORT, alias: coh}
+      - {model: ALS_SDTM_STAGING, entity: SUBJECT_TIMELINE, alias: tl}
+    target:
+      - {model: ALS_SDTM, entity: DS, alias: tgt}
+    target_metadata:
+      domain: DS
+      label: Disposition
+      class: EVENTS
+      structure: One record per subject per disposition event
+      keys: [STUDYID, USUBJID, DSSEQ]
+      variables:
+        - {name: STUDYID, label: Study Identifier, type: Char, core: Req}
+        - {name: DOMAIN, label: Domain Abbreviation, type: Char, core: Req}
+        - {name: USUBJID, label: Unique Subject Identifier, type: Char, core: Req}
+        - {name: DSSEQ, label: Sequence Number, type: Num, core: Req}
+        - {name: DSSPID, label: Sponsor-Defined Identifier, type: Char, core: Perm}
+        - {name: DSTERM, label: Reported Term for the Disposition Event, type: Char, core: Req}
+        - {name: DSDECOD, label: Standardized Disposition Term, type: Char, core: Exp, codelist: NCOMPLT}
+        - {name: DSCAT, label: Category for Disposition Event, type: Char, core: Exp}
+        - {name: DSSCAT, label: Subcategory for Disposition Event, type: Char, core: Perm}
+        - {name: EPOCH, label: Epoch, type: Char, core: Perm, codelist: EPOCH}
+        - {name: DSSTDTC, label: Start Date/Time of Disposition Event, type: Char, core: Exp}
+        - {name: DSSTDY, label: Study Day of Start of Event, type: Num, core: Perm}
+    transform_columns:
+      - rule_id: DS_IDENTIFIERS
+        sources:
+          - {entity: sds, column: PATID}
+          - {entity: sds, column: DISPOSITION_ID}
+        bridges: [{entity: coh, column: DATAMARTID}, {entity: coh, column: STUDY_SUBJID}]
+        targets:
+          - {entity: tgt, column: STUDYID}
+          - {entity: tgt, column: DOMAIN}
+          - {entity: tgt, column: USUBJID}
+          - {entity: tgt, column: DSSPID}
+        transform: "'ALS-NH-001','DS',CONCAT_WS('-', 'ALS-NH-001',coh.DATAMARTID,coh.STUDY_SUBJID),{s1}"
+      - rule_id: DISPOSITION_EVENT
+        sources:
+          - {entity: sds, column: REPORTED_TERM}
+          - {entity: sds, column: STANDARD_TERM}
+          - {entity: sds, column: CATEGORY}
+        targets:
+          - {entity: tgt, column: DSTERM}
+          - {entity: tgt, column: DSDECOD}
+          - {entity: tgt, column: DSCAT}
+        valueset_map: {file: STUDY_DISPOSITION_TO_SDTM_DS.csv, alias: dsct}
+      - rule_id: DISPOSITION_TIMING
+        sources: [{entity: sds, column: EVENT_DATE}]
+        bridges: [{entity: tl, column: RFSTDTC}]
+        targets:
+          - {entity: tgt, column: DSSTDTC}
+          - {entity: tgt, column: DSSTDY}
+        transform: "TO_ISO8601_DATE({s0}),SDTM_STUDY_DAY({s0},tl.RFSTDTC)"
+    reconcile:
+      - rule_id: ADD_DSSEQ
+        sources:
+          - {entity: tgt, column: USUBJID}
+          - {entity: tgt, column: DSSTDTC}
+          - {entity: tgt, column: DSDECOD}
+          - {entity: tgt, column: DSSPID}
+        targets: [{entity: tgt, column: DSSEQ}]
+        transform: "ROW_NUMBER() OVER (PARTITION BY STUDYID,USUBJID ORDER BY DSSTDTC,DSCAT,DSDECOD,DSSPID)"
+
+  - rule_id: PCORNET_COHORT_ELIGIBILITY_TO_IE
+    description: >
+      Represent subject-level inclusion or exclusion criteria that were not met. Under SDTMIG,
+      IE is not a complete checklist of every criterion for every subject unless the study collected
+      those assessments in that manner.
+    cardinality: "many:many"
+    source:
+      - {model: ALS_SDTM_STAGING, entity: SUBJECT_ELIGIBILITY_ASSESSMENT, alias: sea}
+    bridge:
+      - {model: ALS_SDTM_STAGING, entity: SUBJECT_COHORT, alias: coh}
+      - {model: ALS_SDTM_STAGING, entity: SUBJECT_TIMELINE, alias: tl}
+    target:
+      - {model: ALS_SDTM, entity: IE, alias: tgt}
+    target_metadata:
+      domain: IE
+      label: Inclusion/Exclusion Criteria Not Met
+      class: FINDINGS
+      structure: One record per subject per inclusion or exclusion criterion not met
+      keys: [STUDYID, USUBJID, IESEQ]
+      variables:
+        - {name: STUDYID, label: Study Identifier, type: Char, core: Req}
+        - {name: DOMAIN, label: Domain Abbreviation, type: Char, core: Req}
+        - {name: USUBJID, label: Unique Subject Identifier, type: Char, core: Req}
+        - {name: IESEQ, label: Sequence Number, type: Num, core: Req}
+        - {name: IETESTCD, label: Inclusion/Exclusion Criterion Short Name, type: Char, core: Req}
+        - {name: IETEST, label: Inclusion/Exclusion Criterion, type: Char, core: Req}
+        - {name: IECAT, label: Inclusion/Exclusion Category, type: Char, core: Exp, codelist: IECAT}
+        - {name: IESCAT, label: Inclusion/Exclusion Subcategory, type: Char, core: Perm}
+        - {name: IEORRES, label: Result or Finding in Original Units, type: Char, core: Exp}
+        - {name: IESTRESC, label: Character Result in Standard Format, type: Char, core: Exp}
+        - {name: IEDTC, label: Date/Time of Collection, type: Char, core: Exp}
+        - {name: IEDY, label: Study Day of Collection, type: Num, core: Perm}
+    source_filter: "sea.CRITERION_MET = 'N'"
+    transform_columns:
+      - rule_id: IE_IDENTIFIERS
+        sources: [{entity: sea, column: PATID}]
+        bridges: [{entity: coh, column: DATAMARTID}, {entity: coh, column: STUDY_SUBJID}]
+        targets:
+          - {entity: tgt, column: STUDYID}
+          - {entity: tgt, column: DOMAIN}
+          - {entity: tgt, column: USUBJID}
+        transform: "'ALS-NH-001','IE',CONCAT_WS('-', 'ALS-NH-001',coh.DATAMARTID,coh.STUDY_SUBJID)"
+      - rule_id: IE_CRITERION
+        sources:
+          - {entity: sea, column: CRITERION_ID}
+          - {entity: sea, column: CRITERION_TEXT}
+          - {entity: sea, column: CRITERION_CATEGORY}
+        targets:
+          - {entity: tgt, column: IETESTCD}
+          - {entity: tgt, column: IETEST}
+          - {entity: tgt, column: IECAT}
+          - {entity: tgt, column: IEORRES}
+          - {entity: tgt, column: IESTRESC}
+        transform: "{s0},{s1},{s2},'NOT MET','N'"
+      - rule_id: IE_TIMING
+        sources: [{entity: sea, column: ASSESSMENT_DATE}]
+        bridges: [{entity: tl, column: RFSTDTC}]
+        targets:
+          - {entity: tgt, column: IEDTC}
+          - {entity: tgt, column: IEDY}
+        transform: "TO_ISO8601_DATE({s0}),SDTM_STUDY_DAY({s0},tl.RFSTDTC)"
+    reconcile:
+      - rule_id: ADD_IESEQ
+        sources:
+          - {entity: tgt, column: USUBJID}
+          - {entity: tgt, column: IEDTC}
+          - {entity: tgt, column: IETESTCD}
+        targets: [{entity: tgt, column: IESEQ}]
+        transform: "ROW_NUMBER() OVER (PARTITION BY STUDYID,USUBJID ORDER BY IEDTC,IETESTCD)"
+
+  - rule_id: ALS_PROTOCOL_TO_TI
+    description: >
+      Create the planned trial inclusion/exclusion criteria domain from the protocol/USDM study
+      definition, not from PCORnet subject records.
+    cardinality: "1:many"
+    source:
+      - {model: ALS_SDTM_STAGING, entity: PROTOCOL_ELIGIBILITY_CRITERION, alias: src}
+    target:
+      - {model: ALS_SDTM, entity: TI, alias: tgt}
+    target_metadata:
+      domain: TI
+      label: Trial Inclusion/Exclusion Criteria
+      class: TRIAL DESIGN
+      structure: One record per planned eligibility criterion
+      keys: [STUDYID, IETESTCD]
+      variables:
+        - {name: STUDYID, label: Study Identifier, type: Char, core: Req}
+        - {name: DOMAIN, label: Domain Abbreviation, type: Char, core: Req}
+        - {name: IETESTCD, label: Inclusion/Exclusion Criterion Short Name, type: Char, core: Req}
+        - {name: IETEST, label: Inclusion/Exclusion Criterion, type: Char, core: Req}
+        - {name: IECAT, label: Inclusion/Exclusion Category, type: Char, core: Exp, codelist: IECAT}
+        - {name: IESCAT, label: Inclusion/Exclusion Subcategory, type: Char, core: Perm}
+        - {name: TIRL, label: Inclusion/Exclusion Criterion Rule, type: Char, core: Perm}
+        - {name: TIVERS, label: Protocol Criteria Versions, type: Char, core: Perm}
+    transform_columns:
+      - rule_id: TI_FIELDS
+        sources:
+          - {entity: src, column: CRITERION_ID}
+          - {entity: src, column: CRITERION_TEXT}
+          - {entity: src, column: CATEGORY}
+          - {entity: src, column: COMPUTABLE_RULE}
+          - {entity: src, column: PROTOCOL_VERSION}
+        targets:
+          - {entity: tgt, column: STUDYID}
+          - {entity: tgt, column: DOMAIN}
+          - {entity: tgt, column: IETESTCD}
+          - {entity: tgt, column: IETEST}
+          - {entity: tgt, column: IECAT}
+          - {entity: tgt, column: TIRL}
+          - {entity: tgt, column: TIVERS}
+        transform: "'ALS-NH-001','TI',{s0},{s1},{s2},{s3},{s4}"
+
+  - rule_id: ALS_PROTOCOL_TO_TS
+    description: >
+      Create Trial Summary parameters from the protocol/USDM study definition using the
+      applicable SDTM Trial Summary Parameter controlled terminology.
+    cardinality: "1:many"
+    source:
+      - {model: ALS_SDTM_STAGING, entity: PROTOCOL_TRIAL_SUMMARY, alias: src}
+    target:
+      - {model: ALS_SDTM, entity: TS, alias: tgt}
+    target_metadata:
+      domain: TS
+      label: Trial Summary
+      class: TRIAL DESIGN
+      structure: One record per trial summary parameter value
+      keys: [STUDYID, TSPARMCD, TSSEQ]
+      variables:
+        - {name: STUDYID, label: Study Identifier, type: Char, core: Req}
+        - {name: DOMAIN, label: Domain Abbreviation, type: Char, core: Req}
+        - {name: TSSEQ, label: Sequence Number, type: Num, core: Req}
+        - {name: TSGRPID, label: Group ID, type: Char, core: Perm}
+        - {name: TSPARMCD, label: Trial Summary Parameter Short Name, type: Char, core: Req, codelist: TSPARMCD}
+        - {name: TSPARM, label: Trial Summary Parameter, type: Char, core: Req, codelist: TSPARM}
+        - {name: TSVAL, label: Parameter Value, type: Char, core: Req}
+        - {name: TSVALNF, label: Parameter Null Flavor, type: Char, core: Perm, codelist: NULLFLAV}
+        - {name: TSVALCD, label: Parameter Value Code, type: Char, core: Perm}
+        - {name: TSVCDREF, label: Name of Reference Terminology, type: Char, core: Perm}
+        - {name: TSVCDVER, label: Version of Reference Terminology, type: Char, core: Perm}
+    transform_columns:
+      - rule_id: TS_FIELDS
+        sources:
+          - {entity: src, column: PARAMETER_CODE}
+          - {entity: src, column: PARAMETER_NAME}
+          - {entity: src, column: PARAMETER_VALUE}
+          - {entity: src, column: VALUE_CODE}
+          - {entity: src, column: CODE_SYSTEM}
+          - {entity: src, column: CODE_SYSTEM_VERSION}
+        targets:
+          - {entity: tgt, column: STUDYID}
+          - {entity: tgt, column: DOMAIN}
+          - {entity: tgt, column: TSPARMCD}
+          - {entity: tgt, column: TSPARM}
+          - {entity: tgt, column: TSVAL}
+          - {entity: tgt, column: TSVALCD}
+          - {entity: tgt, column: TSVCDREF}
+          - {entity: tgt, column: TSVCDVER}
+        transform: "'ALS-NH-001','TS',{s0},{s1},{s2},{s3},{s4},{s5}"
+    reconcile:
+      - rule_id: ADD_TSSEQ
+        sources:
+          - {entity: tgt, column: TSPARMCD}
+          - {entity: tgt, column: TSVAL}
+        targets: [{entity: tgt, column: TSSEQ}]
+        transform: "ROW_NUMBER() OVER (PARTITION BY STUDYID ORDER BY TSPARMCD,TSVAL)"
+
+staging_rules:
+  - rule_id: BUILD_SUBJECT_COHORT
+    description: >
+      Identify eligible ALS subjects using the protocol code sets, observable lookback,
+      age requirements and any site-specific inclusion criteria. Record every criterion
+      result and the final inclusion decision.
+    sources:
+      - {model: PCORNET_CDM, entity: DEMOGRAPHIC, alias: dem}
+      - {model: PCORNET_CDM, entity: DIAGNOSIS, alias: dx}
+      - {model: PCORNET_CDM, entity: CONDITION, alias: con}
+      - {model: PCORNET_CDM, entity: ENROLLMENT, alias: enr}
+    targets:
+      - {model: ALS_SDTM_STAGING, entity: SUBJECT_COHORT}
+    valueset_map: {file: ALS_DIAGNOSIS_CODESET.csv, alias: alsdx}
+  - rule_id: BUILD_SUBJECT_TIMELINE
+    description: >
+      Derive the study index date, reference period, participation end, death date and
+      last-known-alive/censoring date. Preserve each candidate date and selection rationale.
+    sources:
+      - {model: ALS_SDTM_STAGING, entity: SUBJECT_COHORT, alias: coh}
+      - {model: PCORNET_CDM, entity: ENCOUNTER, alias: enc}
+      - {model: PCORNET_CDM, entity: DEATH, alias: dth}
+      - {model: PCORNET_CDM, entity: ENROLLMENT, alias: enr}
+    targets:
+      - {model: ALS_SDTM_STAGING, entity: SUBJECT_TIMELINE}
+  - rule_id: ASSIGN_STUDY_VISITS
+    description: >
+      Assign eligible clinical observations to protocol visits using target days, allowable
+      windows and record-selection priorities. Preserve all source observations; mark only
+      the selected encounter/observation for primary visit-aligned analysis.
+    sources:
+      - {model: PCORNET_CDM, entity: ENCOUNTER, alias: enc}
+      - {model: ALS_SDTM_STAGING, entity: SUBJECT_TIMELINE, alias: tl}
+    targets:
+      - {model: ALS_SDTM_STAGING, entity: ENCOUNTER_VISIT_ASSIGNMENT}
+  - rule_id: ROUTE_CLINICAL_CONDITIONS
+    description: >
+      Assign each diagnosis/condition record a study role and target SDTM domain based on
+      protocol meaning, chronology, adjudication and source provenance.
+    sources:
+      - {model: PCORNET_CDM, entity: DIAGNOSIS, alias: dx}
+      - {model: PCORNET_CDM, entity: CONDITION, alias: con}
+    targets:
+      - {model: ALS_SDTM_STAGING, entity: CLINICAL_CONDITION_ROUTER}
+    routing_values:
+      - MH
+      - CE
+      - AE
+      - IE_EVIDENCE
+      - EXCLUDE
+  - rule_id: ROUTE_SPECIMEN_FINDINGS
+    description: >
+      Route LAB_RESULT_CM records by scientific meaning. General safety/chemistry/hematology
+      results go to LB; microbiology, genomics, immunogenicity and other specialty results
+      use their applicable SDTMIG v3.4 domains.
+    sources:
+      - {model: PCORNET_CDM, entity: LAB_RESULT_CM, alias: lab}
+    targets:
+      - {model: ALS_SDTM_STAGING, entity: LAB_DOMAIN_ROUTER}
+    routing_values:
+      - LB
+      - MB
+      - GF
+      - IS
+      - CP
+      - EXCLUDE
+  - rule_id: BUILD_MEDICATION_EPISODES
+    description: >
+      Reconcile orders, dispensing and administrations without assuming that an order proves
+      exposure. Preserve source-level records and derive episodes only under explicit rules.
+    sources:
+      - {model: PCORNET_CDM, entity: PRESCRIBING, alias: rx}
+      - {model: PCORNET_CDM, entity: DISPENSING, alias: dsp}
+      - {model: PCORNET_CDM, entity: MED_ADMIN, alias: mad}
+    targets:
+      - {model: ALS_SDTM_STAGING, entity: MEDICATION_EPISODE}
+
+value_set_maps:
+  - file: PCORNET_SEX_TO_SDTM_SEX.csv
+    source_columns: [PCORNET_SEX]
+    target_columns: [SDTM_SEX]
+    controlled_terminology: SEX
+  - file: PCORNET_RACE_TO_SDTM_RACE.csv
+    source_columns: [PCORNET_RACE, RAW_RACE]
+    target_columns: [SDTM_RACE]
+    controlled_terminology: RACE
+  - file: PCORNET_HISPANIC_TO_SDTM_ETHNIC.csv
+    source_columns: [PCORNET_HISPANIC, RAW_HISPANIC]
+    target_columns: [SDTM_ETHNIC]
+    controlled_terminology: ETHNIC
+  - file: PCORNET_VITAL_TO_SDTM_VS_TEST.csv
+    source_columns: [SOURCE_COLUMN]
+    target_columns: [VSTESTCD, VSTEST, STANDARD_UNIT]
+    controlled_terminology: [VSTESTCD, VSTEST, UNIT]
+  - file: LOINC_TO_SDTM_LB_TEST.csv
+    source_columns: [LOINC, LAB_NAME]
+    target_columns: [LBTESTCD, LBTEST, LBCAT, LBSCAT, STANDARD_UNIT]
+    controlled_terminology: [LBTESTCD, LBTEST, UNIT]
+  - file: ALSFRSR_TO_SDTM_QS_CT.csv
+    source_columns: [SOURCE_ITEM_CODE, SOURCE_ITEM_NAME]
+    target_columns: [QSTESTCD, QSTEST, QSCAT, QSSCAT]
+    controlled_terminology: [QSTESTCD, QSTEST]
+  - file: RESPIRATORY_TEST_TO_SDTM_FT.csv
+    source_columns: [SOURCE_CODE, SOURCE_NAME]
+    target_columns: [FTTESTCD, FTTEST, FTCAT, FTSCAT, STANDARD_UNIT]
+    controlled_terminology: [FTTESTCD, FTTEST, UNIT]
+  - file: MEDICATION_ATTRIBUTES_TO_SDTM_CT.csv
+    source_columns: [DOSE_UNIT, DOSE_FORM, FREQUENCY, ROUTE]
+    target_columns: [CMDOSU, CMDOSFRM, CMDOSFRQ, CMROUTE]
+    controlled_terminology: [UNIT, FRM, FREQ, ROUTE]
+
+validation:
+  dataset_level:
+    - rule_id: VAL_DATASET_NAMES
+      severity: ERROR
+      check: Dataset names must be standard SDTM domain names.
+    - rule_id: VAL_REQUIRED_COLUMNS
+      severity: ERROR
+      check: Every target_metadata variable with core Req or Exp must exist as a physical column.
+    - rule_id: VAL_KEYS
+      severity: ERROR
+      check: Declared dataset keys must be unique.
+    - rule_id: VAL_EMPTY_DATASETS
+      severity: WARNING
+      check: Do not submit empty datasets; explain omitted expected domains in the reviewer guide.
+  record_level:
+    - rule_id: VAL_REQUIRED_POPULATED
+      severity: ERROR
+      check: Required variables must be non-null on every record.
+    - rule_id: VAL_STANDARD_PREFIX
+      severity: ERROR
+      check: Domain-specific variables must use the correct two-character domain prefix.
+    - rule_id: VAL_TOPIC_PRESENT
+      severity: ERROR
+      check: Topic variable must be populated for every general-observation-class record.
+    - rule_id: VAL_ISO8601
+      severity: ERROR
+      check: All --DTC values must be valid ISO 8601 character values and retain partial precision.
+    - rule_id: VAL_STUDY_DAY
+      severity: ERROR
+      check: --DY variables must be null when either the event date or RFSTDTC is incomplete.
+    - rule_id: VAL_CT
+      severity: ERROR
+      check: Controlled terminology values must validate against the pinned release.
+    - rule_id: VAL_TEST_PAIR
+      severity: ERROR
+      check: --TESTCD and --TEST must be valid pairs.
+    - rule_id: VAL_ORIGINAL_STANDARD
+      severity: ERROR
+      check: Standardized findings must preserve original result and unit traceability.
+    - rule_id: VAL_NO_NONSTANDARD_COLUMNS
+      severity: ERROR
+      check: Standard domains must not contain undeclared sponsor variables.
+  cross_domain:
+    - rule_id: VAL_DM_PARENT
+      severity: ERROR
+      check: Every USUBJID in a subject-level domain must exist exactly once in DM.
+    - rule_id: VAL_VISIT_CONSISTENCY
+      severity: ERROR
+      check: VISITNUM and VISIT values must be consistent across SV and findings domains.
+    - rule_id: VAL_DEATH_CONSISTENCY
+      severity: ERROR
+      check: DM death status/date and DS death event must not conflict.
+    - rule_id: VAL_REFERENCE_DATES
+      severity: ERROR
+      check: RFSTDTC, RFENDTC and RFPENDTC must follow protocol definitions and chronological rules.
+    - rule_id: VAL_SOURCE_TRACEABILITY
+      severity: ERROR
+      check: Every generated record must resolve to one or more protected staging provenance records.
+
+reviewer_documentation:
+  required_outputs:
+    - define.xml
+    - Study Data Reviewers Guide
+    - annotated data collection/extraction specification
+    - controlled terminology release manifest
+    - external dictionary version manifest
+    - source-to-SDTM mapping specification
+    - conformance report
+  mandatory_explanations:
+    - Retrospective observational design and absence of randomized treatment arms.
+    - Definition and limitations of the EHR-derived ALS index date.
+    - Visit-window and record-selection rules for irregular routine-care observations.
+    - Handling of multiple sites and DATAMARTID in USUBJID.
+    - Domain-routing decisions for diagnoses, respiratory findings, devices and healthcare encounters.
+    - Medication evidence hierarchy and episode-consolidation assumptions.
+    - Data not available in PCORnet or not reliably derivable.
+    - Sponsor-defined terminology and all extensible-codelist additions.
+
+implementation_notes:
+  - >
+    This file intentionally uses SDTM, correcting the user-provided abbreviation "STDM".
+  - >
+    A YAML mapping specification cannot by itself establish regulatory conformance. Production
+    conformance requires validation against the exact SDTM model, SDTMIG, pinned CT release,
+    FDA Data Standards Catalog, FDA validation rules and study-specific reviewer expectations.
+  - >
+    Exact Required/Expected/Permissible designations and variable applicability must be verified
+    against licensed/current CDISC metadata before production because domain scope and metadata
+    may change across versions.
+  - >
+    AE is not generated from diagnosis codes by default. An adverse event requires a protocol-defined
+    collection/adjudication process sufficient to support AE semantics, seriousness, severity,
+    relationship and timing.
+  - >
+    SE, TA, TE and TV should be added if the protocol defines formal elements, arms or visits that
+    warrant those trial-design structures. For a single-cohort observational natural-history study,
+    their applicability must be determined from the final protocol.

@@ -10,10 +10,29 @@ Per calendar year, crude and age-sex-adjusted, each with confidence intervals:
     ALS_INCIDENCE_IN_DM       ALS incidence      out of the DM cohort
     ALS_INCIDENCE_IN_NON_DM   ALS incidence      in at-risk time before/without DM
 
+Medication prevalence is computed separately (snapshot method) by
+compute_medication_prevalence_snapshot(...). Both pipelines return their `final`
+table in the same canonical long format:
+    YEAR, OUTCOME, POPULATION, METRIC, ESTIMATE_TYPE,
+    NUM, DEN, ESTIMATE, LCL, UCL, UNIT
+
+Zero or missing denominators produce NULL estimates and confidence limits, not
+zero rates. Adjusted rates are also NULL when no eligible standard weight remains.
+Zero case counts with positive denominators remain valid zero estimates.
+
+Both canonical final tables include YEAR=9999 summaries over all input years.
+Counts and person-time are summed before recomputing rates and confidence limits;
+prevalence summaries count patient-years, not distinct patients over the period.
+Adjusted summaries pool age-sex strata and sum year-specific standard weights
+(fixed standards are unchanged). Cell suppression is applied after pooling.
+
 Inputs
 ------
 denom : denominator / at-risk cohort, one row per person
     person, observation start, observation censor, birth date, sex
+    GLP1RA_CASE_TABLE1 must be rebuilt with glp1_tbl1.py to include BIRTH_DATE.
+    Set denom_start_col="INDEX_DATE" for entry at the first GLP-1 prescription;
+    ENTRY_DATE instead represents the original enrollment entry.
 num   : ALS risk set, one row per person (deduplicated internally)
     person, initial diagnosis date, ALS censor date
 dm    : DM cohort, one row per person (deduplicated internally)
@@ -21,6 +40,23 @@ dm    : DM cohort, one row per person (deduplicated internally)
     DM is DUAL-ROLE: numerator for its own prevalence, denominator for the two
     ALS-in-DM measures. Its censor equals the enrollment censor, as ALS's does, so
     the same carry-forward reasoning applies to both.
+med   : medication registry, one row per person x year x phenotype
+    person, calendar year, denominator label (DENOM), phenotype label (PHE_TYPE)
+    DENOM encodes denominator membership (e.g. "DM", "ALL", ...).
+    PHE_TYPE may be NULL for denominator-only rows and those rows still count in the
+    selected denominator(s).
+
+Prevalence methods (explicitly separated)
+-----------------------------------------
+1) Carry-forward prevalence (window-based)
+    Uses diagnosis-window style inputs (start/diagnosis and censor/end), as used for
+    ALS and DM. A person is prevalent in year Y if the active window overlaps Y.
+
+2) Snapshot prevalence (no carry-over)
+    Uses longitudinal time-indexed inputs (PATID + YEAR/time-unit), denominator
+    labels (DENOM), and event labels (e.g. PHE_TYPE). Prevalence is counted only in
+    the recorded time unit and never carried across years. DENOM selection is
+    derived from dm_type: ALL -> DM, T1DM -> T1DM, T2DM -> T2DM.
 
 Two design points behind the DM measures
 ----------------------------------------
@@ -145,6 +181,7 @@ from typing import Sequence
 from config import conn, env
 from snowflake.snowpark import Column, DataFrame, Session
 from snowflake.snowpark import functions as F
+from snowflake.snowpark.window import Window
 
 
 # --------------------------------------------------------------------------- #
@@ -156,11 +193,13 @@ class RateConfig:
     end_year: int = 2025
 
     # denominator column names
+    denom_table: str = "PAT_TABLE1"
     denom_person_col: str = "PATID"
     denom_start_col: str = "START_DATE"
     denom_censor_col: str = "CENSOR_DATE"
     denom_birth_col: str = "BIRTH_DATE"
     denom_sex_col: str = "SEX"
+    denom_race_col: str = "RACE"
 
     # ALS numerator column names
     num_person_col: str = "PATID"
@@ -172,6 +211,24 @@ class RateConfig:
     dm_person_col: str = "PATID"
     dm_dx_col: str = "DX_DATE"
     dm_censor_col: str = "CENSOR_DATE"
+    dm_type_col: str = "T1DM_IND"
+    # "ALL" (default), "T1DM", or "T2DM"
+    dm_type: str = "ALL"
+
+    # Medication registry column names (snapshot person-year rows).
+    med_person_col: str = "PATID"
+    med_year_col: str = "YEAR"
+    med_denom_col: str = "DENOM"
+    # Medication DENOM is selected from dm_type:
+    #   dm_type=ALL  -> DENOM=DM
+    #   dm_type=T1DM -> DENOM=T1DM
+    #   dm_type=T2DM -> DENOM=T2DM
+    med_type_col: str = "PHE_TYPE"
+    med_phenotypes: Sequence[str] = (
+        "DPP4", "GLP1RA", "SGLT2", "TZD", "MEG", "AGI",
+        "SU", "BIGU", "AML", "INS", "COMBO",
+    )
+
 
     # ----------------------------------------------------------------------- #
     # Incident-case ascertainment
@@ -256,6 +313,7 @@ class RateConfig:
     # column is named with its unit so the mixed scale can't be misread. Also used
     # for DM prevalence within the ALS cohort, which runs in the same ~20-35% range.
     dm_prevalence_multiplier: int = 100
+    med_prevalence_multiplier: int = 100
 
     days_per_year: float = 365.25
     at_risk_person_time: bool = True   # truncate incidence PY at diagnosis
@@ -315,6 +373,11 @@ STD_POP_2000 = {
 # --------------------------------------------------------------------------- #
 # Helpers
 # --------------------------------------------------------------------------- #
+def _safe_divide(numerator: Column, denominator: Column) -> Column:
+    """Guard the divisor itself, including inside SQL conditional branches."""
+    return numerator / F.nullif(denominator, F.lit(0))
+
+
 def _year_dim(session: Session, cfg: RateConfig) -> DataFrame:
     """One row per calendar year with year_start / year_end / mid_year dates."""
     rows = [[y] for y in range(cfg.start_year, cfg.end_year + 1)]
@@ -337,12 +400,33 @@ def _age_group_expr(age: Column, cutpoints: Sequence[int]) -> Column:
 
 
 def _norm_denom(denom: DataFrame, cfg: RateConfig) -> DataFrame:
-    return denom.select(
-        F.col(cfg.denom_person_col).alias("PATID"),
-        F.col(cfg.denom_start_col).alias("START_DATE"),
-        F.col(cfg.denom_censor_col).alias("CENSOR_DATE"),
-        F.col(cfg.denom_birth_col).alias("BIRTH_DATE"),
-        F.col(cfg.denom_sex_col).alias("SEX"),
+    denom_cols_u = [c.upper().strip('"') for c in denom.columns]
+    required = (
+        cfg.denom_person_col,
+        cfg.denom_start_col,
+        cfg.denom_censor_col,
+        cfg.denom_birth_col,
+        cfg.denom_sex_col,
+        cfg.denom_race_col,
+    )
+    missing = [req for req in required if req.upper() not in denom_cols_u]
+    if missing:
+        raise ValueError(
+            f"Denominator {cfg.denom_table!r} is missing required columns: "
+            f"{', '.join(missing)}. Check the denom_*_col settings and rebuild "
+            "the source table if its schema is outdated."
+        )
+    return (
+        denom
+        .filter(F.col(cfg.denom_start_col).is_not_null())
+        .select(
+            F.col(cfg.denom_person_col).alias("PATID"),
+            F.col(cfg.denom_start_col).alias("START_DATE"),
+            F.col(cfg.denom_censor_col).alias("CENSOR_DATE"),
+            F.col(cfg.denom_birth_col).alias("BIRTH_DATE"),
+            F.col(cfg.denom_sex_col).alias("SEX"),
+            F.col(cfg.denom_race_col).alias("RACE"),
+        )
     )
 
 
@@ -364,6 +448,15 @@ def _norm_num(num: DataFrame, cfg: RateConfig) -> DataFrame:
 
 def _norm_dm(dm: DataFrame, cfg: RateConfig) -> DataFrame:
     """Deduplicate to one DM window per person (earliest dx, latest censor)."""
+    dm_type = cfg.dm_type.upper()
+    if dm_type not in ("ALL", "T1DM", "T2DM"):
+        raise ValueError(f"dm_type must be 'ALL', 'T1DM' or 'T2DM', got {cfg.dm_type!r}")
+
+    if dm_type == "T1DM":
+        dm = dm.filter(F.col(cfg.dm_type_col).cast("int") == F.lit(1))
+    elif dm_type == "T2DM":
+        dm = dm.filter(F.col(cfg.dm_type_col).cast("int") == F.lit(0))
+
     return (
         dm.group_by(cfg.dm_person_col)
         .agg(
@@ -374,6 +467,246 @@ def _norm_dm(dm: DataFrame, cfg: RateConfig) -> DataFrame:
             F.col(cfg.dm_person_col).alias("DM_PATID"),
             "DM_DX_DATE",
             "DM_CENSOR_DATE",
+        )
+    )
+
+
+def _norm_dm_with_type(dm: DataFrame, cfg: RateConfig) -> DataFrame:
+    """
+    Deduplicate DM to one window per person and retain a patient-level DM type.
+
+    DM_TYPE is assigned from the earliest available DM row:
+      - T1DM when dm_type_col == 1
+      - T2DM when dm_type_col == 0
+      - UNKNOWN otherwise
+    """
+    dm_base = dm.select(
+        F.col(cfg.dm_person_col).alias("DM_PATID"),
+        F.col(cfg.dm_dx_col).alias("DM_DX_DATE"),
+        F.col(cfg.dm_censor_col).alias("DM_CENSOR_DATE"),
+        F.col(cfg.dm_type_col).cast("int").alias("DM_TYPE_FLAG"),
+    )
+
+    dm_rollup = (
+        dm_base.group_by("DM_PATID")
+        .agg(
+            F.min("DM_DX_DATE").alias("DM_DX_DATE"),
+            F.max("DM_CENSOR_DATE").alias("DM_CENSOR_DATE"),
+        )
+    )
+
+    w = Window.partition_by("DM_PATID").order_by(
+        F.col("DM_DX_DATE"),
+        F.col("DM_CENSOR_DATE"),
+        F.col("DM_TYPE_FLAG"),
+    )
+
+    dm_type = (
+        dm_base
+        .with_column("rn", F.row_number().over(w))
+        .filter(F.col("rn") == F.lit(1))
+        .select(
+            "DM_PATID",
+            F.when(F.col("DM_TYPE_FLAG") == F.lit(1), F.lit("T1DM"))
+            .when(F.col("DM_TYPE_FLAG") == F.lit(0), F.lit("T2DM"))
+            .otherwise(F.lit("UNKNOWN"))
+            .alias("DM_TYPE"),
+        )
+    )
+
+    return (
+        dm_rollup.join(dm_type, on="DM_PATID", how="left")
+        .with_column("DM_TYPE", F.coalesce(F.col("DM_TYPE"), F.lit("UNKNOWN")))
+    )
+
+
+def annual_prevalence_cohort_profile(
+    denom: DataFrame,
+    num: DataFrame,
+    dm: DataFrame,
+    cfg: RateConfig,
+    white_labels: Sequence[str] = ("WHITE",),
+) -> DataFrame:
+    """
+    Annual cohort composition for prevalence cohorts.
+
+    Output columns:
+      YEAR, COHORT, N,
+      AVG_AGE, SD_AGE,
+      MALE_PROP, SD_MALE_PROP,
+      NON_WHITE_PROP, SD_NON_WHITE_PROP
+
+        Cohorts (ALL and ALS are always included; the others are driven by cfg.dm_type):
+            ALL  -> ALL, ALS, DM, NON_DM, ALS_WITH_DM, ALS_WITH_NON_DM
+            T1DM -> ALL, ALS, T1DM, NON_DM, ALS_WITH_T1DM, ALS_WITH_NON_DM
+            T2DM -> ALL, ALS, T2DM, NON_DM, ALS_WITH_T2DM, ALS_WITH_NON_DM
+    """
+    if dm is None:
+        raise ValueError("dm is required for prevalence cohort composition summaries")
+
+    if cfg.prevalence_carry_forward.upper() not in ("ENROLLMENT", "ALS_CENSOR"):
+        raise ValueError(
+            "prevalence_carry_forward must be 'ENROLLMENT' or 'ALS_CENSOR', "
+            f"got {cfg.prevalence_carry_forward!r}"
+        )
+
+    session = denom._session
+    d = _norm_denom(denom, cfg)
+    a = _norm_num(num, cfg)
+    dm_typed = _norm_dm_with_type(dm, cfg)
+    years = _year_dim(session, cfg).select("YEAR", "YEAR_START", "YEAR_END", "MID_YEAR")
+
+    base = (
+        d.cross_join(years)
+        .filter(
+            (F.col("START_DATE") <= F.col("YEAR_END"))
+            & (F.col("CENSOR_DATE") >= F.col("YEAR_START"))
+        )
+        .join(a, F.col("PATID") == F.col("ALS_PATID"), how="left")
+        .join(dm_typed, F.col("PATID") == F.col("DM_PATID"), how="left")
+    )
+
+    age = F.floor(
+        _safe_divide(
+            F.datediff("day", F.col("BIRTH_DATE"), F.col("MID_YEAR")),
+            F.lit(cfg.days_per_year),
+        )
+    ).cast("int")
+    base = base.with_column("AGE", age)
+
+    if cfg.min_age is not None and cfg.max_age is not None and cfg.min_age > cfg.max_age:
+        raise ValueError(f"min_age ({cfg.min_age}) > max_age ({cfg.max_age})")
+    if cfg.min_age is not None:
+        base = base.filter(F.col("AGE") >= F.lit(cfg.min_age))
+    if cfg.max_age is not None:
+        base = base.filter(F.col("AGE") <= F.lit(cfg.max_age))
+
+    def _prevalent_carry_forward(dx: Column, censor: Column) -> Column:
+        p = dx.is_not_null() & (dx <= F.col("YEAR_END")) & (dx <= F.col("CENSOR_DATE"))
+        if cfg.prevalence_carry_forward.upper() == "ALS_CENSOR":
+            p = p & (censor >= F.col("YEAR_START"))
+        return p
+
+    als_prev = _prevalent_carry_forward(F.col("ALS_DX_DATE"), F.col("ALS_CENSOR_DATE"))
+    dm_prev = _prevalent_carry_forward(F.col("DM_DX_DATE"), F.col("DM_CENSOR_DATE"))
+    dm_t1_prev = dm_prev & (F.col("DM_TYPE") == F.lit("T1DM"))
+    dm_t2_prev = dm_prev & (F.col("DM_TYPE") == F.lit("T2DM"))
+
+    white_set = tuple(w.upper() for w in white_labels)
+    sex_u = F.upper(F.trim(F.col("SEX")))
+    race_u = F.upper(F.trim(F.col("RACE")))
+
+    base = (
+        base.with_column("IS_MALE", F.iff(sex_u == F.lit("M"), F.lit(1.0), F.lit(0.0)))
+        .with_column(
+            "IS_NON_WHITE",
+            F.iff(
+                F.col("RACE").is_not_null() & ~race_u.isin(list(white_set)),
+                F.lit(1.0),
+                F.lit(0.0),
+            ),
+        )
+    )
+
+    dm_type = cfg.dm_type.upper()
+    if dm_type == "ALL":
+        dm_label = "DM"
+        dm_pred = dm_prev
+        als_dm_label = "ALS_WITH_DM"
+    elif dm_type == "T1DM":
+        dm_label = "T1DM"
+        dm_pred = dm_t1_prev
+        als_dm_label = "ALS_WITH_T1DM"
+    elif dm_type == "T2DM":
+        dm_label = "T2DM"
+        dm_pred = dm_t2_prev
+        als_dm_label = "ALS_WITH_T2DM"
+    else:
+        raise ValueError(f"dm_type must be 'ALL', 'T1DM' or 'T2DM', got {cfg.dm_type!r}")
+
+    non_dm_pred = ~F.coalesce(dm_pred, F.lit(False))
+
+    cohort_defs = [
+        ("ALL", F.lit(True)),
+        ("ALS", als_prev),
+        (dm_label, dm_pred),
+        ("NON_DM", non_dm_pred),
+        (als_dm_label, als_prev & dm_pred),
+        ("ALS_WITH_NON_DM", als_prev & non_dm_pred),
+    ]
+
+    def _summarize(name: str, pred: Column) -> DataFrame:
+        return (
+            base.filter(pred)
+            .group_by("YEAR")
+            .agg(
+                F.count_distinct("PATID").alias("N"),
+                F.avg("AGE").alias("AVG_AGE"),
+                F.stddev_samp("AGE").alias("SD_AGE"),
+                F.avg("IS_MALE").alias("MALE_PROP"),
+                F.stddev_samp("IS_MALE").alias("SD_MALE_PROP"),
+                F.avg("IS_NON_WHITE").alias("NON_WHITE_PROP"),
+                F.stddev_samp("IS_NON_WHITE").alias("SD_NON_WHITE_PROP"),
+            )
+            .with_column("COHORT", F.lit(name))
+        )
+
+    cohort_summ = None
+    for name, pred in cohort_defs:
+        one = _summarize(name, pred)
+        cohort_summ = one if cohort_summ is None else cohort_summ.union_all(one)
+
+    cohort_dim = session.create_dataframe(
+        [[name] for name, _ in cohort_defs],
+        schema=["COHORT"],
+    )
+    year_cohort = years.select("YEAR").cross_join(cohort_dim)
+
+    out = (
+        year_cohort.join(cohort_summ, on=["YEAR", "COHORT"], how="left")
+        .select(
+            F.col("YEAR"),
+            F.col("COHORT"),
+            F.coalesce(F.col("N"), F.lit(0)).alias("N"),
+            F.round(F.col("AVG_AGE"), 3).alias("AVG_AGE"),
+            F.round(F.col("SD_AGE"), 3).alias("SD_AGE"),
+            F.round(F.col("MALE_PROP"), 6).alias("MALE_PROP"),
+            F.round(F.col("SD_MALE_PROP"), 6).alias("SD_MALE_PROP"),
+            F.round(F.col("NON_WHITE_PROP"), 6).alias("NON_WHITE_PROP"),
+            F.round(F.col("SD_NON_WHITE_PROP"), 6).alias("SD_NON_WHITE_PROP"),
+        )
+        .sort("YEAR", "COHORT")
+    )
+
+    return out
+
+
+def _med_key(phe_type: str) -> str:
+    key = "".join(ch if ch.isalnum() else "_" for ch in phe_type.upper()).strip("_")
+    if not key:
+        raise ValueError(f"invalid medication phenotype label: {phe_type!r}")
+    return key
+
+
+def _med_denom_values(cfg: RateConfig) -> list[str]:
+    dm_type = cfg.dm_type.upper()
+    if dm_type == "ALL":
+        return ["DM"]
+    if dm_type == "T1DM":
+        return ["T1DM"]
+    if dm_type == "T2DM":
+        return ["T2DM"]
+    raise ValueError(f"dm_type must be 'ALL', 'T1DM' or 'T2DM', got {cfg.dm_type!r}")
+
+
+def _norm_med(med: DataFrame, cfg: RateConfig) -> DataFrame:
+    """Normalize snapshot rows to PATID, YEAR, DENOM, PHE_TYPE (uppercase labels)."""
+    return (
+        med.select(
+            F.col(cfg.med_person_col).alias("MED_PATID"),
+            F.col(cfg.med_year_col).cast("int").alias("YEAR"),
+            F.upper(F.col(cfg.med_denom_col)).alias("MED_DENOM"),
+            F.upper(F.col(cfg.med_type_col)).alias("MED_PHE_TYPE"),
         )
     )
 
@@ -392,6 +725,8 @@ class Measure:
     numerator: str       # stratum column
     denominator: str     # stratum column
     kind: str            # "PREVALENCE" (binomial proportion) | "INCIDENCE" (Poisson rate)
+    outcome: str
+    population: str
     multiplier_attr: str = "rate_multiplier"
     unit: str = "per 100,000"
     description: str = ""
@@ -405,16 +740,18 @@ def measures(cfg: RateConfig) -> list[Measure]:
     ms = [
         Measure(
             "DM_PREVALENCE_PCT", "DM_PREVALENT_CASES", "N_OBSERVED", "PREVALENCE",
+            outcome="DM", population="ALL",
             multiplier_attr="dm_prevalence_multiplier", unit="percent",
             description="DM prevalence out of the full denominator cohort",
         ),
         Measure(
             "ALS_PREVALENCE", "ALS_PREVALENT_CASES", "N_OBSERVED", "PREVALENCE",
+            outcome="ALS", population="ALL",
             description="ALS prevalence out of the full denominator cohort",
         ),
         Measure(
             "ALS_PREVALENCE_IN_DM", "ALS_DM_PREVALENT_CASES", "DM_PREVALENT_CASES",
-            "PREVALENCE",
+            "PREVALENCE", outcome="ALS", population="DM",
             description="ALS prevalence out of the DM cohort (both conditions active)",
         ),
         # Mirror of the above: same numerator, ALS cohort as the denominator. Reported
@@ -423,19 +760,21 @@ def measures(cfg: RateConfig) -> list[Measure]:
         Measure(
             "DM_PREVALENCE_IN_ALS_PCT", "ALS_DM_PREVALENT_CASES", "ALS_PREVALENT_CASES",
             "PREVALENCE",
+            outcome="DM", population="ALS",
             multiplier_attr="dm_prevalence_multiplier", unit="percent",
             description="DM prevalence out of the ALS cohort (both conditions active); "
                         "mirror of ALS_PREVALENCE_IN_DM, same numerator",
         ),
         Measure(
             "ALS_INCIDENCE", "ALS_INCIDENT_CASES", "PERSON_YEARS", "INCIDENCE",
+            outcome="ALS", population="ALL",
             unit="per 100,000 PY",
             description="ALS incidence out of the full denominator cohort, "
                         "after entry_washout_days of clean lookback",
         ),
         Measure(
             "ALS_INCIDENCE_IN_DM", "ALS_INCIDENT_IN_DM_CASES", "PERSON_YEARS_DM",
-            "INCIDENCE", unit="per 100,000 PY",
+            "INCIDENCE", outcome="ALS", population="DM", unit="per 100,000 PY",
             description="ALS incidence out of the DM cohort, left-truncated at DM "
                         "onset + lag + washout",
         ),
@@ -445,6 +784,7 @@ def measures(cfg: RateConfig) -> list[Measure]:
             Measure(
                 "ALS_INCIDENCE_IN_NON_DM", "ALS_INCIDENT_IN_NON_DM_CASES",
                 "PERSON_YEARS_NON_DM", "INCIDENCE", unit="per 100,000 PY",
+                outcome="ALS", population="NON_DM",
                 description="ALS incidence in at-risk time before/without DM "
                             "(the clean comparator for ALS_INCIDENCE_IN_DM)",
             )
@@ -671,7 +1011,7 @@ def censor_discordance(denom: DataFrame, num: DataFrame, cfg: RateConfig) -> Dat
 
     total = F.sum(F.col("N_PERSONS")).over()
     return (
-        grouped.with_column("PCT", F.round(F.col("N_PERSONS") * 100.0 / total, 3))
+        grouped.with_column("PCT", F.round(_safe_divide(F.col("N_PERSONS") * 100.0, total), 3))
         .sort(F.col("N_PERSONS").desc())
     )
 
@@ -725,7 +1065,7 @@ def washout_attrition(denom: DataFrame, num: DataFrame, cfg: RateConfig) -> Data
     )
     total = F.sum(F.col("N_PERSONS")).over()
     return (
-        grouped.with_column("PCT", F.round(F.col("N_PERSONS") * 100.0 / total, 3))
+        grouped.with_column("PCT", F.round(_safe_divide(F.col("N_PERSONS") * 100.0, total), 3))
         .sort(F.col("N_PERSONS").desc())
     )
 
@@ -734,7 +1074,10 @@ def washout_attrition(denom: DataFrame, num: DataFrame, cfg: RateConfig) -> Data
 # Person x year x stratum base table
 # --------------------------------------------------------------------------- #
 def build_person_year(
-    denom: DataFrame, num: DataFrame, cfg: RateConfig, dm: DataFrame | None = None
+    denom: DataFrame,
+    num: DataFrame,
+    cfg: RateConfig,
+    dm: DataFrame | None = None,
 ) -> DataFrame:
     """
     One row per (person, year) the person is observed in, carrying the stratum keys,
@@ -844,7 +1187,10 @@ def build_person_year(
 
     # age at mid-year -> stratum
     age = F.floor(
-        F.datediff("day", F.col("BIRTH_DATE"), F.col("MID_YEAR")) / F.lit(cfg.days_per_year)
+        _safe_divide(
+            F.datediff("day", F.col("BIRTH_DATE"), F.col("MID_YEAR")),
+            F.lit(cfg.days_per_year),
+        )
     ).cast("int")
     base = base.with_column("AGE", age).with_column(
         "AGE_GROUP", _age_group_expr(F.col("AGE"), cfg.age_cutpoints)
@@ -873,20 +1219,15 @@ def build_person_year(
             f"got {cfg.prevalence_carry_forward!r}"
         )
 
-    # Prevalence: condition active window overlaps the year. Under "ENROLLMENT", the
-    # base filter already guarantees the enrollment censor is >= year_start, so
-    # overlap reduces to dx <= year_end. `dx <= censor` guards the degenerate case of
-    # a diagnosis recorded after end of observation. DM's censor equals the
-    # enrollment censor by construction, so DM carries forward the same way.
-    # Deliberately NOT washout-gated -- see the docstring.
-    def _prevalent(dx: Column, censor: Column) -> Column:
+    # Carry-forward prevalence (window-based): condition active window overlaps year.
+    def _prevalent_carry_forward(dx: Column, censor: Column) -> Column:
         p = dx.is_not_null() & (dx <= F.col("YEAR_END")) & (dx <= F.col("CENSOR_DATE"))
         if cfg.prevalence_carry_forward.upper() == "ALS_CENSOR":
             p = p & (censor >= F.col("YEAR_START"))
         return p
 
-    als_prev = _prevalent(F.col("ALS_DX_DATE"), F.col("ALS_CENSOR_DATE"))
-    dm_prev = _prevalent(F.col("DM_DX_DATE"), F.col("DM_CENSOR_DATE"))
+    als_prev = _prevalent_carry_forward(F.col("ALS_DX_DATE"), F.col("ALS_CENSOR_DATE"))
+    dm_prev = _prevalent_carry_forward(F.col("DM_DX_DATE"), F.col("DM_CENSOR_DATE"))
 
     # ---- anchors ----
     # Entry anchor: incidence eligibility begins here, and so does at-risk time.
@@ -974,7 +1315,7 @@ def build_person_year(
     non_dm_end = F.iff(has_dm, F.least(ar_end, dm_lag_end), ar_end)
     days_non_dm = F.greatest(F.datediff("day", ar_start, non_dm_end), F.lit(0))
 
-    py = lambda d: d / F.lit(cfg.days_per_year)
+    py = lambda d: _safe_divide(d, F.lit(cfg.days_per_year))
     b = lambda c: F.iff(c, F.lit(1), F.lit(0))
 
     return base.select(
@@ -998,9 +1339,9 @@ def build_person_year(
     )
 
 
-def stratum_table(person_year: DataFrame) -> DataFrame:
+def stratum_table(person_year: DataFrame, cfg: RateConfig) -> DataFrame:
     """Collapse to (YEAR, AGE_GROUP, SEX) counts and person-time for every measure."""
-    return person_year.group_by("YEAR", "AGE_GROUP", "SEX").agg(
+    aggs = [
         F.count_distinct("PATID").alias("N_OBSERVED"),
         F.sum("DM_PREVALENT").alias("DM_PREVALENT_CASES"),
         F.sum("ALS_PREVALENT").alias("ALS_PREVALENT_CASES"),
@@ -1015,7 +1356,8 @@ def stratum_table(person_year: DataFrame) -> DataFrame:
         F.sum("PY_AT_RISK_DM_WASHOUT").alias("PERSON_YEARS_DM_WASHOUT"),
         F.sum("PY_AT_RISK_NON_DM").alias("PERSON_YEARS_NON_DM"),
         F.sum("PY_EXCL_ENTRY_WASHOUT").alias("PERSON_YEARS_EXCL_ENTRY_WASHOUT"),
-    )
+    ]
+    return person_year.group_by("YEAR", "AGE_GROUP", "SEX").agg(*aggs)
 
 
 def qa_person_time(strata: DataFrame, cfg: RateConfig, tol: float = 1e-6) -> DataFrame:
@@ -1099,14 +1441,17 @@ def _wilson_bounds(x: Column, n: Column, z: Column) -> tuple[Column, Column]:
     Correct behaviour in the rare-event regime: bounds stay inside [0, 1], the
     interval is asymmetric, and x = 0 gives a sensible non-degenerate upper bound.
     """
-    p = x / n
+    p = _safe_divide(x, n)
     z2 = z * z
-    denom = F.lit(1) + z2 / n
-    center = (p + z2 / (F.lit(2) * n)) / denom
-    half = (z / denom) * F.sqrt(p * (F.lit(1) - p) / n + z2 / (F.lit(4) * n * n))
+    denom = F.lit(1) + _safe_divide(z2, n)
+    center = _safe_divide(p + _safe_divide(z2, F.lit(2) * n), denom)
+    half = _safe_divide(z, denom) * F.sqrt(
+        _safe_divide(p * (F.lit(1) - p), n)
+        + _safe_divide(z2, F.lit(4) * n * n)
+    )
     return (
-        F.greatest(center - half, F.lit(0.0)),
-        F.least(center + half, F.lit(1.0)),
+        F.iff(n > 0, F.greatest(center - half, F.lit(0.0)), F.lit(None)),
+        F.iff(n > 0, F.least(center + half, F.lit(1.0)), F.lit(None)),
     )
 
 
@@ -1118,9 +1463,15 @@ def _byar_count_bounds(y: Column, z: Column) -> tuple[Column, Column]:
     (y + 1) term makes the upper bound well behaved at y = 0 (-> ~3.67 vs 3.69 exact).
     """
     y1 = y + F.lit(1)
-    lo = y * (F.lit(1) - F.lit(1) / (F.lit(9) * y) - z / (F.lit(3) * F.sqrt(y))) ** 3
+    lo = y * (
+        F.lit(1) - _safe_divide(F.lit(1), F.lit(9) * y)
+        - _safe_divide(z, F.lit(3) * F.sqrt(y))
+    ) ** 3
     lo = F.iff(y <= 0, F.lit(0.0), F.greatest(lo, F.lit(0.0)))
-    up = y1 * (F.lit(1) - F.lit(1) / (F.lit(9) * y1) + z / (F.lit(3) * F.sqrt(y1))) ** 3
+    up = y1 * (
+        F.lit(1) - _safe_divide(F.lit(1), F.lit(9) * y1)
+        + _safe_divide(z, F.lit(3) * F.sqrt(y1))
+    ) ** 3
     return lo, up
 
 
@@ -1146,8 +1497,12 @@ def _dobson_bounds(
     closed-form upper bound without the gamma quantile.
     """
     y_lo, y_hi = _byar_count_bounds(y, z)
-    scale = F.sqrt(var_rate / y)
-    lo = F.iff(y <= 0, F.lit(0.0), F.greatest(rate + scale * (y_lo - y), F.lit(0.0)))
+    scale = F.sqrt(_safe_divide(var_rate, y))
+    lo = (
+        F.when(rate.is_null(), F.lit(None).cast("double"))
+        .when(y <= 0, F.lit(0.0))
+        .otherwise(F.greatest(rate + scale * (y_lo - y), F.lit(0.0)))
+    )
     hi = F.iff(y <= 0, F.lit(None).cast("double"), rate + scale * (y_hi - y))
     return lo, hi
 
@@ -1173,7 +1528,7 @@ def crude_rates(strata: DataFrame, cfg: RateConfig) -> DataFrame:
     for m in ms:
         num, den = F.col(m.numerator), F.col(m.denominator)
         mult = F.lit(m.multiplier(cfg))
-        rate = num / den
+        rate = _safe_divide(num, den)
         out_cols.append((rate * mult).alias(f"CRUDE_{m.name}"))
 
         if not cfg.add_ci:
@@ -1181,18 +1536,18 @@ def crude_rates(strata: DataFrame, cfg: RateConfig) -> DataFrame:
 
         if cfg.ci_method.upper() == "NORMAL":
             if m.kind == "PREVALENCE":
-                se = F.sqrt(rate * (F.lit(1) - rate) / den)
+                se = F.sqrt(_safe_divide(rate * (F.lit(1) - rate), den))
             else:
-                se = rate / F.sqrt(num)
+                se = F.sqrt(_safe_divide(num, den * den))
             lo, hi = F.greatest(rate - z * se, F.lit(0.0)), rate + z * se
         elif m.kind == "PREVALENCE":
             lo, hi = _wilson_bounds(num, den, z)
         else:
             c_lo, c_hi = _byar_count_bounds(num, z)
-            lo, hi = c_lo / den, c_hi / den
+            lo, hi = _safe_divide(c_lo, den), _safe_divide(c_hi, den)
 
-        out_cols.append((lo * mult).alias(f"CRUDE_{m.name}_LCL"))
-        out_cols.append((hi * mult).alias(f"CRUDE_{m.name}_UCL"))
+        out_cols.append(F.iff(den > 0, lo * mult, F.lit(None)).alias(f"CRUDE_{m.name}_LCL"))
+        out_cols.append(F.iff(den > 0, hi * mult, F.lit(None)).alias(f"CRUDE_{m.name}_UCL"))
 
     return agg.select(*out_cols).sort("YEAR")
 
@@ -1238,12 +1593,12 @@ def adjusted_rates(strata: DataFrame, std_pop: DataFrame, cfg: RateConfig) -> Da
     terms = [F.col("YEAR")]
     for m in ms:
         num, den = F.col(m.numerator), F.col(m.denominator)
-        r = num / den
+        r = _safe_divide(num, den)
         eligible = den > 0
         if m.kind == "PREVALENCE":
-            var_s = r * (F.lit(1) - r) / den            # binomial
+            var_s = _safe_divide(r * (F.lit(1) - r), den)  # binomial
         else:
-            var_s = num / (den * den)                   # Poisson rate
+            var_s = _safe_divide(num, den * den)         # Poisson rate
         terms += [
             F.iff(eligible, w, F.lit(0.0)).alias(f"W_{m.name}"),
             F.iff(eligible, w * r, F.lit(0.0)).alias(f"WR_{m.name}"),
@@ -1268,8 +1623,8 @@ def adjusted_rates(strata: DataFrame, std_pop: DataFrame, cfg: RateConfig) -> Da
     out_cols = [F.col("YEAR")]
     for m in ms:
         W, WR = F.col(f"W_{m.name}"), F.col(f"WR_{m.name}")
-        adj = WR / W
-        var = F.col(f"WVAR_{m.name}") / (W * W)
+        adj = _safe_divide(WR, W)
+        var = _safe_divide(F.col(f"WVAR_{m.name}"), W * W)
         mult = F.lit(m.multiplier(cfg))
 
         out_cols.append((adj * mult).alias(f"ADJ_{m.name}"))
@@ -1282,8 +1637,8 @@ def adjusted_rates(strata: DataFrame, std_pop: DataFrame, cfg: RateConfig) -> Da
             lo, hi = F.greatest(adj - z * se, F.lit(0.0)), adj + z * se
         else:
             lo, hi = _dobson_bounds(adj, var, F.col(f"Y_{m.name}"), z)
-        out_cols.append((lo * mult).alias(f"ADJ_{m.name}_LCL"))
-        out_cols.append((hi * mult).alias(f"ADJ_{m.name}_UCL"))
+        out_cols.append(F.iff(W > 0, lo * mult, F.lit(None)).alias(f"ADJ_{m.name}_LCL"))
+        out_cols.append(F.iff(W > 0, hi * mult, F.lit(None)).alias(f"ADJ_{m.name}_UCL"))
 
     return agg.select(*out_cols).sort("YEAR")
 
@@ -1291,90 +1646,359 @@ def adjusted_rates(strata: DataFrame, std_pop: DataFrame, cfg: RateConfig) -> Da
 # --------------------------------------------------------------------------- #
 # Final reporting table
 # --------------------------------------------------------------------------- #
+def _pooled_rate_inputs(
+    strata: DataFrame, std_pop: DataFrame, ms: Sequence[Measure],
+) -> tuple[DataFrame, DataFrame]:
+    """Pool annual measure inputs and standards without averaging estimates."""
+    needed = sorted({c for m in ms for c in (m.numerator, m.denominator)})
+    annual = strata.filter(F.col("YEAR") != 9999)
+    pooled = annual.group_by("AGE_GROUP", "SEX").agg(
+        *[F.sum(c).alias(c) for c in needed]
+    ).with_column("YEAR", F.lit(9999))
+    if "YEAR" in [c.upper().strip('"') for c in std_pop.columns]:
+        years = annual.select("YEAR").distinct()
+        std_pop = (
+            std_pop.join(years, on="YEAR", how="inner")
+            .group_by("AGE_GROUP", "SEX")
+            .agg(F.sum("STD_POP").alias("STD_POP"))
+        )
+    return pooled, std_pop
+
+
+def _canonical_final_table(
+    crude: DataFrame,
+    adjusted: DataFrame,
+    ms: Sequence[Measure],
+    cfg: RateConfig,
+) -> DataFrame:
+    """Convert wide crude/adjusted estimates to the canonical reporting schema."""
+    wide = crude.join(adjusted, on="YEAR", how="left")
+    have = {name.upper().strip('"') for name in wide.columns}
+    rows = None
+
+    for measure in ms:
+        for estimate_type, prefix in (("CRUDE", "CRUDE_"), ("ADJUSTED", "ADJ_")):
+            estimate_col = f"{prefix}{measure.name}"
+            lcl_col = f"{estimate_col}_LCL"
+            ucl_col = f"{estimate_col}_UCL"
+            one = wide.select(
+                F.col("YEAR").alias("YEAR"),
+                F.lit(measure.outcome).alias("OUTCOME"),
+                F.lit(measure.population).alias("POPULATION"),
+                F.lit(measure.kind).alias("METRIC"),
+                F.lit(estimate_type).alias("ESTIMATE_TYPE"),
+                F.col(measure.numerator).alias("NUM"),
+                F.col(measure.denominator).alias("DEN"),
+                F.round(F.col(estimate_col), cfg.round_rates).alias("ESTIMATE"),
+                (
+                    F.round(F.col(lcl_col), cfg.round_rates)
+                    if lcl_col in have
+                    else F.lit(None).cast("double")
+                ).alias("LCL"),
+                (
+                    F.round(F.col(ucl_col), cfg.round_rates)
+                    if ucl_col in have
+                    else F.lit(None).cast("double")
+                ).alias("UCL"),
+                F.lit(measure.unit).alias("UNIT"),
+            )
+            rows = one if rows is None else rows.union_all(one)
+
+    if rows is None:
+        raise ValueError("at least one measure is required")
+
+    if cfg.suppress_threshold is not None:
+        disclose = F.col("NUM") >= F.lit(cfg.suppress_threshold)
+        for name in ("NUM", "ESTIMATE", "LCL", "UCL"):
+            rows = rows.with_column(name, F.iff(disclose, F.col(name), F.lit(None)))
+
+    return rows.select(
+        "YEAR", "OUTCOME", "POPULATION", "METRIC", "ESTIMATE_TYPE",
+        "NUM", "DEN", "ESTIMATE", "LCL", "UCL", "UNIT",
+    ).sort("YEAR", "OUTCOME", "POPULATION", "METRIC", "ESTIMATE_TYPE")
+
+
 def final_table(strata: DataFrame, std_pop: DataFrame, cfg: RateConfig) -> DataFrame:
     """
-    One row per year: every denominator and numerator count, plus crude and
-    age-sex-adjusted rates with confidence intervals for all measures.
+    Canonical long table with crude and age-sex-adjusted rows for every measure.
 
-    Layout:
-        YEAR
-        -- denominators --
-        N_OBSERVED            persons observed (denominator for DM/ALS prevalence)
-        DM_PREVALENT_CASES    persons with DM  (denominator for ALS_PREVALENCE_IN_DM;
-                                                also the DM prevalence numerator)
-        PERSON_YEARS          at-risk PY, post-entry-washout, all cohort
-        PERSON_YEARS_DM       at-risk PY, left-truncated at DM onset + lag + washout
-        PERSON_YEARS_NON_DM   at-risk PY, right-truncated at DM onset + lag
-        -- numerators --
-        ALS_PREVALENT_CASES        (also the denominator for DM_PREVALENCE_IN_ALS_PCT)
-        ALS_DM_PREVALENT_CASES     (numerator for BOTH in-cohort prevalence measures)
-        ALS_INCIDENT_CASES, ALS_INCIDENT_IN_DM_CASES, ALS_INCIDENT_IN_NON_DM_CASES
-        -- per measure --
-        CRUDE_<m> / _LCL / _UCL, ADJ_<m> / _LCL / _UCL, N_STRATA_<m>
-
-    The washout accounting columns (PERSON_YEARS_DM_WASHOUT,
-    ALS_INCIDENT_IN_DM_WASHOUT_CASES, and the entry-washout attrition) are
-    deliberately NOT here -- they are not measures, they are the audit trail. See
-    `qa_person_time`. One consequence to expect: whenever dm_washout_days > 0, this
-    table's PERSON_YEARS_DM + PERSON_YEARS_NON_DM will NOT sum to PERSON_YEARS. That
-    difference IS the washout, and it is accounted for in QA -- not missing.
-
-    Units are per cfg.rate_multiplier except DM_PREVALENCE_PCT and
-    DM_PREVALENCE_IN_ALS_PCT, which are percent (see cfg.dm_prevalence_multiplier).
-    Call measure_dictionary(cfg) for the map.
-
-    cfg.suppress_threshold nulls a measure's whole family (count, rate, both bounds)
-    in any year where its numerator falls below the threshold. ALS_PREVALENCE_IN_DM
-    and DM_PREVALENCE_IN_ALS_PCT share the ALS_DM_PREVALENT_CASES numerator, so they
-    suppress together -- which is what you want, since either one plus its denominator
-    reconstructs that count.
+    Columns: YEAR, OUTCOME, POPULATION, METRIC, ESTIMATE_TYPE, NUM, DEN,
+    ESTIMATE, LCL, UCL, UNIT. Adjusted rows retain observed NUM and DEN as context;
+    their estimates are directly standardized and are not computed as NUM / DEN.
+    YEAR=9999 contains rates and CIs recomputed from pooled annual inputs.
     """
     ms = measures(cfg)
     c = crude_rates(strata, cfg)
     a = adjusted_rates(strata, std_pop, cfg)
-    out = c.join(a, on="YEAR", how="left")
+    pooled, pooled_std = _pooled_rate_inputs(strata, std_pop, ms)
+    c = c.union_all(crude_rates(pooled, cfg))
+    a = a.union_all(adjusted_rates(pooled, pooled_std, cfg))
+    return _canonical_final_table(c, a, ms, cfg)
 
-    denom_cols = ["N_OBSERVED", "DM_PREVALENT_CASES", "PERSON_YEARS",
-                  "PERSON_YEARS_DM", "PERSON_YEARS_NON_DM"]
-    num_cols = ["ALS_PREVALENT_CASES", "ALS_DM_PREVALENT_CASES", "ALS_INCIDENT_CASES",
-                "ALS_INCIDENT_IN_DM_CASES", "ALS_INCIDENT_IN_NON_DM_CASES"]
 
-    have = {c_.upper().strip('"') for c_ in out.columns}
-    cols = ["YEAR"]
-    cols += [c_ for c_ in denom_cols if c_ in have]
-    cols += [c_ for c_ in num_cols if c_ in have]
+# --------------------------------------------------------------------------- #
+# Medication prevalence (separate snapshot pipeline; no carry-over)
+# --------------------------------------------------------------------------- #
+def medication_measures(cfg: RateConfig) -> list[Measure]:
+    """Medication prevalence measures (snapshot method) by dm_type-selected DENOM."""
+    denoms = _med_denom_values(cfg)
+    seen = set()
+    ms: list[Measure] = []
+    for phe in cfg.med_phenotypes:
+        pkey = _med_key(phe)
+        if pkey in seen:
+            raise ValueError(f"duplicate medication phenotype key after normalization: {pkey}")
+        seen.add(pkey)
+        for d in denoms:
+            dkey = _med_key(d)
+            ms.append(
+                Measure(
+                    name=f"MED_{pkey}_PREVALENCE_IN_{dkey}_PCT",
+                    numerator=f"MED_{pkey}_IN_{dkey}_CASES",
+                    denominator=f"DENOM_{dkey}_CASES",
+                    kind="PREVALENCE",
+                    outcome=phe.upper(),
+                    population=d,
+                    multiplier_attr="med_prevalence_multiplier",
+                    unit="percent",
+                    description=(
+                        f"Medication prescription prevalence for phenotype {phe.upper()} "
+                        f"out of DENOM={d} (snapshot; no carry-over)"
+                    ),
+                )
+            )
+    return ms
+
+
+def medication_snapshot_strata(denom: DataFrame, med: DataFrame, cfg: RateConfig) -> DataFrame:
+    """
+    Build (YEAR, AGE_GROUP, SEX) strata for snapshot medication prevalence.
+
+        Denominator is explicit same-year set membership from the medication input,
+        where selected DENOM is derived from dm_type.
+    Numerator for each phenotype adds phenotype-present-in-year == 1.
+    """
+    denoms = _med_denom_values(cfg)
+    med_cols_u = [c.upper().strip('"') for c in med.columns]
+    for req in (cfg.med_person_col, cfg.med_year_col, cfg.med_denom_col, cfg.med_type_col):
+        if req.upper() not in med_cols_u:
+            raise ValueError(f"medication snapshot prevalence requires med column {req!r}")
+
+    session = denom._session
+    years = _year_dim(session, cfg).select("YEAR", "YEAR_START", "YEAR_END", "MID_YEAR")
+    d = _norm_denom(denom, cfg)
+
+    denom_year = (
+        d.cross_join(years)
+        .filter(
+            (F.col("START_DATE") <= F.col("YEAR_END"))
+            & (F.col("CENSOR_DATE") >= F.col("YEAR_START"))
+        )
+    )
+
+    age = F.floor(
+        _safe_divide(
+            F.datediff("day", F.col("BIRTH_DATE"), F.col("MID_YEAR")),
+            F.lit(cfg.days_per_year),
+        )
+    ).cast("int")
+    denom_year = denom_year.with_column("AGE", age).with_column(
+        "AGE_GROUP", _age_group_expr(F.col("AGE"), cfg.age_cutpoints)
+    )
+
+    if cfg.min_age is not None and cfg.max_age is not None and cfg.min_age > cfg.max_age:
+        raise ValueError(f"min_age ({cfg.min_age}) > max_age ({cfg.max_age})")
+    if cfg.min_age is not None and cfg.min_age not in tuple(cfg.age_cutpoints):
+        raise ValueError(
+            f"min_age={cfg.min_age} is not in age_cutpoints; the boundary band would "
+            "be partial. Set age_cutpoints to start at min_age."
+        )
+    if cfg.min_age is not None:
+        denom_year = denom_year.filter(F.col("AGE") >= F.lit(cfg.min_age))
+    if cfg.max_age is not None:
+        denom_year = denom_year.filter(F.col("AGE") <= F.lit(cfg.max_age))
+
+    m = (
+        med.with_column("MED_PHE_TYPE", F.upper(F.col(cfg.med_type_col)))
+        .with_column("MED_DENOM", F.upper(F.col(cfg.med_denom_col)))
+        .with_column("MED_YEAR", F.col(cfg.med_year_col).cast("int"))
+    )
+
+    grp = [F.col(cfg.med_person_col).alias("PATID"), F.col("MED_YEAR").alias("YEAR")]
+    aggs = []
+    for dval in denoms:
+        dkey = _med_key(dval)
+        aggs.append(
+            F.max(F.iff(F.col("MED_DENOM") == F.lit(dval), F.lit(1), F.lit(0))).alias(
+                f"DENOM_{dkey}_IN_YEAR"
+            )
+        )
+    for phe in cfg.med_phenotypes:
+        pkey = _med_key(phe)
+        for dval in denoms:
+            dkey = _med_key(dval)
+            aggs.append(
+                F.max(
+                    F.iff(
+                        (F.col("MED_DENOM") == F.lit(dval))
+                        & (F.col("MED_PHE_TYPE") == F.lit(phe.upper())),
+                        F.lit(1),
+                        F.lit(0),
+                    )
+                ).alias(f"MED_{pkey}_IN_{dkey}_PRESENT")
+            )
+
+    med_py = m.group_by(*grp).agg(*aggs)
+    joined = denom_year.join(med_py, on=["PATID", "YEAR"], how="inner")
+
+    strata_aggs = [F.count_distinct("PATID").alias("N_OBSERVED")]
+    for dval in denoms:
+        dkey = _med_key(dval)
+        in_d = F.col(f"DENOM_{dkey}_IN_YEAR") == F.lit(1)
+        strata_aggs.append(
+            F.sum(F.iff(in_d, F.lit(1), F.lit(0))).alias(f"DENOM_{dkey}_CASES")
+        )
+        for phe in cfg.med_phenotypes:
+            pkey = _med_key(phe)
+            strata_aggs.append(
+                F.sum(
+                    F.iff(
+                        in_d & (F.col(f"MED_{pkey}_IN_{dkey}_PRESENT") == F.lit(1)),
+                        F.lit(1),
+                        F.lit(0),
+                    )
+                ).alias(f"MED_{pkey}_IN_{dkey}_CASES")
+            )
+
+    return joined.group_by("YEAR", "AGE_GROUP", "SEX").agg(*strata_aggs)
+
+
+def medication_standard_population_from_strata(strata: DataFrame, cfg: RateConfig) -> DataFrame:
+    """Standard population for medication snapshot prevalence."""
+    pop = strata.select(
+        "YEAR",
+        "AGE_GROUP",
+        "SEX",
+        F.col("N_OBSERVED").cast("float").alias("STD_POP"),
+    )
+    return _collapse_standard(pop, cfg)
+
+
+def medication_crude_rates(strata: DataFrame, cfg: RateConfig) -> DataFrame:
+    """Crude annual medication snapshot prevalence rates (+ CIs)."""
+    z = F.lit(cfg.z)
+    ms = medication_measures(cfg)
+    needed = sorted({c for m in ms for c in (m.numerator, m.denominator)})
+    agg = strata.group_by("YEAR").agg(*[F.sum(c).alias(c) for c in needed])
+
+    out_cols = [F.col("YEAR")] + [F.col(c) for c in needed]
     for m in ms:
-        for suffix in ("", "_LCL", "_UCL"):
-            for pre in ("CRUDE_", "ADJ_"):
-                nm = f"{pre}{m.name}{suffix}"
-                if nm in have:
-                    cols.append(nm)
-        if f"N_STRATA_{m.name}" in have:
-            cols.append(f"N_STRATA_{m.name}")
+        num, den = F.col(m.numerator), F.col(m.denominator)
+        mult = F.lit(m.multiplier(cfg))
+        rate = _safe_divide(num, den)
+        out_cols.append((rate * mult).alias(f"CRUDE_{m.name}"))
 
-    out = out.select(*[F.col(x) for x in cols])
+        if not cfg.add_ci:
+            continue
+        if cfg.ci_method.upper() == "NORMAL":
+            se = F.sqrt(_safe_divide(rate * (F.lit(1) - rate), den))
+            lo, hi = F.greatest(rate - z * se, F.lit(0.0)), rate + z * se
+        else:
+            lo, hi = _wilson_bounds(num, den, z)
+        out_cols.append(F.iff(den > 0, lo * mult, F.lit(None)).alias(f"CRUDE_{m.name}_LCL"))
+        out_cols.append(F.iff(den > 0, hi * mult, F.lit(None)).alias(f"CRUDE_{m.name}_UCL"))
 
-    for x in cols:
-        if x.startswith("PERSON_YEARS"):
-            out = out.with_column(x, F.round(F.col(x), 1))
-        elif x.startswith(("CRUDE_", "ADJ_")):
-            out = out.with_column(x, F.round(F.col(x), cfg.round_rates))
+    return agg.select(*out_cols).sort("YEAR")
 
-    if cfg.suppress_threshold is not None:
-        t = F.lit(cfg.suppress_threshold)
-        # Suppress each measure's whole family. Nulling the count alone is not
-        # suppression: the rate and denominator remain and multiply straight back
-        # to it (complementary-suppression leak).
-        for m in ms:
-            ok = F.col(m.numerator) >= t
-            targets = [m.numerator] + [
-                f"{p}{m.name}{s}" for p in ("CRUDE_", "ADJ_") for s in ("", "_LCL", "_UCL")
-            ]
-            for x in targets:
-                if x in cols:
-                    out = out.with_column(x, F.iff(ok, F.col(x), F.lit(None)))
 
-    return out.sort("YEAR")
+def medication_adjusted_rates(strata: DataFrame, std_pop: DataFrame, cfg: RateConfig) -> DataFrame:
+    """Age-sex adjusted annual medication snapshot prevalence rates (+ CIs)."""
+    z = F.lit(cfg.z)
+    ms = medication_measures(cfg)
+
+    year_specific = "YEAR" in [c.upper().strip('"') for c in std_pop.columns]
+    keys = ["YEAR", "AGE_GROUP", "SEX"] if year_specific else ["AGE_GROUP", "SEX"]
+    s = strata.join(std_pop, on=keys, how="inner")
+    w = F.col("STD_POP")
+
+    terms = [F.col("YEAR")]
+    for m in ms:
+        num, den = F.col(m.numerator), F.col(m.denominator)
+        r = _safe_divide(num, den)
+        eligible = den > 0
+        var_s = _safe_divide(r * (F.lit(1) - r), den)
+        terms += [
+            F.iff(eligible, w, F.lit(0.0)).alias(f"W_{m.name}"),
+            F.iff(eligible, w * r, F.lit(0.0)).alias(f"WR_{m.name}"),
+            F.iff(eligible, w * w * var_s, F.lit(0.0)).alias(f"WVAR_{m.name}"),
+            F.iff(eligible & (w > 0), num, F.lit(0)).alias(f"Y_{m.name}"),
+            F.iff(eligible & (w > 0), F.lit(1), F.lit(0)).alias(f"U_{m.name}"),
+        ]
+    s = s.select(*terms)
+
+    aggs = []
+    for m in ms:
+        aggs += [
+            F.sum(f"W_{m.name}").alias(f"W_{m.name}"),
+            F.sum(f"WR_{m.name}").alias(f"WR_{m.name}"),
+            F.sum(f"WVAR_{m.name}").alias(f"WVAR_{m.name}"),
+            F.sum(f"Y_{m.name}").alias(f"Y_{m.name}"),
+            F.sum(f"U_{m.name}").alias(f"N_STRATA_{m.name}"),
+        ]
+    agg = s.group_by("YEAR").agg(*aggs)
+
+    out_cols = [F.col("YEAR")]
+    for m in ms:
+        W, WR = F.col(f"W_{m.name}"), F.col(f"WR_{m.name}")
+        adj = _safe_divide(WR, W)
+        var = _safe_divide(F.col(f"WVAR_{m.name}"), W * W)
+        mult = F.lit(m.multiplier(cfg))
+
+        out_cols.append((adj * mult).alias(f"ADJ_{m.name}"))
+        out_cols.append(F.col(f"N_STRATA_{m.name}"))
+
+        if not cfg.add_ci:
+            continue
+        if cfg.ci_method.upper() == "NORMAL":
+            se = F.sqrt(var)
+            lo, hi = F.greatest(adj - z * se, F.lit(0.0)), adj + z * se
+        else:
+            lo, hi = _dobson_bounds(adj, var, F.col(f"Y_{m.name}"), z)
+        out_cols.append(F.iff(W > 0, lo * mult, F.lit(None)).alias(f"ADJ_{m.name}_LCL"))
+        out_cols.append(F.iff(W > 0, hi * mult, F.lit(None)).alias(f"ADJ_{m.name}_UCL"))
+
+    return agg.select(*out_cols).sort("YEAR")
+
+
+def medication_final_table(strata: DataFrame, std_pop: DataFrame, cfg: RateConfig) -> DataFrame:
+    """Annual medication snapshot prevalence plus pooled YEAR=9999 summaries."""
+    ms = medication_measures(cfg)
+    c = medication_crude_rates(strata, cfg)
+    a = medication_adjusted_rates(strata, std_pop, cfg)
+    pooled, pooled_std = _pooled_rate_inputs(strata, std_pop, ms)
+    c = c.union_all(medication_crude_rates(pooled, cfg))
+    a = a.union_all(medication_adjusted_rates(pooled, pooled_std, cfg))
+    return _canonical_final_table(c, a, ms, cfg)
+
+
+def compute_medication_prevalence_snapshot(
+    denom: DataFrame,
+    med: DataFrame,
+    cfg: RateConfig,
+    std_pop: DataFrame | None = None,
+) -> dict[str, DataFrame]:
+    """Compute medication prevalence via the snapshot method into a separate output table."""
+    strata = medication_snapshot_strata(denom, med, cfg).cache_result()
+    if std_pop is None:
+        std_pop = medication_standard_population_from_strata(strata, cfg)
+    std_pop = std_pop.cache_result()
+    return {
+        "final": medication_final_table(strata, std_pop, cfg),
+        "stratum": strata,
+        "std_pop": std_pop,
+        "crude": medication_crude_rates(strata, cfg),
+        "adjusted": medication_adjusted_rates(strata, std_pop, cfg),
+    }
 
 
 # --------------------------------------------------------------------------- #
@@ -1389,17 +2013,20 @@ def compute_rates(
 ) -> dict[str, DataFrame]:
     """
     Returns lazy DataFrames:
-        'final'    -> THE reporting table: all counts + crude and adjusted rates
-                      with CIs for every measure, one row per year
+        'final'    -> canonical long reporting table with one row per
+                      year x outcome x population x metric x estimate type
         'stratum'  -> per (year, age group, sex) counts and person-years
         'std_pop'  -> the standardization weights actually used
-        'crude'    -> crude rates (+ CIs)
-        'adjusted' -> age-sex standardized rates (+ CIs)
+        'crude'    -> internal wide crude rates (+ CIs)
+        'adjusted' -> internal wide age-sex standardized rates (+ CIs)
         'qa'       -> partition invariants (DM / DM-washout / non-DM) plus
                       entry-washout attrition per year
 
     `dm` is the diabetes cohort (person, dx date, censor date). Omit it and the
     DM-denominated measures return null; the ALS measures are unaffected.
+
+    Medication prevalence is intentionally excluded from this carry-forward pipeline.
+    Use compute_medication_prevalence_snapshot(...) for a separate snapshot table.
 
     `std_pop` defaults to the cohort's own per-year structure collapsed per
     cfg.std_mode. Pass standard_population_from_table(...) for an external population,
@@ -1410,7 +2037,7 @@ def compute_rates(
     is restricted consistently.
     """
     pxy = build_person_year(denom, num, cfg, dm=dm)
-    strata = stratum_table(pxy).cache_result()
+    strata = stratum_table(pxy, cfg).cache_result()
 
     if std_pop is None:
         std_pop = standard_population_from_cohort(strata, cfg)
@@ -1442,7 +2069,7 @@ if __name__ == "__main__":
         # falls inside the washout and its cases cannot be shown to be new. 2011
         # prevalence is fine, so the row will look populated -- check PCT_PY_EXCL in
         # the QA frame and drop the lead-in years from the incidence series.
-        start_year=2011,
+        start_year=2005,
         end_year=2025,
         std_mode="YEAR_SPECIFIC",
 
@@ -1457,22 +2084,36 @@ if __name__ == "__main__":
         min_age=18,
         age_cutpoints=(18, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85),
 
+        denom_table="PAT_TABLE1",
+        # denom_table="GLP1RA_CASE_TABLE1",
         denom_person_col="PATID",
         denom_start_col="INDEX_DATE",
         denom_censor_col="CENSOR_DATE",
         denom_birth_col="BIRTH_DATE",
         denom_sex_col="SEX",
+
         num_person_col="PATID",
-        num_dx_col="ALS1DX_DATE",
+        num_dx_col="INDEX_DATE",
         num_censor_col="CENSOR_DATE",
+        
         dm_person_col="PATID",
         dm_dx_col="DM1DX_DATE",
         dm_censor_col="CENSOR_DATE",
+
+        med_person_col="PATID",
+        med_year_col="YEAR",
+        med_denom_col="DENOM",
+        med_type_col="PHE_TYPE",
+
+        # Diabetes type: "T1DM", "T2DM", default is "DM"
+        # dm_type="T1DM",
+        dm_type="T2DM",
     )
 
-    denom = session.table("PAT_TABLE1")
+    denom = session.table(cfg.denom_table)
     num = session.table("ALS_CASE_TABLE1")
     dm = session.table("DM_CASE_TABLE1")
+    med = session.table("DM_RX_LONG")
 
     print(measure_dictionary(cfg))
 
@@ -1485,6 +2126,8 @@ if __name__ == "__main__":
     washout_attrition(denom, num, cfg).show()
 
     results = compute_rates(denom, num, cfg, dm=dm)
+    med_results = compute_medication_prevalence_snapshot(denom, med, cfg)
+    cohort_comp = annual_prevalence_cohort_profile(denom, num, dm, cfg)
 
     # Partition invariants (exact under every setting):
     #   PY  == PY_DM + PY_DM_WASHOUT + PY_NON_DM
@@ -1495,7 +2138,18 @@ if __name__ == "__main__":
     results["qa"].show()
 
     results["final"].show(20)
-    results["final"].write.save_as_table("ALS_DM_ANNUAL_RATES", mode="overwrite")
+    results["final"].write.save_as_table(
+        f"ALS_DM_ANNUAL_RATES_{cfg.dm_type}_{cfg.denom_table}", mode="overwrite"
+    )
+    med_results["final"].show(20)
+    med_results["final"].write.save_as_table(
+        f"ALS_DM_MED_SNAPSHOT_PREVALENCE_{cfg.dm_type}_{cfg.denom_table}", mode="overwrite"
+    )
+
+    cohort_comp.show(50)
+    cohort_comp.write.save_as_table(
+        f"ALS_DM_ANNUAL_PREV_COHORT_PROFILE_{cfg.dm_type}_{cfg.denom_table}", mode="overwrite"
+    )
 
     # ---- sensitivity analyses ----
     # Washout length. The rate should fall as the washout lengthens, then plateau; the

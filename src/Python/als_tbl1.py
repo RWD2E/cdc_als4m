@@ -3,22 +3,61 @@ import os
 from snowflake.snowpark import Session
 from snowflake.snowpark.functions import (
     col,
-    count,
     datediff,
     listagg,
     lit,
     max as s_max,
     min as s_min,
-    regexp_replace,
     row_number,
     when,
     count_distinct,
-    concat
+    concat,
+    round as s_round,
 )
 from snowflake.snowpark.window import Window
 from config import env, conn
 
 logger = logging.getLogger(__name__)
+
+
+def _build_cms_enrollment_rollup(session: Session):
+    """
+    Build one CMS enrollment row per patient with earliest start and latest end.
+    """
+    cms_tbl = session.table("GROUSE_DB.CMS_PCORNET_CDM.LDS_ENROLLMENT")
+    cms_cols = {c.upper() for c in cms_tbl.columns}
+
+    if "PATID" not in cms_cols:
+        raise ValueError("PATID column not found in GROUSE_DB.CMS_PCORNET_CDM.LDS_ENROLLMENT")
+
+    start_col = next(
+        (c for c in ["CMS_ENR_START_DT", "ENR_START_DATE", "ENR_START_DT"] if c in cms_cols),
+        None,
+    )
+    end_col = next(
+        (c for c in ["CMS_ENR_END_DT", "ENR_END_DATE", "ENR_END_DT"] if c in cms_cols),
+        None,
+    )
+
+    if start_col is None or end_col is None:
+        raise ValueError(
+            "Enrollment start/end columns not found in GROUSE_DB.CMS_PCORNET_CDM.LDS_ENROLLMENT"
+        )
+
+    return (
+        cms_tbl
+        .select(
+            col("PATID").alias("PATID"),
+            col(start_col).cast("DATE").alias("CMS_ENR_START_DT"),
+            col(end_col).cast("DATE").alias("CMS_ENR_END_DT"),
+        )
+        .filter(col("PATID").is_not_null())
+        .group_by("PATID")
+        .agg(
+            s_min(col("CMS_ENR_START_DT")).alias("CMS_ENR_START_DT"),
+            s_max(col("CMS_ENR_END_DT")).alias("CMS_ENR_END_DT"),
+        )
+    )
 
 def _build_log_uniq(session, log_tbl):
     phemap = session.create_dataframe(
@@ -33,30 +72,52 @@ def _build_log_uniq(session, log_tbl):
     log_tbl = log_tbl.join(phemap, ["PHE_TYPE"], how="inner")
     return (
         log_tbl
-            .select("PATID", "PHE_TYPE", "PHE_GRP", "CD_DATE", "SITE")
+            .select("PATID", "PHE_TYPE", "PHE_GRP", "CD_DATE", "PROVIDERID", "SITE")
             .drop_duplicates()
     )
 
-def _build_init_dx(log_uniq):
-    w_patid = Window.partition_by(col("PATID"))
-    return (
+def _build_init_dx(log_uniq, prvdr_long):
+    w_patid = Window.partition_by(col("PATID")).order_by(
+        col("CD_DATE"),
+        # Keep patients with missing provider IDs, but prefer a populated provider
+        # when multiple ALS records exist on the same first diagnosis date.
+        when(col("PROVIDERID").is_not_null(), lit(0)).otherwise(lit(1)),
+        col("SITE"),
+        col("PROVIDERID"),
+    )
+
+    als_first_dx = (
         log_uniq
         .filter(col("PHE_TYPE") == "ALS")
         .filter(col("CD_DATE").is_not_null())
-        .with_column(
-            "ALS1DX_DATE",
-            s_min(col("CD_DATE")).over(w_patid),
-        )
-        .filter(col("CD_DATE") == col("ALS1DX_DATE"))
+        .with_column("rn", row_number().over(w_patid))
+        .filter(col("rn") == 1)
         .select(
             col("PATID").alias("PATID"),
-            col("ALS1DX_DATE").alias("ALS1DX_DATE"),
-            col("SITE").alias("INDEX_SRC")
+            col("CD_DATE").alias("ALS1DX_DATE"),
+            col("SITE").alias("INDEX_SRC"),
+            col("PROVIDERID").alias("ALS1DX_PROVIDERID"),
         )
-        .distinct()
     )
 
-def _build_als_pt(log_uniq):
+    return (
+        als_first_dx
+        .join(
+            prvdr_long,
+            (als_first_dx["ALS1DX_PROVIDERID"] == prvdr_long["PROVIDERID"]) &
+            (als_first_dx["INDEX_SRC"] == prvdr_long["SITE"]),
+            "left",
+        )
+        .select(
+            als_first_dx["PATID"].alias("PATID"),
+            als_first_dx["ALS1DX_DATE"].alias("ALS1DX_DATE"),
+            als_first_dx["INDEX_SRC"].alias("INDEX_SRC"),
+            als_first_dx["ALS1DX_PROVIDERID"].alias("ALS1DX_PROVIDERID"),
+            prvdr_long["MDT_DOMAIN"].alias("MDT_DOMAIN"),
+        )
+    )
+
+def _build_als_pt(log_uniq, prvdr_long):
     """
     Build one ALS summary row per patient.
 
@@ -107,7 +168,7 @@ def _build_als_pt(log_uniq):
     )
 
     # Retain only patients identified by _build_init_dx().
-    init_dx = _build_init_dx(log_uniq)
+    init_dx = _build_init_dx(log_uniq, prvdr_long)
     grp_by_type = (
         event_rows
         .join(
@@ -119,6 +180,8 @@ def _build_als_pt(log_uniq):
             event_rows["PATID"].alias("PATID"),
             init_dx["ALS1DX_DATE"].alias("ALS1DX_DATE"),
             init_dx["INDEX_SRC"].alias("INDEX_SRC"),
+            init_dx["ALS1DX_PROVIDERID"].alias("ALS1DX_PROVIDERID"),
+            init_dx["MDT_DOMAIN"].alias("MDT_DOMAIN"),
             event_rows["PHE_TYPE"].alias("PHE_TYPE"),
             event_rows["CD_DATE"].alias("CD_DATE"),
             event_rows["distinct_event_cnt"].alias("distinct_event_cnt"),
@@ -165,6 +228,8 @@ def _build_als_pt(log_uniq):
             col("PATID"),
             col("ALS1DX_DATE"),
             col("INDEX_SRC"),
+            col("ALS1DX_PROVIDERID"),
+            col("MDT_DOMAIN"),
             col("PHE_TYPE").alias("PHE1_TYPE"),
             col("CD_DATE").alias("PHE1_DATE"),
             col("distinct_event_cnt"),
@@ -186,6 +251,8 @@ def _build_als_pt(log_uniq):
             als_elig["PATID"].alias("PATID"),
             als_elig["ALS1DX_DATE"],
             als_elig["INDEX_SRC"],
+            als_elig["ALS1DX_PROVIDERID"],
+            als_elig["MDT_DOMAIN"],
             als_elig["PHE1_TYPE"],
             als_elig["PHE1_DATE"],
             als_elig["distinct_event_cnt"],
@@ -202,10 +269,11 @@ def build_als_case_table(session: Session):
     """
     log_tbl = (
         session.table("ALS_DXRXPX_LONG")
-        .filter(col("SITE") != 'CMS') # remove CMS
+        # .filter(col("SITE") != 'CMS') # remove CMS
     )
+    prvdr_long = session.table("PRVDR_LONG")
     log_uniq = _build_log_uniq(session, log_tbl)
-    als_tbl1 = _build_als_pt(log_uniq)
+    als_tbl1 = _build_als_pt(log_uniq, prvdr_long)
     w_patid = Window.partition_by("PATID").order_by(col("ALS1DX_DATE"))
 
     # ALS case table
@@ -217,6 +285,8 @@ def build_als_case_table(session: Session):
             als_tbl1["PATID"].alias("PATID"),
             als_tbl1["ALS1DX_DATE"],
             als_tbl1["INDEX_SRC"],
+            als_tbl1["ALS1DX_PROVIDERID"],
+            als_tbl1["MDT_DOMAIN"],
             als_tbl1["PHE1_TYPE"],
             als_tbl1["PHE1_DATE"],
             als_tbl1["distinct_event_cnt"],
@@ -242,19 +312,36 @@ def main():
     # attach demographic info
     pat_tbl1 = session.table("PAT_TABLE1")
     als_case_table1 = session.table("ALS_CASE")
+    cms_enr_rollup = _build_cms_enrollment_rollup(session)
     als_w_demo = (
-        als_case_table1.join(
+        als_case_table1
+        .join(
             pat_tbl1, als_case_table1["PATID"] == pat_tbl1["PATID"], 
             "inner"
         )
+        .join(
+            cms_enr_rollup,
+            als_case_table1["PATID"] == cms_enr_rollup["PATID"],
+            "left",
+        )
         .select(
             als_case_table1["PATID"].alias("PATID"),
-            als_case_table1["ALS1DX_DATE"].alias("ALS1DX_DATE"),
+            als_case_table1["ALS1DX_DATE"].alias("INDEX_DATE"),
             als_case_table1["INDEX_SRC"].alias("INDEX_SRC"),
+            als_case_table1["MDT_DOMAIN"].alias("MDT_DOMAIN"),
             als_case_table1["event_str"].alias("ALS_CPHETY"),
-            pat_tbl1["index_date"].alias("ENTRY_DATE"),
-            pat_tbl1["age_at_index"].alias("AGE_AT_ENTRY"),
-            pat_tbl1["agegrp_at_index"].alias("AGEGRP_AT_ENTRY"),
+            pat_tbl1["birth_date"].alias("BIRTH_DATE"),
+            s_round(
+                datediff(
+                    "day",
+                    pat_tbl1["BIRTH_DATE"].cast("DATE"),
+                    als_case_table1["ALS1DX_DATE"].cast("DATE"),
+                )
+                / lit(365.25)
+            ).cast("INTEGER").alias("AGE_AT_INDEX"),
+            pat_tbl1["index_date"].alias("EHR_START_DATE"),
+            pat_tbl1["age_at_index"].alias("AGE_AT_EHR_START"),
+            pat_tbl1["agegrp_at_index"].alias("AGEGRP_AT_EHR_START"),
             pat_tbl1["sex"].alias("SEX"),
             pat_tbl1["race"].alias("RACE"),
             pat_tbl1["hispanic"].alias("HISPANIC"),
@@ -262,7 +349,14 @@ def main():
             pat_tbl1["censor_date"].alias("CENSOR_DATE"),
             pat_tbl1["censor_year"].alias("CENSOR_YEAR"),
             pat_tbl1["death_ind"].alias("DEATH_IND"),
-            pat_tbl1["src"].alias("SRC"),
+            pat_tbl1["src"].alias("CENSOR_SRC"),
+            cms_enr_rollup["CMS_ENR_START_DT"].alias("CMS_ENR_START_DT"),
+            cms_enr_rollup["CMS_ENR_END_DT"].alias("CMS_ENR_END_DT"),
+        )
+        .filter(
+            (als_case_table1["ALS1DX_DATE"] > pat_tbl1["birth_date"]) &
+            (pat_tbl1["age_at_index"] >= 18)
+            # & (als_case_table1["MDT_DOMAIN"] == "N")
         )
     )
     als_w_demo.write.mode("overwrite").save_as_table("ALS_CASE_TABLE1")

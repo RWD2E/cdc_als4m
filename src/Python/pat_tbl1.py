@@ -1,15 +1,21 @@
+"""Patient index and follow-up from ENC_TABLE1, with source demographics/deaths.
+
+Build ENC_TABLE1 first. Index is the earliest non-null ADMIT_DATE across sites;
+ties are resolved by SITE_ID, ENCOUNTERID and ENC_TYPE. Last visit uses discharge
+date when present, otherwise admission date, excluding future encounter ends.
+CENSOR_DATE uses the latest recorded death date across configured sites when
+available, otherwise the last visit. Age comes from the first encounter's AGE_AT_ENC.
+"""
+
 import os
-from snowflake.snowpark import Session
+from snowflake.snowpark import DataFrame, Session
 from snowflake.snowpark.functions import (
     col,
     coalesce,
     current_date,
-    datediff,
     floor,
     lit,
     max as s_max,
-    min as s_min,
-    round as s_round,
     row_number,
     when,
     year,
@@ -36,51 +42,70 @@ def _create_pat_demo_long(session: Session) -> None:
             HISPANIC varchar(20),
             CENSOR_DATE date,
             DEATH_IND integer,
-            SRC varchar(20)
+            SRC varchar(20),
+            DEATH_DATE date,
+            INDEX_SITE varchar(20)
         )
         """
     ).collect()
 
 
-def _build_pat_demo_long_site(session: Session, site: str):
+def _build_pat_enc_summary(session: Session):
+    enc = (
+        session.table("ENC_TABLE1")
+        .filter(col("PATID").is_not_null())
+        .filter(
+            coalesce(col("DISCHARGE_DATE"), col("ADMIT_DATE")).cast("DATE")
+            <= current_date()
+        )
+    )
+    last_visit = enc.group_by("PATID").agg(
+        s_max(coalesce(col("DISCHARGE_DATE"), col("ADMIT_DATE")).cast("DATE"))
+        .alias("LAST_VISIT_DATE")
+    )
+    first_visit = (
+        enc.filter(col("ADMIT_DATE").is_not_null())
+        .with_column(
+            "RN",
+            row_number().over(
+                Window.partition_by("PATID").order_by(
+                    col("ADMIT_DATE"), col("SITE_ID"), col("ENCOUNTERID"), col("ENC_TYPE")
+                )
+            ),
+        )
+        .filter(col("RN") == 1)
+        .select(
+            "PATID",
+            col("ADMIT_DATE").cast("DATE").alias("INDEX_DATE"),
+            col("ENC_TYPE").alias("INDEX_ENC_TYPE"),
+            col("AGE_AT_ENC").alias("AGE_AT_INDEX"),
+            col("SITE_ID").alias("INDEX_SITE"),
+        )
+    )
+    return first_visit.join(last_visit, on="PATID", how="inner")
+
+
+def _build_pat_demo_long_site(
+    session: Session, site: str, enc_summary: DataFrame | None = None,
+):
     site_cdm = _site_cdm(site)
     demo = session.table(f"GROUSE_DB.{site_cdm}.LDS_DEMOGRAPHIC")
-    enc = session.table(f"GROUSE_DB.{site_cdm}.LDS_ENCOUNTER")
+    enc = _build_pat_enc_summary(session) if enc_summary is None else enc_summary
     dth = session.table(f"GROUSE_DB.{site_cdm}.LDS_DEATH")
-
-    censor_date = s_max(
-        coalesce(enc["DISCHARGE_DATE"].cast("DATE"), enc["ADMIT_DATE"].cast("DATE"),)
-    ).over(Window.partition_by(enc["PATID"]))
-
-    death_date = s_max(dth["DEATH_DATE"]).over(Window.partition_by(enc["PATID"]))
+    dth = dth.group_by("PATID").agg(
+        s_max(col("DEATH_DATE").cast("DATE")).alias("DEATH_DATE")
+    )
 
     cte = (
         demo.join(enc, demo["PATID"] == enc["PATID"])
         .join(dth, enc["PATID"] == dth["PATID"], "left")
         .filter(demo["PATID"].is_not_null())
-        .filter(
-            coalesce(
-                enc["DISCHARGE_DATE"].cast("DATE"),
-                enc["ADMIT_DATE"].cast("DATE"),
-            )
-            <= current_date()
-        )
-        .filter(
-            ~enc["ENC_TYPE"].isin(["NI","UN","OT"])
-        )
         .select(
             enc["PATID"].alias("PATID"),
             demo["BIRTH_DATE"].alias("BIRTH_DATE"),
-            enc["ADMIT_DATE"].cast("DATE").alias("INDEX_DATE"),
-            enc["ENC_TYPE"].alias("INDEX_ENC_TYPE"),
-            s_round(
-                datediff(
-                    "day",
-                    demo["BIRTH_DATE"].cast("DATE"),
-                    enc["ADMIT_DATE"].cast("DATE"),
-                )
-                / lit(365.25)
-            ).cast("INTEGER").alias("AGE_AT_INDEX"),
+            enc["INDEX_DATE"].alias("INDEX_DATE"),
+            enc["INDEX_ENC_TYPE"].alias("INDEX_ENC_TYPE"),
+            enc["AGE_AT_INDEX"].alias("AGE_AT_INDEX"),
             when(demo["SEX"].isin(["NI", "UN", "OT"]), lit(None)).otherwise(
                 demo["SEX"]
             ).alias("SEX"),
@@ -91,8 +116,9 @@ def _build_pat_demo_long_site(session: Session, site: str):
                 demo["HISPANIC"]
             ).alias("HISPANIC"),
             lit(site).alias("SRC"),
-            censor_date.alias("CENSOR_DATE"),
-            death_date.alias("DEATH_DATE"),
+            enc["LAST_VISIT_DATE"].alias("CENSOR_DATE"),
+            dth["DEATH_DATE"].alias("DEATH_DATE"),
+            enc["INDEX_SITE"].alias("INDEX_SITE"),
         )
     )
 
@@ -106,33 +132,53 @@ def _build_pat_demo_long_site(session: Session, site: str):
             col("SEX"),
             col("RACE"),
             col("HISPANIC"),
-            coalesce(col("DEATH_DATE"), col("CENSOR_DATE")).alias("CENSOR_DATE"),
+            col("CENSOR_DATE"),
             when(col("DEATH_DATE").is_not_null(), lit(1)).otherwise(lit(0)).alias("DEATH_IND"),
-            col("SRC")
+            col("SRC"),
+            col("DEATH_DATE"),
+            col("INDEX_SITE"),
         )
         .distinct()
     )
 
 
 def build_pat_demo_long(session: Session, sites: list[str]):
+    if not sites:
+        raise ValueError("At least one demographic/death source site is required")
+    enc_summary = _build_pat_enc_summary(session).cache_result()
     _create_pat_demo_long(session)
 
-    for site in sites:
-        _build_pat_demo_long_site(session, site).write.mode("append").save_as_table(
+    for site in dict.fromkeys(sites):
+        _build_pat_demo_long_site(session, site, enc_summary).write.mode("append").save_as_table(
             "PAT_DEMO_LONG"
         )
-        print(f"✅ PAT_DEMO_LONG data for site {site} appended.")
+        print(f"PAT_DEMO_LONG data for site {site} appended.")
 
 
 def build_pat_table1(session: Session):
-    demo = session.table("PAT_DEMO_LONG")
+    demo = (
+        session.table("PAT_DEMO_LONG")
+        .with_column(
+            "ALL_DEATH_DATE", s_max("DEATH_DATE").over(Window.partition_by("PATID"))
+        )
+        .with_column(
+            "CENSOR_DATE", coalesce(col("ALL_DEATH_DATE"), col("CENSOR_DATE"))
+        )
+        .with_column(
+            "DEATH_IND", when(col("ALL_DEATH_DATE").is_not_null(), lit(1)).otherwise(lit(0))
+        )
+    )
 
     cte_ord = (
         demo.select("*")
         .with_column(
             "RN",
             row_number().over(
-                Window.partition_by("PATID").order_by(col("INDEX_DATE"), col("DEATH_IND").desc())
+                Window.partition_by("PATID").order_by(
+                    col("INDEX_DATE"),
+                    when(col("SRC") == col("INDEX_SITE"), lit(0)).otherwise(lit(1)),
+                    col("SRC"), col("BIRTH_DATE"), col("SEX"), col("RACE"), col("HISPANIC"),
+                )
             ),
         )
     )
