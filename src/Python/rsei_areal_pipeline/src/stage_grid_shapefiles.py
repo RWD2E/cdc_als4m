@@ -6,7 +6,7 @@ Stage RSEI 810m Grid Shapefiles into Snowflake
 Loads the EPA RSEI 810-meter CONUS grid shapefiles (BOTTOM and TOP halves) into
 Snowflake as a GEOGRAPHY table in WGS84 (EPSG:4326), producing:
 
-    EPA_DB.EPA_RSEI.GRID_SHAPE_810M_V1
+    <Database>.<schema>.GRID_SHAPE_810M_V1
 
 This is STEP 1 of the RSEI areal interpolation pipeline and must be run before
 rsei_tobler_processor.py. It replaces the grid table that downstream steps join
@@ -30,7 +30,7 @@ import geopandas as gpd
 import snowflake.connector
 from snowflake.connector.pandas_tools import write_pandas
 
-TARGET_SCHEMA = "EPA_RSEI"
+TARGET_SCHEMA = ""
 TARGET_TABLE = "GRID_SHAPE_810M_V1"
 WGS84 = "EPSG:4326"  # required for Snowflake GEOGRAPHY
 
