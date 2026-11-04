@@ -18,15 +18,14 @@ projected to **EPSG:3857 (Web Mercator)** first so area ratios are consistent.
 
 ---
 
-## Run order
-
 The scripts are **dependent** and must run in this order:
 
 | Step | File | Purpose | Produces |
 |------|------|---------|----------|
-| 1 | `src/stage_grid_shapefiles.py` | Loads 810 m grid shapefiles into Snowflake with correct WGS84 geometry | `EPA_DB.EPA_RSEI.GRID_SHAPE_810M_V1` |
-| 2 | `src/rsei_tobler_processor.py` | Area-weighted interpolation, grid → block group | `EPA_DB.EPA_RSEI.RSEI_BG_AREAL_TOBLER_<year>` |
-| 3 | `sql/als_exposure_windows.sql` | Joins interpolated exposures to patient address-years (ALS4M) | ALS exposure tables |
+| 1 | `src/stage_grid_shapefiles.py` | Loads 810 m grid shapefiles into Snowflake with correct WGS84 geometry | `<Database>.<schema>.GRID_SHAPE_810M_V1` |
+| 2 | `src/rsei_tobler_processor.py` | Area-weighted interpolation, grid → block group | `<Database>.<schema>.RSEI_BG_AREAL_TOBLER_<year>` |
+
+> The downstream ALS exposure join (patient address-years → RSEI) is maintained separately and not included in this public repo.
 
 > **Step 1 builds the corrected grid table Step 2 depends on.** Do not point Step 2 at an
 > older grid table - earlier grid tables had a coordinate-projection problem that placed
