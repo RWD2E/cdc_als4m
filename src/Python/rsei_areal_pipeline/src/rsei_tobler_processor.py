@@ -17,12 +17,12 @@ DESCRIPTION:
       - Large states (> 1,000 block groups):  process county-by-county, chemical-batched
 
 INPUT DATA:
-    - RSEI grid values:   EPA_DB.EPA_RSEI.RSEI_MICRO2022_<YEAR>
-    - Census block groups: EPA_DB.CENSUS_SHAPEFILE.BG_SHAPE_<YEAR>
-    - Grid geometries:    EPA_DB.EPA_RSEI.GRID_SHAPE_810M_V1   (built by Step 1)
+    - RSEI grid values:   <Database>.<schema>.RSEI_MICRO2022_<YEAR>
+    - Census block groups: <Database>.CENSUS_SHAPEFILE.BG_SHAPE_<YEAR>
+    - Grid geometries:   <Database>.<schema>.GRID_SHAPE_810M_V1   (built by Step 1)
 
 OUTPUT DATA:
-    - EPA_DB.EPA_RSEI.RSEI_BG_AREAL_TOBLER_<YEAR>
+    - <Database>.<schema>.RSEI_BG_AREAL_TOBLER_<YEAR>
     - Variables: CONC, TOXCONC, SCORE, CCONC, NCCONC
 
 CONFIGURATION:
