@@ -29,7 +29,7 @@ The scripts are **dependent** and must run in this order:
 | 3 | `sql/als_exposure_windows.sql` | Joins interpolated exposures to patient address-years (ALS4M) | ALS exposure tables |
 
 > **Step 1 builds the corrected grid table Step 2 depends on.** Do not point Step 2 at an
-> older grid table — earlier grid tables had a coordinate-projection problem that placed
+> older grid table - earlier grid tables had a coordinate-projection problem that placed
 > cells outside the U.S. `GRID_SHAPE_810M_V1` is the validated one.
 
 ---
@@ -37,11 +37,11 @@ The scripts are **dependent** and must run in this order:
 ## Inputs & outputs
 
 **Inputs**
-- RSEI microdata: `EPA_DB.EPA_RSEI.RSEI_MICRO2022_<year>`
-- Census block groups: `EPA_DB.CENSUS_SHAPEFILE.BG_SHAPE_<year>`
-- Grid geometries: `EPA_DB.EPA_RSEI.GRID_SHAPE_810M_V1` (from Step 1)
+- RSEI microdata: `<Database>.<schema>.RSEI_MICRO2022_<year>`
+- Census block groups: `<Database>.CENSUS_SHAPEFILE.BG_SHAPE_<year>`
+- Grid geometries: `<Database>.<schema>.GRID_SHAPE_810M_V1` (from Step 1)
 
-**Output** — `RSEI_BG_AREAL_TOBLER_<year>`:
+**Output** - `RSEI_BG_AREAL_TOBLER_<year>`:
 
 | Column | Description |
 |--------|-------------|
@@ -90,16 +90,16 @@ never be committed.** See `config.yaml.example` for the required structure.
 ## Usage
 
 ```bash
-# Step 1 — stage the grid (run once; rebuilds GRID_SHAPE_810M_V1)
+# Step 1 - stage the grid (run once; rebuilds GRID_SHAPE_810M_V1)
 python src/stage_grid_shapefiles.py
 
-# Step 2 — run the interpolation
+# Step 2 - run the interpolation
 python src/rsei_tobler_processor.py
 ```
 
 Inside `rsei_tobler_processor.py`, `main()` exposes two options:
-- `process_all_states()` — full U.S. run
-- `process_specific_states([...])` — a subset of state FIPS codes, useful for testing
+- `process_all_states()` - full U.S. run
+- `process_specific_states([...])` - a subset of state FIPS codes, useful for testing
 
 Step 3 is run as SQL in Snowflake.
 
