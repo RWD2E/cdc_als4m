@@ -1,0 +1,10 @@
+# Python 3.11
+# RSEI areal interpolation pipeline dependencies
+
+snowflake-connector-python[pandas]>=3.12,<4.0
+pyarrow>=14.0,<19.0        # Snowflake connector requires pyarrow<19; newer versions warn/fail
+pandas>=2.0,<3.0
+geopandas>=0.14,<1.1
+shapely>=2.0,<3.0
+tobler>=0.11,<1.0
+PyYAML>=6.0,<7.0

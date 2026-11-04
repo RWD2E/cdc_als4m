@@ -1,0 +1,124 @@
+# RSEI Spatial Processing Configuration
+# Update with your actual Snowflake credentials and preferences
+
+snowflake:
+  account: 'xxxxxx.us-east-2.aws'  
+  user: 'xxxx@xxxx.edu'
+  password: 'xxxx'
+  warehouse: ''         
+  database: ''
+  schema: ''
+  role: ''                   
+
+processing:
+  batch_size: 50000                   # Reduce for memory constraints, increase for speed
+  max_workers: 4                      # Parallel processing workers
+  memory_limit_gb: 8                  # Memory management
+  commit_interval: 500000             # Commit every N records
+  chemical_chunk_size: 50  # Adjust based on performance
+  spatial_chunk_size: 1000   # Census blocks per spatial operation
+  years: [2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022]
+
+spatial:
+  source_crs: 'EPSG:4326'            # WGS84 - standard for lat/lon
+  target_crs: 'EPSG:3857'            # Web Mercator for area calculations
+  simplify_tolerance: 0.001          # Geometry simplification (degrees)
+  buffer_distance_meters: 1000       # Buffer for spatial queries
+
+tables:
+  # RSEI Grid Table
+  grid_shape_table: 'GRID_SHAPE_810M'
+  
+  # Census Block Group Tables (add/remove years as needed)
+  census_tables:
+    - 'BG_SHAPE_2011'
+    - 'BG_SHAPE_2012'
+    - 'BG_SHAPE_2013'
+    - 'BG_SHAPE_2014'
+    - 'BG_SHAPE_2015'
+    - 'BG_SHAPE_2016'
+    - 'BG_SHAPE_2017'
+    - 'BG_SHAPE_2018'
+    - 'BG_SHAPE_2019' 
+    - 'BG_SHAPE_2020'
+    - 'BG_SHAPE_2021'
+    - 'BG_SHAPE_2022'
+  
+  # RSEI Micro Data Tables (1B+ records each) - 2011 to 2022
+  rsei_micro_tables:
+    - 'RSEI_MICRO2022_2011'
+    - 'RSEI_MICRO2022_2012'
+    - 'RSEI_MICRO2022_2013'
+    - 'RSEI_MICRO2022_2014'
+    - 'RSEI_MICRO2022_2015'
+    - 'RSEI_MICRO2022_2016'
+    - 'RSEI_MICRO2022_2017'
+    - 'RSEI_MICRO2022_2018'
+    - 'RSEI_MICRO2022_2019'
+    - 'RSEI_MICRO2022_2020'
+    - 'RSEI_MICRO2022_2021'
+    - 'RSEI_MICRO2022_2022'
+
+output:
+  # All tables created in existing EPA_RSEI schema
+  target_schema: 'EPA_RSEI'
+  
+  # Processed spatial tables
+  grid_processed_table: 'GRID_GEOMETRIES_PROCESSED'
+  census_processed_table: 'CENSUS_BLOCKS_PROCESSED'
+  spatial_index_table: 'SPATIAL_INDEXES'
+  
+  # Final Feature Tables (created by interpolators)
+  rsei_bg_point_table: 'RSEI_BG_POINT'
+  rsei_bg_areal_table: 'RSEI_BG_AREAL'
+
+# Geographic filtering (optional - set to null to process all data)
+geographic_filter:
+  # Uncomment and modify to limit processing to specific areas
+  # states: ['29', '20']  # Missouri and Kansas only
+  # bbox:  # Bounding box [min_lon, min_lat, max_lon, max_lat]
+  #   - -95.0   # min longitude
+  #   - 38.0    # min latitude  
+  #   - -93.0   # max longitude
+  #   - 40.0    # max latitude
+  states: null
+  bbox: null
+
+# Performance tuning for large datasets
+performance:
+  use_clustering: true               # Enable clustering on large tables
+  create_materialzed_views: true     # Create materialized views for complex queries
+  optimize_storage: true             # Compress and optimize storage
+  
+# Logging configuration
+logging:
+  level: 'INFO'                      # DEBUG, INFO, WARNING, ERROR
+  log_file: 'spatial_preprocessor.log'
+  max_log_size_mb: 100
+  backup_count: 5
+
+# Quality control thresholds
+quality_control:
+  min_geometry_area: 0.000001       # Minimum polygon area (sq degrees)
+  max_geometry_area: 10.0           # Maximum polygon area (sq degrees) 
+  geometry_validity_check: true     # Validate geometry before processing
+  skip_invalid_geometries: true     # Skip invalid geometries instead of failing
+
+# Advanced options for 1B+ record processing
+advanced:
+  # Partitioning strategy for large tables
+  partition_by: 'YEAR'              # Partition large tables by year
+  clustering_keys: ['YEAR', 'STATEFP', 'COUNTYFP']  # Clustering for performance
+  
+  # Memory management for massive datasets
+  streaming_mode: true              # Process data in streaming mode
+  temp_storage_gb: 50               # Temporary storage for intermediate results
+  
+  # Parallel processing optimization
+  parallel_by_state: true           # Process each state in parallel
+  max_concurrent_states: 4          # Maximum states to process simultaneously
+
+paths:
+  shapefile_directory: "C:\\Users\\hit8zp.UMHS-USERS\\OneDrive - University of Missouri\\Desktop\\RSEI\\SHAP"
+  bottom_shapefile: "poly_gc14_conus_810m_bottom.shp"
+  top_shapefile: "poly_gc14_conus_810m_top.shp"
