@@ -119,6 +119,6 @@ advanced:
   max_concurrent_states: 4          # Maximum states to process simultaneously
 
 paths:
-  shapefile_directory: "C:\\Users\\hit8zp.UMHS-USERS\\OneDrive - University of Missouri\\Desktop\\RSEI\\SHAP"
+  shapefile_directory: "path\\Desktop\\RSEI\\SHAP"
   bottom_shapefile: "poly_gc14_conus_810m_bottom.shp"
   top_shapefile: "poly_gc14_conus_810m_top.shp"
