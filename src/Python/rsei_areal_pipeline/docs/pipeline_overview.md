@@ -1,4 +1,4 @@
-# RSEI Areal Interpolation — Pipeline Overview
+# RSEI Areal Interpolation - Pipeline Overview
 
 This document explains how the pipeline works, why key design choices were made,
 and what to watch out for when maintaining or extending it. For quick setup and
@@ -11,8 +11,8 @@ run commands, see the top-level `README.md`.
 EPA's RSEI model reports environmental risk on a fixed **810-meter national grid**.
 Most downstream analyses (including ALS4M) need those values at the **Census Block
 Group (BG)** level instead. This pipeline redistributes each grid cell's pollution
-values onto the block groups it overlaps, weighted by the area of overlap — i.e.
-area-weighted *areal interpolation* — using the [`tobler`](https://pysal.org/tobler/)
+values onto the block groups it overlaps, weighted by the area of overlap - i.e.
+area-weighted *areal interpolation*- using the [`tobler`](https://pysal.org/tobler/)
 library.
 
 Output: one row per (block group × chemical × year) with area-weighted
@@ -21,31 +21,30 @@ Output: one row per (block group × chemical × year) with area-weighted
 ---
 
 ## 2. Data flow
+
+```
 810m grid shapefiles (BOTTOM + TOP, CONUS)
-│ stage_grid_shapefiles.py (Step 1)
-▼
-EPA_DB.EPA_RSEI.GRID_SHAPE_810M_V1 ← grid geometry, WGS84 GEOGRAPHY
-│
-│ joined on CELLX=X, CELLY=Y to
-│ EPA_DB.EPA_RSEI.RSEI_MICRO2022_<year> ← grid-cell pollution values
-│
-│ rsei_tobler_processor.py (Step 2)
-│ + EPA_DB.CENSUS_SHAPEFILE.BG_SHAPE_<year> ← target polygons
-▼
-EPA_DB.EPA_RSEI.RSEI_BG_AREAL_TOBLER_<year> ← block-group pollution values
-│
-│ als_exposure_windows.sql (Step 3)
-│ + patient address history (GROUSE CDM)
-▼
-GROUSE_ANALYTICS_DB.ALS_RSEI.PATIENT_ADDRESS_YEAR + exposure joins
+        |  stage_grid_shapefiles.py   (Step 1)
+        v
+<Database>.<schema>.GRID_SHAPE_810M_V1        <- grid geometry, WGS84 GEOGRAPHY
+        |
+        |   joined on CELLX=X, CELLY=Y to
+        |   <Database>.<schema>.RSEI_MICRO2022_<year>   <- grid-cell pollution values
+        |
+        |  rsei_tobler_processor.py       (Step 2)
+        |   + <Database>.CENSUS_SHAPEFILE.BG_SHAPE_<year>   <- target polygons
+        v
+<Database>.<schema>.RSEI_BG_AREAL_TOBLER_<year>   <- block-group pollution values
+```
 
-
+The downstream ALS exposure join (patient address-years → RSEI) is maintained
+separately and not included in this public repo.
 
 ---
 
 ## 3. The three steps
 
-### Step 1 — `src/stage_grid_shapefiles.py`
+### Step 1 -`src/stage_grid_shapefiles.py`
 
 Loads the two 810 m CONUS grid shapefiles (a BOTTOM and a TOP half) into Snowflake
 as a single GEOGRAPHY table, `GRID_SHAPE_810M_V1`.
@@ -58,7 +57,7 @@ as a single GEOGRAPHY table, `GRID_SHAPE_810M_V1`.
 - **Rebuilds the table on each run** (DROP + CREATE). Run it **once**; there is no
   reason to re-run it unless the source grid changes.
 
-### Step 2 — `src/rsei_tobler_processor.py`
+### Step 2 - `src/rsei_tobler_processor.py`
 
 The core interpolation. For the configured year:
 
@@ -78,12 +77,12 @@ Output schema:
 | `YEAR` | processed year |
 | `STATE_FIPS` | state of the block group |
 
-### Step 3 — `sql/als_exposure_windows.sql`
+### Step 3 - `sql/als_exposure_windows.sql`
 
 Downstream consumer (ALS4M). Builds patient address-year records for the ALS and
 control cohorts, flags short/medium/long-term exposure windows relative to each
 patient's index date, and joins them to the Step 2 output across 2011–2022.
-This is a **reference SQL script**, not an automated job — the trailing SELECTs
+This is a **reference SQL script**, not an automated job - the trailing SELECTs
 are spot-checks with `LIMIT`s.
 
 ---
@@ -94,11 +93,11 @@ are spot-checks with `LIMIT`s.
 
 Three CRSs appear, deliberately:
 
-- **WGS84 (EPSG:4326)** — how grid geometry is *stored* in Snowflake (GEOGRAPHY
+- **WGS84 (EPSG:4326)** - how grid geometry is *stored* in Snowflake (GEOGRAPHY
   requirement).
-- **NAD83 (EPSG:4269)** — the native CRS of the Census block-group geometries;
+- **NAD83 (EPSG:4269)** - the native CRS of the Census block-group geometries;
   set explicitly on download so the data is labeled correctly before reprojection.
-- **Web Mercator (EPSG:3857)** — both layers are reprojected to this **before
+- **Web Mercator (EPSG:3857)** - both layers are reprojected to this **before
   interpolation**. Area-weighting needs a projected (not geographic) CRS so that
   overlap *areas* are meaningful; doing area math directly in lat/lon degrees is
   wrong.
@@ -110,7 +109,7 @@ Three CRSs appear, deliberately:
 
 ### The `GRID_SHAPE_810M_V1` table
 
-Step 2 joins against `GRID_SHAPE_810M_V1` specifically — **not** any earlier
+Step 2 joins against `GRID_SHAPE_810M_V1` specifically - **not** any earlier
 "processed grid" table.
 
 > **History / caution:** a previous grid-processing approach wrote geometries that
@@ -118,7 +117,7 @@ Step 2 joins against `GRID_SHAPE_810M_V1` specifically — **not** any earlier
 > the geometry was converted to text). `GRID_SHAPE_810M_V1`, produced by Step 1
 > with explicit WGS84 handling, is the validated source. If you ever see
 > interpolated points landing in the wrong location, re-verify the grid table
-> before anything else — check that `CLAT`/`CLONG` fall within CONUS and that
+> before anything else - check that `CLAT`/`CLONG` fall within CONUS and that
 > `ST_ASWKT(SHAPE)` agrees with them.
 
 ### Adaptive state/county processing
@@ -192,8 +191,8 @@ first** (`process_specific_states(['56','50','02'])`) before committing to a ful
 
 | Path | Role |
 |------|------|
-| `src/stage_grid_shapefiles.py` | Step 1 — build `GRID_SHAPE_810M_V1` |
-| `src/rsei_tobler_processor.py` | Step 2 — areal interpolation |
-| `sql/als_exposure_windows.sql` | Step 3 — ALS exposure joins |
+| `src/stage_grid_shapefiles.py` | Step 1 - build `GRID_SHAPE_810M_V1` |
+| `src/rsei_tobler_processor.py` | Step 2 - areal interpolation |
+| `sql/als_exposure_windows.sql` | Step 3 - ALS exposure joins |
 | `config.yaml.example` | credential/path template (copy to `config.yaml`) |
 | `requirements.txt` | Python dependencies |
