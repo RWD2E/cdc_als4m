@@ -19,9 +19,23 @@ sf_conn <- DBI::dbConnect(
   pwd = ""
 )
 
+#==== Collect CCW-ready dataset ====
+dat<-tbl(sf_conn,sql("select * from ALS_MDT_CCW_60_180")) %>% collect()
+saveRDS(dat,file="./data/als_mdt_ccw_60_180.rda")
+
+
+
 #==== Collect summaries ====
 dat<-tbl(sf_conn,sql("select * from ALS_DM_ANNUAL_PREV_COHORT_PROFILE_T2DM")) %>% collect()
 saveRDS(dat,file="./data/t2dmals_demo_profile.rda")
+
+dat<-tbl(sf_conn,sql("select * from ALS_DM_ANNUAL_RATES_T2DM_PAT_TABLE1")) %>% collect()
+saveRDS(dat,file="./data/t2dmals_annual.rda")
+
+dat<-tbl(sf_conn,sql("select * from ALS_DM_MED_SNAPSHOT_PREVALENCE_T2DM_PAT_TABLE1")) %>% collect()
+saveRDS(dat,file="./data/t2dmals_med_annual.rda")
+
+
 
 
 #==== Collect summaries ====
@@ -31,8 +45,7 @@ saveRDS(dat,file="./data/dmals_annual.rda")
 dat<-tbl(sf_conn,sql("select * from ALS_DM_ANNUAL_RATES_T1DM")) %>% collect()
 saveRDS(dat,file="./data/t1dmals_annual.rda")
 
-dat<-tbl(sf_conn,sql("select * from ALS_DM_ANNUAL_RATES_T2DM")) %>% collect()
-saveRDS(dat,file="./data/t2dmals_annual.rda")
+
 
 dat<-tbl(sf_conn,sql("select * from ALS_DM_MED_SNAPSHOT_PREVALENCE_ALL")) %>% collect()
 saveRDS(dat,file="./data/dmals_med_annual.rda")
@@ -40,8 +53,7 @@ saveRDS(dat,file="./data/dmals_med_annual.rda")
 dat<-tbl(sf_conn,sql("select * from ALS_DM_MED_SNAPSHOT_PREVALENCE_T1DM")) %>% collect()
 saveRDS(dat,file="./data/t1dmals_med_annual.rda")
 
-dat<-tbl(sf_conn,sql("select * from ALS_DM_MED_SNAPSHOT_PREVALENCE_T2DM")) %>% collect()
-saveRDS(dat,file="./data/t2dmals_med_annual.rda")
+
 
 #==== collect Table 1 ====
 dat<-tbl(sf_conn,sql("select * from als_base")) %>% collect()
