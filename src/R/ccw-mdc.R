@@ -2,7 +2,7 @@
 # ALS MDT CLONE-CENSOR-WEIGHT ANALYSIS  (tidyverse edition)
 #
 # Input:
-#   GROUSE_ANALYTICS_DB.SX_ALS_GPC.ALS_MDT_CCW_90D
+#   GROUSE_ANALYTICS_DB.SX_ALS_GPC.ALS_MDT_CCW_<interval>_<grace>
 #
 # Strategies (branching lattice, not a single cumulative ladder):
 #   A = Neurology-centered care
@@ -57,7 +57,7 @@ pacman::p_load(
 # Input
 # ------------------------------------------------------------------------------
 
-ccw <- readRDS("./data/als_mdt_ccw.rda")
+ccw <- readRDS("./data/als_mdt_ccw_60_180.rda")
 
 
 # ------------------------------------------------------------------------------
@@ -299,9 +299,14 @@ phe_prior_vars <- str_subset(names(grace_risk), "^IPCW_.*_PRIOR$")
 phe_count_vars <- str_subset(names(grace_risk), "^IPCW_.*_PRIOR_N$")
 
 # Most-recent prior lab values
-lab_vars <- str_subset(
-  names(grace_risk),
-  "^IPCW_(BMI|CBC|METABOLIC)_.*_PRIOR_LAST$"
+# lab_vars <- str_subset(
+#   names(grace_risk),
+#   "^IPCW_(BMI|CBC|METABOLIC)_.*_PRIOR_LAST$"
+# )
+
+lab_vars<-c(
+  "IPCW_CBC_ANY_PRIOR",
+  "IPCW_METABOLIC_ANY_PRIOR"
 )
 
 # MDT history

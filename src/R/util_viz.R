@@ -1,952 +1,173 @@
+# =============================================================================
+# Shared publication style
+# =============================================================================
+
 pacman::p_load(
   tidyverse,
   scales
 )
 
-plot_als_dm_annual_rates <- function(
-    data,
-    width = 11,
-    height = 7,
-    dpi = 400,
-    als_rate_per = 100000,
-    estimates = c("adjusted", "crude"),
-    ci_display = c("errorbar", "ribbon", "none"),
-    count_bar_alpha = 0.20,
-    count_bar_width = 0.72
-) {
-  # ===========================================================================
-  # 1. Validate arguments
-  # ===========================================================================
+PUB_PALETTE <- c(
+  "#0072B2",  # blue
+  "#D55E00",  # vermillion
+  "#009E73",  # bluish green
+  "#CC79A7",  # reddish purple
+  "#E69F00",  # orange
+  "#56B4E9",  # sky blue
+  "#F0E442",  # yellow
+  "#000000"   # black
+)
+
+ESTIMATE_LINETYPES <- c(
+  "Adjusted" = "solid",
+  "Crude"    = "22"
+)
+
+make_pub_palette <- function(x) {
+  x <- unique(as.character(x))
   
-  if (!is.data.frame(data)) {
-    stop("`data` must be a data.frame or tibble.")
-  }
-  
-  estimates <- unique(tolower(estimates))
-  
-  valid_estimates <- c("adjusted", "crude")
-  
-  invalid_estimates <- setdiff(
-    estimates,
-    valid_estimates
-  )
-  
-  if (length(invalid_estimates) > 0) {
-    stop(
-      "`estimates` may contain only: ",
-      paste(valid_estimates, collapse = ", ")
-    )
-  }
-  
-  if (length(estimates) == 0) {
-    stop(
-      "`estimates` must include at least one of ",
-      "'adjusted' or 'crude'."
-    )
-  }
-  
-  ci_display <- match.arg(ci_display)
-  
-  if (!is.numeric(als_rate_per) ||
-      length(als_rate_per) != 1 ||
-      is.na(als_rate_per) ||
-      als_rate_per <= 0) {
-    stop("`als_rate_per` must be one positive number.")
-  }
-  
-  if (!is.numeric(count_bar_alpha) ||
-      length(count_bar_alpha) != 1 ||
-      count_bar_alpha < 0 ||
-      count_bar_alpha > 1) {
-    stop("`count_bar_alpha` must be between 0 and 1.")
-  }
-  
-  # ===========================================================================
-  # 2. Define required columns
-  # ===========================================================================
-  
-  general_columns <- c(
-    "YEAR",
-    "N_OBSERVED"
-  )
-  
-  dm_adjusted_columns <- c(
-    "ADJ_DM_PREVALENCE_PCT",
-    "ADJ_DM_PREVALENCE_PCT_LCL",
-    "ADJ_DM_PREVALENCE_PCT_UCL",
-    "ADJ_DM_PREVALENCE_IN_ALS_PCT",
-    "ADJ_DM_PREVALENCE_IN_ALS_PCT_LCL",
-    "ADJ_DM_PREVALENCE_IN_ALS_PCT_UCL"
-  )
-  
-  dm_crude_columns <- c(
-    "CRUDE_DM_PREVALENCE_PCT",
-    "CRUDE_DM_PREVALENCE_PCT_LCL",
-    "CRUDE_DM_PREVALENCE_PCT_UCL",
-    "CRUDE_DM_PREVALENCE_IN_ALS_PCT",
-    "CRUDE_DM_PREVALENCE_IN_ALS_PCT_LCL",
-    "CRUDE_DM_PREVALENCE_IN_ALS_PCT_UCL"
-  )
-  
-  als_adjusted_columns <- c(
-    "ADJ_ALS_PREVALENCE",
-    "ADJ_ALS_PREVALENCE_LCL",
-    "ADJ_ALS_PREVALENCE_UCL",
-    "ADJ_ALS_PREVALENCE_IN_DM",
-    "ADJ_ALS_PREVALENCE_IN_DM_LCL",
-    "ADJ_ALS_PREVALENCE_IN_DM_UCL",
-    "ADJ_ALS_INCIDENCE_IN_DM",
-    "ADJ_ALS_INCIDENCE_IN_DM_LCL",
-    "ADJ_ALS_INCIDENCE_IN_DM_UCL"
-  )
-  
-  als_crude_columns <- c(
-    "CRUDE_ALS_PREVALENCE",
-    "CRUDE_ALS_PREVALENCE_LCL",
-    "CRUDE_ALS_PREVALENCE_UCL",
-    "CRUDE_ALS_PREVALENCE_IN_DM",
-    "CRUDE_ALS_PREVALENCE_IN_DM_LCL",
-    "CRUDE_ALS_PREVALENCE_IN_DM_UCL",
-    "CRUDE_ALS_INCIDENCE_IN_DM",
-    "CRUDE_ALS_INCIDENCE_IN_DM_LCL",
-    "CRUDE_ALS_INCIDENCE_IN_DM_UCL"
-  )
-  
-  required_columns <- general_columns
-  
-  if ("adjusted" %in% estimates) {
-    required_columns <- c(
-      required_columns,
-      dm_adjusted_columns,
-      als_adjusted_columns
-    )
-  }
-  
-  if ("crude" %in% estimates) {
-    required_columns <- c(
-      required_columns,
-      dm_crude_columns,
-      als_crude_columns
-    )
-  }
-  
-  missing_columns <- setdiff(
-    required_columns,
-    names(data)
-  )
-  
-  if (length(missing_columns) > 0) {
-    stop(
-      "The following required columns are missing: ",
-      paste(missing_columns, collapse = ", ")
-    )
-  }
-  
-  # ===========================================================================
-  # 3. Prepare annual denominator data
-  # ===========================================================================
-  
-  annual_data <- data |>
-    dplyr::mutate(
-      YEAR = as.integer(.data$YEAR),
-      N_OBSERVED = as.numeric(.data$N_OBSERVED)
-    ) |>
-    dplyr::filter(!is.na(.data$YEAR)) |>
-    dplyr::arrange(.data$YEAR)
-  
-  if (nrow(annual_data) == 0) {
-    stop("No nonmissing annual observations are available.")
-  }
-  
-  if (anyDuplicated(annual_data$YEAR)) {
-    stop(
-      "The input contains multiple rows for the same year. ",
-      "Aggregate the data to one row per year before plotting."
-    )
-  }
-  
-  if (!any(
-    is.finite(annual_data$N_OBSERVED) &
-    annual_data$N_OBSERVED > 0
-  )) {
-    stop("`N_OBSERVED` must contain at least one positive value.")
-  }
-  
-  bar_data <- annual_data |>
-    dplyr::transmute(
-      year = .data$YEAR,
-      n_observed = .data$N_OBSERVED
-    )
-  
-  # ===========================================================================
-  # 4. Construct long-form DM data
-  # ===========================================================================
-  
-  dm_data_list <- list()
-  
-  if ("adjusted" %in% estimates) {
-    dm_data_list[["adjusted"]] <- annual_data |>
-      dplyr::transmute(
-        year = .data$YEAR,
-        
-        dm_estimate =
-          as.numeric(.data$ADJ_DM_PREVALENCE_PCT),
-        
-        dm_lcl =
-          as.numeric(.data$ADJ_DM_PREVALENCE_PCT_LCL),
-        
-        dm_ucl =
-          as.numeric(.data$ADJ_DM_PREVALENCE_PCT_UCL),
-        
-        dm_in_als_estimate =
-          as.numeric(.data$ADJ_DM_PREVALENCE_IN_ALS_PCT),
-        
-        dm_in_als_lcl =
-          as.numeric(.data$ADJ_DM_PREVALENCE_IN_ALS_PCT_LCL),
-        
-        dm_in_als_ucl =
-          as.numeric(.data$ADJ_DM_PREVALENCE_IN_ALS_PCT_UCL)
-      ) |>
-      tidyr::pivot_longer(
-        cols = -year,
-        names_to = c("measure_code", ".value"),
-        names_pattern =
-          "^(dm_in_als|dm)_(estimate|lcl|ucl)$"
-      ) |>
-      dplyr::mutate(
-        estimate_type = "Adjusted"
-      )
-  }
-  
-  if ("crude" %in% estimates) {
-    dm_data_list[["crude"]] <- annual_data |>
-      dplyr::transmute(
-        year = .data$YEAR,
-        
-        dm_estimate =
-          as.numeric(.data$CRUDE_DM_PREVALENCE_PCT),
-        
-        dm_lcl =
-          as.numeric(.data$CRUDE_DM_PREVALENCE_PCT_LCL),
-        
-        dm_ucl =
-          as.numeric(.data$CRUDE_DM_PREVALENCE_PCT_UCL),
-        
-        dm_in_als_estimate =
-          as.numeric(.data$CRUDE_DM_PREVALENCE_IN_ALS_PCT),
-        
-        dm_in_als_lcl =
-          as.numeric(.data$CRUDE_DM_PREVALENCE_IN_ALS_PCT_LCL),
-        
-        dm_in_als_ucl =
-          as.numeric(.data$CRUDE_DM_PREVALENCE_IN_ALS_PCT_UCL)
-      ) |>
-      tidyr::pivot_longer(
-        cols = -year,
-        names_to = c("measure_code", ".value"),
-        names_pattern =
-          "^(dm_in_als|dm)_(estimate|lcl|ucl)$"
-      ) |>
-      dplyr::mutate(
-        estimate_type = "Crude"
-      )
-  }
-  
-  dm_rate_data <- dplyr::bind_rows(dm_data_list) |>
-    dplyr::mutate(
-      measure = factor(
-        .data$measure_code,
-        levels = c(
-          "dm",
-          "dm_in_als"
-        ),
-        labels = c(
-          "Diabetes prevalence",
-          "Diabetes prevalence among persons with ALS"
-        )
-      ),
-      estimate_type = factor(
-        .data$estimate_type,
-        levels = c(
-          "Adjusted",
-          "Crude"
-        )
-      ),
-      series_id = interaction(
-        .data$measure,
-        .data$estimate_type,
-        drop = TRUE,
-        lex.order = TRUE
-      )
-    )
-  
-  # ===========================================================================
-  # 5. Construct long-form ALS data
-  # ===========================================================================
-  
-  als_data_list <- list()
-  
-  if ("adjusted" %in% estimates) {
-    als_data_list[["adjusted"]] <- annual_data |>
-      dplyr::transmute(
-        year = .data$YEAR,
-        
-        als_prevalence_estimate =
-          as.numeric(.data$ADJ_ALS_PREVALENCE),
-        
-        als_prevalence_lcl =
-          as.numeric(.data$ADJ_ALS_PREVALENCE_LCL),
-        
-        als_prevalence_ucl =
-          as.numeric(.data$ADJ_ALS_PREVALENCE_UCL),
-        
-        als_prevalence_dm_estimate =
-          as.numeric(.data$ADJ_ALS_PREVALENCE_IN_DM),
-        
-        als_prevalence_dm_lcl =
-          as.numeric(.data$ADJ_ALS_PREVALENCE_IN_DM_LCL),
-        
-        als_prevalence_dm_ucl =
-          as.numeric(.data$ADJ_ALS_PREVALENCE_IN_DM_UCL),
-        
-        als_incidence_dm_estimate =
-          as.numeric(.data$ADJ_ALS_INCIDENCE_IN_DM),
-        
-        als_incidence_dm_lcl =
-          as.numeric(.data$ADJ_ALS_INCIDENCE_IN_DM_LCL),
-        
-        als_incidence_dm_ucl =
-          as.numeric(.data$ADJ_ALS_INCIDENCE_IN_DM_UCL)
-      ) |>
-      tidyr::pivot_longer(
-        cols = -year,
-        names_to = c("measure_code", ".value"),
-        names_pattern = paste0(
-          "^(als_prevalence_dm|",
-          "als_prevalence|",
-          "als_incidence_dm)_",
-          "(estimate|lcl|ucl)$"
-        )
-      ) |>
-      dplyr::mutate(
-        estimate_type = "Adjusted"
-      )
-  }
-  
-  if ("crude" %in% estimates) {
-    als_data_list[["crude"]] <- annual_data |>
-      dplyr::transmute(
-        year = .data$YEAR,
-        
-        als_prevalence_estimate =
-          as.numeric(.data$CRUDE_ALS_PREVALENCE),
-        
-        als_prevalence_lcl =
-          as.numeric(.data$CRUDE_ALS_PREVALENCE_LCL),
-        
-        als_prevalence_ucl =
-          as.numeric(.data$CRUDE_ALS_PREVALENCE_UCL),
-        
-        als_prevalence_dm_estimate =
-          as.numeric(.data$CRUDE_ALS_PREVALENCE_IN_DM),
-        
-        als_prevalence_dm_lcl =
-          as.numeric(.data$CRUDE_ALS_PREVALENCE_IN_DM_LCL),
-        
-        als_prevalence_dm_ucl =
-          as.numeric(.data$CRUDE_ALS_PREVALENCE_IN_DM_UCL),
-        
-        als_incidence_dm_estimate =
-          as.numeric(.data$CRUDE_ALS_INCIDENCE_IN_DM),
-        
-        als_incidence_dm_lcl =
-          as.numeric(.data$CRUDE_ALS_INCIDENCE_IN_DM_LCL),
-        
-        als_incidence_dm_ucl =
-          as.numeric(.data$CRUDE_ALS_INCIDENCE_IN_DM_UCL)
-      ) |>
-      tidyr::pivot_longer(
-        cols = -year,
-        names_to = c("measure_code", ".value"),
-        names_pattern = paste0(
-          "^(als_prevalence_dm|",
-          "als_prevalence|",
-          "als_incidence_dm)_",
-          "(estimate|lcl|ucl)$"
-        )
-      ) |>
-      dplyr::mutate(
-        estimate_type = "Crude"
-      )
-  }
-  
-  als_rate_data <- dplyr::bind_rows(als_data_list) |>
-    dplyr::mutate(
-      measure = factor(
-        .data$measure_code,
-        levels = c(
-          "als_prevalence",
-          "als_prevalence_dm",
-          "als_incidence_dm"
-        ),
-        labels = c(
-          "ALS prevalence",
-          "ALS prevalence among persons with diabetes",
-          "ALS incidence among persons with diabetes"
-        )
-      ),
-      estimate_type = factor(
-        .data$estimate_type,
-        levels = c(
-          "Adjusted",
-          "Crude"
-        )
-      ),
-      series_id = interaction(
-        .data$measure,
-        .data$estimate_type,
-        drop = TRUE,
-        lex.order = TRUE
-      )
-    )
-  
-  # ===========================================================================
-  # 6. Hybrid plotting helper
-  # ===========================================================================
-  
-  build_hybrid_plot <- function(
-    rate_data,
-    bar_data,
-    primary_axis_label,
-    title,
-    subtitle,
-    caption,
-    measure_colors,
-    measure_shapes,
-    bar_axis_label = "Observed population, N"
-  ) {
-    rate_data <- rate_data |>
-      dplyr::filter(
-        is.finite(.data$estimate) |
-          is.finite(.data$lcl) |
-          is.finite(.data$ucl)
-      )
-    
-    if (nrow(rate_data) == 0) {
-      stop(
-        "No valid rate estimates were found for the requested figure."
-      )
-    }
-    
-    all_rate_values <- c(
-      rate_data$estimate,
-      rate_data$lcl,
-      rate_data$ucl
-    )
-    
-    all_rate_values <- all_rate_values[
-      is.finite(all_rate_values)
-    ]
-    
-    maximum_rate <- max(all_rate_values)
-    minimum_rate <- min(c(0, all_rate_values))
-    
-    if (!is.finite(maximum_rate) || maximum_rate <= 0) {
-      stop(
-        "The requested rate measures do not contain positive values."
-      )
-    }
-    
-    rate_range <- maximum_rate - minimum_rate
-    
-    if (!is.finite(rate_range) || rate_range <= 0) {
-      rate_range <- maximum_rate
-    }
-    
-    primary_lower <- min(0, minimum_rate)
-    primary_upper <- maximum_rate + 0.12 * rate_range
-    
-    maximum_count <- max(
-      bar_data$n_observed,
-      na.rm = TRUE
-    )
-    
-    usable_primary_height <- primary_upper - primary_lower
-    
-    # Bars occupy approximately 80% of the plotting height.
-    bar_target_height <- usable_primary_height * 0.80
-    
-    count_scale_factor <- maximum_count / bar_target_height
-    
-    bar_data_scaled <- bar_data |>
-      dplyr::mutate(
-        n_observed_scaled =
-          .data$n_observed / count_scale_factor +
-          primary_lower
-      )
-    
-    p <- ggplot2::ggplot() +
-      ggplot2::geom_col(
-        data = bar_data_scaled,
-        ggplot2::aes(
-          x = .data$year,
-          y = .data$n_observed_scaled
-        ),
-        width = count_bar_width,
-        fill = "grey55",
-        alpha = count_bar_alpha
-      )
-    
-    # -------------------------------------------------------------------------
-    # Confidence intervals
-    # -------------------------------------------------------------------------
-    
-    if (ci_display == "errorbar") {
-      # Offset crude and adjusted CIs slightly to reduce overlap.
-      p <- p +
-        ggplot2::geom_errorbar(
-          data = rate_data,
-          ggplot2::aes(
-            x = .data$year,
-            ymin = .data$lcl,
-            ymax = .data$ucl,
-            color = .data$measure,
-            group = .data$series_id
-          ),
-          position = ggplot2::position_dodge(
-            width = 0.20
-          ),
-          width = 0.10,
-          linewidth = 0.45,
-          alpha = 0.70,
-          show.legend = FALSE,
-          na.rm = TRUE
-        )
-    }
-    
-    if (ci_display == "ribbon") {
-      # Ribbons may overlap substantially when crude and adjusted estimates
-      # are similar, so separate linetypes are still used for the estimates.
-      p <- p +
-        ggplot2::geom_ribbon(
-          data = rate_data,
-          ggplot2::aes(
-            x = .data$year,
-            ymin = .data$lcl,
-            ymax = .data$ucl,
-            fill = .data$measure,
-            group = .data$series_id
-          ),
-          alpha = 0.07,
-          linewidth = 0,
-          show.legend = FALSE,
-          na.rm = TRUE
-        )
-    }
-    
-    # -------------------------------------------------------------------------
-    # Estimates
-    # -------------------------------------------------------------------------
-    
-    p <- p +
-      ggplot2::geom_line(
-        data = rate_data,
-        ggplot2::aes(
-          x = .data$year,
-          y = .data$estimate,
-          color = .data$measure,
-          linetype = .data$estimate_type,
-          group = .data$series_id
-        ),
-        linewidth = 1.00,
-        na.rm = TRUE
-      ) +
-      ggplot2::geom_point(
-        data = rate_data,
-        ggplot2::aes(
-          x = .data$year,
-          y = .data$estimate,
-          color = .data$measure,
-          shape = .data$measure,
-          group = .data$series_id
-        ),
-        position = ggplot2::position_dodge(
-          width = 0.20
-        ),
-        size = 2.5,
-        stroke = 0.45,
-        na.rm = TRUE
-      ) +
-      ggplot2::scale_color_manual(
-        name = "Measure",
-        values = measure_colors,
-        drop = FALSE
-      ) +
-      ggplot2::scale_fill_manual(
-        name = "Measure",
-        values = measure_colors,
-        drop = FALSE
-      ) +
-      ggplot2::scale_shape_manual(
-        name = "Measure",
-        values = measure_shapes,
-        drop = FALSE
-      ) +
-      ggplot2::scale_linetype_manual(
-        name = "Estimate",
-        values = c(
-          "Adjusted" = "solid",
-          "Crude" = "22"
-        ),
-        drop = FALSE
-      ) +
-      ggplot2::scale_x_continuous(
-        name = "Year",
-        breaks = bar_data$year,
-        minor_breaks = NULL,
-        expand = ggplot2::expansion(
-          mult = c(0.025, 0.025)
-        )
-      ) +
-      ggplot2::scale_y_continuous(
-        name = primary_axis_label,
-        limits = c(
-          primary_lower,
-          primary_upper
-        ),
-        labels = scales::label_number(
-          accuracy = ifelse(
-            maximum_rate < 1,
-            0.01,
-            0.1
-          ),
-          big.mark = ",",
-          trim = TRUE
-        ),
-        expand = ggplot2::expansion(
-          mult = c(0, 0.02)
-        ),
-        sec.axis = ggplot2::sec_axis(
-          transform =
-            ~ (. - primary_lower) * count_scale_factor,
-          name = bar_axis_label,
-          labels = scales::label_number(
-            scale_cut = scales::cut_short_scale(),
-            accuracy = 0.1
-          )
-        )
-      ) +
-      ggplot2::labs(
-        title = title,
-        subtitle = subtitle,
-        caption = caption
-      ) +
-      ggplot2::guides(
-        color = ggplot2::guide_legend(
-          order = 1,
-          override.aes = list(
-            linetype = "solid",
-            linewidth = 1.1,
-            alpha = 1
-          )
-        ),
-        shape = "none",
-        fill = "none",
-        linetype = ggplot2::guide_legend(
-          order = 2,
-          override.aes = list(
-            color = "grey20",
-            linewidth = 1.1
-          )
-        )
-      ) +
-      ggplot2::theme_classic(
-        base_size = 12
-      ) +
-      ggplot2::theme(
-        plot.title = ggplot2::element_text(
-          size = 15,
-          face = "bold",
-          margin = ggplot2::margin(b = 5)
-        ),
-        plot.subtitle = ggplot2::element_text(
-          size = 11,
-          margin = ggplot2::margin(b = 12)
-        ),
-        plot.caption = ggplot2::element_text(
-          size = 9,
-          hjust = 0,
-          color = "grey35",
-          margin = ggplot2::margin(t = 10)
-        ),
-        axis.title.x = ggplot2::element_text(
-          face = "bold",
-          margin = ggplot2::margin(t = 8)
-        ),
-        axis.title.y = ggplot2::element_text(
-          face = "bold",
-          margin = ggplot2::margin(r = 8)
-        ),
-        axis.title.y.right = ggplot2::element_text(
-          face = "bold",
-          margin = ggplot2::margin(l = 8)
-        ),
-        axis.text.x = ggplot2::element_text(
-          angle = ifelse(
-            nrow(bar_data) > 12,
-            45,
-            0
-          ),
-          hjust = ifelse(
-            nrow(bar_data) > 12,
-            1,
-            0.5
-          ),
-          vjust = ifelse(
-            nrow(bar_data) > 12,
-            1,
-            0.5
-          )
-        ),
-        legend.position = "bottom",
-        legend.box = "vertical",
-        legend.text = ggplot2::element_text(
-          size = 10
-        ),
-        legend.title = ggplot2::element_text(
-          size = 10,
-          face = "bold"
-        ),
-        legend.key.width = grid::unit(
-          1.5,
-          "cm"
-        ),
-        panel.grid.major.y = ggplot2::element_line(
-          linewidth = 0.3,
-          color = "grey88"
-        ),
-        panel.grid.major.x = ggplot2::element_blank(),
-        panel.grid.minor = ggplot2::element_blank(),
-        plot.margin = ggplot2::margin(
-          12,
-          18,
-          10,
-          12
-        )
-      )
-    
-    p
-  }
-  
-  # ===========================================================================
-  # 7. DM prevalence figure
-  # ===========================================================================
-  
-  dm_colors <- c(
-    "Diabetes prevalence" = "#0072B2",
-    "Diabetes prevalence among persons with ALS" = "#D55E00"
-  )
-  
-  dm_shapes <- c(
-    "Diabetes prevalence" = 16,
-    "Diabetes prevalence among persons with ALS" = 17
-  )
-  
-  estimate_description <- if (
-    all(c("adjusted", "crude") %in% estimates)
-  ) {
-    paste0(
-      "Crude and adjusted annual estimates with ",
-      "95% confidence intervals"
-    )
-  } else if ("adjusted" %in% estimates) {
-    "Adjusted annual estimates with 95% confidence intervals"
-  } else {
-    "Crude annual estimates with 95% confidence intervals"
-  }
-  
-  dm_plot <- build_hybrid_plot(
-    rate_data = dm_rate_data,
-    bar_data = bar_data,
-    primary_axis_label = "Annual prevalence (%)",
-    title = "Annual diabetes prevalence",
-    subtitle = estimate_description,
-    caption = paste0(
-      "Bars represent the annual observed population. ",
-      "Solid lines represent adjusted estimates and dashed lines ",
-      "represent crude estimates. Confidence intervals are shown as ",
-      ifelse(
-        ci_display == "errorbar",
-        "error bars.",
-        ifelse(
-          ci_display == "ribbon",
-          "shaded bands.",
-          "not displayed."
-        )
-      )
-    ),
-    measure_colors = dm_colors,
-    measure_shapes = dm_shapes
-  )
-  
-  # ===========================================================================
-  # 8. ALS prevalence and incidence figure
-  # ===========================================================================
-  
-  als_colors <- c(
-    "ALS prevalence" = "#009E73",
-    "ALS prevalence among persons with diabetes" = "#CC79A7",
-    "ALS incidence among persons with diabetes" = "#E69F00"
-  )
-  
-  als_shapes <- c(
-    "ALS prevalence" = 16,
-    "ALS prevalence among persons with diabetes" = 17,
-    "ALS incidence among persons with diabetes" = 15
-  )
-  
-  als_rate_unit_label <- paste0(
-    "Rate per ",
-    scales::comma(als_rate_per)
-  )
-  
-  als_plot <- build_hybrid_plot(
-    rate_data = als_rate_data,
-    bar_data = bar_data,
-    primary_axis_label = als_rate_unit_label,
-    title = "Annual ALS prevalence and incidence",
-    subtitle = estimate_description,
-    caption = paste0(
-      "Bars represent the annual observed population. ",
-      "Solid lines represent adjusted estimates and dashed lines ",
-      "represent crude estimates. Prevalence rates use persons as ",
-      "the denominator, whereas incidence rates use person-years. ",
-      "All rates are expressed per ",
-      scales::comma(als_rate_per),
-      "."
-    ),
-    measure_colors = als_colors,
-    measure_shapes = als_shapes
-  )
-  
-  # ===========================================================================
-  # 9. Return plots and plotting data
-  # ===========================================================================
-  
-  invisible(
-    list(
-      dm_plot = dm_plot,
-      als_plot = als_plot,
-      dm_plot_data = dm_rate_data,
-      als_plot_data = als_rate_data,
-      bar_data = bar_data
-    )
+  stats::setNames(
+    rep(PUB_PALETTE, length.out = length(x)),
+    x
   )
 }
 
 
-plot_med_prevalence <- function(
+theme_publication <- function(
+    base_size = 11,
+    rotate_x = FALSE
+) {
+  theme_classic(base_size = base_size) +
+    theme(
+      plot.title = element_text(
+        size = base_size + 4,
+        face = "bold",
+        margin = margin(b = 5)
+      ),
+      
+      plot.subtitle = element_text(
+        size = base_size,
+        margin = margin(b = 10)
+      ),
+      
+      plot.caption = element_text(
+        size = base_size - 2,
+        hjust = 0,
+        color = "grey35",
+        lineheight = 1.15,
+        margin = margin(t = 10)
+      ),
+      
+      axis.title = element_text(
+        face = "bold"
+      ),
+      
+      axis.title.x = element_text(
+        margin = margin(t = 8)
+      ),
+      
+      axis.title.y = element_text(
+        margin = margin(r = 8)
+      ),
+      
+      axis.title.y.right = element_text(
+        margin = margin(l = 8)
+      ),
+      
+      axis.text.x = element_text(
+        angle = if (rotate_x) 45 else 0,
+        hjust = if (rotate_x) 1 else 0.5,
+        vjust = if (rotate_x) 1 else 0.5
+      ),
+      
+      panel.grid.major.y = element_line(
+        linewidth = 0.30,
+        color = "grey88"
+      ),
+      
+      panel.grid.major.x = element_blank(),
+      panel.grid.minor = element_blank(),
+      
+      legend.position = "bottom",
+      legend.box = "vertical",
+      
+      legend.title = element_text(
+        face = "bold"
+      ),
+      
+      legend.key.width = grid::unit(
+        1.4,
+        "cm"
+      ),
+      
+      plot.margin = margin(
+        10, 15, 10, 10
+      )
+    )
+}
+
+# =============================================================================
+# General annual rate-curve plot
+# =============================================================================
+
+plot_rate_curves <- function(
     data,
-    meds,
-    ty = c("all", "t1dm", "t2dm"),
-    estimates = c("crude", "adjusted"),
-    show_counts = TRUE,
-    reference_curve = NULL,    # NULL or "als"
-    bar_alpha = 0.20,
-    ribbon_alpha = 0.10,
-    point_size = 2.5,
-    line_width = 1,
-    reference_line_width = 1
+    outcomes = NULL,
+    populations = NULL,
+    metrics = NULL,
+    units = NULL,
+    estimates = c("ADJUSTED", "CRUDE"),
+    
+    # Curve labels
+    label_style = c("long", "short"),
+    
+    # Optional denominator overlay
+    # NULL = no bars and no secondary axis
+    bar_population = NULL,
+    denominator_label = NULL,
+    denominator_height = 0.80,
+    bar_alpha = 0.18,
+    bar_width = 0.72,
+    
+    # Confidence intervals
+    ci_display = c("errorbar", "ribbon", "none"),
+    ci_alpha = 0.08,
+    
+    # Figure labels
+    title = NULL,
+    subtitle = NULL,
+    y_label = NULL,
+    x_label = "Calendar year",
+    caption = NULL,
+    
+    # Appearance
+    series_labels = NULL,
+    series_colors = NULL,
+    series_shapes = NULL,
+    line_width = 1.0,
+    point_size = 2.4,
+    
+    # Y-axis
+    y_limits = NULL,
+    y_accuracy = NULL
 ) {
   
-  # ============================================================
-  # 1. Standardize and validate inputs
-  # ============================================================
-  
-  ty <- match.arg(ty)
-  
-  meds <- unique(toupper(meds))
-  
-  if (length(meds) == 0) {
-    stop("At least one medication must be specified in `meds`.")
-  }
-  
-  estimates <- unique(tolower(estimates))
-  
-  if (length(estimates) == 0 ||
-      any(!estimates %in% c("crude", "adjusted"))) {
-    stop(
-      "`estimates` must contain one or both of: ",
-      "\"crude\", \"adjusted\"."
-    )
-  }
-  
-  if (!is.null(reference_curve)) {
-    
-    reference_curve <- tolower(reference_curve)
-    
-    if (length(reference_curve) != 1 ||
-        reference_curve != "als") {
-      stop(
-        "`reference_curve` must be either NULL or \"als\"."
-      )
-    }
-  }
-  
-  
-  # ============================================================
-  # 2. Create estimate-prefix mapping
-  # ============================================================
-  
-  estimate_prefix <- c(
-    crude = "CRUDE_",
-    adjusted = "ADJ_"
-  )
-  
-  selected_prefixes <- estimate_prefix[estimates]
-  
-  
-  # ============================================================
-  # 3. Medication prevalence columns
-  # ============================================================
-  
-  required_med_cols <- unlist(
-    lapply(
-      estimates,
-      function(est) {
-        
-        prefix <- estimate_prefix[[est]]
-        
-        c(
-          paste0(
-            prefix,
-            "MED_", meds,
-            "_PREVALENCE_IN_", toupper(ty), "_PCT"
-          ),
-          paste0(
-            prefix,
-            "MED_", meds,
-            "_PREVALENCE_IN_", toupper(ty), "_PCT_LCL"
-          ),
-          paste0(
-            prefix,
-            "MED_", meds,
-            "_PREVALENCE_IN_", toupper(ty), "_PCT_UCL"
-          )
-        )
-      }
-    )
-  )
-  
-  
-  # ============================================================
-  # 4. Validate required columns
-  # ============================================================
+  # ===========================================================================
+  # 1. Validate arguments
+  # ===========================================================================
   
   required_cols <- c(
     "YEAR",
-    paste0("DENOM_", toupper(ty), "_CASES"),
-    required_med_cols
+    "OUTCOME",
+    "POPULATION",
+    "METRIC",
+    "ESTIMATE_TYPE",
+    "NUM",
+    "DEN",
+    "ESTIMATE",
+    "LCL",
+    "UCL",
+    "UNIT"
   )
   
   missing_cols <- setdiff(
@@ -956,576 +177,1422 @@ plot_med_prevalence <- function(
   
   if (length(missing_cols) > 0) {
     stop(
-      "Missing required columns:\n",
-      paste(
-        missing_cols,
-        collapse = "\n"
+      "Missing required columns: ",
+      paste(missing_cols, collapse = ", ")
+    )
+  }
+  
+  label_style <- match.arg(label_style)
+  ci_display <- match.arg(ci_display)
+  
+  estimates <- unique(
+    toupper(estimates)
+  )
+  
+  valid_estimates <- c(
+    "ADJUSTED",
+    "CRUDE"
+  )
+  
+  if (
+    length(estimates) == 0 ||
+    any(!estimates %in% valid_estimates)
+  ) {
+    stop(
+      "`estimates` must contain one or both of: ",
+      "'ADJUSTED', 'CRUDE'."
+    )
+  }
+  
+  if (
+    !is.null(bar_population) &&
+    length(bar_population) != 1
+  ) {
+    stop(
+      "`bar_population` must be NULL or a single population."
+    )
+  }
+  
+  if (
+    !is.numeric(denominator_height) ||
+    length(denominator_height) != 1 ||
+    is.na(denominator_height) ||
+    denominator_height <= 0 ||
+    denominator_height > 1
+  ) {
+    stop(
+      "`denominator_height` must be between 0 and 1."
+    )
+  }
+  
+  if (
+    !is.numeric(bar_alpha) ||
+    length(bar_alpha) != 1 ||
+    is.na(bar_alpha) ||
+    bar_alpha < 0 ||
+    bar_alpha > 1
+  ) {
+    stop(
+      "`bar_alpha` must be between 0 and 1."
+    )
+  }
+  
+  
+  # ===========================================================================
+  # 2. Standardize input
+  # ===========================================================================
+  
+  full_data <- data |>
+    dplyr::transmute(
+      
+      YEAR =
+        as.integer(.data$YEAR),
+      
+      OUTCOME =
+        as.character(.data$OUTCOME),
+      
+      POPULATION =
+        as.character(.data$POPULATION),
+      
+      METRIC =
+        toupper(as.character(.data$METRIC)),
+      
+      ESTIMATE_TYPE =
+        toupper(as.character(.data$ESTIMATE_TYPE)),
+      
+      NUM =
+        as.numeric(.data$NUM),
+      
+      DEN =
+        as.numeric(.data$DEN),
+      
+      ESTIMATE =
+        as.numeric(.data$ESTIMATE),
+      
+      LCL =
+        as.numeric(.data$LCL),
+      
+      UCL =
+        as.numeric(.data$UCL),
+      
+      UNIT =
+        as.character(.data$UNIT)
+    ) |>
+    
+    dplyr::filter(
+      .data$ESTIMATE_TYPE %in%
+        estimates
+    )
+  
+  
+  # ===========================================================================
+  # 3. Apply scientific-measure filters
+  #
+  # Population is deliberately NOT filtered here.
+  #
+  # analysis_data provides:
+  #   1. the source for plotted curves
+  #   2. the source for bar_population
+  #
+  # This means:
+  #
+  # populations = c("DM", "NON_DM")
+  # bar_population = "ALL"
+  #
+  # is valid.
+  # ===========================================================================
+  
+  analysis_data <- full_data
+  
+  
+  if (!is.null(outcomes)) {
+    
+    analysis_data <- analysis_data |>
+      dplyr::filter(
+        .data$OUTCOME %in%
+          outcomes
+      )
+  }
+  
+  
+  if (!is.null(metrics)) {
+    
+    metrics <- toupper(metrics)
+    
+    analysis_data <- analysis_data |>
+      dplyr::filter(
+        .data$METRIC %in%
+          metrics
+      )
+  }
+  
+  
+  if (!is.null(units)) {
+    
+    analysis_data <- analysis_data |>
+      dplyr::filter(
+        .data$UNIT %in%
+          units
+      )
+  }
+  
+  
+  if (nrow(analysis_data) == 0) {
+    
+    stop(
+      paste0(
+        "No observations remain after applying ",
+        "outcome, metric, unit, and estimate filters."
       )
     )
   }
   
   
-  # ============================================================
-  # 5. Medication prevalence data -> long format
-  # ============================================================
+  # ===========================================================================
+  # 4. Select populations used for rate curves
+  # ===========================================================================
   
-  plot_data <- lapply(
-    estimates,
-    function(est) {
-      
-      prefix <- estimate_prefix[[est]]
-      
-      lapply(
-        meds,
-        function(med) {
-          
-          data.frame(
-            YEAR = data$YEAR,
-            MEDICATION = med,
-            ESTIMATE = est,
-            
-            PREVALENCE = data[[
-              paste0(
-                prefix,
-                "MED_", med,
-                "_PREVALENCE_IN_",
-                toupper(ty),
-                "_PCT"
-              )
-            ]],
-            
-            LCL = data[[
-              paste0(
-                prefix,
-                "MED_", med,
-                "_PREVALENCE_IN_",
-                toupper(ty),
-                "_PCT_LCL"
-              )
-            ]],
-            
-            UCL = data[[
-              paste0(
-                prefix,
-                "MED_", med,
-                "_PREVALENCE_IN_",
-                toupper(ty),
-                "_PCT_UCL"
-              )
-            ]]
-          )
-        }
-      ) %>%
-        bind_rows()
-    }
-  ) %>%
-    bind_rows() %>%
-    arrange(
-      YEAR,
-      MEDICATION,
-      ESTIMATE
+  plot_data <- analysis_data
+  
+  
+  if (!is.null(populations)) {
+    
+    plot_data <- plot_data |>
+      dplyr::filter(
+        .data$POPULATION %in%
+          populations
+      )
+  }
+  
+  
+  if (nrow(plot_data) == 0) {
+    
+    stop(
+      "No curve observations remain after applying `populations`."
     )
+  }
   
   
-  # Preserve medication order supplied by user
-  plot_data$MEDICATION <- factor(
-    plot_data$MEDICATION,
-    levels = meds
+  # ===========================================================================
+  # 5. Require a common unit across plotted curves
+  # ===========================================================================
+  
+  unit_values <- unique(
+    stats::na.omit(
+      plot_data$UNIT
+    )
   )
   
-  plot_data$ESTIMATE <- factor(
-    plot_data$ESTIMATE,
-    levels = c("crude", "adjusted"),
-    labels = c("Crude", "Adjusted")
-  )
   
-  
-  # ============================================================
-  # 6. Denominator counts
-  # ============================================================
-  
-  count_data <- data.frame(
-    YEAR = data$YEAR,
-    COUNT = data[[
+  if (length(unit_values) > 1) {
+    
+    stop(
       paste0(
-        "DENOM_",
-        toupper(ty),
-        "_CASES"
-      )
-    ]]
-  ) %>%
-    arrange(YEAR)
-  
-  
-  # ============================================================
-  # 7. Optional ALS prevalence reference curve
-  #    Supports both crude and adjusted estimates
-  # ============================================================
-  
-  reference_data <- NULL
-  
-  if (!is.null(reference_curve)) {
-    
-    required_als_cols <- unlist(
-      lapply(
-        estimates,
-        function(est) {
-          
-          prefix <- estimate_prefix[[est]]
-          
-          c(
-            paste0(
-              prefix,
-              "ALS_PREVALENCE_IN_DM"
-            ),
-            paste0(
-              prefix,
-              "ALS_PREVALENCE_IN_DM_LCL"
-            ),
-            paste0(
-              prefix,
-              "ALS_PREVALENCE_IN_DM_UCL"
-            )
-          )
-        }
-      )
-    )
-    
-    missing_als_cols <- setdiff(
-      required_als_cols,
-      names(data)
-    )
-    
-    if (length(missing_als_cols) > 0) {
-      stop(
-        "Missing ALS prevalence-among-DM columns:\n",
+        "The selected curves use multiple units: ",
         paste(
-          missing_als_cols,
-          collapse = "\n"
-        )
+          unit_values,
+          collapse = ", "
+        ),
+        ". Plot measures with a common unit together ",
+        "or use `units` to select one."
       )
-    }
+    )
+  }
+  
+  
+  plot_unit <- if (
+    length(unit_values) == 1
+  ) {
+    unit_values[[1]]
+  } else {
+    NULL
+  }
+  
+  
+  # ===========================================================================
+  # 6. Population display names
+  # ===========================================================================
+  
+  population_display <- function(x) {
     
-    
-    reference_data <- lapply(
-      estimates,
-      function(est) {
+    dplyr::case_when(
+      
+      x == "ALL" ~
+        "the overall population",
+      
+      x == "DM" ~
+        "persons with diabetes",
+      
+      x == "T1DM" ~
+        "persons with T1DM",
+      
+      x == "T2DM" ~
+        "persons with T2DM",
+      
+      x == "ALS" ~
+        "persons with ALS",
+      
+      x == "NON_DM" ~
+        "persons without diabetes",
+      
+      TRUE ~
+        tolower(x)
+    )
+  }
+  
+  
+  # ===========================================================================
+  # 7. Construct unique series identifiers
+  #
+  # SERIES_ID is always unique and is used internally for:
+  #   color
+  #   shape
+  #   grouping
+  #
+  # SERIES_LABEL is display-only.
+  # ===========================================================================
+  
+  plot_data <- plot_data |>
+    dplyr::mutate(
+      
+      SERIES_ID = paste(
+        .data$OUTCOME,
+        .data$METRIC,
+        .data$POPULATION,
+        sep = "__"
+      )
+    )
+  
+  
+  # ===========================================================================
+  # 8. Construct display labels
+  #
+  # short:
+  #   ALS
+  #   DM
+  #   GLP1RA
+  #
+  # long:
+  #   ALS incidence
+  #   ALS incidence among persons with diabetes
+  #   DM prevalence among persons with ALS
+  # ===========================================================================
+  
+  plot_data <- plot_data |>
+    dplyr::mutate(
+      
+      SERIES_LABEL = if (
+        label_style == "short"
+      ) {
         
-        prefix <- estimate_prefix[[est]]
+        .data$OUTCOME
         
-        data.frame(
-          YEAR = data$YEAR,
-          ESTIMATE = est,
+      } else {
+        
+        dplyr::case_when(
           
-          PREVALENCE = data[[
-            paste0(
-              prefix,
-              "ALS_PREVALENCE_IN_DM"
-            )
-          ]],
+          .data$POPULATION == "ALL" ~
+            paste(
+              .data$OUTCOME,
+              tolower(.data$METRIC)
+            ),
           
-          LCL = data[[
+          TRUE ~
             paste0(
-              prefix,
-              "ALS_PREVALENCE_IN_DM_LCL"
+              .data$OUTCOME,
+              " ",
+              tolower(.data$METRIC),
+              " among ",
+              population_display(
+                .data$POPULATION
+              )
             )
-          ]],
-          
-          UCL = data[[
-            paste0(
-              prefix,
-              "ALS_PREVALENCE_IN_DM_UCL"
-            )
-          ]]
         )
       }
-    ) %>%
-      bind_rows()
-    
-    reference_data$ESTIMATE <- factor(
-      reference_data$ESTIMATE,
-      levels = c("crude", "adjusted"),
-      labels = c("Crude", "Adjusted")
     )
+  
+  
+  # ===========================================================================
+  # 9. Optional custom series labels
+  #
+  # series_labels should be a named vector keyed by SERIES_ID:
+  #
+  # c(
+  #   "ALS__INCIDENCE__ALL" = "Overall",
+  #   "ALS__INCIDENCE__DM" = "Diabetes",
+  #   "ALS__INCIDENCE__NON_DM" = "No diabetes"
+  # )
+  # ===========================================================================
+  
+  if (!is.null(series_labels)) {
+    
+    custom_labels <- unname(
+      series_labels[
+        plot_data$SERIES_ID
+      ]
+    )
+    
+    
+    plot_data <- plot_data |>
+      dplyr::mutate(
+        
+        SERIES_LABEL =
+          dplyr::if_else(
+            !is.na(custom_labels),
+            custom_labels,
+            .data$SERIES_LABEL
+          )
+      )
   }
   
   
-  # ============================================================
-  # 8. Determine prevalence-axis range
-  # ============================================================
+  # ===========================================================================
+  # 10. Series lookup table
+  # ===========================================================================
   
-  max_prev <- max(
-    plot_data$UCL,
-    na.rm = TRUE
-  )
+  series_lookup <- plot_data |>
+    dplyr::distinct(
+      .data$SERIES_ID,
+      .data$SERIES_LABEL
+    )
   
-  if (!is.null(reference_data)) {
-    max_prev <- max(
-      max_prev,
-      max(
-        reference_data$UCL,
-        na.rm = TRUE
+  
+  series_ids <-
+    series_lookup$SERIES_ID
+  
+  display_labels <-
+    series_lookup$SERIES_LABEL
+  
+  
+  # ===========================================================================
+  # 11. Estimate factor + grouping
+  #
+  # Important:
+  # GROUP_ID uses SERIES_ID, not SERIES_LABEL.
+  #
+  # Therefore repeated short labels such as:
+  #
+  # ALS
+  # ALS
+  # ALS
+  #
+  # do not merge the three trajectories.
+  # ===========================================================================
+  
+  plot_data <- plot_data |>
+    dplyr::mutate(
+      
+      ESTIMATE_TYPE = factor(
+        .data$ESTIMATE_TYPE,
+        
+        levels = c(
+          "ADJUSTED",
+          "CRUDE"
+        ),
+        
+        labels = c(
+          "Adjusted",
+          "Crude"
+        )
+      ),
+      
+      GROUP_ID = interaction(
+        .data$SERIES_ID,
+        .data$ESTIMATE_TYPE,
+        drop = TRUE,
+        lex.order = TRUE
       )
     )
+  
+  
+  # ===========================================================================
+  # 12. Publication colors
+  # ===========================================================================
+  
+  if (is.null(series_colors)) {
+    
+    series_colors <- stats::setNames(
+      rep(
+        PUB_PALETTE,
+        length.out =
+          length(series_ids)
+      ),
+      series_ids
+    )
+    
+  } else {
+    
+    # Require a color for every SERIES_ID
+    missing_colors <- setdiff(
+      series_ids,
+      names(series_colors)
+    )
+    
+    
+    if (length(missing_colors) > 0) {
+      
+      stop(
+        paste0(
+          "`series_colors` is missing colors for: ",
+          paste(
+            missing_colors,
+            collapse = ", "
+          )
+        )
+      )
+    }
+    
+    
+    series_colors <-
+      series_colors[
+        series_ids
+      ]
   }
   
-  if (!is.finite(max_prev) ||
-      max_prev <= 0) {
+  
+  # ===========================================================================
+  # 13. Publication shapes
+  # ===========================================================================
+  
+  if (is.null(series_shapes)) {
+    
+    series_shapes <- stats::setNames(
+      rep(
+        c(
+          16,
+          17,
+          15,
+          18,
+          8,
+          3,
+          7,
+          4
+        ),
+        
+        length.out =
+          length(series_ids)
+      ),
+      
+      series_ids
+    )
+    
+  } else {
+    
+    missing_shapes <- setdiff(
+      series_ids,
+      names(series_shapes)
+    )
+    
+    
+    if (length(missing_shapes) > 0) {
+      
+      stop(
+        paste0(
+          "`series_shapes` is missing shapes for: ",
+          paste(
+            missing_shapes,
+            collapse = ", "
+          )
+        )
+      )
+    }
+    
+    
+    series_shapes <-
+      series_shapes[
+        series_ids
+      ]
+  }
+  
+  
+  # Labels supplied to ggplot scales
+  series_label_map <- stats::setNames(
+    display_labels,
+    series_ids
+  )
+  
+  
+  # ===========================================================================
+  # 14. Determine primary y-axis range
+  # ===========================================================================
+  
+  rate_values <- c(
+    plot_data$ESTIMATE,
+    plot_data$LCL,
+    plot_data$UCL
+  )
+  
+  
+  rate_values <- rate_values[
+    is.finite(rate_values)
+  ]
+  
+  
+  if (length(rate_values) == 0) {
+    
     stop(
-      "Prevalence values are missing or invalid."
+      "No finite estimates or confidence limits are available."
     )
   }
   
   
-  # ============================================================
-  # 9. Scale denominator counts onto primary axis
-  # ============================================================
-  
-  if (show_counts) {
+  if (is.null(y_limits)) {
     
-    max_count <- max(
-      count_data$COUNT,
+    y_lower <- min(
+      0,
+      min(rate_values)
+    )
+    
+    
+    y_upper_raw <- max(
+      rate_values
+    )
+    
+    
+    y_range <-
+      y_upper_raw -
+      y_lower
+    
+    
+    if (
+      !is.finite(y_range) ||
+      y_range <= 0
+    ) {
+      
+      y_range <- max(
+        abs(rate_values)
+      )
+    }
+    
+    
+    y_upper <-
+      y_upper_raw +
+      0.12 * y_range
+    
+  } else {
+    
+    if (
+      length(y_limits) != 2 ||
+      any(!is.finite(y_limits)) ||
+      y_limits[1] >= y_limits[2]
+    ) {
+      
+      stop(
+        "`y_limits` must contain two increasing finite values."
+      )
+    }
+    
+    
+    y_lower <-
+      y_limits[1]
+    
+    y_upper <-
+      y_limits[2]
+  }
+  
+  
+  # ===========================================================================
+  # 15. Y-axis label accuracy
+  # ===========================================================================
+  
+  if (is.null(y_accuracy)) {
+    
+    max_rate <- max(
+      abs(rate_values),
       na.rm = TRUE
     )
     
-    if (!is.finite(max_count) ||
-        max_count <= 0) {
+    
+    y_accuracy <- dplyr::case_when(
+      
+      max_rate < 1 ~
+        0.01,
+      
+      max_rate < 100 ~
+        0.1,
+      
+      TRUE ~
+        1
+    )
+  }
+  
+  
+  # ===========================================================================
+  # 16. Optional denominator bars
+  #
+  # bar_population = NULL
+  #     -> no bars
+  #     -> no secondary y-axis
+  #
+  # bar_population != NULL
+  #     -> select DEN for that population from analysis_data
+  #
+  # Note that bar_population is independent from populations.
+  # ===========================================================================
+  
+  denominator_data <- NULL
+  denominator_scale <- NULL
+  
+  
+  if (!is.null(bar_population)) {
+    
+    # -------------------------------------------------------------------------
+    # Check requested population exists in the scientifically filtered data
+    # -------------------------------------------------------------------------
+    
+    available_bar_populations <- analysis_data |>
+      dplyr::distinct(
+        .data$POPULATION
+      ) |>
+      dplyr::pull(
+        .data$POPULATION
+      )
+    
+    
+    if (
+      !bar_population %in%
+      available_bar_populations
+    ) {
+      
       stop(
-        "Denominator count is missing or invalid."
+        paste0(
+          "`bar_population = \"",
+          bar_population,
+          "\"` is not available after applying ",
+          "outcome/metric/unit filters. ",
+          "Available populations are: ",
+          paste(
+            available_bar_populations,
+            collapse = ", "
+          ),
+          "."
+        )
       )
     }
     
-    scale_factor <- max_count / max_prev
-  }
-  
-  
-  # ============================================================
-  # 10. Initialize plot
-  # ============================================================
-  
-  p <- ggplot()
-  
-  
-  # ============================================================
-  # 11. Denominator bars
-  # ============================================================
-  
-  if (show_counts) {
     
-    p <- p +
-      geom_col(
-        data = count_data,
-        aes(
-          x = YEAR,
-          y = COUNT / scale_factor
-        ),
-        width = 0.70,
-        alpha = bar_alpha,
-        fill = "grey55"
+    # -------------------------------------------------------------------------
+    # Extract annual denominator
+    #
+    # CRUDE and ADJUSTED rows normally repeat the same observed DEN,
+    # so distinct() removes those duplicates.
+    # -------------------------------------------------------------------------
+    
+    denominator_data <- analysis_data |>
+      dplyr::filter(
+        .data$POPULATION ==
+          bar_population
+      ) |>
+      dplyr::distinct(
+        .data$YEAR,
+        .data$DEN
       )
+    
+    
+    # -------------------------------------------------------------------------
+    # Require one denominator per year
+    # -------------------------------------------------------------------------
+    
+    denominator_check <- denominator_data |>
+      dplyr::count(
+        .data$YEAR,
+        name = "N_DENOMINATORS"
+      ) |>
+      dplyr::filter(
+        .data$N_DENOMINATORS > 1
+      )
+    
+    
+    if (
+      nrow(denominator_check) > 0
+    ) {
+      
+      stop(
+        paste0(
+          "`bar_population = \"",
+          bar_population,
+          "\"` has multiple denominator values within some years. ",
+          "Restrict `outcomes`, `metrics`, and/or `units` so ",
+          "the selected bar population corresponds to a single ",
+          "denominator definition."
+        )
+      )
+    }
+    
+    
+    denominator_data <- denominator_data |>
+      dplyr::arrange(
+        .data$YEAR
+      )
+    
+    
+    # -------------------------------------------------------------------------
+    # Validate denominator values
+    # -------------------------------------------------------------------------
+    
+    max_denominator <- max(
+      denominator_data$DEN,
+      na.rm = TRUE
+    )
+    
+    
+    if (
+      !is.finite(max_denominator) ||
+      max_denominator <= 0
+    ) {
+      
+      stop(
+        paste0(
+          "`DEN` for bar_population = \"",
+          bar_population,
+          "\" must contain at least one positive value."
+        )
+      )
+    }
+    
+    
+    # -------------------------------------------------------------------------
+    # Transform denominator values onto primary axis coordinates
+    #
+    # Largest bar occupies denominator_height proportion of plotting height.
+    # -------------------------------------------------------------------------
+    
+    primary_height <-
+      y_upper -
+      y_lower
+    
+    
+    denominator_scale <-
+      max_denominator /
+      (
+        primary_height *
+          denominator_height
+      )
+    
+    
+    denominator_data <- denominator_data |>
+      dplyr::mutate(
+        
+        DEN_SCALED =
+          y_lower +
+          .data$DEN /
+          denominator_scale
+      )
+    
+    
+    # -------------------------------------------------------------------------
+    # Automatic right-axis label
+    # -------------------------------------------------------------------------
+    
+    if (
+      is.null(denominator_label)
+    ) {
+      
+      denominator_label <- dplyr::case_when(
+        
+        bar_population == "ALL" ~
+          "Overall denominator",
+        
+        bar_population == "DM" ~
+          "Diabetes population",
+        
+        bar_population == "T1DM" ~
+          "T1DM population",
+        
+        bar_population == "T2DM" ~
+          "T2DM population",
+        
+        bar_population == "ALS" ~
+          "ALS population",
+        
+        bar_population == "NON_DM" ~
+          "Non-diabetes population",
+        
+        TRUE ~
+          paste0(
+            bar_population,
+            " denominator"
+          )
+      )
+    }
   }
   
   
-  # ============================================================
-  # 12. Medication 95% confidence intervals
-  # ============================================================
+  # ===========================================================================
+  # 17. Initialize ggplot
+  # ===========================================================================
   
-  p <- p +
-    geom_ribbon(
-      data = plot_data,
-      aes(
-        x = YEAR,
-        ymin = LCL,
-        ymax = UCL,
-        fill = MEDICATION,
-        group = interaction(
-          MEDICATION,
-          ESTIMATE
-        )
-      ),
-      alpha = ribbon_alpha,
-      color = NA
-    )
+  p <- ggplot2::ggplot()
   
   
-  # ============================================================
-  # 13. Medication prevalence curves
+  # ===========================================================================
+  # 18. Denominator bars
   #
-  # Color    = medication
-  # Linetype = crude vs adjusted
-  # Shape    = crude vs adjusted
-  # ============================================================
+  # Draw first so all epidemiologic estimates remain visually foregrounded.
+  # ===========================================================================
   
-  p <- p +
-    geom_line(
-      data = plot_data,
-      aes(
-        x = YEAR,
-        y = PREVALENCE,
-        color = MEDICATION,
-        linetype = ESTIMATE,
-        group = interaction(
-          MEDICATION,
-          ESTIMATE
-        )
-      ),
-      linewidth = line_width
-    ) +
+  if (!is.null(bar_population)) {
     
-    geom_point(
-      data = plot_data,
-      aes(
-        x = YEAR,
-        y = PREVALENCE,
-        color = MEDICATION,
-        shape = ESTIMATE,
-        group = interaction(
-          MEDICATION,
-          ESTIMATE
-        )
-      ),
-      size = point_size
-    )
-  
-  
-  # ============================================================
-  # 14. Optional ALS prevalence reference curves
-  # ============================================================
-  
-  if (!is.null(reference_data)) {
-    
-    # ALS 95% CI
     p <- p +
-      geom_ribbon(
-        data = reference_data,
-        aes(
-          x = YEAR,
-          ymin = LCL,
-          ymax = UCL,
-          group = ESTIMATE
+      
+      ggplot2::geom_col(
+        data =
+          denominator_data,
+        
+        ggplot2::aes(
+          x = .data$YEAR,
+          y = .data$DEN_SCALED
         ),
-        inherit.aes = FALSE,
-        fill = "grey30",
-        alpha = 0.06
-      )
-    
-    # ALS crude/adjusted reference curves
-    p <- p +
-      geom_line(
-        data = reference_data,
-        aes(
-          x = YEAR,
-          y = PREVALENCE,
-          linetype = ESTIMATE,
-          group = ESTIMATE
-        ),
-        inherit.aes = FALSE,
-        color = "grey15",
-        linewidth = reference_line_width
+        
+        width =
+          bar_width,
+        
+        fill =
+          "grey70",
+        
+        color =
+          NA,
+        
+        alpha =
+          bar_alpha
       )
   }
   
   
-  # ============================================================
-  # 15. Estimate appearance
-  # ============================================================
+  # ===========================================================================
+  # 19. Confidence intervals
+  # ===========================================================================
   
-  p <- p +
-    scale_linetype_manual(
-      name = "Estimate",
-      values = c(
-        "Crude" = "solid",
-        "Adjusted" = "dashed"
-      )
-    ) +
+  if (
+    ci_display == "ribbon"
+  ) {
     
-    scale_shape_manual(
-      name = "Estimate",
-      values = c(
-        "Crude" = 16,
-        "Adjusted" = 17
+    p <- p +
+      
+      ggplot2::geom_ribbon(
+        data =
+          plot_data,
+        
+        ggplot2::aes(
+          x = .data$YEAR,
+          ymin = .data$LCL,
+          ymax = .data$UCL,
+          
+          fill = .data$SERIES_ID,
+          
+          group = .data$GROUP_ID
+        ),
+        
+        alpha =
+          ci_alpha,
+        
+        color =
+          NA,
+        
+        show.legend =
+          FALSE,
+        
+        na.rm =
+          TRUE
       )
-    )
-  
-  
-  # ============================================================
-  # 16. Y axes
-  # ============================================================
-  
-  prevalence_label <- if (length(estimates) == 2) {
-    "Prescription Prevalence"
-  } else if (estimates == "adjusted") {
-    "Adjusted Prescription Prevalence"
-  } else {
-    "Crude Prescription Prevalence"
   }
   
   
-  type_label <- switch(
-    ty,
-    all = "eligible patients",
-    t1dm = "patients with T1DM",
-    t2dm = "patients with T2DM"
-  )
-  
-  
-  if (show_counts) {
+  if (
+    ci_display == "errorbar"
+  ) {
     
     p <- p +
-      scale_y_continuous(
-        name = prevalence_label,
+      
+      ggplot2::geom_errorbar(
+        data =
+          plot_data,
         
-        labels = label_number(
-          accuracy = 0.1,
-          suffix = "%"
+        ggplot2::aes(
+          x = .data$YEAR,
+          ymin = .data$LCL,
+          ymax = .data$UCL,
+          
+          color = .data$SERIES_ID,
+          
+          group = .data$GROUP_ID
         ),
         
-        sec.axis = sec_axis(
-          ~ . * scale_factor,
-          name = paste0(
-            "Number of observed ",
-            type_label
+        position =
+          ggplot2::position_dodge(
+            width = 0.18
           ),
-          labels = comma
+        
+        width =
+          0.10,
+        
+        linewidth =
+          0.45,
+        
+        alpha =
+          0.65,
+        
+        show.legend =
+          FALSE,
+        
+        na.rm =
+          TRUE
+      )
+  }
+  
+  
+  # ===========================================================================
+  # 20. Estimate curves
+  # ===========================================================================
+  
+  p <- p +
+    
+    ggplot2::geom_line(
+      data =
+        plot_data,
+      
+      ggplot2::aes(
+        x = .data$YEAR,
+        y = .data$ESTIMATE,
+        
+        color = .data$SERIES_ID,
+        
+        linetype =
+          .data$ESTIMATE_TYPE,
+        
+        group =
+          .data$GROUP_ID
+      ),
+      
+      linewidth =
+        line_width,
+      
+      na.rm =
+        TRUE
+    ) +
+    
+    ggplot2::geom_point(
+      data =
+        plot_data,
+      
+      ggplot2::aes(
+        x = .data$YEAR,
+        y = .data$ESTIMATE,
+        
+        color =
+          .data$SERIES_ID,
+        
+        shape =
+          .data$SERIES_ID,
+        
+        group =
+          .data$GROUP_ID
+      ),
+      
+      size =
+        point_size,
+      
+      stroke =
+        0.45,
+      
+      na.rm =
+        TRUE
+    )
+  
+  
+  # ===========================================================================
+  # 21. Series scales
+  # ===========================================================================
+  
+  p <- p +
+    
+    ggplot2::scale_color_manual(
+      name = "Measure",
+      
+      values =
+        series_colors,
+      
+      breaks =
+        series_ids,
+      
+      labels =
+        series_label_map,
+      
+      drop =
+        FALSE
+    ) +
+    
+    ggplot2::scale_fill_manual(
+      values =
+        series_colors,
+      
+      breaks =
+        series_ids,
+      
+      labels =
+        series_label_map,
+      
+      drop =
+        FALSE
+    ) +
+    
+    ggplot2::scale_shape_manual(
+      name = "Measure",
+      
+      values =
+        series_shapes,
+      
+      breaks =
+        series_ids,
+      
+      labels =
+        series_label_map,
+      
+      drop =
+        FALSE
+    ) +
+    
+    ggplot2::scale_linetype_manual(
+      name = "Estimate",
+      
+      values = c(
+        "Adjusted" = "solid",
+        "Crude" = "22"
+      ),
+      
+      drop =
+        FALSE
+    )
+  
+  
+  # ===========================================================================
+  # 22. X axis
+  # ===========================================================================
+  
+  p <- p +
+    
+    ggplot2::scale_x_continuous(
+      name =
+        x_label,
+      
+      breaks =
+        sort(
+          unique(
+            plot_data$YEAR
+          )
+        ),
+      
+      minor_breaks =
+        NULL,
+      
+      expand =
+        ggplot2::expansion(
+          mult = c(
+            0.025,
+            0.025
+          )
+        )
+    )
+  
+  
+  # ===========================================================================
+  # 23. Default primary y-axis label
+  # ===========================================================================
+  
+  if (
+    is.null(y_label)
+  ) {
+    
+    y_label <- if (
+      !is.null(plot_unit)
+    ) {
+      plot_unit
+    } else {
+      "Rate"
+    }
+  }
+  
+  
+  # ===========================================================================
+  # 24. Y axis
+  #
+  # Secondary axis exists only when bar_population is supplied.
+  # ===========================================================================
+  
+  if (!is.null(bar_population)) {
+    
+    p <- p +
+      
+      ggplot2::scale_y_continuous(
+        name =
+          y_label,
+        
+        limits = c(
+          y_lower,
+          y_upper
         ),
         
-        expand = expansion(
-          mult = c(0, 0.08)
-        )
+        labels =
+          scales::label_number(
+            accuracy =
+              y_accuracy,
+            
+            big.mark =
+              ","
+          ),
+        
+        expand =
+          ggplot2::expansion(
+            mult = c(
+              0,
+              0.02
+            )
+          ),
+        
+        sec.axis =
+          ggplot2::sec_axis(
+            
+            # Inverse transformation:
+            #
+            # DEN_SCALED =
+            #   y_lower +
+            #   DEN / denominator_scale
+            
+            ~ (. - y_lower) *
+              denominator_scale,
+            
+            name =
+              denominator_label,
+            
+            labels =
+              scales::label_number(
+                scale_cut =
+                  scales::cut_short_scale(),
+                
+                accuracy =
+                  0.1
+              )
+          )
       )
     
   } else {
     
     p <- p +
-      scale_y_continuous(
-        name = prevalence_label,
+      
+      ggplot2::scale_y_continuous(
+        name =
+          y_label,
         
-        labels = label_number(
-          accuracy = 0.1,
-          suffix = "%"
+        limits = c(
+          y_lower,
+          y_upper
         ),
         
-        expand = expansion(
-          mult = c(0, 0.08)
+        labels =
+          scales::label_number(
+            accuracy =
+              y_accuracy,
+            
+            big.mark =
+              ","
+          ),
+        
+        expand =
+          ggplot2::expansion(
+            mult = c(
+              0,
+              0.02
+            )
+          )
+      )
+  }
+  
+  
+  # ===========================================================================
+  # 25. Automatic subtitle
+  # ===========================================================================
+  
+  if (
+    is.null(subtitle)
+  ) {
+    
+    subtitle <- dplyr::case_when(
+      
+      all(
+        c(
+          "ADJUSTED",
+          "CRUDE"
+        ) %in%
+          estimates
+      ) ~
+        paste0(
+          "Crude and adjusted annual estimates ",
+          "with 95% confidence intervals"
+        ),
+      
+      "ADJUSTED" %in%
+        estimates ~
+        paste0(
+          "Adjusted annual estimates ",
+          "with 95% confidence intervals"
+        ),
+      
+      TRUE ~
+        paste0(
+          "Crude annual estimates ",
+          "with 95% confidence intervals"
+        )
+    )
+  }
+  
+  
+  # ===========================================================================
+  # 26. Automatic caption
+  # ===========================================================================
+  
+  if (
+    is.null(caption)
+  ) {
+    
+    caption_parts <-
+      character()
+    
+    
+    if (
+      all(
+        c(
+          "ADJUSTED",
+          "CRUDE"
+        ) %in%
+        estimates
+      )
+    ) {
+      
+      caption_parts <- c(
+        caption_parts,
+        
+        paste0(
+          "Adjusted estimates are shown with solid lines ",
+          "and crude estimates with dashed lines"
         )
       )
-  }
-  
-  
-  # ============================================================
-  # 17. X axis
-  # ============================================================
-  
-  p <- p +
-    scale_x_continuous(
-      breaks = sort(
-        unique(plot_data$YEAR)
-      )
-    )
-  
-  
-  # ============================================================
-  # 18. Caption
-  # ============================================================
-  
-  caption_parts <- c(
-    if (length(estimates) == 2) {
-      "solid lines = crude; dashed lines = adjusted"
-    },
-    "shaded areas = 95% CI"
-  )
-  
-  if (show_counts) {
-    caption_parts <- c(
-      caption_parts,
-      "bars = annual denominator population"
-    )
-  }
-  
-  if (!is.null(reference_data)) {
-    caption_parts <- c(
-      caption_parts,
-      "grey lines = ALS prevalence among patients with DM"
-    )
-  }
-  
-  
-  # ============================================================
-  # 19. Labels
-  # ============================================================
-  
-  subtitle_text <- if (length(estimates) == 2) {
-    "Crude and adjusted prevalence with 95% confidence intervals"
-  } else if (estimates == "adjusted") {
-    "Adjusted prevalence with 95% confidence intervals"
-  } else {
-    "Crude prevalence with 95% confidence intervals"
-  }
-  
-  
-  p <- p +
-    labs(
-      title = paste0(
-        "Annual Medication Use Prevalence Among ",
-        tools::toTitleCase(type_label)
-      ),
+    }
+    
+    
+    if (
+      ci_display ==
+      "errorbar"
+    ) {
       
-      subtitle = subtitle_text,
-      
-      x = "Year",
-      
-      color = "Medication",
-      fill = "Medication",
-      
-      caption = paste(
+      caption_parts <- c(
         caption_parts,
-        collapse = "; "
+        "Error bars indicate 95% confidence intervals"
       )
-    )
+    }
+    
+    
+    if (
+      ci_display ==
+      "ribbon"
+    ) {
+      
+      caption_parts <- c(
+        caption_parts,
+        "Shaded bands indicate 95% confidence intervals"
+      )
+    }
+    
+    
+    if (
+      !is.null(bar_population)
+    ) {
+      
+      caption_parts <- c(
+        caption_parts,
+        
+        paste0(
+          "Light-grey bars represent the annual denominator ",
+          "for population = ",
+          bar_population
+        )
+      )
+    }
+    
+    
+    caption <- if (
+      length(caption_parts) > 0
+    ) {
+      
+      paste0(
+        paste(
+          caption_parts,
+          collapse = "; "
+        ),
+        "."
+      )
+      
+    } else {
+      NULL
+    }
+  }
   
   
-  # ============================================================
-  # 20. Theme
-  # ============================================================
+  # ===========================================================================
+  # 27. Final labels and styling
+  # ===========================================================================
   
   p <- p +
-    theme_minimal(
-      base_size = 13
+    
+    ggplot2::labs(
+      title =
+        title,
+      
+      subtitle =
+        subtitle,
+      
+      caption =
+        caption
     ) +
     
-    theme(
-      plot.title = element_text(
-        face = "bold",
-        size = 16
-      ),
+    ggplot2::guides(
       
-      plot.subtitle = element_text(
-        size = 11
-      ),
+      color =
+        ggplot2::guide_legend(
+          order = 1,
+          
+          override.aes = list(
+            linetype = "solid",
+            linewidth = 1.1
+          )
+        ),
       
-      axis.title = element_text(
-        face = "bold"
-      ),
+      # Shape is encoded in the color legend.
+      shape =
+        "none",
       
-      axis.text.x = element_text(
-        angle = 45,
-        hjust = 1
-      ),
+      fill =
+        "none",
       
-      panel.grid.minor = element_blank(),
+      linetype =
+        ggplot2::guide_legend(
+          order = 2,
+          
+          override.aes = list(
+            color = "grey20",
+            linewidth = 1.1
+          )
+        )
+    ) +
+    
+    theme_publication(
+      base_size = 11,
       
-      legend.position = "bottom",
-      
-      legend.title = element_text(
-        face = "bold"
-      ),
-      
-      plot.margin = margin(
-        10,
-        15,
-        10,
-        10
-      )
+      rotate_x =
+        length(
+          unique(
+            plot_data$YEAR
+          )
+        ) > 12
     )
   
   
@@ -1533,315 +1600,7 @@ plot_med_prevalence <- function(
 }
 
 
-plot_demo_profile<-function(
-  df,
-  ncol = 1
-){
-  #------------------------------------------------------------
-  # selective unpivot
-  #------------------------------------------------------------
-  
-  plot_df <- bind_rows(
-    
-    # Age: retain original units (years)
-    df %>%
-      transmute(
-        YEAR,
-        COHORT,
-        measure = "Age",
-        value = AVG_AGE,
-        sd = SD_AGE,
-        ymin = AVG_AGE - 1.96*SD_AGE/sqrt(N),
-        ymax = AVG_AGE + 1.96*SD_AGE/sqrt(N),
-        value_label = sprintf("%.1f (%.1f)", AVG_AGE, SD_AGE)
-      ),
-    
-    # Male proportion: convert to %
-    df %>%
-      transmute(
-        YEAR,
-        COHORT,
-        measure = "Male",
-        value = 100 * MALE_PROP,
-        sd = 100 * SD_MALE_PROP,
-        ymin = pmax(0, 100 * (MALE_PROP - 1.96*SD_MALE_PROP/sqrt(N))),
-        ymax = pmin(100, 100 * (MALE_PROP + 1.96*SD_MALE_PROP/sqrt(N))),
-        value_label = sprintf(
-          "%.1f%% (%.1f%%)",
-          100 * MALE_PROP,
-          100 * SD_MALE_PROP
-        )
-      ),
-    
-    # Non-white proportion: convert to %
-    df %>%
-      transmute(
-        YEAR,
-        COHORT,
-        measure = "Non-white",
-        value = 100 * NON_WHITE_PROP,
-        sd = 100 * SD_NON_WHITE_PROP,
-        ymin = pmax(0, 100 * (NON_WHITE_PROP - 1.96*SD_NON_WHITE_PROP/sqrt(N))),
-        ymax = pmin(100, 100 * (NON_WHITE_PROP + 1.96*SD_NON_WHITE_PROP/sqrt(N))),
-        value_label = sprintf(
-          "%.1f%% (%.1f%%)",
-          100 * NON_WHITE_PROP,
-          100 * SD_NON_WHITE_PROP
-        )
-      )
-  ) %>%
-    mutate(
-      measure = factor(
-        measure,
-        levels = c("Age", "Male", "Non-white")
-      )
-    )
-  
-  
-  #------------------------------------------------------------
-  # get first and last observations for each cohort / measure
-  #------------------------------------------------------------
-  
-  label_start <- plot_df %>%
-    group_by(COHORT, measure) %>%
-    slice_min(YEAR, n = 1, with_ties = FALSE) %>%
-    ungroup()
-  
-  label_end <- plot_df %>%
-    group_by(COHORT, measure) %>%
-    slice_max(YEAR, n = 1, with_ties = FALSE) %>%
-    ungroup()
-  
-  
-  #------------------------------------------------------------
-  # publication-friendly color palette
-  # Okabe-Ito colors; expand/change if you have >4 cohorts
-  #------------------------------------------------------------
-  
-  cohort_levels <- unique(plot_df$COHORT)
-  
-  cohort_colors <- c(
-    "#0072B2", # blue
-    "#D55E00", # vermillion
-    "#009E73", # green
-    "#CC79A7", # reddish purple
-    "#E69F00", # orange
-    "#56B4E9", # sky blue
-    "#000000"  # black
-  )
-  
-  names(cohort_colors) <- cohort_levels
-  
-  cohort_colors <- cohort_colors[cohort_levels]
-  
-  
-  #------------------------------------------------------------
-  # publication-ready figure
-  #------------------------------------------------------------
-  
-  p <- ggplot(
-    plot_df,
-    aes(
-      x = YEAR,
-      y = value,
-      color = COHORT,
-      group = COHORT
-    )
-  ) +
-    
-    # ± MOE at each point
-    geom_errorbar(
-      aes(ymin = ymin, ymax = ymax),
-      width = 0.10,
-      linewidth = 0.45,
-      alpha = 0.40
-    ) +
-    
-    # Temporal trajectory
-    geom_line(
-      linewidth = 0.95,
-      alpha = 0.95
-    ) +
-    
-    # Observed value
-    geom_point(
-      size = 2.2
-    ) +
-    
-  #----------------------------------------------------------
-  # Beginning-year annotation: value (SD)
-  #----------------------------------------------------------
-  
-  geom_label_repel(
-    data = label_start,
-    aes(label = value_label),
-    nudge_x = -0.35,
-    direction = "y",
-    hjust = 1,
-    size = 3.0,
-    fill = "white",
-    alpha = 1,
-    label.size = 0.2,
-    label.r = unit(0.12, "lines"),
-    label.padding = unit(0.15, "lines"),
-    box.padding = 0.35,
-    point.padding = 0.25,
-    min.segment.length = 0,
-    segment.size = 0.30,
-    segment.alpha = 0.45,
-    seed = 123,
-    max.overlaps = Inf,
-    show.legend = FALSE
-  ) + 
-    
-  #----------------------------------------------------------
-  # End-year annotation:
-  # Cohort + value (SD), directly labeling each trajectory
-  #----------------------------------------------------------
-  
-  geom_label_repel(
-    data = label_end,
-    aes(label = value_label),
-    nudge_x = 0.35,
-    direction = "y",
-    hjust = 0,
-    size = 3.0,
-    fill = "white",
-    alpha = 1,
-    label.size = 0.2,
-    label.r = unit(0.12, "lines"),
-    label.padding = unit(0.15, "lines"),
-    box.padding = 0.35,
-    point.padding = 0.25,
-    min.segment.length = 0,
-    segment.size = 0.30,
-    segment.alpha = 0.45,
-    seed = 456,
-    max.overlaps = Inf,
-    show.legend = FALSE
-  ) + 
-    
-  #----------------------------------------------------------
-  # Separate panels with meaningful labels
-  #----------------------------------------------------------
-  
-  facet_wrap(
-    ~ measure,
-    ncol = ncol,
-    scales = "free_y",
-    labeller = as_labeller(
-      c(
-        "Age" = "Age, years",
-        "Male" = "Male, %",
-        "Non-white" = "Non-white, %"
-      )
-    )
-  ) +
-    
-  #----------------------------------------------------------
-  # X axis
-  # Extra space accommodates first/end annotations
-  #----------------------------------------------------------
-  
-  scale_x_continuous(
-    breaks = sort(unique(plot_df$YEAR)),
-    expand = expansion(mult = c(0.13, 0.25))
-  ) +
-    
-    # Colorblind-friendly palette
-    scale_color_manual(
-      values = cohort_colors
-    ) +
-    
-  #----------------------------------------------------------
-  # Labels
-  #----------------------------------------------------------
-  
-  labs(
-    x = "Calendar year",
-    y = NULL,
-    color = "COHORT",
-    caption = paste0(
-      "Points represent annual estimates; error bars indicate ±1 SD. ",
-      "Annotations show estimate (SD) at the first and last observed years. ",
-      "Cohorts are labeled directly at the right endpoint."
-    )
-  ) +
-    
-    # Allow endpoint annotations outside plotting region
-    coord_cartesian(
-      clip = "off"
-    ) +
-    
-    #----------------------------------------------------------
-  # Publication styling
-  #----------------------------------------------------------
-  
-  theme_classic(base_size = 11) +
-    
-    theme(
-      
-      # Remove legend because cohorts are directly labeled
-      legend.position = "bottom",
-      legend.title = element_text(face = "bold"),
-      legend.text = element_text(size = 9),
-      legend.key.width = unit(1.4, "lines"),
-      
-      # Facet labels
-      strip.background = element_blank(),
-      strip.placement = "outside",
-      
-      strip.text.y.left = element_text(
-        angle = 0,
-        face = "bold",
-        hjust = 1,
-        size = 10.5,
-        margin = margin(r = 8)
-      ),
-      
-      # Axis formatting
-      axis.title.x = element_text(
-        face = "bold",
-        size = 10.5,
-        margin = margin(t = 8)
-      ),
-      
-      axis.text.x = element_text(
-        size = 9,
-        angle = 45,
-        hjust = 1,
-        vjust = 1
-      ),
-      
-      axis.text.y = element_text(
-        size = 9,
-      ),
-      
-      axis.ticks = element_line(
-        linewidth = 0.35
-      ),
-      
-      axis.line = element_line(
-        linewidth = 0.45
-      ),
-      
-      # Panel spacing
-      panel.spacing.y = unit(1.15, "lines"),
-      
-      # Caption
-      plot.caption = element_text(
-        hjust = 0,
-        size = 8.5,
-        lineheight = 1.15,
-        margin = margin(t = 10)
-      ),
-      
-      # Extra room for left/right annotations
-      plot.margin = margin(
-        t = 10,
-        r = 10,
-        b = 10,
-        l = 10
-      )
-    )
-}
+
+
+
+
