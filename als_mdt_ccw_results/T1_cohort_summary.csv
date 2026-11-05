@@ -1,9 +1,12 @@
 Metric,Value
-Unique ALS patients,"4,448"
-Strategy clones (A-H),"35,584"
-Person-period rows,"439,801"
-Deaths,"2,272"
-"Died, %",51.1%
-Person-years of follow-up,"12,994"
-"Median follow-up, years (IQR)",1.6 (0.7-3.7)
-"Median age at diagnosis, years (IQR)",67 (58-73)
+Unique ALS patients,"4,316"
+Strategy clones,"34,528"
+Person-period rows,"266,090"
+Deaths,"2,411"
+"Died, %",55.9%
+Person-years of follow-up,"13,877"
+"Median follow-up, years (IQR)",1.8 (0.7–4.5)
+"Median age at diagnosis, years (IQR)",69 (62–75)
+Strategy A observed / assessable,"1,734"
+All others observed / assessable,"2,582"
+Grace-end adherence not assessable,0
