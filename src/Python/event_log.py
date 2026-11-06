@@ -299,7 +299,9 @@ def _build_als_dxrxpx(session: Session, site: str):
             "CSF",
             "GeneticTesting",
             "PulmonaryFunctionTesting",
-            "MuscleStrengthTesting"
+            "MuscleStrengthTesting",
+            "OfficeVisit",
+            "MDT",
         ],
         sel_domain = "px"
     )
@@ -486,7 +488,7 @@ def main():
         "UTSW",
         "UU",
         "WASHU",
-        # "CMS"
+        "CMS"
     ]
 
     build_event_logs(session, site_lst)

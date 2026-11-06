@@ -5,7 +5,7 @@
 #   GROUSE_ANALYTICS_DB.SX_ALS_GPC.ALS_MDT_CCW_<interval>_<grace>
 #
 # Strategies (branching lattice, not a single cumulative ladder):
-#   A = Neurology-centered care
+#   A = Neurology care
 #   B = A + Rehab
 #   C = A + SLP
 #   D = A + Respiratory
@@ -18,10 +18,10 @@
 #   Overall survival from ALS1DX_DATE
 #
 # CCW:
-#   - all patients cloned into strategies A-E
-#   - B-H artificially censored at grace-period end if required
+#   - all patients cloned into strategies A-H
+#   - A-H artificially censored at grace-period end if required
 #     composition not achieved
-#   - stabilized IPCW used after grace period
+#   - stabilized IPCW used after grace period for each strategy with censoring
 #
 # Data manipulation is tidyverse throughout (dplyr / tidyr / purrr / stringr /
 # readr). Modelling packages without a tidyverse analogue are retained:
@@ -30,7 +30,7 @@
 #   - broom     (tidy model output)
 #   - patchwork (figure composition)
 #
-# Note on scale: the person-period table is expanded 5x by cloning. dplyr will
+# Note on scale: the person-period table is expanded 8x by cloning. dplyr will
 # handle it, but for very large inputs a data.table or dtplyr backend for the
 # weighting joins/aggregations will be materially faster.
 # ==============================================================================
@@ -75,8 +75,8 @@ REFERENCE_STRATEGY <- "A"
 
 strategy_levels <- c("A", "B", "C", "D", "E", "F", "G", "H")
 
-# Every non-reference arm is IPC-weighted; the reference arm carries weight 1.
-treated_strategies <- setdiff(strategy_levels, REFERENCE_STRATEGY)
+# Every arm can be artificially censored, including the reference arm.
+weighted_strategies <- strategy_levels
 
 strategy_labels <- c(
   A = "Neurology-centered",
@@ -151,14 +151,13 @@ dir.create(OUTPUT_DIR, recursive = TRUE, showWarnings = FALSE)
 # 2. BASIC DATA PREPARATION
 # ==============================================================================
 
+# Apply the same outcome/censor-year cohort restriction to every clone.
 ccw <- ccw %>%
   mutate(
     STRATEGY = factor(STRATEGY, levels = strategy_levels),
     PATID = as.character(PATID)
   ) %>%
-  filter(
-    (STRATEGY=='A' & (DEATH_IND == 1 | CENSOR_YEAR <= 2020)) | STRATEGY != 'A'
-  )
+  filter(DEATH_IND == 1 | CENSOR_YEAR <= 2020)
 
 
 # ==============================================================================
@@ -417,8 +416,7 @@ prepare_ipcw_matrix <- function(dt, variables) {
 # ==============================================================================
 # 7. FIT STRATEGY-SPECIFIC IPCW MODELS
 #
-#   A:      no artificial censoring; weight = 1
-#   B-E:    model Pr(adherent at end of grace | covariates)
+#   A-H: model Pr(adherent at end of grace | covariates)
 #
 # Numerator:   strategy-specific marginal adherence probability
 # Denominator: ridge logistic regression (baseline + time-varying history)
@@ -435,13 +433,15 @@ fit_ipcw_strategy <- function(
 ) {
   
   d <- dt %>% filter(STRATEGY == strategy_value)
-  
-  if (strategy_value == REFERENCE_STRATEGY) {
-    d <- d %>% mutate(P_NUM = 1, P_DEN = 1, SW_RAW = 1)
-    return(list(data = d, model = NULL))
+
+  if (nrow(d) == 0) {
+    stop("No grace-period risk-set rows for strategy ", strategy_value, ".")
   }
   
   y <- as.integer(d$ADHERENT_AT_GRACE_END == 1)
+  if (anyNA(y)) {
+    stop("Missing adherence status for strategy ", strategy_value, ".")
+  }
   
   n_adherent <- sum(y == 1)
   n_nonadherent <- sum(y == 0)
@@ -450,6 +450,14 @@ fit_ipcw_strategy <- function(
     "\nStrategy", strategy_value, ":",
     n_adherent, "adherent /", n_nonadherent, "nonadherent\n"
   )
+
+  if (n_nonadherent == 0) {
+    d <- d %>% mutate(P_NUM = 1, P_DEN = 1, SW_RAW = 1)
+    return(list(data = d, model = NULL))
+  }
+  if (n_adherent == 0) {
+    stop("No adherent clones for strategy ", strategy_value, "; IPCW cannot be estimated.")
+  }
   
   if (n_adherent < 5 || n_nonadherent < 5) {
     warning(
@@ -515,7 +523,7 @@ fit_ipcw_strategy <- function(
 
 
 # ==============================================================================
-# 8. ESTIMATE IPCW FOR A-E
+# 8. ESTIMATE IPCW FOR A-H
 # ==============================================================================
 
 ipcw_results <- strategy_levels %>%
@@ -551,7 +559,7 @@ grace_weights <- grace_weights %>%
       SW_RAW[ADHERENT_AT_GRACE_END == 1], WEIGHT_UPPER_Q, na.rm = TRUE
     ),
     SW_TRUNC = if_else(
-      STRATEGY %in% treated_strategies & ADHERENT_AT_GRACE_END == 1,
+      STRATEGY %in% weighted_strategies & ADHERENT_AT_GRACE_END == 1,
       pmin(pmax(SW_RAW, .lo), .hi),
       SW_RAW
     )
@@ -588,13 +596,13 @@ ccw <- ccw %>%
 # Final time-varying analysis weight
 #
 # Through grace:  weight = 1
-# After grace:    A = 1 ; B-E adherent clones = stabilized weight
+# After grace:    adherent clones in each strategy = stabilized weight
 # ------------------------------------------------------------------------------
 
 ccw <- ccw %>%
   mutate(
     IPCW = if_else(
-      INTERVAL_START > GRACE_END_DATE & STRATEGY != REFERENCE_STRATEGY,
+      INTERVAL_START > GRACE_END_DATE,
       SW_TRUNC_POSTGRACE,
       1
     )
@@ -648,7 +656,7 @@ write_csv(weight_diagnostics, file.path(OUTPUT_DIR, "02_ipcw_diagnostics.csv"))
 # ==============================================================================
 
 plot_weight_data <- grace_weights %>%
-  filter(STRATEGY != REFERENCE_STRATEGY, ADHERENT_AT_GRACE_END == 1)
+  filter(ADHERENT_AT_GRACE_END == 1)
 
 p_weight <- ggplot(plot_weight_data, aes(x = SW_TRUNC, fill = STRATEGY)) +
   geom_histogram(bins = 40, alpha = 0.65, position = "identity") +
@@ -668,7 +676,6 @@ p_weight <- ggplot(plot_weight_data, aes(x = SW_TRUNC, fill = STRATEGY)) +
 # ==============================================================================
 
 p_ess <- weight_diagnostics %>%
-  filter(STRATEGY != REFERENCE_STRATEGY) %>%
   ggplot(aes(x = STRATEGY, y = ESS)) +
   geom_col() +
   geom_text(aes(label = round(ESS)), vjust = -0.4) +
@@ -713,7 +720,7 @@ selection_balance_one_strategy <- function(dt, strategy_value, denominator_vars)
   
   d <- dt %>% filter(STRATEGY == strategy_value)
   
-  if (strategy_value == REFERENCE_STRATEGY || nrow(d) == 0) {
+  if (nrow(d) == 0) {
     return(tibble())
   }
   
@@ -757,7 +764,7 @@ selection_balance_one_strategy <- function(dt, strategy_value, denominator_vars)
 }
 
 
-balance_dt <- treated_strategies %>%
+balance_dt <- weighted_strategies %>%
   map(
     ~ selection_balance_one_strategy(
       grace_weights,

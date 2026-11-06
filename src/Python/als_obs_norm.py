@@ -189,23 +189,41 @@ def build_cbc_table(session: Session, ref_cohort: str, tgt_long_tbl: str):
     all_obs = session.table(tgt_long_tbl)
 
     cbc_codes = {
-        "WBC": ["6690-2"],
+        # White blood cells
+        "WBC": ["6690-2", "26464-8"],
+
+        # Red blood cells
         "RBC": ["789-8"],
         "HGB": ["718-7"],
         "HCT": ["4544-3"],
         "MCV": ["787-2"],
         "MCH": ["785-6"],
         "MCHC": ["786-4"],
-        "RDW_CV": ["788-0"],
-        "RDW_SD": ["21000-5"],
+
+        # Red cell distribution width
+        "RDW_CV": ["788-0", "115741-1"],
+        "RDW_SD": ["115742-9", "21000-5"],
+
+        # Platelets
         "PLT": ["777-3"],
         "MPV": ["32623-1"],
-        "NEUT": ["751-8"],
-        "LYMPH": ["731-0"],
-        "MONO": ["742-7"],
-        "EOS": ["711-2"],
-        "BASO": ["704-7"],
+        "PDW": ["32207-3"],
+
+        # Absolute differential counts
+        "NEUT": ["751-8", "26499-4"],
+        "LYMPH": ["731-0", "26474-7"],
+        "MONO": ["742-7", "26484-6"],
+        "EOS": ["711-2", "26449-9"],
+        "BASO": ["704-7", "26444-0"],
+
+        # Differential percentages
+        "NEUT_PCT": ["770-8", "26511-6"],
+        "LYMPH_PCT": ["736-9", "26478-8"],
+        "MONO_PCT": ["5905-5"],
+        "EOS_PCT": ["713-8", "26450-7"],
+        "BASO_PCT": ["706-2"],
     }
+
     all_codes = [code for codes in cbc_codes.values() for code in codes]
 
     cbc_group_col = (
@@ -220,11 +238,17 @@ def build_cbc_table(session: Session, ref_cohort: str, tgt_long_tbl: str):
         .when(col("OBS_CODE").in_(cbc_codes["RDW_SD"]), lit("RDW_SD"))
         .when(col("OBS_CODE").in_(cbc_codes["PLT"]), lit("PLT"))
         .when(col("OBS_CODE").in_(cbc_codes["MPV"]), lit("MPV"))
+        .when(col("OBS_CODE").in_(cbc_codes["PDW"]), lit("PDW"))
         .when(col("OBS_CODE").in_(cbc_codes["NEUT"]), lit("NEUT"))
         .when(col("OBS_CODE").in_(cbc_codes["LYMPH"]), lit("LYMPH"))
         .when(col("OBS_CODE").in_(cbc_codes["MONO"]), lit("MONO"))
         .when(col("OBS_CODE").in_(cbc_codes["EOS"]), lit("EOS"))
         .when(col("OBS_CODE").in_(cbc_codes["BASO"]), lit("BASO"))
+        .when(col("OBS_CODE").in_(cbc_codes["NEUT_PCT"]), lit("NEUT_PCT"))
+        .when(col("OBS_CODE").in_(cbc_codes["LYMPH_PCT"]), lit("LYMPH_PCT"))
+        .when(col("OBS_CODE").in_(cbc_codes["MONO_PCT"]), lit("MONO_PCT"))
+        .when(col("OBS_CODE").in_(cbc_codes["EOS_PCT"]), lit("EOS_PCT"))
+        .when(col("OBS_CODE").in_(cbc_codes["BASO_PCT"]), lit("BASO_PCT"))
         .otherwise(lit(None))
     )
 
@@ -332,21 +356,49 @@ def build_metabolic_table(session: Session, ref_cohort: str, tgt_long_tbl: str):
     all_obs = session.table(tgt_long_tbl)
 
     metabolic_codes = {
+        # Electrolytes
         "NA": ["2951-2"],
         "K": ["2823-3"],
         "CL": ["2075-0"],
         "CO2": ["2028-9"],
+        "HCO3": ["1963-8"],
+        "AGAP": ["33037-3"],
+
+        # Glucose
         "GLU": ["2345-7"],
+
+        # Renal function
         "BUN": ["3094-0"],
         "CR": ["2160-0"],
+        "BUN_CR_RATIO": ["3097-3"],
+
+        # Estimated GFR
+        "EGFR": [
+            "98979-8",  # CKD-EPI 2021 creatinine
+            "62238-1",  # CKD-EPI creatinine, earlier
+            "33914-3",  # MDRD
+            "77147-7",  # MDRD
+        ],
+        "EGFR_CR_CYS": [
+            "98980-6",  # CKD-EPI 2021 creatinine+cystatin C
+        ],
+
+        # Minerals
         "CA": ["17861-6"],
+
+        # Proteins
         "TPRO": ["2885-2"],
         "ALB": ["1751-7"],
+        "GLOB": ["10834-0", "2336-6"],
+        "AGR": ["1759-0"],
+
+        # Liver-associated measurements
         "TBILI": ["1975-2"],
         "ALP": ["6768-6"],
         "AST": ["1920-8"],
         "ALT": ["1742-6"],
     }
+
     all_codes = [code for codes in metabolic_codes.values() for code in codes]
 
     metabolic_group_col = (

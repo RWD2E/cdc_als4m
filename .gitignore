@@ -12,7 +12,16 @@ uv.lock
 .config*
 *.Rhistory
 .python*
+_*
 
 # any data files
 *data/
 *private/
+
+# temporary files
+*.log
+*.tmp
+*.swp
+
+# test folder
+/tests*

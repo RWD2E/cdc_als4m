@@ -1,21 +1,47 @@
 
 # ==============================================================================
-# ALS MDT CCW COHORT — TABLE 1 AND PRESENTATION SUMMARIES
-# Outputs: HTML and CSV only (no PNG)
+# ALS MDT CCW COHORT — TABLE 1 & PRESENTATION SUMMARIES
+#
+# Standalone companion to the CCW analysis. Assumes the person-period CCW table
+# `ccw` (from ALS_MDT_CCW_90D) is already in the workspace; if the main analysis
+# script has been sourced, it will reuse REFERENCE_STRATEGY / strategy_levels /
+# strategy_labels / OUTPUT_DIR, otherwise sensible defaults are derived.
+#
+# Design notes (worth a line on the slide):
+#   * Table 1 is at the UNIQUE-PATIENT level. Cloning makes every strategy arm
+#     identical at baseline, so a strategy-stratified baseline table is vacuous.
+#   * Vital status and follow-up use the original patient end dates, not the
+#     potentially artificially censored reference-arm intervals.
+#
+# Outputs (in OUTPUT_DIR):
+#   T1_baseline_characteristics.*  html / png
+#   T1_cohort_summary.*            html / png
+#   T1_adherence_by_strategy.*     html / png
+#   plus CSVs of the underlying numbers
 # ==============================================================================
 
-# One row per unique patient for baseline descriptions. Every patient is cloned
-# into every strategy; clone STRATEGY is NOT an observed treatment group.
-# For the A-versus-others baseline table, each patient is classified by the
-# highest COMPLEXITY strategy achieved by day 180 (H > G > ... > A). This is an
-# observed post-index grouping, not the randomized/assigned clone strategy.
 
-pacman::p_load(tidyverse, gtsummary, gt, labelled, scales)
+# ------------------------------------------------------------------------------
+# 0. Packages
+# ------------------------------------------------------------------------------
+pacman::p_load(
+  tidyverse,
+  gtsummary,
+  gt,
+  flextable,
+  labelled,
+  scales
+)
 
-# 1. Configuration ------------------------------------------------------------
-if (!exists("ccw")) {
-  ccw <- readRDS("./data/als_mdt_ccw_60_180.rda")  # RDS-format object despite suffix
-}
+
+# ------------------------------------------------------------------------------
+# 1. Config fallbacks (so the script runs on its own)
+# ------------------------------------------------------------------------------
+
+# Match the common cohort restriction in the main analysis.
+ccw <- readRDS("./data/als_mdt_ccw.rda") %>%
+  filter(DEATH_IND == 1 | CENSOR_YEAR <= 2020)
+
 if (!exists("REFERENCE_STRATEGY")) REFERENCE_STRATEGY <- "A"
 if (!exists("strategy_levels")) {
   strategy_levels <- sort(unique(as.character(ccw$STRATEGY)))
@@ -51,15 +77,12 @@ patient_baseline <- ref_arm %>%
   slice_head(n = 1) %>%
   ungroup()
 
-# Assumes the reference arm is not artificially censored. Verify in the CCW
-# construction; if A is censored for deviation, outcomes are not natural-course.
-patient_outcome <- ref_arm %>%
-  group_by(PATID) %>%
-  summarise(
-    DIED = as.integer(any(EVENT == 1, na.rm = TRUE)),
-    FOLLOWUP_DAYS = if (all(is.na(TSTOP))) NA_real_
-    else max(TSTOP, na.rm = TRUE),
-    .groups = "drop"
+# Natural outcome / follow-up, regardless of reference-arm artificial censoring.
+patient_outcome <- patient_baseline %>%
+  transmute(
+    PATID,
+    DIED = as.integer(!is.na(DEATH_IND) & DEATH_IND == 1 & CENSOR_DATE <= ANALYTIC_END_DATE),
+    FOLLOWUP_DAYS = OBSERVED_FOLLOWUP_DAYS + 1
   )
 
 # 3. Select Table 1 variables -------------------------------------------------
@@ -203,82 +226,44 @@ theme_gtsummary_compact()
 t1_baseline_vars <- unique(c("AGE_AT_INDEX", "AGE_GROUP", "SEX", "RACE",
                              "HISPANIC", lab_vars, comorbid_keep))
 
-make_t1 <- function(data, by_var, vars, caption, span, note, test = TRUE) {
-  tab <- data %>%
-    select(all_of(c(vars, by_var))) %>%
-    tbl_summary(
-      by = all_of(by_var),
-      missing = "ifany", missing_text = "Missing",
-      type = list(all_of(lab_vars) ~ "continuous"),
-      statistic = list(
-        all_continuous() ~ "{median} ({p25}, {p75})",
-        all_categorical() ~ "{n} ({p}%)"
-      ),
-      digits = all_continuous() ~ 1
-    ) %>%
-    add_overall(last = FALSE)
-  if (test) {
-    # Fisher's exact test is computationally prohibitive for large/sparse
-    # contingency tables (FEXACT workspace errors). Use rank-sum tests for
-    # continuous variables and simulated chi-square tests for categorical data.
-    tab <- tryCatch(add_p(
-      tab,
-      test = list(
-        all_continuous() ~ "wilcox.test",
-        all_categorical() ~ "chisq.test"
-      ),
-      test.args = all_categorical() ~ list(simulate.p.value = TRUE, B = 2000)
-    ), error = function(e) {
-      warning("Could not add p-values: ", conditionMessage(e))
-      tab
-    })
-  }
-  tab %>%
-    bold_labels() %>%
-    modify_header(label ~ "**Characteristic**") %>%
-    modify_spanning_header(all_stat_cols() ~ span) %>%
-    modify_caption(caption) %>%
-    modify_footnote(all_stat_cols() ~ note)
-}
+tbl1 <- patient_t1 %>%
+  select(all_of(t1_body_vars), VITAL_STATUS) %>%
+  tbl_summary(
+    by = VITAL_STATUS,
+    missing = "ifany",
+    missing_text = "Missing",
+    statistic = list(
+      all_continuous()  ~ "{median} ({p25}, {p75})",
+      all_categorical() ~ "{n} ({p}%)"
+    ),
+    digits = all_continuous() ~ 1
+  ) %>%
+  add_overall(last = FALSE)
 
-tbl1 <- make_t1(
-  patient_t1, "VITAL_STATUS", c(t1_baseline_vars, "FOLLOWUP_YEARS"),
-  "**Table 1. ALS cohort characteristics by vital status**",
-  "**Vital status at end of follow-up**",
-  paste("Median (IQR) or n (%); one row per patient.",
-        "Follow-up and vital status are derived from the reference clone.")
-)
+# Descriptive p-values (died vs alive). Wrapped: skip cleanly if any var chokes.
+tbl1 <- tryCatch(add_p(tbl1), error = function(e) tbl1)
 
-patient_t1_a <- patient_t1 %>%
-  filter(OBSERVED_STRATEGY_GROUP != "Not assessable") %>%
-  droplevels()
-if (nrow(patient_t1_a) == 0L) {
-  stop("No patients have an assessable highest achieved strategy by day 180. ",
-       "Check ADHERENT_AT_GRACE_END derivation and interval endpoints.")
-}
-has_both_groups <- n_distinct(patient_t1_a$OBSERVED_STRATEGY_GROUP) == 2L
-if (!has_both_groups) {
-  warning("Only one achieved-strategy group observed; Table 2 will show that ",
-          "group without a between-group p-value.")
-}
+tbl1 <- tbl1 %>%
+  bold_labels() %>%
+  modify_header(label ~ "**Characteristic**") %>%
+  modify_spanning_header(
+    all_stat_cols() ~ "**Vital status at end of follow-up**"
+  ) %>%
+  modify_caption(
+    "**Table 1. Baseline characteristics of the ALS multidisciplinary-care cohort at index diagnosis**"
+  ) %>%
+  modify_footnote(
+    all_stat_cols() ~ paste(
+      "Median (IQR) for continuous variables; n (%) for categorical.",
+      "One row per patient; status and follow-up use the natural or administrative end date."
+    )
+  )
 
-tbl1_a <- make_t1(
-  patient_t1_a, "OBSERVED_STRATEGY_GROUP", t1_baseline_vars,
-  "**Table 2. Baseline characteristics by highest MDT strategy achieved within 180 days**",
-  "**Strategy A versus B–H (highest achieved)**",
-  paste("Median (IQR) or n (%); one row per patient.",
-        "A is least complex; H is most complex.",
-        "Post-index descriptive classification; unassessable patients excluded."),
-  test = has_both_groups
-)
 
-# 7. Cohort overview ----------------------------------------------------------
-safe_quantile <- function(x) {
-  if (all(is.na(x))) return(rep(NA_real_, 3L))
-  unname(quantile(x, probs = c(.25, .5, .75), na.rm = TRUE))
-}
-fu_q <- safe_quantile(patient_t1$FOLLOWUP_YEARS)
-age_q <- safe_quantile(patient_t1$AGE_AT_INDEX)
+# ------------------------------------------------------------------------------
+# 6. Cohort-at-a-glance (CCW structure + outcome)
+# ------------------------------------------------------------------------------
+
 n_patients <- n_distinct(ccw$PATID)
 n_clones <- if ("CLONE_ID" %in% names(ccw)) n_distinct(ccw$CLONE_ID) else NA_integer_
 n_deaths <- sum(patient_outcome$DIED, na.rm = TRUE)
@@ -355,8 +340,30 @@ if (!is.null(adherence_tbl)) {
       `N grace observed` = N_grace_observed,
       `N assessed` = N_assessed,
       `N adherent` = N_adherent,
-      `Adherence among assessed` = scales::percent(Rate_assessed, accuracy = .1)
+      `Adherence` = scales::percent(Rate, 0.1)
     )
+  
+  write_csv(adherence_tbl, file.path(OUTPUT_DIR, "T1_adherence_by_strategy.csv"))
+}
+
+# ------------------------------------------------------------------------------
+# 9. HTML (always) + PNG (best effort; needs webshot2/chromote)
+# ------------------------------------------------------------------------------
+
+gt::gtsave(as_gt(tbl1), file.path(OUTPUT_DIR, "T1_baseline_characteristics.html"))
+gt::gtsave(cohort_gt,   file.path(OUTPUT_DIR, "T1_cohort_summary.html"))
+
+save_png_quietly <- function(gt_obj, file) {
+  tryCatch(
+    gt::gtsave(gt_obj, file),
+    error = function(e) message("PNG export skipped (", conditionMessage(e), "): ", file)
+  )
+}
+
+save_png_quietly(as_gt(tbl1), file.path(OUTPUT_DIR, "T1_baseline_characteristics.png"))
+save_png_quietly(cohort_gt,   file.path(OUTPUT_DIR, "T1_cohort_summary.png"))
+
+if (!is.null(adherence_tbl)) {
   adherence_gt <- adherence_display %>%
     gt() %>%
     tab_header(title = md("**Observed adherence to MDT strategies**")) %>%

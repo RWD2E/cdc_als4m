@@ -1,6 +1,75 @@
+select count(distinct patid), count(*) from ALS_DXRXPX_LONG;
+-- 10,853,298	139,287,065
+-- 22,442,397	497,007,816
+-- 39,117,678	1,959,384,125
+
+select * from PRVDR_LONG 
+where mdt_domain is not null
+limit 5;
+
+select mdt_domain, count(distinct providerid) from PRVDR_LONG 
+where mdt_domain is not null
+group by mdt_domain
+;
+
+-- M, REHAB	146936
+-- N, NEURO	26990
+-- D, DIETITION	10335
+-- R, RESPIRATORY	14795
+-- P, PSYCHIATRY	97637
+-- S, SLP 11169
+
+select distinct mdt_domain, descriptive_text
+from GROUSE_DB_DEV_CMS.METADATA.Z_NUCC_TXMY
+where mdt_domain = 'S'
+;
+
+select * from ALS_CASE_TABLE1
+limit 5;
+
+select count(distinct patid), count(*) 
+from ALS_CASE_TABLE1
+where CMS_ENR_START_DT is not null
+and MDT_BASE_N = 1
+;
+
+create or replace table ALS_CASE_TABLE1_CCW as 
+select * from ALS_CASE_TABLE1 
+where CMS_ENR_START_DT is not null
+and MDT_BASE_N = 1
+;
+
+select count(distinct patid), count(*) 
+from ALS_CASE_TABLE1_CCW 
+;
+
+select * from GROUSE_ANALYTICS_DB.SX_ALS_GPC.ALS_MDT_CCW_180
+limit 20;
+
+select * from GROUSE_DB.CMS_PCORNET_CDM.LDS_ADDRESS_GEOCODE
+limit 5;
+
+
+select * from GROUSE_DB.CMS_PCORNET_CDM.LDS_ENROLLMENT
+where RAW_BASIS = 'DUAL'
+limit 5
+;
+
+select * from GROUSE_ANALYTICS_DB.SX_ALS_GPC.ALS_MDT_CCW_60_180
+limit 20;
+
+select * from CMS_RSEI_PP limit 5;
+
+select * from CMS_RSEI_PP_SUMM_CENSUS_TRACT limit 5;
+
+select * from CMS_RSEI_PP_SUMM_COUNTY  limit 5;
+
+select * from CMS_RSEI_PP_SUMM_STATE  limit 5;
+
 select count(distinct patid), count(*) from DM_DXRX_LONG;
 -- 4,665,261	359,975,335
 -- 10,776,675	989,220,271
+-- 10,817,829	899,724,281
 
 
 select count(distinct patid) from DM_DXRX_LONG
@@ -9,9 +78,7 @@ where phe_type in ('T2DM','T1DM') and SITE!='CMS';
 
 select count(distinct patid), count(*) from DM_LAB_LONG;
 -- 1,965,409	21,177,216
-select count(distinct patid), count(*) from ALS_DXRXPX_LONG;
--- 10,853,298	139,287,065
--- 22,442,397	497,007,816
+
 
 select * from DM_DXRX_LONG limit 5;
 select * from DM_LAB_LONG limit 5;
@@ -78,6 +145,7 @@ select count(distinct patid), count(*) from PAT_TABLE1;
 
 select * from PAT_TABLE1 limit 5;
 
+select * from GROUSE_ANALYTICS_DB.SX_ALS_GPC.RSEI_GEOGRAPHY_YEAR limit 5;
 
 select * from ALS_CASE_TABLE1 limit 5;
 select count(distinct patid), count(*) from ALS_CASE_TABLE1;
@@ -217,7 +285,7 @@ select count(distinct patid), count(*) from ALS_CASE_TABLE1;
 -- 15680
 
 select count(distinct patid), count(*) from ALS_CASE_TABLE1
-where MDT_DOMAIN = 'N'
+where MDT_BASE_N = 1
 ;
 
 select count(distinct patid), count(*) from ALS_CASE_TABLE1

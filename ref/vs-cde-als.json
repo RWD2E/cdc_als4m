@@ -600,13 +600,13 @@
         "purpose": "physiological markers",
         "relatedArtifact": {
             "class": "core",
-            "valueType": "integer",
+            "valueType": "decimal",
             "valueRange": {
                 "min": 0,
                 "max": 10,
                 "low": {
                     "value": 5,
-                    "unit": "",
+                    "unit": "L",
                     "incld": 1
                 }
             }
@@ -631,19 +631,19 @@
     },
     {
         "id": "C10177",
-        "name": "SlowVitalCapPcntPredctdNormVal",
-        "description": "percentage of the predicted normal value of Slow Vital Capacity (sVC) to grade the severity of the abnormality",
+        "name": "VitalCapacityResltVal",
+        "description": "Value of vital capacity, including slowly exhaled or non-forced vital capacity, representing the maximum volume exhaled after maximal inspiration",
         "topic": "finding",
         "purpose": "physiological markers",
         "relatedArtifact": {
             "class": "core",
-            "valueType": "integer",
+            "valueType": "decimal",
             "valueRange": {
                 "min": 0,
                 "max": 10,
                 "low": {
                     "value": 5,
-                    "unit": "",
+                    "unit": "L",
                     "incld": 1
                 }
             }
@@ -3103,7 +3103,7 @@
                             "op": "in",
                             "value": [
                                 "94002-94005",
-                                "94660-94660"
+                                "94660-94669"
                             ]
                         }
                     ]
@@ -3233,7 +3233,7 @@
     },
     {
         "id": "C020072",
-        "name": "NeurologyVisit",
+        "name": "Neurology",
         "description": "visit to neurologist",
         "topic": "diagnostics/intervention",
         "purpose": "care setting",
@@ -3405,6 +3405,21 @@
                             ]
                         }
                     ]
+                },
+                {
+                    "system": "multum",
+                    "filter": [
+                        {
+                            "property": "codeList",
+                            "op": "exists",
+                            "value": [
+                                "d03869",
+                                "30586",
+                                "37673",
+                                "4078"
+                            ]
+                        }
+                    ]
                 }
             ]
         }
@@ -3472,6 +3487,21 @@
                             ]
                         }
                     ]
+                },
+                {
+                    "system": "multum",
+                    "filter": [
+                        {
+                            "property": "codeList",
+                            "op": "exists",
+                            "value": [
+                                "d08586",
+                                "41217",
+                                "31918",
+                                "38724"
+                            ]
+                        }
+                    ]
                 }
             ]
         }
@@ -3520,6 +3550,19 @@
                             "op": "exists",
                             "value": [
                                 "64406010901"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "system": "multum",
+                    "filter": [
+                        {
+                            "property": "codeList",
+                            "op": "exists",
+                            "value": [
+                                "d10039",
+                                "39352"
                             ]
                         }
                     ]
@@ -3615,8 +3658,8 @@
     },
     {
         "id": "C020078",
-        "name": "SMA",
-        "description": "diagnosis of spinal muscular atrophy",
+        "name": "PMA",
+        "description": "diagnosis of progressive muscular atrophy",
         "topic": "event",
         "purpose": "neurologic",
         "relatedArtifact": {
@@ -3739,6 +3782,2962 @@
                             "value": [
                                 "G31.0"
                             ]
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C020081",
+        "name": "OccupationalTherapy",
+        "description": "visit to occupational therapist",
+        "topic": "diagnostics/intervention",
+        "purpose": "care setting",
+        "relatedArtifact": {
+            "class": "recommended",
+            "valueType": "boolean",
+            "valueRange": {
+                "0": "absence",
+                "1": "presence"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "cms",
+                    "concept": [
+                        {
+                            "code": "67",
+                            "display": "Occupational Therapist"
+                        }
+                    ]
+                },
+                {
+                    "system": "nucc",
+                    "concept": [
+                        {
+                            "code": "225X00000X",
+                            "display": "Occupational Therapist"
+                        },
+                        {
+                            "code": "225XE0001X",
+                            "display": "Occupational Therapist - Environmental Modification"
+                        },
+                        {
+                            "code": "225XE1200X",
+                            "display": "Occupational Therapist - Ergonomics"
+                        },
+                        {
+                            "code": "225XF0002X",
+                            "display": "Occupational Therapist - Feeding, Eating & Swallowing"
+                        },
+                        {
+                            "code": "225XG0600X",
+                            "display": "Occupational Therapist - Gerontology"
+                        },
+                        {
+                            "code": "225XM0800X",
+                            "display": "Occupational Therapist - Mental Health"
+                        },
+                        {
+                            "code": "225XN1300X",
+                            "display": "Occupational Therapist - Neurorehabilitation"
+                        },
+                        {
+                            "code": "225XP0019X",
+                            "display": "Occupational Therapist - Physical Rehabilitation"
+                        }
+                    ]
+                },
+                {
+                    "system": "cpt",
+                    "concept": [
+                        {
+                            "code": "97165",
+                            "display": "Occupational therapy evaluation, low complexity"
+                        },
+                        {
+                            "code": "97166",
+                            "display": "Occupational therapy evaluation, moderate complexity"
+                        },
+                        {
+                            "code": "97167",
+                            "display": "Occupational therapy evaluation, high complexity"
+                        },
+                        {
+                            "code": "97168",
+                            "display": "Occupational therapy re-evaluation"
+                        },
+                        {
+                            "code": "97110",
+                            "display": "Therapeutic exercises"
+                        },
+                        {
+                            "code": "97112",
+                            "display": "Neuromuscular reeducation"
+                        },
+                        {
+                            "code": "97140",
+                            "display": "Manual therapy techniques"
+                        },
+                        {
+                            "code": "97530",
+                            "display": "Therapeutic activities"
+                        },
+                        {
+                            "code": "97535",
+                            "display": "Self-care/home management training"
+                        },
+                        {
+                            "code": "97537",
+                            "display": "Community/work reintegration training"
+                        },
+                        {
+                            "code": "97542",
+                            "display": "Wheelchair management training"
+                        }
+                    ]
+                },
+                {
+                    "system": "hcpcs",
+                    "concept": [
+                        {
+                            "code": "GO",
+                            "display": "Services delivered under an outpatient occupational therapy plan of care"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C020082",
+        "name": "PhysicalTherapy",
+        "description": "visit to physical therapist",
+        "topic": "diagnostics/intervention",
+        "purpose": "care setting",
+        "relatedArtifact": {
+            "class": "recommended",
+            "valueType": "boolean",
+            "valueRange": {
+                "0": "absence",
+                "1": "presence"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "cms",
+                    "concept": [
+                        {
+                            "code": "65",
+                            "display": "Physical Therapist"
+                        }
+                    ]
+                },
+                {
+                    "system": "nucc",
+                    "concept": [
+                        {
+                            "code": "225100000X",
+                            "display": "Physical Therapist"
+                        },
+                        {
+                            "code": "2251G0304X",
+                            "display": "Physical Therapist - Geriatrics"
+                        },
+                        {
+                            "code": "2251N0400X",
+                            "display": "Physical Therapist - Neurology"
+                        },
+                        {
+                            "code": "2251X0800X",
+                            "display": "Physical Therapist - Orthopedic"
+                        }
+                    ]
+                },
+                {
+                    "system": "cpt",
+                    "concept": [
+                        {
+                            "code": "97161",
+                            "display": "Physical therapy evaluation, low complexity"
+                        },
+                        {
+                            "code": "97162",
+                            "display": "Physical therapy evaluation, moderate complexity"
+                        },
+                        {
+                            "code": "97163",
+                            "display": "Physical therapy evaluation, high complexity"
+                        },
+                        {
+                            "code": "97164",
+                            "display": "Physical therapy re-evaluation"
+                        },
+                        {
+                            "code": "97110",
+                            "display": "Therapeutic exercises"
+                        },
+                        {
+                            "code": "97112",
+                            "display": "Neuromuscular reeducation"
+                        },
+                        {
+                            "code": "97116",
+                            "display": "Gait training therapy"
+                        },
+                        {
+                            "code": "97140",
+                            "display": "Manual therapy techniques"
+                        },
+                        {
+                            "code": "97530",
+                            "display": "Therapeutic activities"
+                        },
+                        {
+                            "code": "97535",
+                            "display": "Self-care/home management training"
+                        },
+                        {
+                            "code": "97542",
+                            "display": "Wheelchair management training"
+                        }
+                    ]
+                },
+                {
+                    "system": "hcpcs",
+                    "concept": [
+                        {
+                            "code": "GP",
+                            "display": "Services delivered under an outpatient physical therapy plan of care"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C020083",
+        "name": "PhysicalMedicineRehabilitation",
+        "description": "visit to physical medicine and rehabilitation physician (physiatrist)",
+        "topic": "diagnostics/intervention",
+        "purpose": "care setting",
+        "relatedArtifact": {
+            "class": "recommended",
+            "valueType": "boolean",
+            "valueRange": {
+                "0": "absence",
+                "1": "presence"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "cms",
+                    "concept": [
+                        {
+                            "code": "25",
+                            "display": "Physical Medicine and Rehabilitation"
+                        }
+                    ]
+                },
+                {
+                    "system": "nucc",
+                    "concept": [
+                        {
+                            "code": "208100000X",
+                            "display": "Physical Medicine & Rehabilitation Physician"
+                        },
+                        {
+                            "code": "2081N0008X",
+                            "display": "Neuromuscular Medicine"
+                        },
+                        {
+                            "code": "2081P0004X",
+                            "display": "Spinal Cord Injury Medicine"
+                        },
+                        {
+                            "code": "2081P0010X",
+                            "display": "Pediatric Rehabilitation Medicine"
+                        },
+                        {
+                            "code": "2081P2900X",
+                            "display": "Pain Medicine"
+                        },
+                        {
+                            "code": "2081S0010X",
+                            "display": "Sports Medicine"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C020084",
+        "name": "RespiratoryCare",
+        "description": "visit for respiratory or pulmonary care",
+        "topic": "diagnostics/intervention",
+        "purpose": "care setting",
+        "relatedArtifact": {
+            "class": "recommended",
+            "valueType": "boolean",
+            "valueRange": {
+                "0": "absence",
+                "1": "presence"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "cms",
+                    "concept": [
+                        {
+                            "code": "29",
+                            "display": "Pulmonary Disease"
+                        }
+                    ]
+                },
+                {
+                    "system": "nucc",
+                    "concept": [
+                        {
+                            "code": "207RP1001X",
+                            "display": "Internal Medicine - Pulmonary Disease"
+                        },
+                        {
+                            "code": "227800000X",
+                            "display": "Respiratory Therapist, Certified"
+                        },
+                        {
+                            "code": "227900000X",
+                            "display": "Respiratory Therapist, Registered"
+                        },
+                        {
+                            "code": "2278P1004X",
+                            "display": "Respiratory Therapist, Certified - Pulmonary Diagnostics"
+                        },
+                        {
+                            "code": "2279P1004X",
+                            "display": "Respiratory Therapist, Registered - Pulmonary Diagnostics"
+                        },
+                        {
+                            "code": "2278P1005X",
+                            "display": "Respiratory Therapist, Certified - Pulmonary Rehabilitation"
+                        },
+                        {
+                            "code": "2279P1005X",
+                            "display": "Respiratory Therapist, Registered - Pulmonary Rehabilitation"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C020085",
+        "name": "DietitianCare",
+        "description": "medical nutrition therapy or dietary assessment and intervention provided by a dietitian or qualified nutrition professional; visit for nutrition or dietitian care",
+        "topic": "diagnostics/intervention",
+        "purpose": "care setting",
+        "relatedArtifact": {
+            "class": "recommended",
+            "valueType": "boolean",
+            "valueRange": {
+                "0": "absence",
+                "1": "presence"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "cms",
+                    "concept": [
+                        {
+                            "code": "71",
+                            "display": "Registered Dietitian or Nutrition Professional"
+                        }
+                    ]
+                },
+                {
+                    "system": "nucc",
+                    "concept": [
+                        {
+                            "code": "133V00000X",
+                            "display": "Dietitian, Registered"
+                        },
+                        {
+                            "code": "133VN1004X",
+                            "display": "Dietitian, Registered - Nutrition, Pediatric"
+                        },
+                        {
+                            "code": "133VN1005X",
+                            "display": "Dietitian, Registered - Nutrition, Renal"
+                        },
+                        {
+                            "code": "133VN1006X",
+                            "display": "Dietitian, Registered - Nutrition, Metabolic"
+                        },
+                        {
+                            "code": "133N00000X",
+                            "display": "Nutritionist"
+                        }
+                    ]
+                },
+                {
+                    "system": "cpt",
+                    "concept": [
+                        {
+                            "code": "97802",
+                            "display": "Medical nutrition therapy; initial assessment and intervention, individual, face-to-face"
+                        },
+                        {
+                            "code": "97803",
+                            "display": "Medical nutrition therapy; reassessment and intervention, individual, face-to-face"
+                        },
+                        {
+                            "code": "97804",
+                            "display": "Medical nutrition therapy; group, 2 or more individuals"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C020086",
+        "name": "PsychologicalCare",
+        "description": "visit for psychological, psychotherapy, or behavioral health care",
+        "topic": "diagnostics/intervention",
+        "purpose": "care setting",
+        "relatedArtifact": {
+            "class": "recommended",
+            "valueType": "boolean",
+            "valueRange": {
+                "0": "absence",
+                "1": "presence"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "cms",
+                    "concept": [
+                        {
+                            "code": "62",
+                            "display": "Psychologist, Clinical"
+                        }
+                    ]
+                },
+                {
+                    "system": "nucc",
+                    "concept": [
+                        {
+                            "code": "103T00000X",
+                            "display": "Psychologist"
+                        },
+                        {
+                            "code": "103TC0700X",
+                            "display": "Psychologist - Clinical"
+                        },
+                        {
+                            "code": "103TB0200X",
+                            "display": "Psychologist - Cognitive & Behavioral"
+                        },
+                        {
+                            "code": "103TH0004X",
+                            "display": "Psychologist - Health"
+                        },
+                        {
+                            "code": "103TH0100X",
+                            "display": "Psychologist - Health Service"
+                        },
+                        {
+                            "code": "103TN0001X",
+                            "display": "Psychologist - Neuropsychology"
+                        },
+                        {
+                            "code": "103TR0400X",
+                            "display": "Psychologist - Rehabilitation"
+                        }
+                    ]
+                },
+                {
+                    "system": "cpt",
+                    "concept": [
+                        {
+                            "code": "90791",
+                            "display": "Psychiatric diagnostic evaluation"
+                        },
+                        {
+                            "code": "90832",
+                            "display": "Psychotherapy, 30 minutes"
+                        },
+                        {
+                            "code": "90834",
+                            "display": "Psychotherapy, 45 minutes"
+                        },
+                        {
+                            "code": "90837",
+                            "display": "Psychotherapy, 60 minutes"
+                        },
+                        {
+                            "code": "90839",
+                            "display": "Psychotherapy for crisis, first 60 minutes"
+                        },
+                        {
+                            "code": "90840",
+                            "display": "Psychotherapy for crisis, each additional 30 minutes"
+                        },
+                        {
+                            "code": "90846",
+                            "display": "Family psychotherapy without patient present"
+                        },
+                        {
+                            "code": "90847",
+                            "display": "Family psychotherapy with patient present"
+                        },
+                        {
+                            "code": "90849",
+                            "display": "Multiple-family group psychotherapy"
+                        },
+                        {
+                            "code": "90853",
+                            "display": "Group psychotherapy"
+                        },
+                        {
+                            "code": "96116",
+                            "display": "Neurobehavioral status examination"
+                        },
+                        {
+                            "code": "96121",
+                            "display": "Neurobehavioral status examination, each additional hour"
+                        },
+                        {
+                            "code": "96130",
+                            "display": "Psychological testing evaluation services, first hour"
+                        },
+                        {
+                            "code": "96131",
+                            "display": "Psychological testing evaluation services, each additional hour"
+                        },
+                        {
+                            "code": "96132",
+                            "display": "Neuropsychological testing evaluation services, first hour"
+                        },
+                        {
+                            "code": "96133",
+                            "display": "Neuropsychological testing evaluation services, each additional hour"
+                        },
+                        {
+                            "code": "96136",
+                            "display": "Psychological or neuropsychological test administration and scoring, first 30 minutes"
+                        },
+                        {
+                            "code": "96137",
+                            "display": "Psychological or neuropsychological test administration and scoring, each additional 30 minutes"
+                        },
+                        {
+                            "code": "96138",
+                            "display": "Psychological or neuropsychological test administration and scoring by technician, first 30 minutes"
+                        },
+                        {
+                            "code": "96139",
+                            "display": "Psychological or neuropsychological test administration and scoring by technician, each additional 30 minutes"
+                        },
+                        {
+                            "code": "96146",
+                            "display": "Psychological or neuropsychological automated testing"
+                        },
+                        {
+                            "code": "96156",
+                            "display": "Health behavior assessment or reassessment"
+                        },
+                        {
+                            "code": "96158",
+                            "display": "Health behavior intervention, individual, initial 30 minutes"
+                        },
+                        {
+                            "code": "96159",
+                            "display": "Health behavior intervention, individual, each additional 15 minutes"
+                        },
+                        {
+                            "code": "96164",
+                            "display": "Health behavior intervention, group, initial 30 minutes"
+                        },
+                        {
+                            "code": "96165",
+                            "display": "Health behavior intervention, group, each additional 15 minutes"
+                        },
+                        {
+                            "code": "96167",
+                            "display": "Health behavior intervention, family with patient present, initial 30 minutes"
+                        },
+                        {
+                            "code": "96168",
+                            "display": "Health behavior intervention, family with patient present, each additional 15 minutes"
+                        },
+                        {
+                            "code": "96170",
+                            "display": "Health behavior intervention, family without patient present, initial 30 minutes"
+                        },
+                        {
+                            "code": "96171",
+                            "display": "Health behavior intervention, family without patient present, each additional 15 minutes"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C020087",
+        "name": "SocialWork",
+        "description": "visit to social worker",
+        "topic": "diagnostics/intervention",
+        "purpose": "care setting",
+        "relatedArtifact": {
+            "class": "recommended",
+            "valueType": "boolean",
+            "valueRange": {
+                "0": "absence",
+                "1": "presence"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "cms",
+                    "concept": [
+                        {
+                            "code": "80",
+                            "display": "Clinical Social Worker"
+                        }
+                    ]
+                },
+                {
+                    "system": "nucc",
+                    "concept": [
+                        {
+                            "code": "104100000X",
+                            "display": "Social Worker"
+                        },
+                        {
+                            "code": "1041C0700X",
+                            "display": "Social Worker - Clinical"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C020088",
+        "name": "PalliativeCare",
+        "description": "receipt of specialist or explicitly documented palliative care",
+        "topic": "diagnostics/intervention",
+        "purpose": "care setting",
+        "relatedArtifact": {
+            "class": "recommended",
+            "valueType": "boolean",
+            "valueRange": {
+                "0": "absence",
+                "1": "presence"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "nucc",
+                    "concept": [
+                        {
+                            "code": "207RH0002X",
+                            "display": "Internal Medicine - Hospice and Palliative Medicine"
+                        },
+                        {
+                            "code": "2081H0002X",
+                            "display": "Physical Medicine & Rehabilitation - Hospice and Palliative Medicine"
+                        },
+                        {
+                            "code": "2084H0002X",
+                            "display": "Psychiatry & Neurology - Hospice and Palliative Medicine"
+                        },
+                        {
+                            "code": "207LH0002X",
+                            "display": "Anesthesiology - Hospice and Palliative Medicine"
+                        },
+                        {
+                            "code": "207PH0002X",
+                            "display": "Emergency Medicine - Hospice and Palliative Medicine"
+                        }
+                    ]
+                },
+                {
+                    "system": "icd10cm",
+                    "concept": [
+                        {
+                            "code": "Z51.5",
+                            "display": "Encounter for palliative care"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C020089",
+        "name": "FunctionalCare",
+        "description": "receipt of provider-nonspecific functional, mobility, rehabilitation, or self-care therapy services",
+        "topic": "diagnostics/intervention",
+        "purpose": "care setting",
+        "relatedArtifact": {
+            "class": "recommended",
+            "valueType": "boolean",
+            "valueRange": {
+                "0": "absence",
+                "1": "presence"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "cpt",
+                    "concept": [
+                        {
+                            "code": "97110",
+                            "display": "Therapeutic exercises to develop strength, endurance, range of motion and flexibility"
+                        },
+                        {
+                            "code": "97112",
+                            "display": "Neuromuscular reeducation of movement, balance, coordination, kinesthetic sense, posture and proprioception"
+                        },
+                        {
+                            "code": "97116",
+                            "display": "Gait training therapy"
+                        },
+                        {
+                            "code": "97140",
+                            "display": "Manual therapy techniques"
+                        },
+                        {
+                            "code": "97530",
+                            "display": "Therapeutic activities using dynamic activities to improve functional performance"
+                        },
+                        {
+                            "code": "97535",
+                            "display": "Self-care and home management training"
+                        },
+                        {
+                            "code": "97537",
+                            "display": "Community or work reintegration training"
+                        },
+                        {
+                            "code": "97542",
+                            "display": "Wheelchair management training"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    { 
+        "id": "C020090",
+        "name": "SpeechLanguageCare",
+        "description": "speech-language pathology evaluation or treatment for speech, language, communication, voice, or swallowing impairment;visit to speech-language pathologist",
+        "topic": "diagnostics/intervention",
+        "purpose": "care setting",
+        "relatedArtifact": {
+            "class": "recommended",
+            "valueType": "boolean",
+            "valueRange": {
+                "0": "absence",
+                "1": "presence"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "cms",
+                    "concept": [
+                        {
+                            "code": "15",
+                            "display": "Speech Language Pathologist"
+                        }
+                    ]
+                },
+                {
+                    "system": "nucc",
+                    "concept": [
+                        {
+                            "code": "235Z00000X",
+                            "display": "Speech-Language Pathologist"
+                        }
+                    ]
+                },
+                {
+                    "system": "cpt",
+                    "concept": [
+                        {
+                            "code": "92507",
+                            "display": "Treatment of speech, language, voice, communication, and/or auditory processing disorder; individual"
+                        },
+                        {
+                            "code": "92508",
+                            "display": "Treatment of speech, language, voice, communication, and/or auditory processing disorder; group"
+                        },
+                        {
+                            "code": "92521",
+                            "display": "Evaluation of speech fluency"
+                        },
+                        {
+                            "code": "92522",
+                            "display": "Evaluation of speech sound production"
+                        },
+                        {
+                            "code": "92523",
+                            "display": "Evaluation of speech sound production with evaluation of language comprehension and expression"
+                        },
+                        {
+                            "code": "92524",
+                            "display": "Behavioral and qualitative analysis of voice and resonance"
+                        },
+                        {
+                            "code": "92526",
+                            "display": "Treatment of swallowing dysfunction and/or oral function for feeding"
+                        },
+                        {
+                            "code": "92610",
+                            "display": "Evaluation of oral and pharyngeal swallowing function"
+                        },
+                        {
+                            "code": "92605",
+                            "display": "Evaluation for prescription of non-speech-generating augmentative and alternative communication device"
+                        },
+                        {
+                            "code": "92606",
+                            "display": "Therapeutic service for use of non-speech-generating augmentative and alternative communication device"
+                        },
+                        {
+                            "code": "92607",
+                            "display": "Evaluation for prescription of speech-generating augmentative and alternative communication device; first hour"
+                        },
+                        {
+                            "code": "92608",
+                            "display": "Evaluation for prescription of speech-generating augmentative and alternative communication device; each additional 30 minutes"
+                        },
+                        {
+                            "code": "92609",
+                            "display": "Therapeutic services for use of speech-generating device, including programming and modification"
+                        }
+                    ]
+                },
+                {
+                    "system": "hcpcs",
+                    "concept": [
+                        {
+                            "code": "GN",
+                            "display": "Services delivered under an outpatient speech-language pathology plan of care"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C020091",
+        "name": "EMG",
+        "description": "electromyography or nerve conduction study performed as part of neuromuscular diagnostic evaluation",
+        "topic": "diagnostics/intervention",
+        "purpose": "diagnostic procedure",
+        "relatedArtifact": {
+            "class": "recommended",
+            "valueType": "boolean",
+            "valueRange": {
+                "0": "absence",
+                "1": "presence"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "cpt",
+                    "concept": [
+                        {
+                            "code": "95860",
+                            "display": "Needle electromyography, one extremity"
+                        },
+                        {
+                            "code": "95861",
+                            "display": "Needle electromyography, two extremities"
+                        },
+                        {
+                            "code": "95863",
+                            "display": "Needle electromyography, three extremities"
+                        },
+                        {
+                            "code": "95864",
+                            "display": "Needle electromyography, four extremities"
+                        },
+                        {
+                            "code": "95865",
+                            "display": "Needle electromyography, larynx"
+                        },
+                        {
+                            "code": "95866",
+                            "display": "Needle electromyography, hemidiaphragm"
+                        },
+                        {
+                            "code": "95867",
+                            "display": "Needle electromyography, cranial nerve supplied muscles, unilateral"
+                        },
+                        {
+                            "code": "95868",
+                            "display": "Needle electromyography, cranial nerve supplied muscles, bilateral"
+                        },
+                        {
+                            "code": "95869",
+                            "display": "Needle electromyography, thoracic paraspinal muscles"
+                        },
+                        {
+                            "code": "95870",
+                            "display": "Needle electromyography, limited study"
+                        },
+                        {
+                            "code": "95885",
+                            "display": "Needle electromyography, each extremity, limited study"
+                        },
+                        {
+                            "code": "95886",
+                            "display": "Needle electromyography, each extremity, complete study"
+                        },
+                        {
+                            "code": "95907",
+                            "display": "Nerve conduction studies, 1-2 studies"
+                        },
+                        {
+                            "code": "95908",
+                            "display": "Nerve conduction studies, 3-4 studies"
+                        },
+                        {
+                            "code": "95909",
+                            "display": "Nerve conduction studies, 5-6 studies"
+                        },
+                        {
+                            "code": "95910",
+                            "display": "Nerve conduction studies, 7-8 studies"
+                        },
+                        {
+                            "code": "95911",
+                            "display": "Nerve conduction studies, 9-10 studies"
+                        },
+                        {
+                            "code": "95912",
+                            "display": "Nerve conduction studies, 11-12 studies"
+                        },
+                        {
+                            "code": "95913",
+                            "display": "Nerve conduction studies, 13 or more studies"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C020092",
+        "name": "MRI",
+        "description": "MRI of the brain or spine performed as part of neurologic diagnostic evaluation",
+        "topic": "diagnostics/intervention",
+        "purpose": "diagnostic procedure",
+        "relatedArtifact": {
+            "class": "recommended",
+            "valueType": "boolean",
+            "valueRange": {
+                "0": "absence",
+                "1": "presence"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "cpt",
+                    "concept": [
+                        {
+                            "code": "70551",
+                            "display": "MRI brain without contrast"
+                        },
+                        {
+                            "code": "70552",
+                            "display": "MRI brain with contrast"
+                        },
+                        {
+                            "code": "70553",
+                            "display": "MRI brain without and with contrast"
+                        },
+                        {
+                            "code": "72141",
+                            "display": "MRI cervical spine without contrast"
+                        },
+                        {
+                            "code": "72142",
+                            "display": "MRI cervical spine with contrast"
+                        },
+                        {
+                            "code": "72156",
+                            "display": "MRI cervical spine without and with contrast"
+                        },
+                        {
+                            "code": "72146",
+                            "display": "MRI thoracic spine without contrast"
+                        },
+                        {
+                            "code": "72147",
+                            "display": "MRI thoracic spine with contrast"
+                        },
+                        {
+                            "code": "72157",
+                            "display": "MRI thoracic spine without and with contrast"
+                        },
+                        {
+                            "code": "72148",
+                            "display": "MRI lumbar spine without contrast"
+                        },
+                        {
+                            "code": "72149",
+                            "display": "MRI lumbar spine with contrast"
+                        },
+                        {
+                            "code": "72158",
+                            "display": "MRI lumbar spine without and with contrast"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C020093",
+        "name": "CSF",
+        "description": "lumbar puncture or cerebrospinal fluid laboratory analysis performed during neurologic diagnostic evaluation",
+        "topic": "diagnostics/intervention",
+        "purpose": "diagnostic procedure",
+        "relatedArtifact": {
+            "class": "recommended",
+            "valueType": "boolean",
+            "valueRange": {
+                "0": "absence",
+                "1": "presence"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "cpt",
+                    "concept": [
+                        {
+                            "code": "62270",
+                            "display": "Spinal puncture, lumbar, diagnostic"
+                        },
+                        {
+                            "code": "62328",
+                            "display": "Spinal puncture, lumbar, diagnostic, with fluoroscopic or CT guidance"
+                        },
+                        {
+                            "code": "82945",
+                            "display": "Glucose, body fluid"
+                        },
+                        {
+                            "code": "84157",
+                            "display": "Protein, total, except by refractometry; other source"
+                        },
+                        {
+                            "code": "89050",
+                            "display": "Cell count, miscellaneous body fluids"
+                        },
+                        {
+                            "code": "89051",
+                            "display": "Cell count, miscellaneous body fluids with differential count"
+                        },
+                        {
+                            "code": "82040",
+                            "display": "Albumin, serum, plasma or whole blood"
+                        },
+                        {
+                            "code": "82784",
+                            "display": "Immunoglobulin, quantitative"
+                        },
+                        {
+                            "code": "83916",
+                            "display": "Oligoclonal immune bands"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C020094",
+        "name": "GeneticTesting",
+        "description": "genetic testing performed as part of evaluation for ALS or another hereditary neuromuscular disorder",
+        "topic": "diagnostics/intervention",
+        "purpose": "diagnostic procedure",
+        "relatedArtifact": {
+            "class": "recommended",
+            "valueType": "boolean",
+            "valueRange": {
+                "0": "absence",
+                "1": "presence"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "cpt",
+                    "concept": [
+                        {
+                            "code": "81479",
+                            "display": "Unlisted molecular pathology procedure"
+                        },
+                        {
+                            "code": "81448",
+                            "display": "Hereditary peripheral neuropathy or related disorder genomic sequence analysis panel"
+                        },
+                        {
+                            "code": "81460",
+                            "display": "Whole mitochondrial genome analysis"
+                        },
+                        {
+                            "code": "81465",
+                            "display": "Whole mitochondrial genome analysis"
+                        },
+                        {
+                            "code": "81415",
+                            "display": "Exome sequence analysis"
+                        },
+                        {
+                            "code": "81416",
+                            "display": "Exome sequence analysis, comparator"
+                        },
+                        {
+                            "code": "81417",
+                            "display": "Exome re-evaluation"
+                        },
+                        {
+                            "code": "81425",
+                            "display": "Genome sequence analysis"
+                        },
+                        {
+                            "code": "81426",
+                            "display": "Genome sequence analysis, comparator"
+                        },
+                        {
+                            "code": "81427",
+                            "display": "Genome re-evaluation"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C020095",
+        "name": "PulmonaryFunctionTesting",
+        "description": "pulmonary function testing or spirometry used to assess respiratory function",
+        "topic": "diagnostics/intervention",
+        "purpose": "diagnostic procedure",
+        "relatedArtifact": {
+            "class": "recommended",
+            "valueType": "boolean",
+            "valueRange": {
+                "0": "absence",
+                "1": "presence"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "cpt",
+                    "concept": [
+                        {
+                            "code": "94010",
+                            "display": "Spirometry, including graphic record, total and timed vital capacity, expiratory flow rate measurements"
+                        },
+                        {
+                            "code": "94150",
+                            "display": "Vital capacity, total"
+                        },
+                        {
+                            "code": "94200",
+                            "display": "Maximum breathing capacity, maximal voluntary ventilation"
+                        },
+                        {
+                            "code": "94375",
+                            "display": "Respiratory flow volume loop"
+                        },
+                        {
+                            "code": "94618",
+                            "display": "Pulmonary stress testing, simple"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C020090",
+        "name": "MuscleStrengthTesting",
+        "description": "assessment of skeletal muscle strength or functional muscle performance",
+        "topic": "diagnostics/intervention",
+        "purpose": "diagnostic procedure",
+        "relatedArtifact": {
+            "class": "recommended",
+            "valueType": "boolean",
+            "valueRange": {
+                "0": "absence",
+                "1": "presence"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "cpt",
+                    "concept": [
+                        {
+                            "code": "95831",
+                            "display": "Muscle testing, manual, extremity or trunk"
+                        },
+                        {
+                            "code": "95832",
+                            "display": "Muscle testing, hand"
+                        },
+                        {
+                            "code": "95833",
+                            "display": "Muscle testing, body excluding hands"
+                        },
+                        {
+                            "code": "95834",
+                            "display": "Muscle testing, total evaluation of body including hands"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C10175",
+        "name": "FEV1ResltVal",
+        "description": "Forced Expiratory Volume in one second (FEV1), representing the volume of air forcibly exhaled during the first second of a forced expiratory maneuver",
+        "topic": "finding",
+        "purpose": "physiological markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "decimal",
+            "valueRange": {
+                "min": 0,
+                "max": 8,
+                "low": {
+                    "value": 4,
+                    "unit": "L",
+                    "incld": 1
+                }
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "20150-9",
+                            "display": "FEV1"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C10176",
+        "name": "FEV1FVCResltVal",
+        "description": "Ratio of Forced Expiratory Volume in one second (FEV1) to Forced Vital Capacity (FVC), expressed as a percentage",
+        "topic": "finding",
+        "purpose": "physiological markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "integer",
+            "valueRange": {
+                "min": 0,
+                "max": 100,
+                "low": {
+                    "value": 70,
+                    "unit": "%",
+                    "incld": 0
+                }
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "19926-5",
+                            "display": "FEV1/FVC"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C10177",
+        "name": "MaxInspiratoryPressureResltVal",
+        "description": "Maximum Inspiratory Pressure (MIP or PImax), representing the maximum negative pressure generated against an occluded airway and reflecting inspiratory respiratory muscle strength",
+        "topic": "finding",
+        "purpose": "physiological markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "integer",
+            "valueRange": {
+                "min": -200,
+                "max": 0,
+                "low": {
+                    "value": -60,
+                    "unit": "cm[H2O]",
+                    "incld": 1
+                }
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "81445-9",
+                            "display": "maximum inspiratory pressure respiratory system"
+                        },
+                        {
+                            "code": "81444-2",
+                            "display": "maximum inspiratory pressure respiratory system"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C10178",
+        "name": "MaxExpiratoryPressureResltVal",
+        "description": "Maximum Expiratory Pressure (MEP or PEmax), representing the maximum positive pressure generated against an occluded airway and reflecting expiratory respiratory muscle strength",
+        "topic": "finding",
+        "purpose": "physiological markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "integer",
+            "valueRange": {
+                "min": 0,
+                "max": 300,
+                "low": {
+                    "value": 60,
+                    "unit": "cm[H2O]",
+                    "incld": 1
+                }
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "81446-7",
+                            "display": "maximum expiratory pressure respiratory system"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C10179",
+        "name": "PeakExpiratoryFlowResltVal",
+        "description": "Peak Expiratory Flow (PEF), representing the maximum airflow achieved during a forceful expiration after maximal inspiration",
+        "topic": "finding",
+        "purpose": "physiological markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "integer",
+            "valueRange": {
+                "min": 0,
+                "max": 1000,
+                "low": {
+                    "value": 300,
+                    "unit": "L/min",
+                    "incld": 1
+                }
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "33452-4",
+                            "display": "maximum expiratory gas flow respiratory system airway"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C10180",
+        "name": "MaximumVoluntaryVentilationResltVal",
+        "description": "Maximum Voluntary Ventilation (MVV), representing the maximum volume of air that can be inhaled and exhaled voluntarily over a standardized period and expressed per minute",
+        "topic": "finding",
+        "purpose": "physiological markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "integer",
+            "valueRange": {
+                "min": 0,
+                "max": 300,
+                "low": {
+                    "value": 80,
+                    "unit": "L/min",
+                    "incld": 1
+                }
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "20159-0",
+                            "display": "maximum voluntary ventilation"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C10181",
+        "name": "TotalLungCapacityResltVal",
+        "description": "Total Lung Capacity (TLC), representing the total volume of air in the lungs following maximal inspiration",
+        "topic": "finding",
+        "purpose": "physiological markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "integer",
+            "valueRange": {
+                "min": 0,
+                "max": 12,
+                "low": {
+                    "value": 5,
+                    "unit": "L",
+                    "incld": 1
+                }
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "19862-2",
+                            "display": "total lung capacity"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C10182",
+        "name": "FunctionalResidualCapacityResltVal",
+        "description": "Functional Residual Capacity (FRC), representing the volume of air remaining in the lungs following a normal passive expiration",
+        "topic": "finding",
+        "purpose": "physiological markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "integer",
+            "valueRange": {
+                "min": 0,
+                "max": 8,
+                "low": {
+                    "value": 2,
+                    "unit": "L",
+                    "incld": 1
+                }
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "19843-2",
+                            "display": "functional residual capacity"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C10183",
+        "name": "OxygenSaturationResltVal",
+        "description": "Peripheral or arterial oxygen saturation measured by pulse oximetry, representing the percentage of hemoglobin saturated with oxygen",
+        "topic": "finding",
+        "purpose": "physiological markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "integer",
+            "valueRange": {
+                "min": 0,
+                "max": 100,
+                "low": {
+                    "value": 90,
+                    "unit": "%",
+                    "incld": 0
+                }
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "59408-5",
+                            "display": "oxygen saturation in arterial blood by pulse oximetry"
+                        },
+                        {
+                            "code": "2708-6",
+                            "display": "oxygen saturation in arterial blood"
+                        },
+                        {
+                            "code": "20564-1",
+                            "display": "oxygen saturation in blood"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C10184",
+        "name": "ArterialPCO2ResltVal",
+        "description": "Arterial partial pressure of carbon dioxide (PaCO2), used to assess alveolar ventilation and detect respiratory hypoventilation and hypercapnia",
+        "topic": "finding",
+        "purpose": "physiological markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "integer",
+            "valueRange": {
+                "min": 0,
+                "max": 150,
+                "high": {
+                    "value": 45,
+                    "unit": "mm[Hg]",
+                    "incld": 0
+                }
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "2019-8",
+                            "display": "carbon dioxide [partial pressure] in arterial blood"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C10185",
+        "name": "VenousPCO2ResltVal",
+        "description": "Venous partial pressure of carbon dioxide (PvCO2), which may be used as a less invasive measure for screening for hypercapnia",
+        "topic": "finding",
+        "purpose": "physiological markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "integer",
+            "valueRange": {
+                "min": 0,
+                "max": 150,
+                "high": {
+                    "value": 50,
+                    "unit": "mm[Hg]",
+                    "incld": 0
+                }
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "2021-4",
+                            "display": "carbon dioxide [partial pressure] in venous blood"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C10186",
+        "name": "TranscutaneousPCO2ResltVal",
+        "description": "Transcutaneous partial pressure of carbon dioxide (TcCO2), providing a noninvasive estimate of carbon dioxide retention and commonly used for monitoring nocturnal hypoventilation",
+        "topic": "finding",
+        "purpose": "physiological markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "integer",
+            "valueRange": {
+                "min": 0,
+                "max": 150,
+                "high": {
+                    "value": 45,
+                    "unit": "mm[Hg]",
+                    "incld": 0
+                }
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "33022-5",
+                            "display": "carbon dioxide [partial pressure] in capillary blood by transcutaneous CO2 monitor"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C10187",
+        "name": "ArterialPO2ResltVal",
+        "description": "Arterial partial pressure of oxygen (PaO2), representing the partial pressure of dissolved oxygen in arterial blood",
+        "topic": "finding",
+        "purpose": "physiological markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "integer",
+            "valueRange": {
+                "min": 0,
+                "max": 700,
+                "low": {
+                    "value": 80,
+                    "unit": "mm[Hg]",
+                    "incld": 0
+                }
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "2703-7",
+                            "display": "oxygen [partial pressure] in arterial blood"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C10188",
+        "name": "ArterialBicarbonateResltVal",
+        "description": "Arterial bicarbonate concentration, which may increase as renal compensation for chronic respiratory carbon dioxide retention",
+        "topic": "finding",
+        "purpose": "physiological markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "integer",
+            "valueRange": {
+                "min": 0,
+                "max": 60,
+                "high": {
+                    "value": 28,
+                    "unit": "mmol/L",
+                    "incld": 0
+                }
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "1960-4",
+                            "display": "bicarbonate [moles/volume] in arterial blood"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C10200",
+        "name": "CompleteBloodCount",
+        "description": "Complete blood count testing performed during evaluation for hematologic or systemic abnormalities that may contribute to neuromuscular symptoms or mimic motor neuron disease",
+        "topic": "finding",
+        "purpose": "biological/molecular markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "nominal"
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "57021-8",
+                            "display": "CBC W Auto Differential panel - Blood"
+                        },
+                        {
+                            "code": "58410-2",
+                            "display": "CBC panel - Blood by Automated count"
+                        }
+                    ]
+                },
+                {
+                    "system": "cpt",
+                    "concept": [
+                        {
+                            "code": "85025",
+                            "display": "Blood count; complete (CBC), automated, with automated differential WBC count"
+                        },
+                        {
+                            "code": "85027",
+                            "display": "Blood count; complete (CBC), automated"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C10201",
+        "name": "ComprehensiveMetabolicPanel",
+        "description": "Comprehensive metabolic panel used to evaluate electrolyte, renal, hepatic, glucose, and metabolic abnormalities that may contribute to weakness or other neuromuscular symptoms",
+        "topic": "finding",
+        "purpose": "biological/molecular markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "nominal"
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "24323-8",
+                            "display": "Comprehensive metabolic 2000 panel - Serum or Plasma"
+                        }
+                    ]
+                },
+                {
+                    "system": "cpt",
+                    "concept": [
+                        {
+                            "code": "80053",
+                            "display": "Comprehensive metabolic panel"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C10202",
+        "name": "BasicMetabolicPanel",
+        "description": "Basic metabolic panel used to identify electrolyte, renal, glucose, and other metabolic abnormalities potentially contributing to weakness or neuromuscular dysfunction",
+        "topic": "finding",
+        "purpose": "biological/molecular markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "nominal"
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "24321-2",
+                            "display": "Basic metabolic 2000 panel - Serum or Plasma"
+                        }
+                    ]
+                },
+                {
+                    "system": "cpt",
+                    "concept": [
+                        {
+                            "code": "80048",
+                            "display": "Basic metabolic panel"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C10203",
+        "name": "CreatineKinaseResltVal",
+        "description": "Creatine kinase result used to identify skeletal muscle injury or myopathic disorders that may mimic motor neuron disease",
+        "topic": "finding",
+        "purpose": "biological/molecular markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "continuous"
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "2157-6",
+                            "display": "Creatine kinase [Enzymatic activity/volume] in Serum or Plasma"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C10204",
+        "name": "ThyroidStimulatingHormoneResltVal",
+        "description": "Thyroid stimulating hormone result used to identify thyroid dysfunction as a potentially reversible cause of weakness or neuromuscular symptoms",
+        "topic": "finding",
+        "purpose": "biological/molecular markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "continuous"
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "3016-3",
+                            "display": "Thyrotropin [Units/volume] in Serum or Plasma"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C10205",
+        "name": "FreeThyroxineResltVal",
+        "description": "Free thyroxine result used with thyroid stimulating hormone testing to evaluate thyroid dysfunction during investigation of neuromuscular symptoms",
+        "topic": "finding",
+        "purpose": "biological/molecular markers",
+        "relatedArtifact": {
+            "class": "recommended",
+            "valueType": "continuous"
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "3024-7",
+                            "display": "Thyroxine (T4) free [Mass/volume] in Serum or Plasma"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C10206",
+        "name": "VitaminB12ResltVal",
+        "description": "Vitamin B12 result used to identify cobalamin deficiency as a potentially treatable cause of neurologic, myelopathic, or neuropathic symptoms",
+        "topic": "finding",
+        "purpose": "biological/molecular markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "continuous"
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "2132-9",
+                            "display": "Cobalamin (Vitamin B12) [Mass/volume] in Serum or Plasma"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C10207",
+        "name": "FolateResltVal",
+        "description": "Folate result used to identify folate deficiency associated with hematologic or neurologic abnormalities",
+        "topic": "finding",
+        "purpose": "biological/molecular markers",
+        "relatedArtifact": {
+            "class": "supplemental",
+            "valueType": "continuous"
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "2284-8",
+                            "display": "Folate [Mass/volume] in Serum or Plasma"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C10208",
+        "name": "MethylmalonicAcidResltVal",
+        "description": "Methylmalonic acid result used to identify functional vitamin B12 deficiency when serum vitamin B12 measurements are equivocal",
+        "topic": "finding",
+        "purpose": "biological/molecular markers",
+        "relatedArtifact": {
+            "class": "supplemental",
+            "valueType": "continuous"
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "13964-2",
+                            "display": "Methylmalonate [Moles/volume] in Serum or Plasma"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C10209",
+        "name": "CopperResltVal",
+        "description": "Serum or plasma copper result used to identify copper deficiency or abnormal copper metabolism associated with myelopathy or neuropathy",
+        "topic": "finding",
+        "purpose": "biological/molecular markers",
+        "relatedArtifact": {
+            "class": "recommended",
+            "valueType": "continuous"
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "5631-7",
+                            "display": "Copper [Mass/volume] in Serum or Plasma"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C10210",
+        "name": "CeruloplasminResltVal",
+        "description": "Ceruloplasmin result used as part of the evaluation for abnormalities of copper metabolism when clinically indicated",
+        "topic": "finding",
+        "purpose": "biological/molecular markers",
+        "relatedArtifact": {
+            "class": "supplemental",
+            "valueType": "continuous"
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "2064-4",
+                            "display": "Ceruloplasmin [Mass/volume] in Serum or Plasma"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C10211",
+        "name": "ErythrocyteSedimentationRateResltVal",
+        "description": "Erythrocyte sedimentation rate result used as a nonspecific marker of systemic inflammation during evaluation for inflammatory or autoimmune disorders",
+        "topic": "finding",
+        "purpose": "biological/molecular markers",
+        "relatedArtifact": {
+            "class": "recommended",
+            "valueType": "continuous"
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "4537-7",
+                            "display": "Erythrocyte sedimentation rate by Westergren method"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C10212",
+        "name": "CReactiveProteinResltVal",
+        "description": "C-reactive protein result used as a nonspecific marker of inflammation during evaluation for inflammatory, infectious, or autoimmune disorders",
+        "topic": "finding",
+        "purpose": "biological/molecular markers",
+        "relatedArtifact": {
+            "class": "recommended",
+            "valueType": "continuous"
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "1988-5",
+                            "display": "C reactive protein [Mass/volume] in Serum or Plasma"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C10213",
+        "name": "AntinuclearAntibodyReslt",
+        "description": "Antinuclear antibody result used to screen for systemic autoimmune disorders that may produce neurologic or neuromuscular manifestations",
+        "topic": "finding",
+        "purpose": "biological/molecular markers",
+        "relatedArtifact": {
+            "class": "recommended",
+            "valueType": "nominal"
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "8061-4",
+                            "display": "Nuclear Ab [Presence] in Serum"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C10214",
+        "name": "RheumatoidFactorResltVal",
+        "description": "Rheumatoid factor result used as part of an autoimmune or inflammatory evaluation when systemic disease is suspected",
+        "topic": "finding",
+        "purpose": "biological/molecular markers",
+        "relatedArtifact": {
+            "class": "supplemental",
+            "valueType": "continuous"
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "11572-5",
+                            "display": "Rheumatoid factor [Units/volume] in Serum or Plasma"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C10215",
+        "name": "SerumProteinElectrophoresis",
+        "description": "Serum protein electrophoresis used to identify monoclonal proteins or gammopathies associated with peripheral neuropathy or systemic disease",
+        "topic": "finding",
+        "purpose": "biological/molecular markers",
+        "relatedArtifact": {
+            "class": "core",
+            "valueType": "nominal"
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "24351-9",
+                            "display": "Protein electrophoresis panel - Serum or Plasma"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C10216",
+        "name": "SerumImmunofixationReslt",
+        "description": "Serum immunofixation result used to identify and characterize monoclonal immunoglobulins associated with gammopathy or paraproteinemic neuropathy",
+        "topic": "finding",
+        "purpose": "biological/molecular markers",
+        "relatedArtifact": {
+            "class": "recommended",
+            "valueType": "nominal"
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "25700-6",
+                            "display": "Immunofixation for Serum or Plasma"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C10217",
+        "name": "HIVScreeningReslt",
+        "description": "HIV screening result used to identify human immunodeficiency virus infection as a potentially treatable infectious cause of neurologic or neuromuscular disease",
+        "topic": "finding",
+        "purpose": "biological/molecular markers",
+        "relatedArtifact": {
+            "class": "supplemental",
+            "valueType": "nominal"
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "56888-1",
+                            "display": "HIV 1/2 Ab+Ag [Presence] in Serum, Plasma or Blood by Rapid immunoassay"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C10218",
+        "name": "LymeDiseaseSerologyReslt",
+        "description": "Borrelia burgdorferi serology result used when Lyme neuroborreliosis is considered as an alternative infectious explanation for neurologic symptoms",
+        "topic": "finding",
+        "purpose": "biological/molecular markers",
+        "relatedArtifact": {
+            "class": "supplemental",
+            "valueType": "nominal"
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "5060-9",
+                            "display": "Borrelia burgdorferi Ab [Units/volume] in Serum by Immunoassay"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C10219",
+        "name": "SyphilisSerologyReslt",
+        "description": "Treponema pallidum serology result used to identify syphilis as a potentially treatable infectious cause of neurologic disease",
+        "topic": "finding",
+        "purpose": "biological/molecular markers",
+        "relatedArtifact": {
+            "class": "supplemental",
+            "valueType": "nominal"
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "47236-5",
+                            "display": "Treponema pallidum IgG+IgM Ab [Presence] in Serum by Immunoassay"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C10220",
+        "name": "HTLVAntibodyReslt",
+        "description": "HTLV-I and HTLV-II antibody result used when HTLV-associated myelopathy or another HTLV-related neurologic disorder is considered",
+        "topic": "finding",
+        "purpose": "biological/molecular markers",
+        "relatedArtifact": {
+            "class": "exploratory",
+            "valueType": "nominal"
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "29901-6",
+                            "display": "HTLV I+II Ab [Presence] in Serum by Immunoassay"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C10221",
+        "name": "AcetylcholineReceptorAntibodyResltVal",
+        "description": "Acetylcholine receptor binding antibody result used to evaluate myasthenia gravis as an alternative cause of weakness, particularly when bulbar or fatigable symptoms are present",
+        "topic": "finding",
+        "purpose": "biological/molecular markers",
+        "relatedArtifact": {
+            "class": "recommended",
+            "valueType": "continuous"
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "11034-6",
+                            "display": "Acetylcholine receptor binding Ab [Moles/volume] in Serum"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C10222",
+        "name": "GM1GangliosideAntibodyResltVal",
+        "description": "Anti-GM1 ganglioside antibody result used when multifocal motor neuropathy or another immune-mediated motor neuropathy is considered as an ALS mimic",
+        "topic": "finding",
+        "purpose": "biological/molecular markers",
+        "relatedArtifact": {
+            "class": "recommended",
+            "valueType": "continuous"
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "31500-2",
+                            "display": "Ganglioside GM1 IgG Ab [Units/volume] in Serum"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C10223",
+        "name": "BloodLeadResltVal",
+        "description": "Blood lead concentration used when heavy-metal exposure is suspected as a potentially reversible toxic cause of motor neuropathy or neurologic dysfunction",
+        "topic": "finding",
+        "purpose": "biological/molecular markers",
+        "relatedArtifact": {
+            "class": "supplemental",
+            "valueType": "continuous"
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "5671-3",
+                            "display": "Lead [Mass/volume] in Blood"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "C10224",
+        "name": "HemoglobinA1cResltVal",
+        "description": "Hemoglobin A1c result used to assess chronic glycemic status and identify diabetes as a potential contributor to peripheral neuropathy",
+        "topic": "finding",
+        "purpose": "biological/molecular markers",
+        "relatedArtifact": {
+            "class": "recommended",
+            "valueType": "continuous"
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "loinc",
+                    "concept": [
+                        {
+                            "code": "4548-4",
+                            "display": "Hemoglobin A1c/Hemoglobin.total in Blood"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "B10203",
+        "name": "CreatineKinaseTest",
+        "description": "Creatine kinase test used to identify skeletal muscle injury or myopathic disorders that may mimic motor neuron disease",
+        "topic": "diagnostics/intervention",
+        "purpose": "diagnostic procedures",
+        "relatedArtifact": {
+            "class": "recommended",
+            "valueType": "boolean",
+            "valueRange": {
+                "0": "absence",
+                "1": "presence"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "cpt",
+                    "concept": [
+                        {
+                            "code": "82550",
+                            "display": "Creatine kinase (CK), total"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "B10204",
+        "name": "ThyroidStimulatingHormoneTest",
+        "description": "Thyroid stimulating hormone test used to identify thyroid dysfunction as a potentially reversible cause of weakness or neuromuscular symptoms",
+        "topic": "diagnostics/intervention",
+        "purpose": "diagnostic procedures",
+        "relatedArtifact": {
+            "class": "recommended",
+            "valueType": "boolean",
+            "valueRange": {
+                "0": "absence",
+                "1": "presence"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "cpt",
+                    "concept": [
+                        {
+                            "code": "84443",
+                            "display": "Thyroid stimulating hormone (TSH)"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "B10205",
+        "name": "FreeThyroxineTest",
+        "description": "Free thyroxine test used with thyroid stimulating hormone testing to evaluate thyroid dysfunction during investigation of neuromuscular symptoms",
+        "topic": "diagnostics/intervention",
+        "purpose": "diagnostic procedures",
+        "relatedArtifact": {
+            "class": "recommended",
+            "valueType": "boolean",
+            "valueRange": {
+                "0": "absence",
+                "1": "presence"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "cpt",
+                    "concept": [
+                        {
+                            "code": "84439",
+                            "display": "Thyroxine, free (Free T4)"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "B10206",
+        "name": "VitaminB12Test",
+        "description": "Vitamin B12 test used to identify cobalamin deficiency as a potentially treatable cause of neurologic, myelopathic, or neuropathic symptoms",
+        "topic": "diagnostics/intervention",
+        "purpose": "diagnostic procedures",
+        "relatedArtifact": {
+            "class": "recommended",
+            "valueType": "boolean",
+            "valueRange": {
+                "0": "absence",
+                "1": "presence"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "cpt",
+                    "concept": [
+                        {
+                            "code": "82607",
+                            "display": "Vitamin B12 (cyanocobalamin)"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "B10207",
+        "name": "FolateTest",
+        "description": "Folate test used to identify folate deficiency associated with hematologic or neurologic abnormalities",
+        "topic": "diagnostics/intervention",
+        "purpose": "diagnostic procedures",
+        "relatedArtifact": {
+            "class": "recommended",
+            "valueType": "boolean",
+            "valueRange": {
+                "0": "absence",
+                "1": "presence"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "cpt",
+                    "concept": [
+                        {
+                            "code": "82746",
+                            "display": "Folic acid; serum"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "B10208",
+        "name": "MethylmalonicAcidTest",
+        "description": "Methylmalonic acid test used to identify functional vitamin B12 deficiency when serum vitamin B12 measurements are equivocal",
+        "topic": "diagnostics/intervention",
+        "purpose": "diagnostic procedures",
+        "relatedArtifact": {
+            "class": "recommended",
+            "valueType": "boolean",
+            "valueRange": {
+                "0": "absence",
+                "1": "presence"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "cpt",
+                    "concept": [
+                        {
+                            "code": "83921",
+                            "display": "Organic acid, single, quantitative"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "B10209",
+        "name": "CopperTest",
+        "description": "Copper test used to identify copper deficiency or abnormal copper metabolism associated with myelopathy, neuropathy, or other neurologic syndromes",
+        "topic": "diagnostics/intervention",
+        "purpose": "diagnostic procedures",
+        "relatedArtifact": {
+            "class": "recommended",
+            "valueType": "boolean",
+            "valueRange": {
+                "0": "absence",
+                "1": "presence"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "cpt",
+                    "concept": [
+                        {
+                            "code": "82525",
+                            "display": "Copper"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "B10210",
+        "name": "CeruloplasminTest",
+        "description": "Ceruloplasmin test used as part of the evaluation for disorders of copper metabolism when clinically indicated",
+        "topic": "diagnostics/intervention",
+        "purpose": "diagnostic procedures",
+        "relatedArtifact": {
+            "class": "recommended",
+            "valueType": "boolean",
+            "valueRange": {
+                "0": "absence",
+                "1": "presence"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "cpt",
+                    "concept": [
+                        {
+                            "code": "82390",
+                            "display": "Ceruloplasmin"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "B10211",
+        "name": "ErythrocyteSedimentationRateTest",
+        "description": "Erythrocyte sedimentation rate test used as a nonspecific evaluation for systemic inflammation during investigation of inflammatory or autoimmune disorders",
+        "topic": "diagnostics/intervention",
+        "purpose": "diagnostic procedures",
+        "relatedArtifact": {
+            "class": "recommended",
+            "valueType": "boolean",
+            "valueRange": {
+                "0": "absence",
+                "1": "presence"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "cpt",
+                    "concept": [
+                        {
+                            "code": "85651",
+                            "display": "Erythrocyte sedimentation rate, nonautomated"
+                        },
+                        {
+                            "code": "85652",
+                            "display": "Erythrocyte sedimentation rate, automated"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "B10212",
+        "name": "CReactiveProteinTest",
+        "description": "C-reactive protein test used as a nonspecific evaluation for inflammation when inflammatory, infectious, or autoimmune disorders are considered",
+        "topic": "diagnostics/intervention",
+        "purpose": "diagnostic procedures",
+        "relatedArtifact": {
+            "class": "recommended",
+            "valueType": "boolean",
+            "valueRange": {
+                "0": "absence",
+                "1": "presence"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "cpt",
+                    "concept": [
+                        {
+                            "code": "86140",
+                            "display": "C-reactive protein"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "B10213",
+        "name": "RheumatoidFactorTest",
+        "description": "Rheumatoid factor test used as part of an autoimmune or inflammatory evaluation when systemic rheumatologic disease is suspected",
+        "topic": "diagnostics/intervention",
+        "purpose": "diagnostic procedures",
+        "relatedArtifact": {
+            "class": "recommended",
+            "valueType": "boolean",
+            "valueRange": {
+                "0": "absence",
+                "1": "presence"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "cpt",
+                    "concept": [
+                        {
+                            "code": "86431",
+                            "display": "Rheumatoid factor, quantitative"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "B10214",
+        "name": "AcetylcholineReceptorAntibodyTest",
+        "description": "Acetylcholine receptor antibody test used to evaluate myasthenia gravis as an alternative cause of weakness, particularly when bulbar or fatigable symptoms are present",
+        "topic": "diagnostics/intervention",
+        "purpose": "diagnostic procedures",
+        "relatedArtifact": {
+            "class": "recommended",
+            "valueType": "boolean",
+            "valueRange": {
+                "0": "absence",
+                "1": "presence"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "cpt",
+                    "concept": [
+                        {
+                            "code": "83519",
+                            "display": "Immunoassay for analyte other than infectious agent antibody or infectious agent antigen; quantitative, by radioimmunoassay"
+                        },
+                        {
+                            "code": "86041",
+                            "display": "Acetylcholine receptor antibody"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "B10215",
+        "name": "GM1GangliosideAntibodyTest",
+        "description": "GM1 ganglioside antibody test used when multifocal motor neuropathy or another immune-mediated motor neuropathy is considered as an ALS mimic",
+        "topic": "diagnostics/intervention",
+        "purpose": "diagnostic procedures",
+        "relatedArtifact": {
+            "class": "recommended",
+            "valueType": "boolean",
+            "valueRange": {
+                "0": "absence",
+                "1": "presence"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "cpt",
+                    "concept": [
+                        {
+                            "code": "83520",
+                            "display": "Immunoassay for analyte other than infectious agent antibody or infectious agent antigen; quantitative, not otherwise specified"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "B10216",
+        "name": "BloodLeadTest",
+        "description": "Blood lead test used when heavy-metal exposure is suspected as a potentially reversible toxic cause of motor neuropathy or neurologic dysfunction",
+        "topic": "diagnostics/intervention",
+        "purpose": "diagnostic procedures",
+        "relatedArtifact": {
+            "class": "recommended",
+            "valueType": "boolean",
+            "valueRange": {
+                "0": "absence",
+                "1": "presence"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "cpt",
+                    "concept": [
+                        {
+                            "code": "83655",
+                            "display": "Lead"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "B10217",
+        "name": "HemoglobinA1cTest",
+        "description": "Hemoglobin A1c test used to assess chronic glycemic status and identify diabetes as a potential contributor to peripheral neuropathy",
+        "topic": "diagnostics/intervention",
+        "purpose": "diagnostic procedures",
+        "relatedArtifact": {
+            "class": "recommended",
+            "valueType": "boolean",
+            "valueRange": {
+                "0": "absence",
+                "1": "presence"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "cpt",
+                    "concept": [
+                        {
+                            "code": "83036",
+                            "display": "Hemoglobin; glycosylated (A1c)"
+                        },
+                        {
+                            "code": "83037",
+                            "display": "Hemoglobin; glycosylated (A1c) by device cleared for home use"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "D00001",
+        "name": "OfficeVisit",
+        "description": "Office visit for patient evaluation and management",
+        "topic": "diagnostics/intervention",
+        "purpose": "diagnostic procedures",
+        "relatedArtifact": {
+            "class": "recommended",
+            "valueType": "boolean",
+            "valueRange": {
+                "0": "absence",
+                "1": "presence"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "cpt",
+                    "concept": [
+                        {
+                            "code": "99201",
+                            "display": "Office or other outpatient visit for the evaluation and management of a new patient"
+                        },
+                        {
+                            "code": "99202",
+                            "display": "Office or other outpatient visit for the evaluation and management of a new patient, typically 20 minutes"
+                        },
+                        {
+                            "code": "99203",
+                            "display": "Office or other outpatient visit for the evaluation and management of a new patient, typically 30 minutes"
+                        },
+                        {
+                            "code": "99204",
+                            "display": "Office or other outpatient visit for the evaluation and management of a new patient, typically 45 minutes"
+                        },
+                        {
+                            "code": "99205",
+                            "display": "Office or other outpatient visit for the evaluation and management of a new patient, typically 60 minutes"
+                        },
+                        {
+                            "code": "99212",
+                            "display": "Office or other outpatient visit for the evaluation and management of an established patient, typically 10 minutes"
+                        },
+                        {
+                            "code": "99213",
+                            "display": "Office or other outpatient visit for the evaluation and management of an established patient, typically 15 minutes"
+                        },
+                        {
+                            "code": "99214",
+                            "display": "Office or other outpatient visit for the evaluation and management of an established patient, typically 25 minutes"
+                        },
+                        {
+                            "code": "99215",
+                            "display": "Office or other outpatient visit for the evaluation and management of an established patient, typically 40 minutes"
+                        },
+                        {
+                            "code":"99417",
+                            "display": "Prolonged outpatient E/M, each additional 15 minutes; add-on to 99205/99215"
+                        }
+                    ]
+                },
+                {
+                    "system":"hpc",
+                    "concept": [
+                        {
+                            "code": "G2212",
+                            "display": "Office or other outpatient visit for the evaluation and management of a new patient, typically 15 minutes"
+                        },
+                        {
+                            "code": "G2211",
+                            "display": "Office or other outpatient visit for the evaluation and management of a new patient, typically 10 minutes"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "id": "D00002",
+        "name": "MDT",
+        "description": "Multidisciplinary visits and team conferences",
+        "topic": "diagnostics/intervention",
+        "purpose": "diagnostic procedures",
+        "relatedArtifact": {
+            "class": "recommended",
+            "valueType": "boolean",
+            "valueRange": {
+                "0": "absence",
+                "1": "presence"
+            }
+        },
+        "compose": {
+            "include": [
+                {
+                    "system": "cpt",
+                    "concept": [
+                        {
+                            "code": "99366",
+                            "display": "Multidisciplinary team conference, typically 30 minutes"
+                        },
+                        {
+                            "code": "99367",
+                            "display": "Multidisciplinary team conference, typically 60 minutes"
+                        },
+                        {
+                            "code": "99368",
+                            "display": "Multidisciplinary team conference, typically 90 minutes"
+                        },
+                        {
+                            "code": "99446",
+                            "display": "Interprofessional telephone/Internet/electronic health record assessment and management service provided by a consultative physician, typically 5-10 minutes"
+                        },
+                        {
+                            "code": "99447",
+                            "display": "Interprofessional telephone/Internet/electronic health record assessment and management service provided by a consultative physician, typically 11-20 minutes"
+                        },
+                        {
+                            "code": "99448",
+                            "display": "Interprofessional telephone/Internet/electronic health record assessment and management service provided by a consultative physician, typically 21-30 minutes"
+                        },
+                        {
+                            "code": "99449",
+                            "display": "Interprofessional telephone/Internet/electronic health record assessment and management service provided by a consultative physician, typically 31-60 minutes"
+                        },
+                        {
+                            "code":"99451",
+                            "display": "Interprofessional telephone/Internet/electronic health record assessment and management service provided by a consultative physician, typically 5 minutes"
+                        },
+                        {
+                            "code":"99452",
+                            "display": "Interprofessional telephone/Internet/electronic health record assessment and management service provided by a consultative physician, typically 10 minutes"
+                        },
+                        {
+                            "code":"99446",
+                            "display": "Interprofessional telephone/Internet/electronic health record assessment and management service provided by a consultative physician, typically 5-10 minutes"
+                        },
+                        {
+                            "code":"99447",
+                            "display": "Interprofessional telephone/Internet/electronic health record assessment and management service provided by a consultative physician, typically 11-20 minutes"
+                        },
+                        {
+                            "code":"99448",
+                            "display": "Interprofessional telephone/Internet/electronic health record assessment and management service provided by a consultative physician, typically 21-30 minutes"
+                        },
+                        {
+                            "code":"99449",
+                            "display": "Interprofessional telephone/Internet/electronic health record assessment and management service provided by a consultative physician, typically 31-60 minutes"
+                        },
+                        {
+                            "code":"99450",
+                            "display": "Interprofessional telephone/Internet/electronic health record assessment and management service provided by a consultative physician, typically 61 minutes or more"
+                        },
+                        {
+                            "code":"99451",
+                            "display": "Interprofessional telephone/Internet/electronic health record assessment and management service provided by a consultative physician, typically 5 minutes"
+                        },
+                        {
+                            "code": "99487",
+                            "display": "Complex chronic care management, including clinical staff services directed by a physician or qualified healthcare professional"
+                        },
+                        {
+                            "code": "99488",
+                            "display": "Formerly complex chronic care coordination involving a face-to-face visit, discontinued in 2015"
+                        }
+                    ]
+                },
+                {
+                    "system":"hpc",
+                    "concept": [
+                        {
+                            "code": "G0506",
+                            "display": "Comprehensive assessment and care planning at Chronic Care Management initiation"
                         }
                     ]
                 }

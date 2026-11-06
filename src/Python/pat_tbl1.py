@@ -1,13 +1,8 @@
-"""Patient index and follow-up from ENC_TABLE1, with source demographics/deaths.
+"""Build patient demographics from global encounters and site-specific sources."""
 
-Build ENC_TABLE1 first. Index is the earliest non-null ADMIT_DATE across sites;
-ties are resolved by SITE_ID, ENCOUNTERID and ENC_TYPE. Last visit uses discharge
-date when present, otherwise admission date, excluding future encounter ends.
-CENSOR_DATE uses the latest recorded death date across configured sites when
-available, otherwise the last visit. Age comes from the first encounter's AGE_AT_ENC.
-"""
-
+import logging
 import os
+
 from snowflake.snowpark import DataFrame, Session
 from snowflake.snowpark.functions import (
     col,
@@ -23,6 +18,9 @@ from snowflake.snowpark.functions import (
 )
 from snowflake.snowpark.window import Window
 from config import env, conn
+
+logger = logging.getLogger(__name__)
+
 
 def _site_cdm(site: str) -> str:
     return "CMS_PCORNET_CDM" if site == "CMS" else f"PCORNET_CDM_{site}"
@@ -89,36 +87,43 @@ def _build_pat_demo_long_site(
     session: Session, site: str, enc_summary: DataFrame | None = None,
 ):
     site_cdm = _site_cdm(site)
-    demo = session.table(f"GROUSE_DB.{site_cdm}.LDS_DEMOGRAPHIC")
+    demo = (
+        session.table(f"GROUSE_DB.{site_cdm}.LDS_DEMOGRAPHIC")
+        .select("PATID", "BIRTH_DATE", "SEX", "RACE", "HISPANIC")
+        .filter(col("PATID").is_not_null())
+    )
     enc = _build_pat_enc_summary(session) if enc_summary is None else enc_summary
+    enc = enc.select(
+        "PATID", "INDEX_DATE", "INDEX_ENC_TYPE", "AGE_AT_INDEX",
+        "INDEX_SITE", "LAST_VISIT_DATE",
+    )
     dth = session.table(f"GROUSE_DB.{site_cdm}.LDS_DEATH")
     dth = dth.group_by("PATID").agg(
         s_max(col("DEATH_DATE").cast("DATE")).alias("DEATH_DATE")
     )
 
     cte = (
-        demo.join(enc, demo["PATID"] == enc["PATID"])
-        .join(dth, enc["PATID"] == dth["PATID"], "left")
-        .filter(demo["PATID"].is_not_null())
+        demo.join(enc, on="PATID", how="inner")
+        .join(dth, on="PATID", how="left")
         .select(
-            enc["PATID"].alias("PATID"),
-            demo["BIRTH_DATE"].alias("BIRTH_DATE"),
-            enc["INDEX_DATE"].alias("INDEX_DATE"),
-            enc["INDEX_ENC_TYPE"].alias("INDEX_ENC_TYPE"),
-            enc["AGE_AT_INDEX"].alias("AGE_AT_INDEX"),
-            when(demo["SEX"].isin(["NI", "UN", "OT"]), lit(None)).otherwise(
-                demo["SEX"]
+            col("PATID"),
+            col("BIRTH_DATE"),
+            col("INDEX_DATE"),
+            col("INDEX_ENC_TYPE"),
+            col("AGE_AT_INDEX"),
+            when(col("SEX").isin(["NI", "UN", "OT"]), lit(None)).otherwise(
+                col("SEX")
             ).alias("SEX"),
-            when(demo["RACE"].isin(["NI", "UN", "07", "OT"]), lit(None)).otherwise(
-                demo["RACE"]
+            when(col("RACE").isin(["NI", "UN", "07"]), lit(None)).otherwise(
+                col("RACE")
             ).alias("RACE"),
-            when(demo["HISPANIC"].isin(["NI", "UN", "R", "OT"]), lit(None)).otherwise(
-                demo["HISPANIC"]
+            when(col("HISPANIC").isin(["NI", "UN", "R", "OT"]), lit(None)).otherwise(
+                col("HISPANIC")
             ).alias("HISPANIC"),
             lit(site).alias("SRC"),
-            enc["LAST_VISIT_DATE"].alias("CENSOR_DATE"),
-            dth["DEATH_DATE"].alias("DEATH_DATE"),
-            enc["INDEX_SITE"].alias("INDEX_SITE"),
+            col("LAST_VISIT_DATE").alias("CENSOR_DATE"),
+            col("DEATH_DATE"),
+            col("INDEX_SITE"),
         )
     )
 
@@ -143,19 +148,44 @@ def _build_pat_demo_long_site(
 
 
 def build_pat_demo_long(session: Session, sites: list[str]):
+    sites = list(dict.fromkeys(sites))
     if not sites:
         raise ValueError("At least one demographic/death source site is required")
-    enc_summary = _build_pat_enc_summary(session).cache_result()
-    _create_pat_demo_long(session)
 
-    for site in dict.fromkeys(sites):
-        _build_pat_demo_long_site(session, site, enc_summary).write.mode("append").save_as_table(
-            "PAT_DEMO_LONG"
-        )
-        print(f"PAT_DEMO_LONG data for site {site} appended.")
+    logger.info("Caching the global encounter summary from ENC_TABLE1.")
+    enc_summary = _build_pat_enc_summary(session).cache_result()
+    logger.info("Encounter summary cached; creating PAT_DEMO_LONG.")
+    _create_pat_demo_long(session)
+    logger.info("Created PAT_DEMO_LONG; processing %s source sites.", len(sites))
+
+    completed = False
+    try:
+        for index, site in enumerate(sites, start=1):
+            logger.info(
+                "Site %s/%s (%s): preparing and appending demographics.",
+                index, len(sites), site,
+            )
+            _build_pat_demo_long_site(
+                session, site, enc_summary
+            ).write.mode("append").save_as_table("PAT_DEMO_LONG")
+            logger.info("Site %s/%s (%s): append complete.", index, len(sites), site)
+        completed = True
+    finally:
+        if not completed:
+            logger.error(
+                "PAT_DEMO_LONG is incomplete; one or more source sites were not processed."
+            )
+
+    logger.info("Completed PAT_DEMO_LONG for %s source sites.", len(sites))
 
 
 def build_pat_table1(session: Session):
+    """Prefer non-CMS demographics and aggregate deaths in PAT_DEMO_LONG.
+
+    A site's death record is included only when that site also has a
+    demographic record for the patient.
+    """
+    logger.info("Preparing PAT_TABLE1 from PAT_DEMO_LONG; non-CMS demographics are preferred.")
     demo = (
         session.table("PAT_DEMO_LONG")
         .with_column(
@@ -175,6 +205,7 @@ def build_pat_table1(session: Session):
             "RN",
             row_number().over(
                 Window.partition_by("PATID").order_by(
+                    when(col("SRC") == lit("CMS"), lit(1)).otherwise(lit(0)),
                     col("INDEX_DATE"),
                     when(col("SRC") == col("INDEX_SITE"), lit(0)).otherwise(lit(1)),
                     col("SRC"), col("BIRTH_DATE"), col("SEX"), col("RACE"), col("HISPANIC"),
@@ -183,18 +214,21 @@ def build_pat_table1(session: Session):
         )
     )
 
+    age = col("AGE_AT_INDEX")
+    race = col("RACE")
+    hispanic = col("HISPANIC")
     agegrp = (
-        when(cte_ord["AGE_AT_INDEX"].is_null(), lit("NI"))
-        .when(cte_ord["AGE_AT_INDEX"] < 19, lit("agegrp1"))
+        when(age.is_null(), lit("NI"))
+        .when(age < 19, lit("agegrp1"))
         .when(
-            (cte_ord["AGE_AT_INDEX"] >= 19) & (cte_ord["AGE_AT_INDEX"] < 24),
+            (age >= 19) & (age < 25),
             lit("agegrp2"),
         )
         .when(
-            (cte_ord["AGE_AT_INDEX"] >= 25) & (cte_ord["AGE_AT_INDEX"] < 85),
+            (age >= 25) & (age < 85),
             concat(
                 lit("agegrp"),
-                (floor((cte_ord["AGE_AT_INDEX"] - lit(25)) / lit(5)) + lit(3)).cast(
+                (floor((age - lit(25)) / lit(5)) + lit(3)).cast(
                     "STRING"
                 ),
             ),
@@ -203,73 +237,93 @@ def build_pat_table1(session: Session):
     )
 
     race_grp = (
-        when(cte_ord["RACE"] == lit("05"), lit("white"))
-        .when(cte_ord["RACE"] == lit("03"), lit("black"))
-        .when(cte_ord["RACE"] == lit("02"), lit("asian"))
-        .when(cte_ord["RACE"] == lit("01"), lit("aian"))
-        .when(cte_ord["RACE"] == lit("04"), lit("nhpi"))
-        .when(cte_ord["RACE"] == lit("06"), lit("multi"))
-        .when(cte_ord["RACE"] == lit("OT"), lit("other"))
+        when(race == lit("05"), lit("white"))
+        .when(race == lit("03"), lit("black"))
+        .when(race == lit("02"), lit("asian"))
+        .when(race == lit("01"), lit("aian"))
+        .when(race == lit("04"), lit("nhpi"))
+        .when(race == lit("06"), lit("multi"))
+        .when(race == lit("OT"), lit("other"))
         .otherwise(lit("NI"))
     )
 
     hispanic_grp = (
-        when(cte_ord["HISPANIC"] == lit("Y"), lit("hispanic"))
-        .when(cte_ord["HISPANIC"] == lit("N"), lit("non-hispanic"))
+        when(hispanic == lit("Y"), lit("hispanic"))
+        .when(hispanic == lit("N"), lit("non-hispanic"))
         .otherwise(lit("NI"))
     )
 
     pat_table1 = (
-        cte_ord.filter(cte_ord["RN"] == 1)
+        cte_ord.filter(col("RN") == 1)
         .select(
-            cte_ord["PATID"].alias("PATID"),
-            cte_ord["BIRTH_DATE"].alias("BIRTH_DATE"),
-            cte_ord["INDEX_DATE"].alias("INDEX_DATE"),
-            year(cte_ord["INDEX_DATE"]).alias("INDEX_YEAR"),
-            cte_ord["AGE_AT_INDEX"].alias("AGE_AT_INDEX"),
+            col("PATID"),
+            col("BIRTH_DATE"),
+            col("INDEX_DATE"),
+            year(col("INDEX_DATE")).alias("INDEX_YEAR"),
+            col("AGE_AT_INDEX"),
             agegrp.alias("AGEGRP_AT_INDEX"),
-            cte_ord["SEX"].alias("SEX"),
+            col("SEX"),
             race_grp.alias("RACE"),
             hispanic_grp.alias("HISPANIC"),
-            cte_ord["INDEX_ENC_TYPE"].alias("INDEX_ENC_TYPE"),
-            cte_ord["CENSOR_DATE"].alias("CENSOR_DATE"),
-            year(cte_ord["CENSOR_DATE"]).alias("CENSOR_YEAR"),
-            cte_ord["DEATH_IND"].alias("DEATH_IND"),
-            cte_ord["SRC"].alias("SRC"),
+            col("INDEX_ENC_TYPE"),
+            col("CENSOR_DATE"),
+            year(col("CENSOR_DATE")).alias("CENSOR_YEAR"),
+            col("DEATH_IND"),
+            col("SRC"),
         )
     )
 
+    logger.info("Writing PAT_TABLE1 with one selected demographic record per patient.")
     pat_table1.write.mode("overwrite").save_as_table("PAT_TABLE1")
+    logger.info("Completed PAT_TABLE1.")
 
 
 def main():
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
+    logger.info("Loading Snowflake configuration.")
     env.load_env()
     connect_params = conn.load_snowcfg("ID")
     session = conn.get_snow_conn(connect_params)
-    session.use_database(os.environ["ID_SNOW_DATABASE"])
-    session.use_schema("SX_ALS_GPC")
-    print(session.sql("SELECT CURRENT_USER(), CURRENT_ROLE(), CURRENT_DATABASE()").collect())
+    try:
+        session.use_database(os.environ["ID_SNOW_DATABASE"])
+        session.use_warehouse(os.environ["DEV_SNOW_WAREHOUSE"])
+        session.use_schema("SX_ALS_GPC")
+        context = session.sql(
+            "SELECT CURRENT_USER(), CURRENT_ROLE(), CURRENT_DATABASE(), "
+            "CURRENT_SCHEMA(), CURRENT_WAREHOUSE()"
+        ).collect()
+        logger.info("Snowflake context (user, role, database, schema, warehouse): %s", context)
+        if not context or not context[0][3]:
+            raise RuntimeError(
+                "Snowflake has no current schema; configure a default schema before "
+                "running the patient-table pipeline."
+            )
 
-    sites = [
-        "ALLINA",
-        "IHC",
-        "KUMC",
-        "MCRI",
-        "MCW",
-        "MU",
-        "UCD",
-        "UCLA",
-        "UIOWA",
-        "UNMC",
-        "UTHOUSTON",
-        "UTSW",
-        "UU",
-        "WASHU",
-        # "CMS"
-    ]
+        sites = [
+            "ALLINA",
+            "IHC",
+            "KUMC",
+            "MCRI",
+            "MCW",
+            "MU",
+            "UCD",
+            "UCLA",
+            "UIOWA",
+            "UNMC",
+            "UTHOUSTON",
+            "UTSW",
+            "UU",
+            "WASHU",
+            "CMS"
+        ]
 
-    build_pat_demo_long(session, sites)
-    build_pat_table1(session)
+        logger.info("Starting patient demographic pipeline for %s sites.", len(sites))
+        build_pat_demo_long(session, sites)
+        build_pat_table1(session)
+        logger.info("Patient demographic pipeline completed.")
+    finally:
+        logger.info("Closing Snowflake session.")
+        session.close()
 
 
 if __name__ == "__main__":

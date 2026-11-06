@@ -1,8 +1,10 @@
 import logging
 import os
-from snowflake.snowpark import Session
+from snowflake.snowpark import DataFrame, Session
 from snowflake.snowpark.functions import (
     col,
+    coalesce,
+    dateadd,
     datediff,
     listagg,
     lit,
@@ -76,7 +78,7 @@ def _build_log_uniq(session, log_tbl):
             .drop_duplicates()
     )
 
-def _build_init_dx(log_uniq, prvdr_long):
+def _build_init_dx(log_uniq):
     w_patid = Window.partition_by(col("PATID")).order_by(
         col("CD_DATE"),
         # Keep patients with missing provider IDs, but prefer a populated provider
@@ -86,7 +88,7 @@ def _build_init_dx(log_uniq, prvdr_long):
         col("PROVIDERID"),
     )
 
-    als_first_dx = (
+    return (
         log_uniq
         .filter(col("PHE_TYPE") == "ALS")
         .filter(col("CD_DATE").is_not_null())
@@ -100,24 +102,7 @@ def _build_init_dx(log_uniq, prvdr_long):
         )
     )
 
-    return (
-        als_first_dx
-        .join(
-            prvdr_long,
-            (als_first_dx["ALS1DX_PROVIDERID"] == prvdr_long["PROVIDERID"]) &
-            (als_first_dx["INDEX_SRC"] == prvdr_long["SITE"]),
-            "left",
-        )
-        .select(
-            als_first_dx["PATID"].alias("PATID"),
-            als_first_dx["ALS1DX_DATE"].alias("ALS1DX_DATE"),
-            als_first_dx["INDEX_SRC"].alias("INDEX_SRC"),
-            als_first_dx["ALS1DX_PROVIDERID"].alias("ALS1DX_PROVIDERID"),
-            prvdr_long["MDT_DOMAIN"].alias("MDT_DOMAIN"),
-        )
-    )
-
-def _build_als_pt(log_uniq, prvdr_long):
+def _build_als_pt(log_uniq):
     """
     Build one ALS summary row per patient.
 
@@ -168,7 +153,7 @@ def _build_als_pt(log_uniq, prvdr_long):
     )
 
     # Retain only patients identified by _build_init_dx().
-    init_dx = _build_init_dx(log_uniq, prvdr_long)
+    init_dx = _build_init_dx(log_uniq)
     grp_by_type = (
         event_rows
         .join(
@@ -181,7 +166,6 @@ def _build_als_pt(log_uniq, prvdr_long):
             init_dx["ALS1DX_DATE"].alias("ALS1DX_DATE"),
             init_dx["INDEX_SRC"].alias("INDEX_SRC"),
             init_dx["ALS1DX_PROVIDERID"].alias("ALS1DX_PROVIDERID"),
-            init_dx["MDT_DOMAIN"].alias("MDT_DOMAIN"),
             event_rows["PHE_TYPE"].alias("PHE_TYPE"),
             event_rows["CD_DATE"].alias("CD_DATE"),
             event_rows["distinct_event_cnt"].alias("distinct_event_cnt"),
@@ -229,7 +213,6 @@ def _build_als_pt(log_uniq, prvdr_long):
             col("ALS1DX_DATE"),
             col("INDEX_SRC"),
             col("ALS1DX_PROVIDERID"),
-            col("MDT_DOMAIN"),
             col("PHE_TYPE").alias("PHE1_TYPE"),
             col("CD_DATE").alias("PHE1_DATE"),
             col("distinct_event_cnt"),
@@ -252,7 +235,6 @@ def _build_als_pt(log_uniq, prvdr_long):
             als_elig["ALS1DX_DATE"],
             als_elig["INDEX_SRC"],
             als_elig["ALS1DX_PROVIDERID"],
-            als_elig["MDT_DOMAIN"],
             als_elig["PHE1_TYPE"],
             als_elig["PHE1_DATE"],
             als_elig["distinct_event_cnt"],
@@ -263,17 +245,90 @@ def _build_als_pt(log_uniq, prvdr_long):
     )
 
 
-def build_als_case_table(session: Session):
+def _add_mdt_base_n(
+    als_cases: DataFrame,
+    log_tbl: DataFrame,
+    prvdr_long: DataFrame,
+    mdt_lookback_days: int,
+) -> DataFrame:
+    """Flag any neurology event in the inclusive pre-diagnosis lookback."""
+    neurology_providers = (
+        prvdr_long
+        .filter(col("MDT_DOMAIN") == "N")
+        .select("PROVIDERID", "SITE")
+        .distinct()
+    )
+    events = log_tbl.select(
+        "PATID", "PROVIDERID", "SITE",
+        col("CD_DATE").cast("DATE").alias("CD_DATE"),
+    )
+    patients = als_cases.select("PATID", "ALS1DX_DATE")
+    baseline_events = (
+        patients
+        .join(
+            events,
+            (patients["PATID"] == events["PATID"]) &
+            events["CD_DATE"].between(
+                dateadd("day", lit(-mdt_lookback_days), patients["ALS1DX_DATE"]),
+                patients["ALS1DX_DATE"],
+            ),
+            "inner",
+        )
+        .select(
+            events["PATID"].alias("PATID"),
+            events["PROVIDERID"].alias("PROVIDERID"),
+            events["SITE"].alias("SITE"),
+        )
+    )
+    evidence = (
+        baseline_events
+        .join(
+            neurology_providers,
+            (baseline_events["PROVIDERID"] == neurology_providers["PROVIDERID"]) &
+            (baseline_events["SITE"] == neurology_providers["SITE"]),
+            "inner",
+        )
+        .select(baseline_events["PATID"].alias("MDT_PATID"))
+        .distinct()
+        .with_column("MDT_BASE_N", lit(1))
+    )
+    return (
+        als_cases
+        .join(evidence, als_cases["PATID"] == evidence["MDT_PATID"], "left")
+        .select(
+            *[als_cases[name] for name in als_cases.columns],
+            coalesce(evidence["MDT_BASE_N"], lit(0)).alias("MDT_BASE_N"),
+        )
+    )
+
+
+def build_als_case_table(session: Session, mdt_lookback_days: int = 365):
     """
-    Build ALS case table
+    Build ALS_CASE with MDT_BASE_N in place of the first provider's MDT_DOMAIN.
+
+    MDT_BASE_N is 1 when any ALS_DXRXPX_LONG diagnosis, procedure, or
+    prescription has a provider with MDT_DOMAIN = 'N' at the same SITE,
+    within [ALS1DX_DATE - mdt_lookback_days, ALS1DX_DATE]; otherwise 0.
+    A zero-day lookback includes only the diagnosis date.
     """
+    if (
+        isinstance(mdt_lookback_days, bool)
+        or not isinstance(mdt_lookback_days, int)
+        or mdt_lookback_days < 0
+    ):
+        raise ValueError("mdt_lookback_days must be a non-negative integer.")
+
+    logger.info("Building ALS_CASE with MDT_BASE_N lookback of %s days.", mdt_lookback_days)
+
     log_tbl = (
         session.table("ALS_DXRXPX_LONG")
         # .filter(col("SITE") != 'CMS') # remove CMS
     )
     prvdr_long = session.table("PRVDR_LONG")
     log_uniq = _build_log_uniq(session, log_tbl)
-    als_tbl1 = _build_als_pt(log_uniq, prvdr_long)
+    als_tbl1 = _add_mdt_base_n(
+        _build_als_pt(log_uniq), log_tbl, prvdr_long, mdt_lookback_days,
+    )
     w_patid = Window.partition_by("PATID").order_by(col("ALS1DX_DATE"))
 
     # ALS case table
@@ -286,7 +341,7 @@ def build_als_case_table(session: Session):
             als_tbl1["ALS1DX_DATE"],
             als_tbl1["INDEX_SRC"],
             als_tbl1["ALS1DX_PROVIDERID"],
-            als_tbl1["MDT_DOMAIN"],
+            als_tbl1["MDT_BASE_N"],
             als_tbl1["PHE1_TYPE"],
             als_tbl1["PHE1_DATE"],
             als_tbl1["distinct_event_cnt"],
@@ -299,7 +354,7 @@ def build_als_case_table(session: Session):
     logger.info("✅ ALS_CASE table created with {} rows.".format(als_case_table1.count()))
 
 
-def main():
+def main(mdt_lookback_days: int = 365):
     env.load_env()
     connect_params = conn.load_snowcfg("ID")
     session = conn.get_snow_conn(connect_params)
@@ -307,7 +362,7 @@ def main():
     session.use_schema("SX_ALS_GPC")
 
     print(session.sql("SELECT CURRENT_USER(), CURRENT_ROLE(), CURRENT_DATABASE(), CURRENT_WAREHOUSE()").collect())
-    build_als_case_table(session)
+    build_als_case_table(session, mdt_lookback_days=mdt_lookback_days)
 
     # attach demographic info
     pat_tbl1 = session.table("PAT_TABLE1")
@@ -328,7 +383,7 @@ def main():
             als_case_table1["PATID"].alias("PATID"),
             als_case_table1["ALS1DX_DATE"].alias("INDEX_DATE"),
             als_case_table1["INDEX_SRC"].alias("INDEX_SRC"),
-            als_case_table1["MDT_DOMAIN"].alias("MDT_DOMAIN"),
+            als_case_table1["MDT_BASE_N"].alias("MDT_BASE_N"),
             als_case_table1["event_str"].alias("ALS_CPHETY"),
             pat_tbl1["birth_date"].alias("BIRTH_DATE"),
             s_round(
@@ -356,11 +411,16 @@ def main():
         .filter(
             (als_case_table1["ALS1DX_DATE"] > pat_tbl1["birth_date"]) &
             (pat_tbl1["age_at_index"] >= 18)
-            # & (als_case_table1["MDT_DOMAIN"] == "N")
         )
     )
     als_w_demo.write.mode("overwrite").save_as_table("ALS_CASE_TABLE1")
     logger.info("✅ ALS_CASE_TABLE1 table created with {} rows.".format(als_w_demo.count()))
 
 if __name__ == "__main__":
-    main()
+    main(mdt_lookback_days = 730)
+
+
+# create or replace table ALS_CASE_TABLE1_CCW as
+# select * from ALS_CASE_TABLE1
+# where CMS_ENR_START_DT is not null and MDT_BASE_N = 1
+# ;
