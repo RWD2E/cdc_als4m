@@ -19,6 +19,9 @@ sf_conn <- DBI::dbConnect(
   pwd = ""
 )
 
+
+
+
 #==== Collect CCW-ready dataset ====
 dat<-tbl(sf_conn,sql("select * from ALS_MDT_CCW_60_180")) %>% collect()
 saveRDS(dat,file="./data/als_mdt_ccw_60_180.rda")

@@ -224,7 +224,7 @@ stopifnot(nrow(patient_t1) == n_distinct(patient_t1$PATID))
 # 6. gtsummary setup and tables -----------------------------------------------
 theme_gtsummary_compact()
 t1_baseline_vars <- unique(c("AGE_AT_INDEX", "AGE_GROUP", "SEX", "RACE",
-                             "HISPANIC", lab_vars, comorbid_keep))
+                             "HISPANIC","FOLLOWUP_YEARS", "FOLLOWUP_DAYS", lab_vars, comorbid_keep))
 
 tbl1 <- patient_t1 %>%
   select(all_of(t1_body_vars), VITAL_STATUS) %>%
